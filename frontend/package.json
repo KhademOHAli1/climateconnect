@@ -9,16 +9,16 @@
     "deploy": "yarn build && yarn export",
     "dev": "next dev",
     "export": "next export",
-    "fix-lint": "eslint . --fix",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}'",
+    "fix-lint": "biome check --write .",
+    "format": "biome format --write .",
     "gcp-build": "IS_BUILDING_ON_GOOGLE_CLOUD=1 yarn build",
-    "lint:watch": "esw --cache --watch --color --fix",
-    "lint": "eslint .",
+    "lint": "biome lint .",
     "pretest": "yarn lint",
     "start": "NODE_ENV=production node server.js",
     "test:watch": "jest --watch",
     "test": "jest",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "check": "biome check ."
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@biomejs/biome": "^2.3.13",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.1",
     "@next/eslint-plugin-next": "^16.0.6",
