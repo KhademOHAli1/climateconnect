@@ -64,7 +64,7 @@
     "react-text-loop": "^2.3.0",
     "react-timeago": "^8.3.0",
     "react-youtube": "^7.13.0",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.3",
     "universal-cookie": "^4.0.3",
     "use-long-press": "^1.1.1",
     "youtube-regex": "^1.0.5"
