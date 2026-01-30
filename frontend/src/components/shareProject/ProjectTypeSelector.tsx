@@ -1,26 +1,26 @@
-import { Card, Grid, Radio, RadioGroup, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
+import { Card, Grid, Radio, RadioGroup, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   reset: {
     margin: 0,
     padding: 0,
-    listStyleType: "none",
-    width: "100%",
+    listStyleType: 'none',
+    width: '100%',
   },
   box: {
     borderRadius: 3,
     margin: theme.spacing(1),
-    boxShadow: "3px 3px 8px #E0E0E0",
-    cursor: "pointer",
-    display: "flex",
+    boxShadow: '3px 3px 8px #E0E0E0',
+    cursor: 'pointer',
+    display: 'flex',
     color: theme.palette.secondary.main,
-    alignItems: "center",
-    position: "relative",
+    alignItems: 'center',
+    position: 'relative',
   },
   boxActive: {
-    backgroundColor: "#d7f1ef",
+    backgroundColor: '#d7f1ef',
     border: `1px solid ${theme.palette.primary.main}`,
   },
   textBox: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(4),
   },
   headline: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   helpText: {
     fontSize: 14,
@@ -38,26 +38,26 @@ const useStyles = makeStyles((theme) => ({
   imageContainer: {
     width: 60,
     margin: theme.spacing(2),
-    display: "flex",
-    alignItems: "stretch",
-    height: "100%",
+    display: 'flex',
+    alignItems: 'stretch',
+    height: '100%',
   },
   image: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
   },
   radioButton: {
-    position: "absolute",
+    position: 'absolute',
     right: 0,
     top: 0,
   },
-}));
+}))
 
 const ProjectTypeBox = ({ type, value, onChange, color }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   const handleChangeValue = () => {
-    onChange(type.type_id);
-  };
+    onChange(type.type_id)
+  }
   return (
     <Card
       variant="outlined"
@@ -81,14 +81,14 @@ const ProjectTypeBox = ({ type, value, onChange, color }) => {
         name={type.name}
         value={type.type_id}
         className={classes.radioButton}
-        color={color ? color : "primary"}
+        color={color ? color : 'primary'}
       />
     </Card>
-  );
-};
+  )
+}
 
 export default function ProjectTypeSelector({ className, value, types, onChange, color }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={className}>
       <RadioGroup>
@@ -101,5 +101,5 @@ export default function ProjectTypeSelector({ className, value, types, onChange,
         </Grid>
       </RadioGroup>
     </div>
-  );
+  )
 }

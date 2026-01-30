@@ -1,57 +1,57 @@
-import React from "react";
-import { Typography, Container, Theme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote'
+import { Container, Theme, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles<Theme, { noPadding?: boolean }>((theme) => ({
   root: {
-    display: "flex",
-    position: "relative",
-    textAlign: "center",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
+    display: 'flex',
+    position: 'relative',
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
     },
   },
   openQuoteIcon: {
     marginTop: -35,
   },
   closingQuoteIcon: {
-    transform: "rotate(180deg)",
+    transform: 'rotate(180deg)',
     marginBottom: -35,
   },
   quoteIconContainer: {
     width: 180,
-    display: "flex",
+    display: 'flex',
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   closeQuoteIconContainer: (props) => ({
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     paddingLeft: props.noPadding ? 0 : theme.spacing(3),
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: "auto",
-      display: "flex",
-      justifyContent: "flex-end",
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 'auto',
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
   }),
   openQuoteIconContainer: (props) => ({
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     paddingRight: props.noPadding ? 0 : theme.spacing(3),
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      justifyContent: "flex-start",
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'flex-start',
     },
   }),
   quoteIcon: {
     fontSize: 80,
   },
   textBody: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(3),
       paddingRight: theme.spacing(3),
     },
   },
-}));
+}))
 
 export default function Quote({
   text,
@@ -60,7 +60,7 @@ export default function Quote({
   quoteIconClassName,
   noPadding,
 }: any) {
-  const classes = useStyles({ noPadding: noPadding });
+  const classes = useStyles({ noPadding: noPadding })
   return (
     <Container className={`${className} ${classes.root}`}>
       <div className={`${classes.quoteIconContainer} ${classes.openQuoteIconContainer}`}>
@@ -77,5 +77,5 @@ export default function Quote({
         />
       </div>
     </Container>
-  );
+  )
 }

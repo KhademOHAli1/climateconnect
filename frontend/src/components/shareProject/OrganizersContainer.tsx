@@ -1,14 +1,14 @@
-import { IconButton, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import MiniOrganizationPreview from "../organization/MiniOrganizationPreview";
-import AutoCompleteSearchBar from "../search/AutoCompleteSearchBar";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
-import { useTheme } from "@mui/styles";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { IconButton, Typography } from '@mui/material'
+import { useTheme } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import MiniOrganizationPreview from '../organization/MiniOrganizationPreview'
+import AutoCompleteSearchBar from '../search/AutoCompleteSearchBar'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -18,15 +18,15 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.background.default_contrastText,
     },
     info: {
-      textAlign: "center",
-      fontWeight: "bold",
+      textAlign: 'center',
+      fontWeight: 'bold',
       marginBottom: theme.spacing(2),
     },
     infoIcon: {
       marginBottom: -6,
     },
-  };
-});
+  }
+})
 
 export default function OrganizersContainer({
   projectData,
@@ -36,10 +36,10 @@ export default function OrganizersContainer({
   handleAddOrganization,
   handleRemoveOrganization,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: projectData });
-  const theme = useTheme();
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: projectData })
+  const theme = useTheme()
 
   const renderSearchOption = (props, option) => {
     return (
@@ -49,14 +49,14 @@ export default function OrganizersContainer({
         </IconButton>
         {option.name}
       </li>
-    );
-  };
+    )
+  }
 
   const allInvolvedOrgs = projectData.parent_organization
     ? [...projectData.collaborating_organizations, projectData.parent_organization]
-    : [...projectData.collaborating_organizations];
+    : [...projectData.collaborating_organizations]
 
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   return (
     <div>
@@ -65,7 +65,7 @@ export default function OrganizersContainer({
           <AutoCompleteSearchBar
             label={texts.search_for_collaborating_organizations}
             className={`${searchBarClassName} ${blockClassName}`}
-            baseUrl={process.env.API_URL + "/api/organizations/?search="}
+            baseUrl={process.env.API_URL + '/api/organizations/?search='}
             color={backgroundContrastColor}
             clearOnSelect
             freeSolo
@@ -114,5 +114,5 @@ export default function OrganizersContainer({
         )}
       </div>
     </div>
-  );
+  )
 }

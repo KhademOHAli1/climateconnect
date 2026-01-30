@@ -1,32 +1,32 @@
-import { Button } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React, { useRef, useState } from "react";
-import DropDownList from "../header/DropDownList";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { Button } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useRef, useState } from 'react'
+import DropDownList from '../header/DropDownList'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "relative",
+    position: 'relative',
   },
   button: {
     paddingRight: theme.spacing(0.5),
     paddingLeft: theme.spacing(1.5),
   },
-}));
+}))
 
 export default function DropDownButton({ buttonProps, options, children, href }: any) {
-  const classes = useStyles();
-  const [showOptions, setShowOptions] = useState(false);
-  const buttonRef = useRef(null);
+  const classes = useStyles()
+  const [showOptions, setShowOptions] = useState(false)
+  const buttonRef = useRef(null)
 
   const handleShowOptions = (e) => {
-    e.preventDefault();
-    setShowOptions(true);
-  };
+    e.preventDefault()
+    setShowOptions(true)
+  }
 
   const handleHideOptions = () => {
-    setShowOptions(false);
-  };
+    setShowOptions(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -50,5 +50,5 @@ export default function DropDownButton({ buttonProps, options, children, href }:
         open={showOptions}
       />
     </div>
-  );
+  )
 }

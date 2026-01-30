@@ -1,3 +1,4 @@
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import {
   Button,
   Checkbox,
@@ -7,44 +8,43 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import Link from "next/link";
-import React, { Fragment, ReactElement, useState } from "react";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import Link from 'next/link'
+import React, { Fragment, ReactElement, useState } from 'react'
 
 // Relative imports
-import AutoCompleteSearchBar from "../search/AutoCompleteSearchBar";
-import LocationSearchBar from "../search/LocationSearchBar";
-import SelectField from "./SelectField";
+import AutoCompleteSearchBar from '../search/AutoCompleteSearchBar'
+import LocationSearchBar from '../search/LocationSearchBar'
+import SelectField from './SelectField'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 700,
-    margin: "0 auto",
+    margin: '0 auto',
   },
   blockElement: {
-    display: "block",
+    display: 'block',
     maxWidth: 700,
     height: 56,
-    margin: "0 auto",
+    margin: '0 auto',
     marginTop: theme.spacing(2),
   },
   checkbox: {
-    display: "block",
-    margin: "0 auto",
+    display: 'block',
+    margin: '0 auto',
     marginTop: theme.spacing(1),
     fontSize: 13,
   },
   checkboxLabel: {
-    display: "inline",
+    display: 'inline',
   },
   inlineBlockElement: {
-    display: "inline-block",
+    display: 'inline-block',
   },
   bottomMessages: {
-    textAlign: "center",
-    display: "block",
+    textAlign: 'center',
+    display: 'block',
   },
   bottomLink: {
     color: theme.palette.background.default_contrastText,
@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   percentage: {
-    textAlign: "center",
+    textAlign: 'center',
     color: `${theme.palette.primary.main}`,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   progressBar: {
     height: 5,
@@ -63,78 +63,78 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   centerText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   backButton: {
-    float: "left",
+    float: 'left',
   },
   rightAlignedButton: {
-    float: "right",
+    float: 'right',
     marginTop: theme.spacing(4),
   },
   switchText: {
-    textAlign: "center",
-    position: "relative",
+    textAlign: 'center',
+    position: 'relative',
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   flexBlock: {
-    display: "flex",
-    justifyContent: "space-around",
+    display: 'flex',
+    justifyContent: 'space-around',
   },
   switchTextContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
-}));
+}))
 
 //TODO throw error if "label" isn't unique
 
 type Props = {
   fields: {
-    required?: boolean;
-    label?: string;
-    type?: any;
-    progressOnFill?: number;
-    select?: any;
-    key: string;
-    multiselect?: any;
-    value?: any;
-    selectedValues?: any;
-    checked?: boolean;
-    onlyShowIfChecked?: string;
-    bottomLink?: any;
-    maxOptions?: number;
-    multiple?: boolean;
-    multiSelectProps?: any;
-    falseLabel?: string;
-    trueLabel?: string;
-    autoCompleteProps?: any;
-    ref?: any;
-    handleSetLocationOptionsOpen?: any;
-    locationOptionsOpen?: any;
-  }[];
-  select?: { selectValues: { label: string; value: string }[] };
+    required?: boolean
+    label?: string
+    type?: any
+    progressOnFill?: number
+    select?: any
+    key: string
+    multiselect?: any
+    value?: any
+    selectedValues?: any
+    checked?: boolean
+    onlyShowIfChecked?: string
+    bottomLink?: any
+    maxOptions?: number
+    multiple?: boolean
+    multiSelectProps?: any
+    falseLabel?: string
+    trueLabel?: string
+    autoCompleteProps?: any
+    ref?: any
+    handleSetLocationOptionsOpen?: any
+    locationOptionsOpen?: any
+  }[]
+  select?: { selectValues: { label: string; value: string }[] }
   messages: {
-    submitMessage: string | ReactElement;
-    headerMessage?: string | ReactElement;
-    bottomMessage?: string | ReactElement;
-  };
-  bottomLink?: { text: string; href: string };
-  formAction?: { href: string; method: string; action?: any };
-  usePercentage?: boolean;
-  percentage?: number;
+    submitMessage: string | ReactElement
+    headerMessage?: string | ReactElement
+    bottomMessage?: string | ReactElement
+  }
+  bottomLink?: { text: string; href: string }
+  formAction?: { href: string; method: string; action?: any }
+  usePercentage?: boolean
+  percentage?: number
   // eslint-disable-next-line no-unused-vars
-  onSubmit: (...args: any[]) => void;
-  errorMessage?: ReactElement | string | null;
-  className?: string;
-  alignButtonsRight?: boolean;
-  fieldClassName?: string;
+  onSubmit: (...args: any[]) => void
+  errorMessage?: ReactElement | string | null
+  className?: string
+  alignButtonsRight?: boolean
+  fieldClassName?: string
   // eslint-disable-next-line no-unused-vars
-  onGoBack?: (...args: any[]) => void;
-  autocomplete?: string;
-};
+  onGoBack?: (...args: any[]) => void
+  autocomplete?: string
+}
 export default function Form({
   fields,
   messages,
@@ -150,55 +150,55 @@ export default function Form({
   fieldClassName,
   autocomplete,
 }: Props) {
-  const classes = useStyles();
-  const [curPercentage, setCurPercentage] = useState(percentage);
+  const classes = useStyles()
+  const [curPercentage, setCurPercentage] = useState(percentage)
   const [values, setValues] = useState(
     fields.reduce((obj, field) => {
-      if (field.select) obj[field.key] = field.select.defaultValue ? field.select.defaultValue : "";
-      else if (field.multiselect) obj[field.key] = field.selectedValues ? field.selectedValues : [];
-      else if (field.value) obj[field.key] = field.value;
-      else if (field.type === "checkbox" || field.type === "switch")
-        obj[field.key] = field.checked ? field.checked : false;
-      else obj[field.key] = "";
-      return obj;
-    }, {})
-  );
+      if (field.select) obj[field.key] = field.select.defaultValue ? field.select.defaultValue : ''
+      else if (field.multiselect) obj[field.key] = field.selectedValues ? field.selectedValues : []
+      else if (field.value) obj[field.key] = field.value
+      else if (field.type === 'checkbox' || field.type === 'switch')
+        obj[field.key] = field.checked ? field.checked : false
+      else obj[field.key] = ''
+      return obj
+    }, {}),
+  )
 
   function updatePercentage(customValues?) {
     const filledFields =
-      customValues && typeof customValues === "object"
+      customValues && typeof customValues === 'object'
         ? fields.filter((field) => !!customValues[field.key])
-        : fields.filter((field) => !!values[field.key]);
+        : fields.filter((field) => !!values[field.key])
     if (filledFields.length) {
       const totalValue = filledFields.reduce((accumulator, curField) => {
-        return accumulator + curField.progressOnFill!;
-      }, 0);
-      setCurPercentage(percentage! + totalValue);
+        return accumulator + curField.progressOnFill!
+      }, 0)
+      setCurPercentage(percentage! + totalValue)
     }
   }
 
   function handleValueChange(event, key, type, updateInstantly = false) {
     const newValues = {
       ...values,
-      [key]: type === "checkbox" || type === "switch" ? event.target.checked : event.target.value,
-    };
-    if (type === "checkbox" || type === "switch") {
-      const dependentFields = fields.filter(
-        (f) => f.onlyShowIfChecked && f.onlyShowIfChecked === key
-      );
-      if (dependentFields.length) dependentFields.map((f) => (newValues[f.key] = ""));
+      [key]: type === 'checkbox' || type === 'switch' ? event.target.checked : event.target.value,
     }
-    setValues(newValues);
+    if (type === 'checkbox' || type === 'switch') {
+      const dependentFields = fields.filter(
+        (f) => f.onlyShowIfChecked && f.onlyShowIfChecked === key,
+      )
+      if (dependentFields.length) dependentFields.map((f) => (newValues[f.key] = ''))
+    }
+    setValues(newValues)
     //setValues doesn't apply instantly, so we pass the new values to the updatePercentage function
-    if (updateInstantly) updatePercentage(newValues);
+    if (updateInstantly) updatePercentage(newValues)
   }
 
   function handleLocationChange(newLocation, key) {
-    setValues({ ...values, [key]: newLocation });
+    setValues({ ...values, [key]: newLocation })
   }
 
   function handleBlur() {
-    updatePercentage();
+    updatePercentage()
   }
 
   return (
@@ -244,8 +244,8 @@ export default function Form({
             (!field.onlyShowIfChecked || values[field.onlyShowIfChecked] === true) &&
             field.select
           ) {
-            let options = field.select.values;
-            if (field.select.addEmptyValue) options = ["", ...options];
+            let options = field.select.values
+            if (field.select.addEmptyValue) options = ['', ...options]
             return (
               <Fragment key={field.key}>
                 <SelectField
@@ -262,9 +262,9 @@ export default function Form({
                 />
                 {field.bottomLink && field.bottomLink}
               </Fragment>
-            );
+            )
           } else if (field.multiselect) {
-            const options = field.multiselect.values;
+            const options = field.multiselect.values
             return (
               <Fragment key={field.key}>
                 <SelectField
@@ -280,26 +280,26 @@ export default function Form({
                     // we first check if we are reached limit of selected values
                     if (field.selectedValues.length === field.maxOptions) {
                       const isUnselectingValue =
-                        field.selectedValues.length >= event.target.value.length;
+                        field.selectedValues.length >= event.target.value.length
                       // if we are at limit but want to make a change by removing an item we need to allow user to unselect
 
-                      if (isUnselectingValue) field.multiSelectProps.onChange(event.target.value);
+                      if (isUnselectingValue) field.multiSelectProps.onChange(event.target.value)
                       // otherwise we just return and don't allow changes to the selectedValues
-                      return;
+                      return
                     }
                     // make changes as usual when user is not at limit
-                    field.multiSelectProps.onChange(event.target.value);
+                    field.multiSelectProps.onChange(event.target.value)
                   }}
                   values={field.selectedValues}
                 />
                 {field.bottomLink && field.bottomLink}
               </Fragment>
-            );
-          } else if (field.type === "checkbox") {
+            )
+          } else if (field.type === 'checkbox') {
             return (
               <div className={classes.checkbox} key={field.key}>
                 <Checkbox
-                  id={"checkbox" + field.key}
+                  id={'checkbox' + field.key}
                   checked={values[field.key]}
                   required={field.required}
                   className={classes.inlineBlockElement}
@@ -309,43 +309,43 @@ export default function Form({
                   // @ts-ignore - contrast is a custom color defined in theme
                   color="contrast"
                 />
-                <label className={classes.checkboxLabel} htmlFor={"checkbox" + field.key}>
+                <label className={classes.checkboxLabel} htmlFor={'checkbox' + field.key}>
                   {field.label}
                 </label>
               </div>
-            );
-          } else if (field.type === "switch") {
+            )
+          } else if (field.type === 'switch') {
             return (
               <div className={classes.flexBlock} key={field.key}>
                 <span className={classes.switchTextContainer}>
                   <Typography
                     className={`${classes.switchText} ${!values[field.key] && classes.bold}`}
-                    color={values[field.key] ? "secondary" : "contrast"}
+                    color={values[field.key] ? 'secondary' : 'contrast'}
                   >
                     {field.falseLabel}
                   </Typography>
                 </span>
                 <Switch
-                  id={"checkbox" + field.key}
+                  id={'checkbox' + field.key}
                   checked={values[field.key]}
                   required={field.required}
                   // @ts-ignore - contrast is a custom color defined in theme
                   color="contrast"
                   name="checkedA"
-                  inputProps={{ "aria-label": "secondary checkbox" }}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
                   onChange={(event) => handleValueChange(event, field.key, field.type)}
                 />
                 <span className={classes.switchTextContainer}>
                   <Typography
                     className={`${classes.switchText} ${values[field.key] && classes.bold}`}
-                    color={values[field.key] ? "constrast" : "secondary"}
+                    color={values[field.key] ? 'constrast' : 'secondary'}
                   >
                     {field.trueLabel}
                   </Typography>
                 </span>
               </div>
-            );
-          } else if (field.type === "location") {
+            )
+          } else if (field.type === 'location') {
             return (
               <LocationSearchBar
                 key={field.key}
@@ -359,10 +359,10 @@ export default function Form({
                 open={field.locationOptionsOpen}
                 className={`${classes.blockElement} ${fieldClassName}`}
               />
-            );
+            )
           } else if (
             (!field.onlyShowIfChecked || values[field.onlyShowIfChecked] === true) &&
-            field.type === "autocomplete"
+            field.type === 'autocomplete'
           ) {
             return (
               <AutoCompleteSearchBar
@@ -381,7 +381,7 @@ export default function Form({
                 helperText={field.autoCompleteProps.helperText}
                 onUnselect={field.autoCompleteProps.onUnselect}
               />
-            );
+            )
           } else if (!field.onlyShowIfChecked || values[field.onlyShowIfChecked] === true) {
             return (
               <Fragment key={field.key}>
@@ -401,7 +401,7 @@ export default function Form({
                 />
                 {field.bottomLink && field.bottomLink}
               </Fragment>
-            );
+            )
           }
         })}
         <Button
@@ -436,5 +436,5 @@ export default function Form({
         <></>
       )}
     </div>
-  );
+  )
 }

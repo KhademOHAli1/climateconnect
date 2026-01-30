@@ -1,29 +1,29 @@
-import { AppBar, Container, Toolbar } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import ContactCreatorButton from "./ContactCreatorButton";
-import FollowButton from "../../general/FollowButton";
-import LikeButton from "./LikeButton";
+import { AppBar, Container, Toolbar } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import FollowButton from '../../general/FollowButton'
+import ContactCreatorButton from './ContactCreatorButton'
+import LikeButton from './LikeButton'
 
 const useStyles = makeStyles(() => ({
   largeScreenButton: (props) => ({
-    position: "fixed",
+    position: 'fixed',
     bottom: props.visibleFooterHeight + 2,
     right: props.tabContentContainerSpaceToRight,
-    boxShadow: "3px -3px 6px #00000029",
+    boxShadow: '3px -3px 6px #00000029',
   }),
   actionBar: (props) => ({
-    backgroundColor: "#ECECEC",
-    top: "auto",
+    backgroundColor: '#ECECEC',
+    top: 'auto',
     bottom: props.visibleFooterHeight,
-    boxShadow: "-3px -3px 6px #00000029",
+    boxShadow: '-3px -3px 6px #00000029',
     zIndex: 101,
   }),
   containerButtonsActionBar: {
-    display: "flex",
-    justifyContent: "space-around",
+    display: 'flex',
+    justifyContent: 'space-around',
   },
-}));
+}))
 
 export default function ProjectInteractionButtons({
   projectAdmin,
@@ -52,7 +52,7 @@ export default function ProjectInteractionButtons({
   const classes = useStyles({
     visibleFooterHeight: visibleFooterHeight,
     tabContentContainerSpaceToRight: tabContentContainerSpaceToRight,
-  });
+  })
 
   if (screenSize.belowSmall)
     return (
@@ -91,7 +91,7 @@ export default function ProjectInteractionButtons({
           />
         </Toolbar>
       </AppBar>
-    );
+    )
 
   return (
     <Container>
@@ -102,7 +102,7 @@ export default function ProjectInteractionButtons({
             className={classes.largeScreenButton}
             creator={projectAdmin}
             handleClickContact={handleClickContact}
-            explanationBackground={"#fff"}
+            explanationBackground={'#fff'}
             customCardWidth={220}
             withInfoCard={true}
             withIcons={true}
@@ -110,5 +110,5 @@ export default function ProjectInteractionButtons({
           />
         )}
     </Container>
-  );
+  )
 }

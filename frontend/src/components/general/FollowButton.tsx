@@ -1,24 +1,24 @@
-import { Button, CircularProgress, Link, Tooltip, Typography, useTheme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { MouseEventHandler } from "react";
-import ButtonIcon from "./ButtonIcon";
-import { Theme } from "@mui/material/styles";
+import { Button, CircularProgress, Link, Tooltip, Typography, useTheme } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { MouseEventHandler } from 'react'
+import ButtonIcon from './ButtonIcon'
 
 type MakeStylesProps = {
-  hasAdminPermissions?: boolean;
-  followingChangePending?: boolean;
-  belowSmallScreen?: boolean;
-};
+  hasAdminPermissions?: boolean
+  followingChangePending?: boolean
+  belowSmallScreen?: boolean
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   followButtonContainer: {
-    display: "inline-flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'inline-flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   followersLink: {
-    cursor: "pointer",
-    textAlign: "center",
+    cursor: 'pointer',
+    textAlign: 'center',
   },
   followerNumber: {
     fontWeight: 700,
@@ -30,54 +30,54 @@ const useStyles = makeStyles((theme: Theme) => ({
   followingButton: (props: MakeStylesProps) => ({
     marginLeft: props.hasAdminPermissions ? theme.spacing(2) : theme.spacing(0.25),
     marginRight: props.hasAdminPermissions ? theme.spacing(2) : theme.spacing(0.25),
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     height: 40,
     maxWidth: props.belowSmallScreen ? 180 : 140,
-    "&:disabled": {
-      color: "white",
+    '&:disabled': {
+      color: 'white',
       background: theme.palette.secondary.main,
     },
   }),
   fabProgress: {
-    color: "white",
-    position: "absolute",
+    color: 'white',
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: "auto",
-    marginBottom: "auto",
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   buttonLabel: {
-    position: "relative",
+    position: 'relative',
   },
   buttonText: (props) => ({
-    visibility: props.followingChangePending ? "hidden" : "visible",
+    visibility: props.followingChangePending ? 'hidden' : 'visible',
   }),
   hidden: {
-    visibility: "hidden",
+    visibility: 'hidden',
   },
-}));
+}))
 
 type Args = {
-  isUserFollowing: boolean;
-  handleToggleFollow: MouseEventHandler<HTMLButtonElement>;
-  hasAdminPermissions: boolean;
-  toggleShowFollowers: Function;
-  followingChangePending: boolean;
-  texts: any;
-  screenSize?: any;
-  numberOfFollowers: number;
-  bindFollow?: Function;
-  isLoggedIn: boolean;
-  showStartIcon?: boolean;
-  showLinkUnderButton?: boolean;
-  showNumberInText?: boolean;
-  toolTipText?: string;
-  toolTipPlacement?: any;
-};
+  isUserFollowing: boolean
+  handleToggleFollow: MouseEventHandler<HTMLButtonElement>
+  hasAdminPermissions: boolean
+  toggleShowFollowers: Function
+  followingChangePending: boolean
+  texts: any
+  screenSize?: any
+  numberOfFollowers: number
+  bindFollow?: Function
+  isLoggedIn: boolean
+  showStartIcon?: boolean
+  showLinkUnderButton?: boolean
+  showNumberInText?: boolean
+  toolTipText?: string
+  toolTipPlacement?: any
+}
 
 export default function FollowButton({
   isUserFollowing,
@@ -100,12 +100,12 @@ export default function FollowButton({
     hasAdminPermissions: hasAdminPermissions,
     followingChangePending: followingChangePending,
     belowSmallScreen: screenSize?.belowSmall,
-  });
-  const theme = useTheme();
+  })
+  const theme = useTheme()
   return (
     <span className={classes.followButtonContainer}>
       {/* conditionally display the tooltip if text is defined only, since this is also used for project follow button */}
-      <Tooltip arrow placement={toolTipPlacement} title={toolTipText == null ? "" : toolTipText}>
+      <Tooltip arrow placement={toolTipPlacement} title={toolTipText == null ? '' : toolTipText}>
         <Button
           {...bindFollow}
           onClick={handleToggleFollow}
@@ -115,13 +115,13 @@ export default function FollowButton({
               <ButtonIcon
                 icon="follow"
                 size={27}
-                color={isUserFollowing ? "earth" : theme.palette.primary.contrastText}
+                color={isUserFollowing ? 'earth' : theme.palette.primary.contrastText}
               />
             ) : (
               <></>
             )
           }
-          color={isUserFollowing && isLoggedIn ? "secondary" : "primary"}
+          color={isUserFollowing && isLoggedIn ? 'secondary' : 'primary'}
           disabled={followingChangePending}
           className={classes.followingButton}
         >
@@ -133,8 +133,8 @@ export default function FollowButton({
             <div className={classes.buttonText}>
               {isUserFollowing && isLoggedIn ? texts.following : texts.follow}
               {showNumberInText && !followingChangePending && numberOfFollowers > 0
-                ? " • " + numberOfFollowers
-                : ""}
+                ? ' • ' + numberOfFollowers
+                : ''}
             </div>
           </div>
         </Button>
@@ -147,11 +147,11 @@ export default function FollowButton({
         />
       )}
     </span>
-  );
+  )
 }
 
 function LinkWithText({ numberOfFollowers, texts, toggleShowFollowers }) {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <Link
       color="text.primary"
@@ -164,5 +164,5 @@ function LinkWithText({ numberOfFollowers, texts, toggleShowFollowers }) {
         {numberOfFollowers > 1 ? texts.followers : texts.follower}
       </Typography>
     </Link>
-  );
+  )
 }

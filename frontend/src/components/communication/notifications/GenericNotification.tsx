@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close'
 import {
   Avatar,
   IconButton,
@@ -6,64 +7,63 @@ import {
   ListItemIcon,
   ListItemText,
   Theme,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../../public/lib/imageOperations";
-import UserContext from "../../context/UserContext";
-import { StyledMenuItem } from "./Notification";
-import CloseIcon from "@mui/icons-material/Close";
-import Cookies from "universal-cookie";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import Cookies from 'universal-cookie'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../../public/lib/imageOperations'
+import UserContext from '../../context/UserContext'
+import { StyledMenuItem } from './Notification'
 
 const useStyles = makeStyles<Theme, {}>((theme) => {
   return {
     messageSender: {
       fontWeight: 600,
-      width: "90%",
-      whiteSpace: "normal",
-      overflow: "hidden",
-      WebkitBoxOrient: "vertical",
-      display: "-webkit-box",
-      wordBreak: "break-word",
+      width: '90%',
+      whiteSpace: 'normal',
+      overflow: 'hidden',
+      WebkitBoxOrient: 'vertical',
+      display: '-webkit-box',
+      wordBreak: 'break-word',
       color: theme.palette.background.default_contrastText,
     },
     listItemText: {
-      whiteSpace: "normal",
+      whiteSpace: 'normal',
     },
     goToInboxText: {
-      textAlign: "center",
-      display: "block",
+      textAlign: 'center',
+      display: 'block',
       marginTop: theme.spacing(1),
     },
     notificationText: {
-      width: "90%",
-      whiteSpace: "normal",
-      overflow: "hidden",
-      WebkitBoxOrient: "vertical",
-      display: "-webkit-box",
+      width: '90%',
+      whiteSpace: 'normal',
+      overflow: 'hidden',
+      WebkitBoxOrient: 'vertical',
+      display: '-webkit-box',
       WebkitLineClamp: 1,
-      wordBreak: "break-word",
+      wordBreak: 'break-word',
     },
     deleteIcon: {
-      position: "absolute",
+      position: 'absolute',
       right: 0,
     },
     content: {
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center',
     },
-  };
-});
+  }
+})
 
 type Props = {
-  link: any;
-  primaryText: any;
-  secondaryText?: any;
-  notificationIcon?: any;
-  avatar?: any;
-  notification: any;
-};
+  link: any
+  primaryText: any
+  secondaryText?: any
+  notificationIcon?: any
+  avatar?: any
+  notification: any
+}
 export default function GenericNotification({
   link,
   primaryText,
@@ -72,17 +72,16 @@ export default function GenericNotification({
   avatar,
   notification,
 }: Props) {
-  const token = new Cookies().get("auth_token");
-  const { locale, setNotificationsRead, refreshNotifications, hideNotification } = useContext(
-    UserContext
-  );
-  const classes = useStyles();
+  const token = new Cookies().get('auth_token')
+  const { locale, setNotificationsRead, refreshNotifications, hideNotification } =
+    useContext(UserContext)
+  const classes = useStyles()
 
   const deleteNotification = async () => {
-    hideNotification(notification.id);
-    await setNotificationsRead(token, [notification], locale);
-    await refreshNotifications();
-  };
+    hideNotification(notification.id)
+    await setNotificationsRead(token, [notification], locale)
+    await refreshNotifications()
+  }
 
   return (
     <StyledMenuItem>
@@ -113,5 +112,5 @@ export default function GenericNotification({
         <CloseIcon />
       </IconButton>
     </StyledMenuItem>
-  );
+  )
 }

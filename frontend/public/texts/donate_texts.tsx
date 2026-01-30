@@ -1,27 +1,27 @@
-import { Link } from "@mui/material";
-import React from "react";
+import { Link } from '@mui/material'
+import React from 'react'
 
 export default function getDonateTexts({ classes, goal }) {
   return {
     donate_infinitive: {
-      en: "Donate",
-      de: "Spenden",
+      en: 'Donate',
+      de: 'Spenden',
     },
     your_donation_counts: {
-      en: "Your Donation Counts",
-      de: "Deine Spende zählt",
+      en: 'Your Donation Counts',
+      de: 'Deine Spende zählt',
     },
     support_growing_a_global_network_of_climate_actors: {
-      en: "Support growing a global network of climate actors.",
-      de: "Unterstütze den Aufbau eines globalen Netzwerks von Klimaakteuren!",
+      en: 'Support growing a global network of climate actors.',
+      de: 'Unterstütze den Aufbau eines globalen Netzwerks von Klimaakteuren!',
     },
     a_new_way_to_fight_climate_change_donate_today: {
-      en: "A new way to fight climate change. Donate today.",
-      de: "Ein neuer Weg, den Klimawandel zu bekämpfen. Spende noch heute.",
+      en: 'A new way to fight climate change. Donate today.',
+      de: 'Ein neuer Weg, den Klimawandel zu bekämpfen. Spende noch heute.',
     },
     why_donate: {
-      en: "Why donate?",
-      de: "Warum Spenden sinnvoll ist?",
+      en: 'Why donate?',
+      de: 'Warum Spenden sinnvoll ist?',
     },
     why_donate_text: {
       en: `Great that you want to support us!
@@ -32,8 +32,8 @@ export default function getDonateTexts({ classes, goal }) {
       Mit einer Spende ermöglichst du uns, unabhängig zu bleiben. Unser hauptamtliches Team arbeitet jeden Tag hart daran, die Wirkung von Klimaakteuren rund um den Globus zu vervielfachen.`,
     },
     your_donation_helps_scale_up_effective_climate_solutions: {
-      en: "Your donation helps scale up effective climate solutions",
-      de: "Deine Spende hilft, wirksame Klimalösungen zu skalieren",
+      en: 'Your donation helps scale up effective climate solutions',
+      de: 'Deine Spende hilft, wirksame Klimalösungen zu skalieren',
     },
     your_donation_helps_scale_up_effective_climate_solutions_text: {
       en: `There are many climate solutions, that have a huge impact in one place. Many of them could also be implemented in other places, but never get scaled up.
@@ -42,8 +42,8 @@ export default function getDonateTexts({ classes, goal }) {
         Mit Deiner Spende können wir noch mehr Menschen erreichen und ihnen ermöglichen, mit Pionieren und Machern weltweit zusammenzuarbeiten, um die effektivsten Klimalösungen auf der ganzen Welt zu verbreiten.`,
     },
     your_donation_multiplies_the_impact_of_climate_actors: {
-      en: "Your donation multiplies the impact of climate actors",
-      de: "Deine Spende vervielfacht den Impact von Klima-Rettern weltweit",
+      en: 'Your donation multiplies the impact of climate actors',
+      de: 'Deine Spende vervielfacht den Impact von Klima-Rettern weltweit',
     },
     your_donation_multiplies_the_impact_of_climate_actors_text: {
       en: `There is currently many people around the world working on similar solutions to
@@ -60,38 +60,32 @@ export default function getDonateTexts({ classes, goal }) {
 	  von noch mehr Klimaakteuren weltweit vervielfachen.`,
     },
     your_support_keeps_climate_connect_independent_and_free_for_everyone: {
-      en: "Your support keeps Climate Connect independent and free for everyone",
-      de: "Durch deine Unterstützung bleibt Climate Connect unabhängig und kostenlos für alle",
+      en: 'Your support keeps Climate Connect independent and free for everyone',
+      de: 'Durch deine Unterstützung bleibt Climate Connect unabhängig und kostenlos für alle',
     },
     your_support_keeps_climate_connect_independent_and_free_for_everyone_text: {
-      en:
-        "We strongly believe that a platform connecting all climate actors needs to be independent, non-profit and free for everyone. This is only possible with your financial support.",
-      de:
-        "Wir sind der festen Überzeugung, dass Climate Connect unabhängig, gemeinnützig und für jeden kostenlos sein muss. Dies ist nur mit deiner finanziellen Unterstützung möglich.",
+      en: 'We strongly believe that a platform connecting all climate actors needs to be independent, non-profit and free for everyone. This is only possible with your financial support.',
+      de: 'Wir sind der festen Überzeugung, dass Climate Connect unabhängig, gemeinnützig und für jeden kostenlos sein muss. Dies ist nur mit deiner finanziellen Unterstützung möglich.',
     },
     donate_with_cryptocurrency: {
-      en: "Donate with cryptocurrency",
-      de: "Mit Kryptowährung spenden",
+      en: 'Donate with cryptocurrency',
+      de: 'Mit Kryptowährung spenden',
     },
     donate_with_cryptocurrency_text: {
-      en:
-        "While we prefer other payment methods, we've also added the option to donate cryptocurrency. When donating with cryptocurrency you will not receive a donation receipt.",
-      de:
-        "Obwohl wir andere Zahlungsmethoden bevorzugen, haben wir auch die Option hinzugefügt, mit Kryptowährung zu spenden. Wenn du mit Kryptowährung spendest, können wir leider keine Spendenbescheinigung ausstellen.",
+      en: "While we prefer other payment methods, we've also added the option to donate cryptocurrency. When donating with cryptocurrency you will not receive a donation receipt.",
+      de: 'Obwohl wir andere Zahlungsmethoden bevorzugen, haben wir auch die Option hinzugefügt, mit Kryptowährung zu spenden. Wenn du mit Kryptowährung spendest, können wir leider keine Spendenbescheinigung ausstellen.',
     },
     our_bitcoin_address: {
-      en: "Our Bitcoin address",
-      de: "Unsere Bitcoin-Adresse",
+      en: 'Our Bitcoin address',
+      de: 'Unsere Bitcoin-Adresse',
     },
     what_we_need_to_pay_for: {
-      en: "What we need to pay for:",
-      de: "Für was wir Geld ausgeben:",
+      en: 'What we need to pay for:',
+      de: 'Für was wir Geld ausgeben:',
     },
     what_we_need_to_pay_for_text: {
-      en:
-        "Next to our volunteers from around the world Climate Connect has 3 full-time employees working hard every day to bring climate actors together to multiply their positive impact on our planet. We can only do this in a sustainable way with your financial support.",
-      de:
-        "Neben unseren Freiwilligen aus aller Welt hat Climate Connect 3 Vollzeitmitarbeiter, die jeden Tag hart daran arbeiten, Klimaakteure zusammenzubringen, um ihren positiven Einfluss auf unseren Planeten zu vervielfachen. Dies können wir nur mit deiner finanziellen Unterstützung nachhaltig tun.",
+      en: 'Next to our volunteers from around the world Climate Connect has 3 full-time employees working hard every day to bring climate actors together to multiply their positive impact on our planet. We can only do this in a sustainable way with your financial support.',
+      de: 'Neben unseren Freiwilligen aus aller Welt hat Climate Connect 3 Vollzeitmitarbeiter, die jeden Tag hart daran arbeiten, Klimaakteure zusammenzubringen, um ihren positiven Einfluss auf unseren Planeten zu vervielfachen. Dies können wir nur mit deiner finanziellen Unterstützung nachhaltig tun.',
     },
     we_can_only_prevent_a_global_climate_catastrophe_if_everyone: {
       en: `We can only prevent a global climate catastrophe if everyone working 
@@ -103,14 +97,14 @@ export default function getDonateTexts({ classes, goal }) {
 	  Vision mit einer Spende.`,
     },
     improving_and_updating_climate_connect: {
-      en: "Improving and updating Climate Connect",
-      de: "Verbessern und Aktualisieren von Climate Connect",
+      en: 'Improving and updating Climate Connect',
+      de: 'Verbessern und Aktualisieren von Climate Connect',
     },
     improving_and_updating_climate_connect_text: {
       en: (
         <>
           We are still in Beta and a big chunk of our work goes into designing and developing new
-          features (see our{" "}
+          features (see our{' '}
           <a href="https://github.com/climateconnect/climateconnect">open source codebase</a>
           ). For the next few months, we will create hubs for each important topic in climate
           action, vastly improve user experience on Climate Connect and try to optimize project
@@ -122,7 +116,7 @@ export default function getDonateTexts({ classes, goal }) {
       de: (
         <>
           Wir befinden uns noch in der Beta-Phase und ein großer Teil unserer Arbeit geht in das
-          Design und die Entwicklung neuer Funktionen (siehe unsere{" "}
+          Design und die Entwicklung neuer Funktionen (siehe unsere{' '}
           <a href="https://github.com/climateconnect/climateconnect">Open Source Codebase</a> ). In
           den nächsten Monaten werden wir Hubs für jedes wichtige Thema im Bereich des Klimaschutzes
           einrichten und die Benutzerfreundlichkeit von Climate Connect erheblich verbessern.
@@ -134,8 +128,8 @@ export default function getDonateTexts({ classes, goal }) {
       ),
     },
     growing_the_community_and_sparking_collaboration: {
-      en: "Growing the community and sparking collaboration",
-      de: "Die Community vergrößern und Zusammenarbeit anregen",
+      en: 'Growing the community and sparking collaboration',
+      de: 'Die Community vergrößern und Zusammenarbeit anregen',
     },
     growing_the_community_and_sparking_collaboration_text: {
       en: `Just putting a platform out there is not enough. Our volunteers and full-time
@@ -150,17 +144,16 @@ export default function getDonateTexts({ classes, goal }) {
 	  um die Zusammenarbeit zwischen den Nutzern von Climate Connect zu fördern.`,
     },
     ongoing_expenses: {
-      en: "Ongoing expenses",
-      de: "Laufende Kosten",
+      en: 'Ongoing expenses',
+      de: 'Laufende Kosten',
     },
     ongoing_expenses_text: {
-      en: "Our ongoing expenses include server costs, fees for bookkeeping and legal advice.",
-      de:
-        "Unsere laufenden Kosten beinhalten Serverkosten, Gebühren für Buchhaltung und Rechtsberatung.",
+      en: 'Our ongoing expenses include server costs, fees for bookkeeping and legal advice.',
+      de: 'Unsere laufenden Kosten beinhalten Serverkosten, Gebühren für Buchhaltung und Rechtsberatung.',
     },
     long_term_sustainability: {
-      en: "Long term sustainability",
-      de: "Nachhaltiges Betreiben von Climate Connect",
+      en: 'Long term sustainability',
+      de: 'Nachhaltiges Betreiben von Climate Connect',
     },
     long_term_sustainability_text: {
       en: `To make Climate Connect sustainable in the long run, we rely on people supporting us
@@ -173,8 +166,8 @@ export default function getDonateTexts({ classes, goal }) {
 	  von dem sie leben können, bräuchten wir etwa 5.000 € an Spenden pro Monat`,
     },
     who_we_are: {
-      en: "Who we are",
-      de: "Wer wir sind",
+      en: 'Who we are',
+      de: 'Wer wir sind',
     },
     who_we_are_text: {
       en: `This is the European part of our team on the day we launched our Beta. In total we
@@ -191,8 +184,8 @@ export default function getDonateTexts({ classes, goal }) {
 	  den Klimawandel zu widmen.`,
     },
     donation_receipts: {
-      en: "Donation receipts",
-      de: "Spendenquittungen",
+      en: 'Donation receipts',
+      de: 'Spendenquittungen',
     },
     donation_receipts_text_first_part: {
       en: `We are an official non-profit company registered in Germany (Climate Connect gUG
@@ -208,7 +201,7 @@ export default function getDonateTexts({ classes, goal }) {
       en: (
         <>
           You can find a document explaining a simplified proof of grant and confirming our
-          nonprofit status{" "}
+          nonprofit status{' '}
           <Link
             target="_blank"
             href="/documents/nonprofit_status_confirmation.pdf"
@@ -222,7 +215,7 @@ export default function getDonateTexts({ classes, goal }) {
       de: (
         <>
           Hier findest Du ein Dokument, das einen vereinfachten Zuwendungsnachweis und die
-          Bestätigung unseres Gemeinnützigkeitsstatus erklärt{" "}
+          Bestätigung unseres Gemeinnützigkeitsstatus erklärt{' '}
           <Link
             target="_blank"
             href="/documents/nonprofit_status_confirmation.pdf"
@@ -237,17 +230,17 @@ export default function getDonateTexts({ classes, goal }) {
     donation_receipts_text_last_part: {
       en: (
         <>
-          For donors who donate over 300€ per year we issue a donation receipt.{" "}
+          For donors who donate over 300€ per year we issue a donation receipt.{' '}
           <Link href="mailto:contact@climateconnect.earth" underline="hover">
             Contact us
-          </Link>{" "}
+          </Link>{' '}
           if you need any other documents.
         </>
       ),
       de: (
         <>
           Für Spender, die mehr als 300€ pro Jahr spenden, stellen wir eine Spendenbescheinigung
-          aus.{" "}
+          aus.{' '}
           <Link href="mailto:contact@climateconnect.earth" underline="hover">
             Kontaktiere uns
           </Link>
@@ -263,7 +256,7 @@ export default function getDonateTexts({ classes, goal }) {
       ),
       de: (
         <>
-          Wir sind auf Deine Spende angewiesen, um{" "}
+          Wir sind auf Deine Spende angewiesen, um{' '}
           <span className={classes?.yellow}>unabhängig zu bleiben!</span>
         </>
       ),
@@ -275,8 +268,8 @@ export default function getDonateTexts({ classes, goal }) {
 	  können wir langfristig und nachhaltig Klimaakteure weltweit vernetzen.`,
     },
     donate_now: {
-      en: "Donate now",
-      de: "Jetzt Spenden",
+      en: 'Donate now',
+      de: 'Jetzt Spenden',
     },
     //example: 50€ raised of of 1000€ goal
     raised_out_of_goal: {
@@ -284,28 +277,28 @@ export default function getDonateTexts({ classes, goal }) {
       de: `von ${goal}€ Ziel gesammelt`,
     },
     donor_forest: {
-      en: "Donor Forest",
-      de: "Spendenwald",
+      en: 'Donor Forest',
+      de: 'Spendenwald',
     },
     watch_the_forest_grow: {
-      en: "The Digital Forest of Climate Connect Supporters",
-      de: "Der digitale Wald der Climate Connect Unterstützer*innen",
+      en: 'The Digital Forest of Climate Connect Supporters',
+      de: 'Der digitale Wald der Climate Connect Unterstützer*innen',
     },
     forest_explainer_headline: {
-      en: "Plant Your Own Tree",
-      de: "Pflanze deinen Baum",
+      en: 'Plant Your Own Tree',
+      de: 'Pflanze deinen Baum',
     },
     forest_explainer_text: {
-      en: "Donate today to support climate action and become part of the forest",
-      de: "Spende noch heute, um das Klima zu schützen und Teil des Waldes zu werden",
+      en: 'Donate today to support climate action and become part of the forest',
+      de: 'Spende noch heute, um das Klima zu schützen und Teil des Waldes zu werden',
     },
     how_it_works: {
-      en: "How it works",
-      de: "Wie es funktioniert",
+      en: 'How it works',
+      de: 'Wie es funktioniert',
     },
     forest_explainer_dialog_title: {
-      en: "The Donor Forest",
-      de: "Der Spendenwald",
+      en: 'The Donor Forest',
+      de: 'Der Spendenwald',
     },
     donor_forest_dialog_explainer_text: {
       en: `When you start donating to Climate Connect you get a digital sapling as a reward. 
@@ -318,28 +311,28 @@ export default function getDonateTexts({ classes, goal }) {
       Spendenwald und immer neben deinem Profilbild auf der Plattform angezeigt.`,
     },
     donor_forest_dialog_call_to_action_text: {
-      en: "Donate now to start growing your tree!",
-      de: "Spende jetzt und lass deinen Baum wachsen!",
+      en: 'Donate now to start growing your tree!',
+      de: 'Spende jetzt und lass deinen Baum wachsen!',
     },
     has_been_a_supporter_for: {
-      en: "has been a supporter for",
-      de: "unterstützt seit",
+      en: 'has been a supporter for',
+      de: 'unterstützt seit',
     },
     donation_campaign_headline_short: {
-      en: "Donate for climate action",
-      de: "Spende für den Klimaschutz",
+      en: 'Donate for climate action',
+      de: 'Spende für den Klimaschutz',
     },
     donation_campaign_headline_long: {
       en: `Accelerate climate action with your donation`,
       de: `Beschleunige den Klimaschutz mit deiner Spende`,
     },
     you_can_find_the_terms_to_the_raffle_here: {
-      en: "You can find the terms of the raffle ",
-      de: "Die Teilnahmebedingungen der Verlosung findest du ",
+      en: 'You can find the terms of the raffle ',
+      de: 'Die Teilnahmebedingungen der Verlosung findest du ',
     },
     here: {
-      en: "here",
-      de: "hier",
+      en: 'here',
+      de: 'hier',
     },
     donation_campaing_info_text_first_sentence: {
       en: (
@@ -347,10 +340,10 @@ export default function getDonateTexts({ classes, goal }) {
           Climate Connect is funded by your donations. Help scale up effective climate action,
           support us in growing a global network of climate actors and allow Climate Connect to stay
           free and independent. Each week in December you can read a story about how Climate Connect
-          helps people effectively fight climate change on our{" "}
+          helps people effectively fight climate change on our{' '}
           <Link color="inherit" underline="always" href="/blog" target="_blank">
             blog
-          </Link>{" "}
+          </Link>{' '}
           .
         </>
       ),
@@ -359,10 +352,10 @@ export default function getDonateTexts({ classes, goal }) {
           Climate Connect ist unabhängig und spendenfinanziert. Hilf uns, effektive
           Klimaschutzprojekte zu ermöglichen, ein globales Netzwerk von Klimaschützer*innen
           aufzubauen und dabei, Climate Connect kostenlos und unabhängig zu halten. Jede Woche im
-          Dezember kannst du auf unserem{" "}
+          Dezember kannst du auf unserem{' '}
           <Link color="inherit" underline="always" href="/blog" target="_blank">
             Blog
-          </Link>{" "}
+          </Link>{' '}
           einen neuen Artikel darüber lesen, wie Menschen mithilfe von Climate Connect den
           Klimawandel bekämpfen.
         </>
@@ -375,5 +368,5 @@ export default function getDonateTexts({ classes, goal }) {
       de: `Alle, die im Dezember spenden, können tolle Preise gewinnen, z.B. ein Jahr 
       klimapositiv Leben, gesponsort von `,
     },
-  };
+  }
 }

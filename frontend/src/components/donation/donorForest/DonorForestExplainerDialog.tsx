@@ -1,11 +1,11 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
-import GenericDialog from "../../dialogs/GenericDialog";
-import DonorBadgeExplainerList from "./DonorBadgeExplainerList";
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
+import GenericDialog from '../../dialogs/GenericDialog'
+import DonorBadgeExplainerList from './DonorBadgeExplainerList'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,23 +19,23 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
   },
   callToActionText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
     fontWeight: 600,
     color: theme.palette.primary.main,
   },
   donateButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
-}));
+}))
 
 export default function DonorForestExplainerDialog({ onClose, open, possibleBadges }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "donate", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'donate', locale: locale })
   return (
     <GenericDialog onClose={onClose} open={open} title={texts.forest_explainer_dialog_title}>
       <div className={classes.root}>
@@ -53,5 +53,5 @@ export default function DonorForestExplainerDialog({ onClose, open, possibleBadg
         </div>
       </div>
     </GenericDialog>
-  );
+  )
 }

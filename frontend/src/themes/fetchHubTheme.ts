@@ -1,24 +1,24 @@
-import { apiRequest } from "../../public/lib/apiOperations";
+import { apiRequest } from '../../public/lib/apiOperations'
 
 export default async function getHubTheme(url_slug: string) {
   if (!url_slug) {
-    return null;
+    return null
   }
 
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: `/api/hubs/${url_slug}/theme/`,
-    });
-    return resp.data;
+    })
+    return resp.data
   } catch (err: any) {
     //Don't log an error if there simply is no theme for this hub
     if (err?.response?.status === 404) {
-      return null;
+      return null
     }
     if (err.response && err.response.data)
-      console.log("Error in getHubThemeData: " + err.response.data.detail);
-    console.log(err);
-    return null;
+      console.log('Error in getHubThemeData: ' + err.response.data.detail)
+    console.log(err)
+    return null
   }
 }

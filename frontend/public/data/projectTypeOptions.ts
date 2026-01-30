@@ -5,7 +5,7 @@ export function getProjectTypeDateOptions(texts) {
       enableStartDate: true,
       enableEndDate: false,
       enableTime: false,
-      endDateLabel: "",
+      endDateLabel: '',
     },
     event: {
       startDateLabel: texts?.event_start_date,
@@ -19,7 +19,7 @@ export function getProjectTypeDateOptions(texts) {
       enableStartDate: false,
       enableEndDate: false,
       enableTime: false,
-      endDateLabel: "",
+      endDateLabel: '',
     },
-  };
+  }
 }

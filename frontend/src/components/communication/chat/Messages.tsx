@@ -1,18 +1,18 @@
-import makeStyles from "@mui/styles/makeStyles";
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import { useChatScroll } from "../../hooks/useChatScroll";
-import Message from "./Message";
+import { Box } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { useChatScroll } from '../../hooks/useChatScroll'
+import Message from './Message'
 
 const useStyles = makeStyles((theme) => {
   return {
     receivedContainer: {
-      textAlign: "left",
+      textAlign: 'left',
       marginLeft: theme.spacing(1),
     },
     sentContainer: {
-      textAlign: "right",
+      textAlign: 'right',
       marginRight: theme.spacing(1),
     },
     messageContainer: {
@@ -27,39 +27,39 @@ const useStyles = makeStyles((theme) => {
     sentMessage: {
       backgroundColor: theme.palette.primary.main,
       padding: theme.spacing(1),
-      color: "white",
-      textAlign: "left",
+      color: 'white',
+      textAlign: 'left',
       paddingRight: theme.spacing(4),
     },
     message: {
-      maxWidth: "70%",
-      display: "inline-block",
+      maxWidth: '70%',
+      display: 'inline-block',
       borderRadius: theme.spacing(1),
     },
     loader: {
-      display: "inline-block",
+      display: 'inline-block',
       marginRight: theme.spacing(0.25),
     },
     noHistoryText: {
-      textAlign: "center",
-      fontStyle: "italic",
+      textAlign: 'center',
+      fontStyle: 'italic',
     },
     scrollContainer: {
-      overflowY: "auto",
-      display: "flex",
-      flexDirection: "column",
+      overflowY: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
     },
     messagesList: {
-      listStyle: "none",
+      listStyle: 'none',
       padding: 0,
       margin: 0,
     },
     sentinel: {
-      height: "1px",
-      width: "100%",
+      height: '1px',
+      width: '100%',
     },
-  };
-});
+  }
+})
 
 const Messages = ({
   messages,
@@ -72,56 +72,56 @@ const Messages = ({
   texts,
   relatedIdea,
 }) => {
-  const classes = useStyles();
-  const [isLoading, setIsLoading] = useState(false);
-  const [scrollComponentHeight, setScrollComponentHeight] = useState(0);
+  const classes = useStyles()
+  const [isLoading, setIsLoading] = useState(false)
+  const [scrollComponentHeight, setScrollComponentHeight] = useState(0)
 
   const loadMore = async (page) => {
-    setIsLoading(true);
-    await loadFunc(page);
-    setIsLoading(false);
-  };
+    setIsLoading(true)
+    await loadFunc(page)
+    setIsLoading(false)
+  }
 
   const { scrollRef, sentinelRef } = useChatScroll({
     hasMore: hasMore,
     isLoading,
     loadMore,
-  });
+  })
 
   // Scroll down when the component is mounted
   useEffect(() => {
-    const messageContainer = scrollRef.current;
+    const messageContainer = scrollRef.current
     if (messageContainer) {
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-      setScrollComponentHeight(messageContainer.clientHeight);
-      setIsLoading(false);
+      messageContainer.scrollTop = messageContainer.scrollHeight
+      setScrollComponentHeight(messageContainer.clientHeight)
+      setIsLoading(false)
     }
-  }, []);
+  }, [])
 
   // Scroll down when the clientHeight changes or new messages arrive
   useEffect(() => {
-    const messageContainer = scrollRef.current;
-    if (!messageContainer) return;
+    const messageContainer = scrollRef.current
+    if (!messageContainer) return
 
     // Handle height changes (user typing)
     if (scrollComponentHeight !== messageContainer.clientHeight) {
       if (messageContainer.scrollTop === messageContainer.scrollHeight - scrollComponentHeight) {
         messageContainer.scrollTop =
-          messageContainer.scrollTop + (scrollComponentHeight - messageContainer.clientHeight);
+          messageContainer.scrollTop + (scrollComponentHeight - messageContainer.clientHeight)
       }
-      setScrollComponentHeight(messageContainer.clientHeight);
+      setScrollComponentHeight(messageContainer.clientHeight)
     }
-  }, [scrollComponentHeight]);
+  }, [scrollComponentHeight])
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
-    const messageContainer = scrollRef.current;
+    const messageContainer = scrollRef.current
     if (messageContainer) {
-      messageContainer.scrollTop = messageContainer.scrollHeight;
+      messageContainer.scrollTop = messageContainer.scrollHeight
     }
-  }, [messages]);
+  }, [messages])
 
-  const sortByNewestFirst = (a, b) => new Date(a.sent_at) - new Date(b.sent_at);
+  const sortByNewestFirst = (a, b) => new Date(a.sent_at) - new Date(b.sent_at)
 
   return (
     <Box ref={scrollRef} className={`${classes.scrollContainer} ${className}`}>
@@ -140,7 +140,7 @@ const Messages = ({
                 classes={classes}
                 isPrivateChat={isPrivateChat}
               />
-            );
+            )
           })
         ) : relatedIdea ? (
           <div className={classes.noHistoryText}>
@@ -154,8 +154,8 @@ const Messages = ({
         ) : isPrivateChat ? (
           <div className={classes.noHistoryText}>
             <p>
-              {texts.this_is_the_very_beginning_of_your_conversation_with}{" "}
-              {chatting_partner.first_name + " " + chatting_partner.last_name}.
+              {texts.this_is_the_very_beginning_of_your_conversation_with}{' '}
+              {chatting_partner.first_name + ' ' + chatting_partner.last_name}.
             </p>
             <p>{texts.write_a_message_to_get_the_conversation_started}</p>
           </div>
@@ -169,8 +169,8 @@ const Messages = ({
         )}
       </ul>
     </Box>
-  );
-};
+  )
+}
 
 Messages.propTypes = {
   messages: PropTypes.array.isRequired,
@@ -182,6 +182,6 @@ Messages.propTypes = {
   isPrivateChat: PropTypes.bool.isRequired,
   texts: PropTypes.object,
   relatedIdea: PropTypes.object,
-};
+}
 
-export default Messages;
+export default Messages

@@ -1,19 +1,19 @@
-import Grid from "@mui/material/Unstable_Grid2";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import MiniSectorPreview from "./MiniSectorPreview";
+import Grid from '@mui/material/Unstable_Grid2'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import MiniSectorPreview from './MiniSectorPreview'
 
 const useStyles = makeStyles((theme) => ({
   reset: {
     margin: 0,
     padding: 0,
-    listStyleType: "none",
-    width: "100%",
+    listStyleType: 'none',
+    width: '100%',
   },
   root: {
     marginLeft: theme.spacing(-1),
   },
-}));
+}))
 
 export default function SectorsPreview({
   sectors,
@@ -24,7 +24,7 @@ export default function SectorsPreview({
   onSelectNewSector,
   onClickRemoveSector,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Grid container component="ul" spacing={2} className={`${classes.reset} ${classes.root}`}>
@@ -46,7 +46,7 @@ export default function SectorsPreview({
         />
       )}
     </Grid>
-  );
+  )
 }
 
 function GridItem({
@@ -59,7 +59,7 @@ function GridItem({
 }: any) {
   return (
     <Grid
-      key={sector ? sector.url_slug : "create"}
+      key={sector ? sector.url_slug : 'create'}
       xs={12}
       sm={editMode ? 6 : 12}
       md={8}
@@ -75,5 +75,5 @@ function GridItem({
         onClickRemoveSector={onClickRemoveSector}
       />
     </Grid>
-  );
+  )
 }

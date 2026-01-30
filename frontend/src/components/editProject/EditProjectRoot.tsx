@@ -1,31 +1,30 @@
-import { Container, Divider, Typography, useMediaQuery } from "@mui/material";
-import { Theme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import Router from "next/router";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Cookies from "universal-cookie";
-
-import { apiRequest } from "../../../public/lib/apiOperations";
-import { checkProjectDatesValid } from "../../../public/lib/dateOperations";
-import { blobFromObjectUrl } from "../../../public/lib/imageOperations";
+import SaveAsIcon from '@mui/icons-material/SaveAs'
+import TranslateIcon from '@mui/icons-material/Translate'
+import { Container, Divider, Typography, useMediaQuery } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import Router from 'next/router'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import Cookies from 'universal-cookie'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import { checkProjectDatesValid } from '../../../public/lib/dateOperations'
+import { blobFromObjectUrl } from '../../../public/lib/imageOperations'
 import {
   indicateWrongLocation,
   isLocationValid,
   parseLocation,
-} from "../../../public/lib/locationOperations";
+} from '../../../public/lib/locationOperations'
 import {
   getTranslationsFromObject,
   getTranslationsWithoutRedundantKeys,
-} from "../../../public/lib/translationOperations";
-import getTexts from "../../../public/texts/texts";
-import { Project, Role, Sector } from "../../types";
-import UserContext from "../context/UserContext";
-import NavigationButtons from "../general/NavigationButtons";
-import TranslateTexts from "../general/TranslateTexts";
-import EditProjectContent from "./EditProjectContent";
-import EditProjectOverview from "./EditProjectOverview";
-import TranslateIcon from "@mui/icons-material/Translate";
-import SaveAsIcon from "@mui/icons-material/SaveAs";
+} from '../../../public/lib/translationOperations'
+import getTexts from '../../../public/texts/texts'
+import { Project, Role, Sector } from '../../types'
+import UserContext from '../context/UserContext'
+import NavigationButtons from '../general/NavigationButtons'
+import TranslateTexts from '../general/TranslateTexts'
+import EditProjectContent from './EditProjectContent'
+import EditProjectOverview from './EditProjectOverview'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -37,25 +36,25 @@ const useStyles = makeStyles((theme) => {
       minHeight: theme.spacing(2),
     },
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(4),
     },
-  };
-});
+  }
+})
 
 type Props = {
-  project: Project;
-  skillsOptions: any;
-  userOrganizations: any;
-  handleSetProject: any;
-  oldProject: Project;
-  user_role: Role;
-  handleSetErrorMessage: any;
-  initialTranslations: any;
-  projectTypeOptions: any;
-  hubUrl: string;
-  sectorOptions?: Sector[];
-};
+  project: Project
+  skillsOptions: any
+  userOrganizations: any
+  handleSetProject: any
+  oldProject: Project
+  user_role: Role
+  handleSetErrorMessage: any
+  initialTranslations: any
+  projectTypeOptions: any
+  hubUrl: string
+  sectorOptions?: Sector[]
+}
 
 export default function EditProjectRoot({
   project,
@@ -70,158 +69,158 @@ export default function EditProjectRoot({
   hubUrl,
   sectorOptions,
 }: Props) {
-  const classes = useStyles();
-  const token = new Cookies().get("auth_token");
-  const { locale, locales, user } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
-  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false);
+  const classes = useStyles()
+  const token = new Cookies().get('auth_token')
+  const { locale, locales, user } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false)
   const draftReqiredProperties = {
     name: texts.project_name,
     loc: texts.location,
-  };
-  const overviewInputsRef = useRef(null as HTMLInputElement | null);
-  const locationInputRef = useRef(null as HTMLInputElement | null);
-  const STEPS = ["edit_project", "check_translations"];
+  }
+  const overviewInputsRef = useRef(null as HTMLInputElement | null)
+  const locationInputRef = useRef(null as HTMLInputElement | null)
+  const STEPS = ['edit_project', 'check_translations']
 
-  const [step, setStep] = useState(STEPS[0]);
+  const [step, setStep] = useState(STEPS[0])
   const [translations, setTranslations] = useState(
-    initialTranslations ? getTranslationsFromObject(initialTranslations, "project") : {}
-  );
+    initialTranslations ? getTranslationsFromObject(initialTranslations, 'project') : {},
+  )
   const [errors, setErrors] = useState({
-    start_date: "",
-    end_date: "",
-  });
-  const contentRef = useRef(null);
+    start_date: '',
+    end_date: '',
+  })
+  const contentRef = useRef(null)
 
-  const sourceLanguage = project.language ? project.language : locale;
-  const targetLanguage = locales.find((l) => l !== sourceLanguage);
+  const sourceLanguage = project.language ? project.language : locale
+  const targetLanguage = locales.find((l) => l !== sourceLanguage)
 
   //scroll to error if there is an error
   useEffect(() => {
     if (errors?.start_date || errors?.end_date) {
-      contentRef?.current.scrollIntoView();
+      contentRef?.current.scrollIntoView()
     }
-  }, [errors]);
+  }, [errors])
 
   // TODO: Allow changing sourceLanguage, targetLanguage
 
   const handleSetLocationOptionsOpen = (bool) => {
-    setLocationOptionsOpen(bool);
-  };
+    setLocationOptionsOpen(bool)
+  }
   const checkIfProjectValid = (isDraft) => {
     if (project?.loc && oldProject?.loc !== project.loc && !isLocationValid(project.loc)) {
-      overviewInputsRef.current!.scrollIntoView();
-      indicateWrongLocation(locationInputRef, setLocationOptionsOpen, handleSetErrorMessage, texts);
-      return false;
+      overviewInputsRef.current!.scrollIntoView()
+      indicateWrongLocation(locationInputRef, setLocationOptionsOpen, handleSetErrorMessage, texts)
+      return false
     }
-    const projectDatesValid = checkProjectDatesValid(project, texts);
+    const projectDatesValid = checkProjectDatesValid(project, texts)
     if (projectDatesValid.error) {
       setErrors({
         ...errors,
         [projectDatesValid.error.key]: projectDatesValid.error.value,
-      });
-      return false;
+      })
+      return false
     }
     if (isDraft && Object.keys(draftReqiredProperties).filter((key) => !project[key]).length > 0) {
       Object.keys(draftReqiredProperties).map((key) => {
         if (!project[key]) {
           alert(
             texts.your_project_draft_is_missing_the_following_reqired_property +
-              " " +
-              draftReqiredProperties[key]
-          );
-          return false;
+              ' ' +
+              draftReqiredProperties[key],
+          )
+          return false
         }
-      });
+      })
     }
-    return true;
-  };
+    return true
+  }
 
   const onSaveDraft = async () => {
-    const valid = checkIfProjectValid(true);
+    const valid = checkIfProjectValid(true)
     //short circuit if there is problems with the project
     if (!valid) {
-      return false;
+      return false
     }
     const translationChanges = getTranslationsWithoutRedundantKeys(
-      getTranslationsFromObject(initialTranslations, "project"),
-      translations
-    );
+      getTranslationsFromObject(initialTranslations, 'project'),
+      translations,
+    )
     apiRequest({
-      method: "patch",
-      url: "/api/projects/" + project.url_slug + "/",
+      method: 'patch',
+      url: '/api/projects/' + project.url_slug + '/',
       payload: await parseProjectForRequest(
         getProjectWithoutRedundancies(project, oldProject),
-        translationChanges
+        translationChanges,
       ),
       token: token,
       locale: locale,
     })
       .then(function () {
         Router.push({
-          pathname: "/profiles/" + user.url_slug,
+          pathname: '/profiles/' + user.url_slug,
           query: {
             message: texts.you_have_successfully_edited_your_project,
           },
-        });
+        })
       })
       .catch(function (error) {
-        console.log(error);
-        if (error) console.log(error.response);
-      });
-  };
+        console.log(error)
+        if (error) console.log(error.response)
+      })
+  }
 
   const onCheckTranslations = (e) => {
-    e.preventDefault();
-    setStep(STEPS[1]);
-  };
+    e.preventDefault()
+    setStep(STEPS[1])
+  }
 
   const additionalButtons = [
     {
       text: texts.check_translations,
-      argument: "save",
+      argument: 'save',
       onClick: onCheckTranslations,
       icon: TranslateIcon,
     },
-  ];
+  ]
 
   if (project.is_draft) {
     additionalButtons.push({
       text: texts.save_changes_as_draft,
-      argument: "save",
+      argument: 'save',
       onClick: onSaveDraft,
       icon: SaveAsIcon,
-    });
+    })
   }
 
   const handleCancel = () => {
-    Router.push(`/projects/${project.url_slug}${hubUrl ? `?hub=${hubUrl}` : ""}`);
-  };
+    Router.push(`/projects/${project.url_slug}${hubUrl ? `?hub=${hubUrl}` : ''}`)
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const valid = checkIfProjectValid(false);
+    event.preventDefault()
+    const valid = checkIfProjectValid(false)
     //short circuit if there is problems with the project
     if (!valid) {
-      return false;
+      return false
     }
-    const projectToSubmit = project;
-    let was_draft = false;
+    const projectToSubmit = project
+    let was_draft = false
     if (project.is_draft) {
-      projectToSubmit.is_draft = false;
-      was_draft = true;
+      projectToSubmit.is_draft = false
+      was_draft = true
     }
     const translationChanges = getTranslationsWithoutRedundantKeys(
-      getTranslationsFromObject(initialTranslations, "project"),
-      translations
-    );
+      getTranslationsFromObject(initialTranslations, 'project'),
+      translations,
+    )
     apiRequest({
-      method: "patch",
-      url: "/api/projects/" + project.url_slug + "/",
+      method: 'patch',
+      url: '/api/projects/' + project.url_slug + '/',
       payload: await parseProjectForRequest(
         getProjectWithoutRedundancies(project, oldProject),
-        translationChanges
+        translationChanges,
       ),
       token: token,
       locale: locale,
@@ -231,25 +230,25 @@ export default function EditProjectRoot({
           message: was_draft
             ? texts.your_project_has_been_published_great_work
             : texts.you_have_successfully_edited_your_project,
-        };
+        }
         if (hubUrl) {
-          query.hub = hubUrl;
+          query.hub = hubUrl
         }
         Router.push({
-          pathname: "/projects/" + response.data.url_slug,
+          pathname: '/projects/' + response.data.url_slug,
           query,
-        });
+        })
       })
       .catch(function (error) {
-        console.log(error);
-        if (error) console.log(error.response);
-      });
-  };
+        console.log(error)
+        if (error) console.log(error.response)
+      })
+  }
 
   const deleteProject = () => {
     apiRequest({
-      method: "delete",
-      url: "/api/projects/" + project.url_slug + "/",
+      method: 'delete',
+      url: '/api/projects/' + project.url_slug + '/',
       token: token,
       locale: locale,
     })
@@ -257,33 +256,33 @@ export default function EditProjectRoot({
         if (user && user.url_slug) {
           const query: any = {
             message: texts.you_have_successfully_deleted_your_project,
-          };
+          }
           if (hubUrl) {
-            query.hub = hubUrl;
+            query.hub = hubUrl
           }
           Router.push({
-            pathname: "/profiles/" + user.url_slug,
+            pathname: '/profiles/' + user.url_slug,
             query,
-          });
+          })
         }
       })
       .catch(function (error) {
-        console.log(error);
-        if (error) console.log(error.response);
-      });
-  };
+        console.log(error)
+        if (error) console.log(error.response)
+      })
+  }
 
   const handleTranslationsSubmit = async (e) => {
-    await handleSubmit(e);
-  };
+    await handleSubmit(e)
+  }
 
   const handleTranslationsDraftSubmit = async () => {
-    await onSaveDraft();
-  };
+    await onSaveDraft()
+  }
 
   const goToPreviousStep = () => {
-    setStep(STEPS[STEPS.indexOf(step) - 1]);
-  };
+    setStep(STEPS[STEPS.indexOf(step) - 1])
+  }
 
   const handleChangeTranslationContent = (locale, newTranslations, isManualChange) => {
     const newTranslationsObject = {
@@ -293,50 +292,50 @@ export default function EditProjectRoot({
         ...newTranslations,
         is_manual_translation: isManualChange ? true : false,
       },
-    };
-    setTranslations({ ...newTranslationsObject });
-  };
+    }
+    setTranslations({ ...newTranslationsObject })
+  }
 
   const handleSetProjectData = (newProjectData) => {
-    handleSetProject({ ...project, ...newProjectData });
-  };
+    handleSetProject({ ...project, ...newProjectData })
+  }
 
   const textsToTranslate = [
     {
-      textKey: "name",
+      textKey: 'name',
       rows: 1,
-      headlineTextKey: "project_name",
+      headlineTextKey: 'project_name',
     },
     {
-      textKey: "short_description",
+      textKey: 'short_description',
       rows: 5,
-      headlineTextKey: "summary",
+      headlineTextKey: 'summary',
       maxCharacters: 280,
       showCharacterCounter: true,
     },
     {
-      textKey: "description",
+      textKey: 'description',
       rows: 15,
-      headlineTextKey: "project_description",
+      headlineTextKey: 'project_description',
     },
     {
-      textKey: "helpful_connections",
+      textKey: 'helpful_connections',
       rows: 1,
-      headlineTextKey: "helpful_connections",
+      headlineTextKey: 'helpful_connections',
       isArray: true,
     },
-  ];
+  ]
 
   return (
     <Container>
-      {step === "edit_project" ? (
+      {step === 'edit_project' ? (
         <form onSubmit={handleSubmit}>
           {!isNarrowScreen && (
             <NavigationButtons
               position="top"
               onClickCancel={handleCancel}
               additionalButtons={additionalButtons}
-              nextStepButtonType={project.is_draft ? "publish" : "save"}
+              nextStepButtonType={project.is_draft ? 'publish' : 'save'}
               className={classes.navigationButtons}
             />
           )}
@@ -366,7 +365,7 @@ export default function EditProjectRoot({
             position="bottom"
             onClickCancel={handleCancel}
             additionalButtons={additionalButtons}
-            nextStepButtonType={project.is_draft ? "publish" : "save"}
+            nextStepButtonType={project.is_draft ? 'publish' : 'save'}
             className={classes.navigationButtons}
             fixedOnMobile
           />
@@ -393,33 +392,33 @@ export default function EditProjectRoot({
         </>
       )}
     </Container>
-  );
+  )
 }
 
 const getProjectWithoutRedundancies = (newProject, oldProject) => {
   return Object.keys(newProject).reduce((obj, key) => {
     if (newProject[key] !== oldProject[key]) {
-      obj[key] = newProject[key];
+      obj[key] = newProject[key]
     }
-    return obj;
-  }, {});
-};
+    return obj
+  }, {})
+}
 
 const parseProjectForRequest = async (project, translationChanges) => {
   const ret = {
     ...project,
     translations: translationChanges,
-  };
+  }
 
-  if (project.project_type) ret.project_type = project.project_type.type_id;
-  if (project.image) ret.image = await blobFromObjectUrl(project.image);
-  if (project.loc) ret.loc = parseLocation(project.loc, true);
+  if (project.project_type) ret.project_type = project.project_type.type_id
+  if (project.image) ret.image = await blobFromObjectUrl(project.image)
+  if (project.loc) ret.loc = parseLocation(project.loc, true)
   if (project.thumbnail_image)
-    ret.thumbnail_image = await blobFromObjectUrl(project.thumbnail_image);
-  if (project.skills) ret.skills = project.skills.map((s) => s.id);
-  if (project.tags) ret.project_tags = project.tags.map((t) => t.id);
-  if (project.sectors) ret.sectors = ret.sectors.map((s) => s.key);
+    ret.thumbnail_image = await blobFromObjectUrl(project.thumbnail_image)
+  if (project.skills) ret.skills = project.skills.map((s) => s.id)
+  if (project.tags) ret.project_tags = project.tags.map((t) => t.id)
+  if (project.sectors) ret.sectors = ret.sectors.map((s) => s.key)
   if (project.project_parents && project.project_parents.parent_organization)
-    ret.parent_organization = project.project_parents.parent_organization.id;
-  return ret;
-};
+    ret.parent_organization = project.project_parents.parent_organization.id
+  return ret
+}

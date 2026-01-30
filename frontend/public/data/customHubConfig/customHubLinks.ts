@@ -1,17 +1,17 @@
-import { COMMON_LINKS } from "../../lib/headerLinks";
-import { Link } from "../customHubtypes";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoIcon from '@mui/icons-material/Info'
+import { COMMON_LINKS } from '../../lib/headerLinks'
+import { Link } from '../customHubtypes'
 
 type GetLinksOptions = {
-  baseUrl: string;
-  hubKey: string;
-  mainTextKey: string;
-};
+  baseUrl: string
+  hubKey: string
+  mainTextKey: string
+}
 
 export const getSharedLinks = (
   pathToRedirect: string,
   texts: any,
-  options: GetLinksOptions
+  options: GetLinksOptions,
 ): Link[] => [
   {
     href: options.baseUrl,
@@ -19,7 +19,7 @@ export const getSharedLinks = (
     iconForDrawer: InfoIcon,
     hideOnStaticPages: true,
     isExternalLink: true,
-    className: "btnIconTextColor",
+    className: 'btnIconTextColor',
   },
   {
     ...COMMON_LINKS.SHARE,
@@ -28,28 +28,28 @@ export const getSharedLinks = (
     hideOnMediumScreen: true,
   },
   {
-    type: "languageSelect",
+    type: 'languageSelect',
   },
   {
     ...COMMON_LINKS.NOTIFICATIONS,
     text: texts.inbox,
   },
   ...COMMON_LINKS.AUTH_LINKS(pathToRedirect, texts, `hub=${options.hubKey}`),
-];
+]
 
 export type StaticLinkConfig = {
-  href: string;
-  textKey: string;
-  baseUrl?: string;
-  target?: string;
-  isExternalLink?: boolean;
-};
+  href: string
+  textKey: string
+  baseUrl?: string
+  target?: string
+  isExternalLink?: boolean
+}
 
 export function getStaticLinks(texts: any, configs: StaticLinkConfig[], baseUrl?: string): Link[] {
-  return configs.map(({ href, textKey, target = "_blank", isExternalLink = true }) => ({
+  return configs.map(({ href, textKey, target = '_blank', isExternalLink = true }) => ({
     href: baseUrl ? `${baseUrl}${href}` : href,
     text: texts[textKey],
     target,
     isExternalLink,
-  }));
+  }))
 }

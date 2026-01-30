@@ -1,32 +1,32 @@
-import { Container, IconButton, TextField, Tooltip, Typography, Switch } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import getCollaborationTexts from "../../../public/data/collaborationTexts";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import NavigationButtons from "../general/NavigationButtons";
-import ProjectTimeAndPlaceSectionAndCustomHub from "./TimeAndPlaceSection";
-import ProjectDescriptionHelp from "../project/ProjectDescriptionHelp";
-import AddPhotoSection from "./AddPhotoSection";
-import AddSummarySection from "./AddSummarySection";
-import CollaborateSection from "./CollaborateSection";
-import ProjectNameSection from "./ProjectNameSection";
-import { checkProjectDatesValid } from "../../../public/lib/dateOperations";
-import { indicateWrongLocation, isLocationValid } from "../../../public/lib/locationOperations";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
-import { useTheme } from "@mui/styles";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { Container, IconButton, Switch, TextField, Tooltip, Typography } from '@mui/material'
+import { useTheme } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import getCollaborationTexts from '../../../public/data/collaborationTexts'
+import { checkProjectDatesValid } from '../../../public/lib/dateOperations'
+import { indicateWrongLocation, isLocationValid } from '../../../public/lib/locationOperations'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import NavigationButtons from '../general/NavigationButtons'
+import ProjectDescriptionHelp from '../project/ProjectDescriptionHelp'
+import AddPhotoSection from './AddPhotoSection'
+import AddSummarySection from './AddSummarySection'
+import CollaborateSection from './CollaborateSection'
+import ProjectNameSection from './ProjectNameSection'
+import ProjectTimeAndPlaceSectionAndCustomHub from './TimeAndPlaceSection'
 
 const useStyles = makeStyles((theme) => {
   return {
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(8),
       marginBottom: theme.spacing(8),
     },
     stepsTracker: {
       maxWidth: 600,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     subHeader: {
       marginBottom: theme.spacing(2),
@@ -34,11 +34,11 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.background.default_contrastText,
     },
     inlineSubHeader: {
-      display: "inline-block",
+      display: 'inline-block',
       marginRight: theme.spacing(4),
     },
     inlineBlock: {
-      display: "inline-block",
+      display: 'inline-block',
     },
     block: {
       marginBottom: theme.spacing(4),
@@ -54,19 +54,19 @@ const useStyles = makeStyles((theme) => {
       paddingLeft: theme.spacing(2),
     },
     inlineOnBigScreens: {
-      width: "50%",
+      width: '50%',
       marginTop: theme.spacing(4),
-      verticalAlign: "top",
-      [theme.breakpoints.down("md")]: {
-        width: "100%",
+      verticalAlign: 'top',
+      [theme.breakpoints.down('md')]: {
+        width: '100%',
         padding: 0,
       },
     },
     tooltip: {
       fontSize: 16,
     },
-  };
-});
+  }
+})
 
 const getHelpTexts = (texts) => ({
   addPhoto: texts.add_photo_helptext,
@@ -75,7 +75,7 @@ const getHelpTexts = (texts) => ({
   collaboration: texts.collaboration_helptext,
   addSkills: texts.add_skills_helptext,
   addConnections: texts.add_connections_helptext,
-});
+})
 
 export default function EnterDetails({
   projectData,
@@ -89,43 +89,43 @@ export default function EnterDetails({
     avatarDialog: false,
     skillsDialog: false,
     connectionsDialog: false,
-  });
+  })
   const [errors, setErrors] = useState({
-    start_date: "",
-    end_date: "",
-  });
-  const locationInputRef = useRef(null);
-  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false);
-  const classes = useStyles(projectData);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: projectData });
-  const collaborationTexts = getCollaborationTexts(texts);
-  const helpTexts = getHelpTexts(texts);
-  const topRef = useRef<null | HTMLFormElement>(null);
-  const theme = useTheme();
+    start_date: '',
+    end_date: '',
+  })
+  const locationInputRef = useRef(null)
+  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false)
+  const classes = useStyles(projectData)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: projectData })
+  const collaborationTexts = getCollaborationTexts(texts)
+  const helpTexts = getHelpTexts(texts)
+  const topRef = useRef<null | HTMLFormElement>(null)
+  const theme = useTheme()
 
   //scroll to top if there is an error
   useEffect(() => {
     if (topRef?.current) {
-      topRef.current.scrollIntoView();
+      topRef.current.scrollIntoView()
     }
-  }, [errors]);
+  }, [errors])
 
   const onClickPreviousStep = () => {
-    goToPreviousStep();
-  };
+    goToPreviousStep()
+  }
 
   const onClickNextStep = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (isProjectDataValid(projectData)) {
-      handleSetProjectData({ ...projectData });
-      goToNextStep();
+      handleSetProjectData({ ...projectData })
+      goToNextStep()
     }
-  };
+  }
 
   const handleSetOpen = (newOpenObject) => {
-    setOpen({ ...open, ...newOpenObject });
-  };
+    setOpen({ ...open, ...newOpenObject })
+  }
 
   const validation = {
     short_description: {
@@ -140,39 +140,39 @@ export default function EnterDetails({
       name: texts.website,
       maxLength: 256,
     },
-  };
+  }
 
   const onTextChange = (event, descriptionType) => {
     handleSetProjectData({
       [descriptionType]: event.target.value.substring(0, validation[descriptionType].maxLength),
-    });
-  };
+    })
+  }
 
   const isProjectDataValid = (project) => {
     if (!project.image) {
-      alert(texts.please_add_an_image);
-      return false;
+      alert(texts.please_add_an_image)
+      return false
     }
-    const projectDatesValid = checkProjectDatesValid(project, texts);
+    const projectDatesValid = checkProjectDatesValid(project, texts)
     if (projectDatesValid.error) {
       setErrors({
         ...errors,
         [projectDatesValid.error.key]: projectDatesValid.error.value,
-      });
-      return false;
+      })
+      return false
     }
     if (!isLocationValid(project.loc)) {
-      indicateWrongLocation(locationInputRef, setLocationOptionsOpen, setMessage, texts);
-      return false;
+      indicateWrongLocation(locationInputRef, setLocationOptionsOpen, setMessage, texts)
+      return false
     }
-    return true;
-  };
+    return true
+  }
 
   const onAllowCollaboratorsChange = (event) => {
-    handleSetProjectData({ collaborators_welcome: event.target.checked });
-  };
+    handleSetProjectData({ collaborators_welcome: event.target.checked })
+  }
 
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   return (
     <>
@@ -233,7 +233,7 @@ export default function EnterDetails({
               fullWidth
               multiline
               rows={9}
-              onChange={(event) => onTextChange(event, "description")}
+              onChange={(event) => onTextChange(event, 'description')}
               placeholder={texts.describe_your_project_in_more_detail}
               value={projectData.description}
             />
@@ -250,7 +250,7 @@ export default function EnterDetails({
             <TextField
               variant="outlined"
               color={backgroundContrastColor}
-              onChange={(event) => onTextChange(event, "website")}
+              onChange={(event) => onTextChange(event, 'website')}
               placeholder={texts.project_website}
               value={projectData.website}
               helperText={texts.if_your_project_has_a_website_you_can_enter_it_here}
@@ -274,7 +274,7 @@ export default function EnterDetails({
               checked={projectData.collaborators_welcome}
               onChange={onAllowCollaboratorsChange}
               name="checkedA"
-              inputProps={{ "aria-label": "secondary checkbox" }}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
               color={backgroundContrastColor}
             />
           </div>
@@ -302,5 +302,5 @@ export default function EnterDetails({
         </form>
       </Container>
     </>
-  );
+  )
 }

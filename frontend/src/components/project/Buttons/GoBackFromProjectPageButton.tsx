@@ -1,14 +1,14 @@
-import { Button, IconButton, Theme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useRouter } from "next/router";
-import React from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { Button, IconButton, Theme } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import { useRouter } from 'next/router'
+import React from 'react'
 
 type StyleProps = {
-  hubSlug?: string;
-};
-const PRIO1_SLUG = "prio1";
+  hubSlug?: string
+}
+const PRIO1_SLUG = 'prio1'
 
 const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
   button: (props) => ({
@@ -17,19 +17,19 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
         ? theme.palette.background.default
         : theme.palette.primary.contrastText,
     height: 54,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 35,
       maxWidth: 35,
       minHeight: 35,
       maxHeight: 35,
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
-      "&:hover": {
+      '&:hover': {
         backgroundColor: theme.palette.primary.main,
       },
     },
   }),
-}));
+}))
 
 export default function GoBackFromProjectPageButton({
   texts,
@@ -38,20 +38,20 @@ export default function GoBackFromProjectPageButton({
   containerClassName,
   hubSlug,
 }: any) {
-  const classes = useStyles({ hubSlug: hubSlug });
+  const classes = useStyles({ hubSlug: hubSlug })
 
-  const router = useRouter();
+  const router = useRouter()
   const goBack = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const hubPage = urlParams.get("hub");
-    const hubsLink = "/" + locale + "/hubs/" + hubPage + "/browse";
-    const browseLink = "/" + locale + "/browse";
+    const urlParams = new URLSearchParams(window.location.search)
+    const hubPage = urlParams.get('hub')
+    const hubsLink = '/' + locale + '/hubs/' + hubPage + '/browse'
+    const browseLink = '/' + locale + '/browse'
     if (hubPage) {
-      router.push(hubsLink);
+      router.push(hubsLink)
     } else {
-      router.push(browseLink);
+      router.push(browseLink)
     }
-  };
+  }
 
   if (tinyScreen)
     return (
@@ -61,7 +61,7 @@ export default function GoBackFromProjectPageButton({
           <ArrowBackIosIcon fontSize="small" viewBox="-4.5 0 24 24" />
         </IconButton>
       </div>
-    );
+    )
   else
     return (
       <div className={containerClassName}>
@@ -69,5 +69,5 @@ export default function GoBackFromProjectPageButton({
           {texts.go_back}
         </Button>
       </div>
-    );
+    )
 }

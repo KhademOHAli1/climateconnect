@@ -1,59 +1,59 @@
-import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import Router from "next/router";
-import React, { useContext, useEffect, useState } from "react";
-import ROLE_TYPES from "../../../public/data/role_types";
-import { apiRequest } from "../../../public/lib/apiOperations";
-import { blobFromObjectUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import GenericDialog from "../dialogs/GenericDialog";
-import TranslateTexts from "../general/TranslateTexts";
-import StepsTracker from "./../general/StepsTracker";
-import AddTeam from "./AddTeam";
-import EnterDetails from "./EnterDetails";
-import ProjectSubmittedPage from "./ProjectSubmittedPage";
-import ShareProject from "./ShareProject";
-import { Project, SkillType, Role, Organization, Sector } from "../../types";
-import { parseLocation } from "../../../public/lib/locationOperations";
-import SelectSectors from "./SelectSectors";
+import { Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import Router from 'next/router'
+import React, { useContext, useEffect, useState } from 'react'
+import ROLE_TYPES from '../../../public/data/role_types'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import { blobFromObjectUrl } from '../../../public/lib/imageOperations'
+import { parseLocation } from '../../../public/lib/locationOperations'
+import getTexts from '../../../public/texts/texts'
+import { Organization, Project, Role, Sector, SkillType } from '../../types'
+import UserContext from '../context/UserContext'
+import GenericDialog from '../dialogs/GenericDialog'
+import StepsTracker from './../general/StepsTracker'
+import TranslateTexts from '../general/TranslateTexts'
+import AddTeam from './AddTeam'
+import EnterDetails from './EnterDetails'
+import ProjectSubmittedPage from './ProjectSubmittedPage'
+import SelectSectors from './SelectSectors'
+import ShareProject from './ShareProject'
 
 const useStyles = makeStyles((theme) => {
   return {
     stepsTracker: {
       maxWidth: 600,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(4),
       color: theme.palette.background.default_contrastText,
     },
-  };
-});
+  }
+})
 
 const getSteps = (texts) => {
   const steps = [
     {
-      key: "share",
+      key: 'share',
       text: texts.basic_info,
       headline: texts.share_your_climate_project,
     },
     {
-      key: "selectSector",
+      key: 'selectSector',
       text: texts.project_category,
       headline: texts.select_1_to_3_sectors_that_fit_your_project,
     },
     {
-      key: "enterDetails",
+      key: 'enterDetails',
       text: texts.project_details,
     },
     {
-      key: "addTeam",
+      key: 'addTeam',
       text: texts.add_team,
       headline: texts.add_your_team,
     },
-  ];
+  ]
   /*if (sourceLocale === "de") {
     steps.push({
       key: "translate",
@@ -62,28 +62,28 @@ const getSteps = (texts) => {
       sourceLocale: ["de"],
     })
   }*/
-  return steps;
-};
+  return steps
+}
 
 type availabilityOptionsProps = {
-  id: number;
-  key: string;
-  name: string;
-};
+  id: number
+  key: string
+  name: string
+}
 
 type ShareProjectRootProps = {
-  availabilityOptions: availabilityOptionsProps[];
-  userOrganizations: Organization[];
-  skillsOptions: SkillType[];
-  rolesOptions: Role[];
-  user: any;
-  token: string;
+  availabilityOptions: availabilityOptionsProps[]
+  userOrganizations: Organization[]
+  skillsOptions: SkillType[]
+  rolesOptions: Role[]
+  user: any
+  token: string
   // eslint-disable-next-line no-unused-vars
-  setMessage: (message: string) => void;
-  projectTypeOptions: any[];
-  hubName?: string;
-  sectorOptions: Sector[];
-};
+  setMessage: (message: string) => void
+  projectTypeOptions: any[]
+  hubName?: string
+  sectorOptions: Sector[]
+}
 
 export default function ShareProjectRoot({
   availabilityOptions,
@@ -97,57 +97,57 @@ export default function ShareProjectRoot({
   hubName,
   sectorOptions,
 }: ShareProjectRootProps) {
-  const classes = useStyles();
-  const { locale, locales } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const steps = getSteps(texts);
+  const classes = useStyles()
+  const { locale, locales } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const steps = getSteps(texts)
 
   const [project, setProject] = useState(
     getDefaultProjectValues(
       {
         ...user,
         role: rolesOptions.find((r) => r.role_type === ROLE_TYPES.all_type),
-        role_in_project: "",
+        role_in_project: '',
       },
       projectTypeOptions,
       userOrganizations,
       locale,
-      hubName
-    )
-  );
-  const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [loadingSubmitDraft, setLoadingSubmitDraft] = useState(false);
+      hubName,
+    ),
+  )
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [loadingSubmitDraft, setLoadingSubmitDraft] = useState(false)
 
   const getStep = (stepNumber) => {
-    if (stepNumber >= steps.length) return steps[steps.length - 1];
-    return steps[stepNumber];
-  };
+    if (stepNumber >= steps.length) return steps[steps.length - 1]
+    return steps[stepNumber]
+  }
 
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const targetLanguage = locales.find((l) => l !== locale);
-  const [translations, setTranslations] = useState({});
-  const [curStep, setCurStep] = useState(getStep(0));
-  const [finished, setFinished] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const targetLanguage = locales.find((l) => l !== locale)
+  const [translations, setTranslations] = useState({})
+  const [curStep, setCurStep] = useState(getStep(0))
+  const [finished, setFinished] = useState(false)
 
   // TODO: Allow changing sourceLanguage, targetLanguage
 
   useEffect(() => {
     if (window) {
-      const location = window.location.href;
+      const location = window.location.href
       Router.beforePopState(({ as }) => {
-        if (location.includes("/share") && as != "/share") {
+        if (location.includes('/share') && as != '/share') {
           const result = window.confirm(
-            texts.are_you_sure_you_want_to_leave_you_will_lose_your_project
-          );
+            texts.are_you_sure_you_want_to_leave_you_will_lose_your_project,
+          )
           if (!result) {
-            return false;
+            return false
           }
         }
-        return true;
-      });
+        return true
+      })
     }
-  });
+  })
 
   const handleChangeTranslationContent = (locale, newTranslations, isManualChange) => {
     const newTranslationsObject = {
@@ -157,118 +157,118 @@ export default function ShareProjectRoot({
         ...newTranslations,
         is_manual_translation: isManualChange ? true : false,
       },
-    };
-    setTranslations({ ...newTranslationsObject });
-  };
+    }
+    setTranslations({ ...newTranslationsObject })
+  }
 
   const goToNextStep = () => {
-    const curStepIndex = steps.indexOf(steps.find((s) => s.key === curStep.key)!);
-    setCurStep(getStep(curStepIndex + 1));
-    setMessage("");
+    const curStepIndex = steps.indexOf(steps.find((s) => s.key === curStep.key)!)
+    setCurStep(getStep(curStepIndex + 1))
+    setMessage('')
     //scroll to top when navigating to another step
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo(0, 0)
+  }
 
   const goToPreviousStep = () => {
-    const curStepIndex = steps.indexOf(steps.find((s) => s.key === curStep.key)!);
-    setCurStep(getStep(curStepIndex - 1));
-    setMessage("");
+    const curStepIndex = steps.indexOf(steps.find((s) => s.key === curStep.key)!)
+    setCurStep(getStep(curStepIndex - 1))
+    setMessage('')
     //scroll to top when navigating to another step
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo(0, 0)
+  }
 
   // TODO: save as draft and submit project
   // share a lot of logic, can be refactored
   const submitProject = async (event) => {
-    event.preventDefault();
-    setLoadingSubmit(true);
-    const payload = await formatProjectForRequest(project, translations);
-    payload.sectors = project.sectors?.map((sector) => sector.key);
+    event.preventDefault()
+    setLoadingSubmit(true)
+    const payload = await formatProjectForRequest(project, translations)
+    payload.sectors = project.sectors?.map((sector) => sector.key)
 
     try {
       const resp = await apiRequest({
-        method: "post",
-        url: "/api/create_project/",
+        method: 'post',
+        url: '/api/create_project/',
         payload: payload,
         token: token,
         locale: locale,
-      });
-      setProject({ ...project, error: false, url_slug: resp.data.url_slug });
-      setLoadingSubmit(false);
-      setFinished(true);
+      })
+      setProject({ ...project, error: false, url_slug: resp.data.url_slug })
+      setLoadingSubmit(false)
+      setFinished(true)
     } catch (error: any) {
-      console.log(error?.response?.data);
+      console.log(error?.response?.data)
       if (error?.response?.data?.message) {
-        const errorMessage = error.response.data.message;
-        setErrorMessage(`Error ${error?.response?.status}: ${errorMessage}`);
+        const errorMessage = error.response.data.message
+        setErrorMessage(`Error ${error?.response?.status}: ${errorMessage}`)
       }
-      setErrorDialogOpen(true);
-      setProject({ ...project, error: true });
-      setLoadingSubmit(false);
+      setErrorDialogOpen(true)
+      setProject({ ...project, error: true })
+      setLoadingSubmit(false)
     }
-  };
+  }
   const saveAsDraft = async (event) => {
-    event.preventDefault();
-    setLoadingSubmitDraft(true);
+    event.preventDefault()
+    setLoadingSubmitDraft(true)
     apiRequest({
-      method: "post",
-      url: "/api/create_project/",
+      method: 'post',
+      url: '/api/create_project/',
       payload: await formatProjectForRequest({ ...project, is_draft: true }, translations),
       token: token,
       locale: locale,
     })
       .then(function (response) {
-        setProject({ ...project, url_slug: response.data.url_slug, is_draft: true });
-        setLoadingSubmitDraft(false);
-        setFinished(true);
+        setProject({ ...project, url_slug: response.data.url_slug, is_draft: true })
+        setLoadingSubmitDraft(false)
+        setFinished(true)
       })
       .catch(function (error) {
-        console.log(error);
-        setErrorDialogOpen(true);
-        setProject({ ...project, error: true });
-        setLoadingSubmitDraft(false);
-        if (error) console.log(error.response);
-      });
-  };
+        console.log(error)
+        setErrorDialogOpen(true)
+        setProject({ ...project, error: true })
+        setLoadingSubmitDraft(false)
+        if (error) console.log(error.response)
+      })
+  }
 
   const handleSetProject = (newProjectData) => {
-    setProject({ ...project, ...newProjectData });
-  };
+    setProject({ ...project, ...newProjectData })
+  }
 
   const handleCloseErrorDialog = () => {
-    setErrorMessage("");
-    setErrorDialogOpen(false);
-  };
+    setErrorMessage('')
+    setErrorDialogOpen(false)
+  }
 
   const textsToTranslate = [
     {
-      textKey: "name",
+      textKey: 'name',
       rows: 1,
-      headlineTextKey: "project_name",
+      headlineTextKey: 'project_name',
     },
     {
-      textKey: "short_description",
+      textKey: 'short_description',
       rows: 5,
-      headlineTextKey: "short_description",
+      headlineTextKey: 'short_description',
       maxCharacters: 280,
       showCharacterCounter: true,
     },
     {
-      textKey: "description",
+      textKey: 'description',
       rows: 15,
-      headlineTextKey: "description",
+      headlineTextKey: 'description',
     },
     {
-      textKey: "helpful_connections",
+      textKey: 'helpful_connections',
       rows: 1,
-      headlineTextKey: "helpful_connections",
+      headlineTextKey: 'helpful_connections',
       isArray: true,
     },
-  ];
+  ]
 
   const onSelectNewSector = (event) => {
-    event.preventDefault();
-    const sector = sectorOptions.find((sector) => sector.name === event.target.value);
+    event.preventDefault()
+    const sector = sectorOptions.find((sector) => sector.name === event.target.value)
     if (
       sector &&
       project?.sectors &&
@@ -277,17 +277,17 @@ export default function ShareProjectRoot({
       setProject({
         ...project,
         sectors: [...project.sectors, sector],
-      });
+      })
     }
-  };
+  }
 
   const onClickRemoveSector = (sector) => {
-    const sectorsAfterRemoval = project?.sectors?.filter((h) => h.name !== sector.name);
+    const sectorsAfterRemoval = project?.sectors?.filter((h) => h.name !== sector.name)
     setProject({
       ...project,
       sectors: sectorsAfterRemoval,
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -302,7 +302,7 @@ export default function ShareProjectRoot({
           <Typography variant="h4" className={classes.headline}>
             {curStep.headline && curStep.headline}
           </Typography>
-          {curStep.key === "share" && (
+          {curStep.key === 'share' && (
             <ShareProject
               project={project}
               handleSetProjectData={handleSetProject}
@@ -312,7 +312,7 @@ export default function ShareProjectRoot({
               hubName={hubName}
             />
           )}
-          {curStep.key === "selectSector" && (
+          {curStep.key === 'selectSector' && (
             <SelectSectors
               project={project}
               goToNextStep={goToNextStep}
@@ -320,13 +320,13 @@ export default function ShareProjectRoot({
               sectorsToSelectFrom={sectorOptions.filter(
                 (sector) =>
                   project?.sectors?.filter((addedSector) => addedSector.name === sector.name)
-                    .length === 0
+                    .length === 0,
               )}
               onSelectNewSector={onSelectNewSector}
               onClickRemoveSector={onClickRemoveSector}
             />
           )}
-          {curStep.key === "enterDetails" && (
+          {curStep.key === 'enterDetails' && (
             <EnterDetails
               projectData={project}
               handleSetProjectData={handleSetProject}
@@ -336,7 +336,7 @@ export default function ShareProjectRoot({
               setMessage={setMessage}
             />
           )}
-          {curStep.key === "addTeam" && (
+          {curStep.key === 'addTeam' && (
             <AddTeam
               projectData={project}
               handleSetProjectData={handleSetProject}
@@ -346,12 +346,12 @@ export default function ShareProjectRoot({
               rolesOptions={rolesOptions}
               onSubmit={submitProject}
               saveAsDraft={saveAsDraft}
-              isLastStep={steps[steps.length - 1].key === "addTeam"}
+              isLastStep={steps[steps.length - 1].key === 'addTeam'}
               loadingSubmit={loadingSubmit}
               loadingSubmitDraft={loadingSubmitDraft}
             />
           )}
-          {curStep.key === "translate" && (
+          {curStep.key === 'translate' && (
             <TranslateTexts
               data={project}
               handleSetData={handleSetProject}
@@ -362,7 +362,7 @@ export default function ShareProjectRoot({
               targetLanguage={targetLanguage}
               pageName="project"
               textsToTranslate={textsToTranslate}
-              arrayTranslationKeys={["helpful_connections"]}
+              arrayTranslationKeys={['helpful_connections']}
               introTextKey="translate_project_intro"
               submitButtonText={texts.submit}
               saveAsDraft={saveAsDraft}
@@ -394,7 +394,7 @@ export default function ShareProjectRoot({
         </GenericDialog>
       )}
     </>
-  );
+  )
 }
 
 //TODO: remove some of these default values as they are just for testing
@@ -403,7 +403,7 @@ const getDefaultProjectValues = (
   projectTypeOptions,
   userOrganizations,
   locale,
-  hubName
+  hubName,
 ): Project => {
   return {
     collaborators_welcome: true,
@@ -416,13 +416,13 @@ const getDefaultProjectValues = (
     is_organization_project: userOrganizations && userOrganizations.length > 0,
     //TODO: Should contain the logged in user as the creator and parent_user by default
     team_members: [{ ...loggedInUser }],
-    website: "",
+    website: '',
     language: locale,
-    project_type: projectTypeOptions.find((t) => t.type_id === "project"),
+    project_type: projectTypeOptions.find((t) => t.type_id === 'project'),
     hubName: hubName,
     sectors: [],
-  };
-};
+  }
+}
 
 const formatProjectForRequest = async (project, translations) => {
   return {
@@ -443,5 +443,5 @@ const formatProjectForRequest = async (project, translations) => {
     thumbnail_image: await blobFromObjectUrl(project.thumbnail_image),
     source_language: project.language,
     translations: translations ? translations : {},
-  };
-};
+  }
+}

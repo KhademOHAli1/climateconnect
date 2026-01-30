@@ -1,52 +1,50 @@
-import { Button, Chip, Container, Divider, Link, Theme, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import PlaceIcon from "@mui/icons-material/Place";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import Linkify from "react-linkify";
-import Cookies from "universal-cookie";
-import FeedbackContext from "../context/FeedbackContext";
-import { apiRequest, getLocalePrefix } from "../../../public/lib/apiOperations";
-import DetailledDescription from "./DetailledDescription";
-import getTexts from "../../../public/texts/texts";
-import MessageContent from "../communication/MessageContent";
-import SectorsPreview from "../hub/SectorsPreview";
-import MiniOrganizationPreview from "../organization/MiniOrganizationPreview";
-import ProfileBadge from "../profile/ProfileBadge";
-import SocialMediaShareButton from "../shareContent/SocialMediaShareButton";
-import UserContext from "../context/UserContext";
-import EditSharpIcon from "@mui/icons-material/EditSharp";
-import IconButton from "@mui/material/IconButton";
-
-import ConfirmDialog from "../dialogs/ConfirmDialog";
-import FollowersDialog from "../dialogs/FollowersDialog";
-import { useLongPress } from "use-long-press";
-import { getParams } from "../../../public/lib/generalOperations";
-import FollowButton from "../general/FollowButton";
-import { NOTIFICATION_TYPES } from "../communication/notifications/Notification";
-
-import SelectWithText from "./SelectWithText";
-import SubTitleWithContent from "../general/SubTitleWithContent";
-import { UserAvatar } from "./UserAvatar";
+import EditSharpIcon from '@mui/icons-material/EditSharp'
+import PlaceIcon from '@mui/icons-material/Place'
+import { Button, Chip, Container, Divider, Link, Theme, Tooltip, Typography } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import Linkify from 'react-linkify'
+import Cookies from 'universal-cookie'
+import { useLongPress } from 'use-long-press'
+import { apiRequest, getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getParams } from '../../../public/lib/generalOperations'
+import getTexts from '../../../public/texts/texts'
+import MessageContent from '../communication/MessageContent'
+import { NOTIFICATION_TYPES } from '../communication/notifications/Notification'
+import FeedbackContext from '../context/FeedbackContext'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import FollowersDialog from '../dialogs/FollowersDialog'
+import FollowButton from '../general/FollowButton'
+import SubTitleWithContent from '../general/SubTitleWithContent'
+import SectorsPreview from '../hub/SectorsPreview'
+import MiniOrganizationPreview from '../organization/MiniOrganizationPreview'
+import ProfileBadge from '../profile/ProfileBadge'
+import SocialMediaShareButton from '../shareContent/SocialMediaShareButton'
+import DetailledDescription from './DetailledDescription'
+import SelectWithText from './SelectWithText'
+import { UserAvatar } from './UserAvatar'
 
 const useStyles = makeStyles<Theme>((theme) => ({
   avatarContainer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       marginRight: theme.spacing(5),
       marginLeft: theme.spacing(5),
     },
     marginTop: theme.spacing(-11),
     marginBottom: theme.spacing(2),
-    display: "inline-block",
+    display: 'inline-block',
   },
   avatarWithInfo: {
-    textAlign: "center",
+    textAlign: 'center',
     width: theme.spacing(40),
-    margin: "0 auto",
-    [theme.breakpoints.up("sm")]: {
+    margin: '0 auto',
+    [theme.breakpoints.up('sm')]: {
       margin: 0,
       marginLeft: theme.spacing(-5),
-      display: "inline-block",
-      width: "auto",
+      display: 'inline-block',
+      width: 'auto',
     },
   },
   accountInfo: (props) => ({
@@ -55,37 +53,37 @@ const useStyles = makeStyles<Theme>((theme) => ({
     marginRight: props.isOwnAccount ? theme.spacing(0.5) : 0,
   }),
   editButtonWrapper: {
-    flex: "1 0 auto",
+    flex: '1 0 auto',
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     padding: theme.spacing(1),
     paddingLeft: 0,
     paddingRight: 0,
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
   },
   subtitle: {
-    fontWeight: "bold",
-    wordBreak: "break-word",
+    fontWeight: 'bold',
+    wordBreak: 'break-word',
   },
   content: {
     paddingBottom: theme.spacing(2),
     // color: `${theme.palette.secondary.main}`,
     fontSize: 16,
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
   },
   noPadding: {
     padding: 0,
   },
   infoContainer: {
-    [theme.breakpoints.up("sm")]: {
-      display: "flex",
-      alignItems: "center",
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      alignItems: 'center',
     },
-    position: "relative",
+    position: 'relative',
   },
   noprofile: {
-    textAlign: "center",
+    textAlign: 'center',
     padding: theme.spacing(5),
   },
   marginTop: {
@@ -102,19 +100,19 @@ const useStyles = makeStyles<Theme>((theme) => ({
     marginRight: theme.spacing(1),
   },
   editButton: {
-    position: "relative",
-    cursor: "pointer",
+    position: 'relative',
+    cursor: 'pointer',
     color: theme.palette.background.default_contrastText,
-    width: "35px",
-    height: "35px",
+    width: '35px',
+    height: '35px',
     marginRight: theme.spacing(0.5),
-    backgroundColor: "white",
-    "&:hover": {
-      backgroundColor: "white",
+    backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: 'white',
     },
-    borderRadius: "50%",
-    padding: "5px",
-    left: "0",
+    borderRadius: '50%',
+    padding: '5px',
+    left: '0',
   },
   infoIcon: {
     marginBottom: -4,
@@ -129,45 +127,45 @@ const useStyles = makeStyles<Theme>((theme) => ({
     marginBottom: theme.spacing(3),
   },
   shareButtonContainer: {
-    position: "relative",
-    right: "0",
+    position: 'relative',
+    right: '0',
   },
   smallIconContainer: {
-    position: "absolute",
-    width: "auto",
-    display: "flex",
-    justifyContent: "space-between",
+    position: 'absolute',
+    width: 'auto',
+    display: 'flex',
+    justifyContent: 'space-between',
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    right: "0%",
-    bottom: "0%",
+    right: '0%',
+    bottom: '0%',
   },
   subOrgContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   isSubOrgText: {
     marginRight: theme.spacing(1),
   },
   miniOrgPreview: {
-    display: "flex",
+    display: 'flex',
   },
   sizeContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
   },
   getInvolvedContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
     marginRight: theme.spacing(1),
   },
   selectContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   },
-}));
+}))
 
 //Generic component to display personal profiles or organization profiles
 export default function AccountPage({
@@ -188,13 +186,13 @@ export default function AccountPage({
   isUserFollowing,
   hubUrl,
 }) {
-  const { locale, user } = useContext(UserContext);
-  const classes = useStyles({ isOwnAccount: isOwnAccount });
-  const token = new Cookies().get("auth_token");
-  const texts = getTexts({ page: "profile", locale: locale });
+  const { locale, user } = useContext(UserContext)
+  const classes = useStyles({ isOwnAccount: isOwnAccount })
+  const token = new Cookies().get('auth_token')
+  const texts = getTexts({ page: 'profile', locale: locale })
   const organizationTexts = isOrganization
-    ? getTexts({ page: "organization", organization: account, locale: locale })
-    : { not_an_organization: "Not an organization" };
+    ? getTexts({ page: 'organization', organization: account, locale: locale })
+    : { not_an_organization: 'Not an organization' }
 
   const componentDecorator = (href, text, key) => (
     <Link
@@ -207,19 +205,19 @@ export default function AccountPage({
     >
       {text}
     </Link>
-  );
+  )
 
   // Following codeblock handles follow button for organizations
   const [confirmDialogOpen, setConfirmDialogOpen] = useState({
     follow: false,
-  });
+  })
 
   const onFollowDialogClose = (confirmed) => {
-    if (confirmed) toggleFollowOrganization();
-    setConfirmDialogOpen({ ...confirmDialogOpen, follow: false });
-  };
+    if (confirmed) toggleFollowOrganization()
+    setConfirmDialogOpen({ ...confirmDialogOpen, follow: false })
+  }
 
-  const { showFeedbackMessage } = useContext(FeedbackContext);
+  const { showFeedbackMessage } = useContext(FeedbackContext)
 
   const handleToggleFollowOrganization = () => {
     if (!token)
@@ -227,80 +225,80 @@ export default function AccountPage({
         message: <span>{organizationTexts.please_log_in_to_follow_an_organization}</span>,
         error: true,
         promptLogIn: true,
-      });
-    else if (isUserFollowing) setConfirmDialogOpen({ ...confirmDialogOpen, follow: true });
-    else toggleFollowOrganization();
-  };
+      })
+    else if (isUserFollowing) setConfirmDialogOpen({ ...confirmDialogOpen, follow: true })
+    else toggleFollowOrganization()
+  }
 
   const toggleFollowOrganization = () => {
-    handleFollow(isUserFollowing, false, true);
+    handleFollow(isUserFollowing, false, true)
     apiRequest({
-      method: "post",
-      url: "/api/organizations/" + account.url_slug + "/set_follow/",
+      method: 'post',
+      url: '/api/organizations/' + account.url_slug + '/set_follow/',
       payload: { following: !isUserFollowing },
       token: token,
       locale: locale,
     })
       .then(function (response) {
-        handleFollow(response.data.following, true, false);
-        updateFollowers();
+        handleFollow(response.data.following, true, false)
+        updateFollowers()
         showFeedbackMessage({
           message: response.data.message,
-        });
+        })
       })
       .catch(function (error) {
-        console.log(error);
-        if (error && error.reponse) console.log(error.response);
-      });
-  };
+        console.log(error)
+        if (error && error.reponse) console.log(error.response)
+      })
+  }
 
   const handleReadNotifications = async (notificationType) => {
     const notification_to_set_read = notifications.filter(
       (n) =>
-        n.notification_type === notificationType && n.organization.url_slug === account.url_slug
-    );
-    await setNotificationsRead(token, notification_to_set_read, locale);
-    await refreshNotifications();
-  };
+        n.notification_type === notificationType && n.organization.url_slug === account.url_slug,
+    )
+    await setNotificationsRead(token, notification_to_set_read, locale)
+    await refreshNotifications()
+  }
 
-  const { notifications, setNotificationsRead, refreshNotifications } = useContext(UserContext);
+  const { notifications, setNotificationsRead, refreshNotifications } = useContext(UserContext)
 
-  const [initiallyCaughtFollowers, setInitiallyCaughtFollowers] = useState(false);
-  const [followers, setFollowers] = useState([]);
-  const [showFollowers, setShowFollowers] = useState(false);
+  const [initiallyCaughtFollowers, setInitiallyCaughtFollowers] = useState(false)
+  const [followers, setFollowers] = useState([])
+  const [showFollowers, setShowFollowers] = useState(false)
 
   const toggleShowFollowers = async () => {
-    setShowFollowers(!showFollowers);
+    setShowFollowers(!showFollowers)
     if (!initiallyCaughtFollowers) {
-      await updateFollowers();
-      handleReadNotifications(NOTIFICATION_TYPES.indexOf("organization_follower"));
-      setInitiallyCaughtFollowers(true);
+      await updateFollowers()
+      handleReadNotifications(NOTIFICATION_TYPES.indexOf('organization_follower'))
+      setInitiallyCaughtFollowers(true)
     }
-  };
+  }
   const updateFollowers = async () => {
-    const retrievedFollowers = await getFollowers(account, token, locale);
-    setFollowers(retrievedFollowers);
-  };
+    const retrievedFollowers = await getFollowers(account, token, locale)
+    setFollowers(retrievedFollowers)
+  }
 
-  const [gotParams, setGotParams] = useState(false);
+  const [gotParams, setGotParams] = useState(false)
   useEffect(() => {
     if (!gotParams) {
-      const params = getParams(window.location.href);
-      if (params.show_followers && !showFollowers) toggleShowFollowers();
-      setGotParams(true);
+      const params = getParams(window.location.href)
+      if (params.show_followers && !showFollowers) toggleShowFollowers()
+      setGotParams(true)
     }
-  });
+  })
 
   const bindFollow = useLongPress(() => {
-    toggleShowFollowers();
-  }); // end of follow organizations codeblock
+    toggleShowFollowers()
+  }) // end of follow organizations codeblock
 
   const renderParentOrganization = (value: any, index: number) => {
-    if (!value.name) return null;
+    if (!value.name) return null
     return (
       <div key={index} className={`${classes.subtitle} ${classes.subOrgContainer}`}>
         <Typography className={classes.isSubOrgText}>
-          {account.name} {texts.is_a_suborganization_of}{" "}
+          {account.name} {texts.is_a_suborganization_of}{' '}
         </Typography>
         <MiniOrganizationPreview
           className={classes.miniOrgPreview}
@@ -308,21 +306,21 @@ export default function AccountPage({
           size="tiny"
         />
       </div>
-    );
-  };
+    )
+  }
 
   const renderChildOrganizations = (infoItem: any, index: number) => {
-    if (!Array.isArray(infoItem.value) || infoItem.value.length === 0) return null;
+    if (!Array.isArray(infoItem.value) || infoItem.value.length === 0) return null
 
     const subOrgLabel =
-      infoItem.value.length === 1 ? texts.suborganization_of : texts.suborganizations_of;
+      infoItem.value.length === 1 ? texts.suborganization_of : texts.suborganizations_of
 
     return (
       <div key={index} className={classes.subtitle}>
         <Typography className={classes.isSubOrgText}>
           {subOrgLabel} {account.name}:
         </Typography>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", alignItems: "left" }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', alignItems: 'left' }}>
           {infoItem.value.map((org, orgIndex) => (
             <Fragment key={org.id}>
               {orgIndex > 0 && <span style={{ flexShrink: 0 }}>,</span>}
@@ -337,34 +335,34 @@ export default function AccountPage({
           ))}
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const displayAccountInfo = (info) =>
     Object.keys(info)
       .sort((a, b) => {
-        a = getFullInfoElement(infoMetadata, a, info[a]);
-        b = getFullInfoElement(infoMetadata, b, info[b]);
-        return b?.weight - a?.weight;
+        a = getFullInfoElement(infoMetadata, a, info[a])
+        b = getFullInfoElement(infoMetadata, b, info[b])
+        return b?.weight - a?.weight
       })
       .map((key, index) => {
-        if (!info[key]) return null;
+        if (!info[key]) return null
 
-        const infoElement = getFullInfoElement(infoMetadata, key, info[key]);
+        const infoElement = getFullInfoElement(infoMetadata, key, info[key])
         const value = Array.isArray(infoElement.value)
-          ? infoElement.value.join(", ")
-          : infoElement.value;
-        const additionalText = infoElement.additionalText ? infoElement.additionalText : "";
-        if (key === "parent_organization") {
-          return renderParentOrganization(value, index);
+          ? infoElement.value.join(', ')
+          : infoElement.value
+        const additionalText = infoElement.additionalText ? infoElement.additionalText : ''
+        if (key === 'parent_organization') {
+          return renderParentOrganization(value, index)
         }
-        if (key === "child_organizations") {
-          return renderChildOrganizations(infoElement, index);
+        if (key === 'child_organizations') {
+          return renderChildOrganizations(infoElement, index)
         }
-        if (infoElement.type === "selectwithtext" && value) {
-          return <SelectWithText types={account.types} info={infoElement} key={index} />;
+        if (infoElement.type === 'selectwithtext' && value) {
+          return <SelectWithText types={account.types} info={infoElement} key={index} />
         }
-        if (infoElement.type === "array" && infoElement?.value?.length > 0) {
+        if (infoElement.type === 'array' && infoElement?.value?.length > 0) {
           return (
             <div key={index}>
               <div className={classes.subtitle}>{infoElement.name}:</div>
@@ -384,7 +382,7 @@ export default function AccountPage({
                     )}
               </div>
             </div>
-          );
+          )
         }
 
         if (infoElement.linkify && value) {
@@ -395,20 +393,20 @@ export default function AccountPage({
                 <div className={classes.content}>{value}</div>
               </Linkify>
             </>
-          );
+          )
         }
 
-        if (infoElement.type === "bio" && value) {
+        if (infoElement.type === 'bio' && value) {
           return (
             <div key={index} className={classes.content}>
               <MessageContent
                 content={value ? value + additionalText : infoElement.missingMessage}
               />
             </div>
-          );
+          )
         }
 
-        if (infoElement.type === "sectors") {
+        if (infoElement.type === 'sectors') {
           return (
             <>
               {infoElement.value.length > 0 && (
@@ -417,55 +415,55 @@ export default function AccountPage({
 
               <SectorsPreview sectors={infoElement.value} />
             </>
-          );
+          )
         }
 
-        if (infoElement.type === "select" && value) {
+        if (infoElement.type === 'select' && value) {
           const textValue = infoElement.options
             ? infoElement.options.find((o) => o?.key === value).name
-            : value;
+            : value
           return (
             <div key={index}>
               <SubTitleWithContent
-                subtitle={infoElement.name + ":"}
+                subtitle={infoElement.name + ':'}
                 content={textValue ? textValue + additionalText : infoElement.missingMessage}
               />
             </div>
-          );
+          )
         }
 
         if (
           value &&
-          !["detailled_description", "location", "checkbox"].includes(infoElement.type) &&
+          !['detailled_description', 'location', 'checkbox'].includes(infoElement.type) &&
           !isOrganization
         ) {
           return (
             <div key={index}>
               <SubTitleWithContent
-                subtitle={infoElement.name + ":"}
+                subtitle={infoElement.name + ':'}
                 content={value ? value + additionalText : infoElement.missingMessage}
               />
             </div>
-          );
+          )
         }
-      });
+      })
   const getDetailedDescription = () => {
     const detailled_description_obj = Object.keys(account.info).filter((i) => {
-      const el = getFullInfoElement(infoMetadata, i, account.info[i]);
-      return el.type === "detailled_description";
-    });
+      const el = getFullInfoElement(infoMetadata, i, account.info[i])
+      return el.type === 'detailled_description'
+    })
     if (detailled_description_obj.length > 0) {
-      const key = detailled_description_obj[0];
-      return getFullInfoElement(infoMetadata, key, account.info[key]);
-    } else return null;
-  };
-  const detailedDescription = getDetailedDescription();
+      const key = detailled_description_obj[0]
+      return getFullInfoElement(infoMetadata, key, account.info[key])
+    } else return null
+  }
+  const detailedDescription = getDetailedDescription()
   const locationKeys = Object.keys(account.info).filter((key) => {
-    const infoElement = getFullInfoElement(infoMetadata, key, account.info[key]);
-    return infoElement.type === "location";
-  });
-  const location = locationKeys.length > 0 ? account.info[locationKeys[0]] : null;
-  const locationAdditionalText = location?.additionalText ? location.additionalText : "";
+    const infoElement = getFullInfoElement(infoMetadata, key, account.info[key])
+    return infoElement.type === 'location'
+  })
+  const location = locationKeys.length > 0 ? account.info[locationKeys[0]] : null
+  const locationAdditionalText = location?.additionalText ? location.additionalText : ''
 
   return (
     <Container maxWidth="lg" className={classes.noPadding}>
@@ -474,11 +472,11 @@ export default function AccountPage({
           background: `url(${
             account.background_image ? account.background_image : default_background
           })`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          width: "100%",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          width: '100%',
           height: 305,
-          position: "relative",
+          position: 'relative',
         }}
       >
         <div className={classes.smallIconContainer}>
@@ -507,10 +505,10 @@ export default function AccountPage({
           <div className={classes.avatarContainer}>
             {account.badges?.length > 0 ? (
               <ProfileBadge badge={account.badges[0]}>
-                <UserAvatar mode={"read"} imageUrl={account.image} alternativeText={account.name} />
+                <UserAvatar mode={'read'} imageUrl={account.image} alternativeText={account.name} />
               </ProfileBadge>
             ) : (
-              <UserAvatar mode={"read"} imageUrl={account.image} alternativeText={account.name} />
+              <UserAvatar mode={'read'} imageUrl={account.image} alternativeText={account.name} />
             )}
           </div>
           <Typography variant="h5" className={classes.name}>
@@ -573,7 +571,7 @@ export default function AccountPage({
         object={account}
         onClose={toggleShowFollowers}
         user={user}
-        url={"organization/" + account.url_slug + "?show_followers=true"}
+        url={'organization/' + account.url_slug + '?show_followers=true'}
         titleText={organizationTexts.followers_of}
         pleaseLogInText={organizationTexts.please_log_in}
         toSeeFollowerText={organizationTexts.to_see_this_organizations_followers}
@@ -604,24 +602,24 @@ export default function AccountPage({
       )}
       {children}
     </Container>
-  );
+  )
 }
 
 const getFollowers = async (organization, token, locale) => {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizations/" + organization.url_slug + "/followers/",
+      method: 'get',
+      url: '/api/organizations/' + organization.url_slug + '/followers/',
       token: token,
       locale: locale,
-    });
-    return resp.data.results;
+    })
+    return resp.data.results
   } catch (err) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
   }
-};
+}
 
 const getFullInfoElement = (infoMetadata, key, value) => {
-  return { ...infoMetadata[key], value: value };
-};
+  return { ...infoMetadata[key], value: value }
+}

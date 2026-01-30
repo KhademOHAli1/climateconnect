@@ -1,39 +1,39 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useState } from "react";
-import ROLE_TYPES from "../../../public/data/role_types";
-import { apiRequest, getLocalePrefix, redirect } from "../../../public/lib/apiOperations";
-import { hasGreaterRole } from "../../../public/lib/manageMembers";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ManageMembers from "../manageMembers/ManageMembers";
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import ROLE_TYPES from '../../../public/data/role_types'
+import { apiRequest, getLocalePrefix, redirect } from '../../../public/lib/apiOperations'
+import { hasGreaterRole } from '../../../public/lib/manageMembers'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ManageMembers from '../manageMembers/ManageMembers'
 
 const useStyles = makeStyles((theme) => {
   return {
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(4),
       color: theme.palette.background.default_contrastText,
     },
     buttons: {
-      float: "right",
+      float: 'right',
     },
     button: {
       marginRight: theme.spacing(2),
     },
     cancelleButton: {
       backgroundColor: theme.palette.grey[800],
-      "&:hover": {
+      '&:hover': {
         backgroundColor: theme.palette.grey[900],
       },
       color: theme.palette.background.default,
     },
     buttonsContainer: {
       height: 40,
-      width: "100%",
+      width: '100%',
     },
-  };
-});
+  }
+})
 
 export default function ManageProjectMembers({
   user,
@@ -46,146 +46,146 @@ export default function ManageProjectMembers({
   availabilityOptions,
   hubUrl,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: project });
-  const [user_role, setUserRole] = useState(members.find((m) => m.id === user.id).role);
-  if (!user_role) setUserRole(members.find((m) => m.id === user.id).role);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
+  const [user_role, setUserRole] = useState(members.find((m) => m.id === user.id).role)
+  if (!user_role) setUserRole(members.find((m) => m.id === user.id).role)
   const handleSetCurrentMembers = (newValue, newUserRoleValue) => {
-    setCurrentMembers(newValue);
-    if (newUserRoleValue) setUserRole(newUserRoleValue);
-  };
+    setCurrentMembers(newValue)
+    if (newUserRoleValue) setUserRole(newUserRoleValue)
+  }
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     // add hubUrl to the redirect if it exists
     const getRedirectData = (messageKey) => {
       const data: {
-        message?: string;
-        errorMessage?: string;
-        hub?: string;
+        message?: string
+        errorMessage?: string
+        hub?: string
       } =
-        messageKey === "success"
+        messageKey === 'success'
           ? { message: texts.you_have_successfully_updated_your_team }
-          : { errorMessage: texts.not_all_your_updates_have_worked };
+          : { errorMessage: texts.not_all_your_updates_have_worked }
 
-      if (hubUrl) data.hub = hubUrl;
-      return data;
-    };
+      if (hubUrl) data.hub = hubUrl
+      return data
+    }
 
     onSubmit()
       .then((ret) => {
-        if (ret !== false) redirect("/projects/" + project.url_slug, getRedirectData("success"));
+        if (ret !== false) redirect('/projects/' + project.url_slug, getRedirectData('success'))
       })
       .catch((e) => {
-        console.log(e);
-        redirect("/projects/" + project.url_slug, getRedirectData("error"));
-      });
-  };
+        console.log(e)
+        redirect('/projects/' + project.url_slug, getRedirectData('error'))
+      })
+  }
 
   const onSubmit = async () => {
-    if (!verifyInput()) return false;
-    const allChangedMembers = getAllChangedMembers();
+    if (!verifyInput()) return false
+    const allChangedMembers = getAllChangedMembers()
     return Promise.all(
       allChangedMembers.map((m) => {
-        if (m.operation === "delete") deleteMember(m, locale);
-        if (m.operation === "update") updateMember(m, locale);
-        if (m.operation === "create") {
-          createMembers(m.team_members, locale);
+        if (m.operation === 'delete') deleteMember(m, locale)
+        if (m.operation === 'update') updateMember(m, locale)
+        if (m.operation === 'create') {
+          createMembers(m.team_members, locale)
         }
-        if (m.operation === "creator_change") {
-          updateCreator(m.new_creator, locale);
+        if (m.operation === 'creator_change') {
+          updateCreator(m.new_creator, locale)
         }
-      })
-    );
-  };
+      }),
+    )
+  }
 
   const getAllChangedMembers = () => {
-    const oldCreatorId = members.filter((m) => m.role.role_type === ROLE_TYPES.all_type)[0].id;
+    const oldCreatorId = members.filter((m) => m.role.role_type === ROLE_TYPES.all_type)[0].id
     const newCreatorId = currentMembers.filter((m) => m.role.role_type === ROLE_TYPES.all_type)[0]
-      .id;
-    const deletedMembers = members.filter((m) => !currentMembers.find((cm) => cm.id === m.id));
+      .id
+    const deletedMembers = members.filter((m) => !currentMembers.find((cm) => cm.id === m.id))
     const creatorChange =
-      oldCreatorId != newCreatorId ? currentMembers.filter((cm) => cm.id === newCreatorId) : [];
+      oldCreatorId != newCreatorId ? currentMembers.filter((cm) => cm.id === newCreatorId) : []
     const createdMembers = currentMembers.filter(
       (cm) =>
         !members.find((m) => m.id === cm.id) &&
         !creatorChange.find((m) => m.id === cm.id) &&
-        !(oldCreatorId != newCreatorId && cm.id === oldCreatorId)
-    );
+        !(oldCreatorId != newCreatorId && cm.id === oldCreatorId),
+    )
     const updatedMembers = currentMembers.filter(
       (cm) =>
         !members.includes(cm) &&
         !createdMembers.includes(cm) &&
         !creatorChange.find((m) => m.id === cm.id) &&
-        !(oldCreatorId != newCreatorId && cm.id === oldCreatorId)
-    );
+        !(oldCreatorId != newCreatorId && cm.id === oldCreatorId),
+    )
     const allChangedMembers = [
-      ...deletedMembers.map((m) => ({ ...m, operation: "delete" })),
-      ...updatedMembers.map((m) => ({ ...m, operation: "update" })),
-    ];
+      ...deletedMembers.map((m) => ({ ...m, operation: 'delete' })),
+      ...updatedMembers.map((m) => ({ ...m, operation: 'update' })),
+    ]
     if (createdMembers.length > 0)
-      allChangedMembers.push({ team_members: [...createdMembers], operation: "create" });
+      allChangedMembers.push({ team_members: [...createdMembers], operation: 'create' })
 
     if (creatorChange.length > 0)
-      allChangedMembers.push({ new_creator: creatorChange[0], operation: "creator_change" });
+      allChangedMembers.push({ new_creator: creatorChange[0], operation: 'creator_change' })
 
-    return allChangedMembers;
-  };
+    return allChangedMembers
+  }
 
   const verifyInput = () => {
     if (currentMembers.filter((cm) => cm.role.role_type === ROLE_TYPES.all_type).length !== 1) {
-      alert(texts.there_must_be_exactly_one_creator_of_a_project);
-      return false;
+      alert(texts.there_must_be_exactly_one_creator_of_a_project)
+      return false
     }
     if (!members.filter((m) => m.role.role_type === ROLE_TYPES.all_type).length === 1) {
-      alert(texts.error_no_creator);
-      return false;
+      alert(texts.error_no_creator)
+      return false
     }
-    return true;
-  };
+    return true
+  }
 
   const canEdit = (member) => {
-    return member.id === user.id || hasGreaterRole(user_role.role_type, member.role.role_type);
-  };
+    return member.id === user.id || hasGreaterRole(user_role.role_type, member.role.role_type)
+  }
 
   const deleteMember = (m, locale) => {
     apiRequest({
-      method: "delete",
-      url: "/api/projects/" + project.url_slug + "/members/" + m.member_id + "/",
+      method: 'delete',
+      url: '/api/projects/' + project.url_slug + '/members/' + m.member_id + '/',
       token: token,
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const updateMember = (m, locale) => {
     apiRequest({
-      method: "patch",
-      url: "/api/projects/" + project.url_slug + "/members/" + m.member_id + "/",
+      method: 'patch',
+      url: '/api/projects/' + project.url_slug + '/members/' + m.member_id + '/',
       token: token,
       payload: parseMemberForUpdateRequest(m, project),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const createMembers = (team_members, locale) => {
     apiRequest({
-      method: "post",
-      url: "/api/projects/" + project.url_slug + "/add_members/",
+      method: 'post',
+      url: '/api/projects/' + project.url_slug + '/add_members/',
       token: token,
       payload: parseMembersForCreateRequest(team_members, project),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const updateCreator = (new_creator, locale) => {
     apiRequest({
-      method: "post",
-      url: "/api/projects/" + project.url_slug + "/change_creator/",
+      method: 'post',
+      url: '/api/projects/' + project.url_slug + '/change_creator/',
       token: token,
       payload: parseMemberForUpdateRequest(new_creator, project),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
   return (
     <>
       <Typography variant="h4" className={classes.headline}>
@@ -209,9 +209,9 @@ export default function ManageProjectMembers({
               className={`${classes.button} ${classes.cancelleButton}`}
               href={
                 getLocalePrefix(locale) +
-                "/projects/" +
+                '/projects/' +
                 project.url_slug +
-                (hubUrl ? "?hub=" + hubUrl : "")
+                (hubUrl ? '?hub=' + hubUrl : '')
               }
               variant="contained"
             >
@@ -224,7 +224,7 @@ export default function ManageProjectMembers({
         </div>
       </form>
     </>
-  );
+  )
 }
 
 const parseMembersForCreateRequest = (members) => {
@@ -233,23 +233,23 @@ const parseMembersForCreateRequest = (members) => {
       const parsedMem = {
         ...m,
         permission_type_id: m.role.id,
-        role_in_project: m.role_in_project ? m.role_in_project : "",
-      };
-      if (m.availability) {
-        parsedMem.availability = m.availability.id;
+        role_in_project: m.role_in_project ? m.role_in_project : '',
       }
-      return parsedMem;
+      if (m.availability) {
+        parsedMem.availability = m.availability.id
+      }
+      return parsedMem
     }),
-  };
-};
+  }
+}
 
 const parseMemberForUpdateRequest = (m, project) => {
   return {
     id: m.member_id,
     user: m.id,
     role: m.role.id,
-    role_in_project: m.role_in_project ? m.role_in_project : "",
+    role_in_project: m.role_in_project ? m.role_in_project : '',
     project: project.id,
     availability: m.availability.id,
-  };
-};
+  }
+}

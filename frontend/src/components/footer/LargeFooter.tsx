@@ -1,57 +1,57 @@
-import { Button, Container, Link, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import FeedbackButton from "../feedback/FeedbackButton";
+import FacebookIcon from '@mui/icons-material/Facebook'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import YouTubeIcon from '@mui/icons-material/YouTube'
+import { Button, Container, Link, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import FeedbackButton from '../feedback/FeedbackButton'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.primary.light,
   },
   siteLinks: {
-    display: "flex",
+    display: 'flex',
     padding: theme.spacing(6),
-    justifyContent: "space-between",
-    [theme.breakpoints.down("md")]: {
-      flexWrap: "wrap",
-      justifyContent: "space-around",
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]: {
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
     },
-    ["@media (max-width: 400px)"]: {
-      flexDirection: "column",
-      justifyContent: "center",
+    ['@media (max-width: 400px)']: {
+      flexDirection: 'column',
+      justifyContent: 'center',
     },
   },
   newsletterBlurb: {
-    color: "white",
+    color: 'white',
   },
   li: {
     fontWeight: 600,
-    [theme.breakpoints.down("lg")]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 14,
     },
   },
   footerLink: {
-    color: "white",
-    display: "block",
-    "margin-bottom": theme.spacing(1),
-    "&:hover": {
+    color: 'white',
+    display: 'block',
+    'margin-bottom': theme.spacing(1),
+    '&:hover': {
       color: theme.palette.primary.main,
     },
   },
   headline: {
     fontSize: 25,
     marginBottom: theme.spacing(2),
-    fontWeight: "bold",
-    [theme.breakpoints.down("lg")]: {
+    fontWeight: 'bold',
+    [theme.breakpoints.down('lg')]: {
       fontSize: 22,
     },
   },
@@ -60,32 +60,32 @@ const useStyles = makeStyles((theme) => ({
   },
   newsLetterBox: {
     maxWidth: 250,
-    position: "relative",
-    [theme.breakpoints.up("lg")]: {
+    position: 'relative',
+    [theme.breakpoints.up('lg')]: {
       maxWidth: 280,
-      border: "6px solid " + theme.palette.primary.main,
+      border: '6px solid ' + theme.palette.primary.main,
       marginTop: -18,
       padding: theme.spacing(1.5),
       marginLeft: theme.spacing(2),
       borderRadius: theme.spacing(2),
       borderTopLeftRadius: 0,
-      "&:after": {
+      '&:after': {
         content: " ''",
-        position: "absolute",
+        position: 'absolute',
         width: 0,
         height: 0,
-        borderStyle: "solid",
-        borderWidth: "40px 0 0 40px",
-        borderColor: theme.palette.primary.light + " transparent",
+        borderStyle: 'solid',
+        borderWidth: '40px 0 0 40px',
+        borderColor: theme.palette.primary.light + ' transparent',
         top: 0,
         left: -40,
       },
-      "&:before": {
+      '&:before': {
         content: "''",
-        position: "absolute",
-        borderStyle: "solid",
-        borderWidth: "55px 0 0 55px",
-        borderColor: theme.palette.primary.main + " transparent",
+        position: 'absolute',
+        borderStyle: 'solid',
+        borderWidth: '55px 0 0 55px',
+        borderColor: theme.palette.primary.main + ' transparent',
         width: 0,
         height: 0,
         top: -6,
@@ -96,31 +96,31 @@ const useStyles = makeStyles((theme) => ({
   socialIcon: {
     fontSize: 30,
     color: theme.palette.primary.main,
-    "&:hover": {
+    '&:hover': {
       color: theme.palette.secondary.main,
     },
   },
   socialIconsContainer: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     paddingBottom: theme.spacing(3),
     maxWidth: 280,
-    margin: "0 auto",
+    margin: '0 auto',
   },
   madeWith: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingBottom: theme.spacing(2),
     color: theme.palette.secondary.main,
   },
   heart: {
-    color: "red",
+    color: 'red',
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.5),
   },
   earth: {
-    color: "blue",
+    color: 'blue',
     marginLeft: theme.spacing(1),
     height: 20,
   },
@@ -128,27 +128,27 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   linksSection: {
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 120,
-      textAlign: "center",
+      textAlign: 'center',
       marginBottom: theme.spacing(2),
     },
   },
-}));
+}))
 
 const FooterLink = ({ children, href }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Link underline="none" href={href} className={classes.footerLink}>
       <Typography className={classes.li}>{children}</Typography>
     </Link>
-  );
-};
+  )
+}
 
 export default function LargeFooter({ className }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
   return (
     <div className={`${className} ${classes.root}`}>
       <Container maxWidth="lg">
@@ -157,21 +157,21 @@ export default function LargeFooter({ className }) {
         <MadeWithLoveForEarth texts={texts} />
       </Container>
     </div>
-  );
+  )
 }
 
 const MadeWithLoveForEarth = (texts) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.madeWith}>
-      Made with <FavoriteIcon className={classes.heart} /> for{" "}
+      Made with <FavoriteIcon className={classes.heart} /> for{' '}
       <img className={classes.earth} src="/images/earth.svg" alt={texts.picture_of_our_earth} />
     </div>
-  );
-};
+  )
+}
 
 const SocialLinks = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.socialIconsContainer}>
       <Link
@@ -209,11 +209,11 @@ const SocialLinks = () => {
         <YouTubeIcon color="primary" className={classes.socialIcon} titleAccess="YouTube" />
       </Link>
     </div>
-  );
-};
+  )
+}
 
 const SiteLinks = ({ texts, locale }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.siteLinks}>
       <div className={classes.linksSection}>
@@ -221,17 +221,17 @@ const SiteLinks = ({ texts, locale }) => {
           {texts.general}
         </Typography>
         <div className={classes.links}>
-          <FooterLink href={getLocalePrefix(locale) + "/faq"}>{texts.faq}</FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/donate"}>{texts.donate}</FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/about"}>{texts.about}</FooterLink>
-          {locale === "de" && (
-            <FooterLink href={getLocalePrefix(locale) + "/verein"}>{texts.association}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/faq'}>{texts.faq}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/donate'}>{texts.donate}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/about'}>{texts.about}</FooterLink>
+          {locale === 'de' && (
+            <FooterLink href={getLocalePrefix(locale) + '/verein'}>{texts.association}</FooterLink>
           )}
           <FooterLink
             href={
-              locale === "de"
-                ? "https://climate-connect.workwise.io/jobsuche"
-                : getLocalePrefix(locale) + "/join"
+              locale === 'de'
+                ? 'https://climate-connect.workwise.io/jobsuche'
+                : getLocalePrefix(locale) + '/join'
             }
           >
             {texts.jobs}
@@ -259,14 +259,14 @@ const SiteLinks = ({ texts, locale }) => {
           {texts.browse}
         </Typography>
         <div className={classes.links}>
-          <FooterLink href={getLocalePrefix(locale) + "/browse"}>{texts.projects}</FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/browse#organizations"}>
+          <FooterLink href={getLocalePrefix(locale) + '/browse'}>{texts.projects}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/browse#organizations'}>
             {texts.organizations}
           </FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/browse#members"}>
+          <FooterLink href={getLocalePrefix(locale) + '/browse#members'}>
             {texts.members}
           </FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/hubs"}>{texts.hubs}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/hubs'}>{texts.hubs}</FooterLink>
         </div>
       </div>
 
@@ -275,9 +275,9 @@ const SiteLinks = ({ texts, locale }) => {
           {texts.legal}
         </Typography>
         <div className={classes.links}>
-          <FooterLink href={getLocalePrefix(locale) + "/imprint"}>{texts.imprint}</FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/privacy"}>{texts.privacy}</FooterLink>
-          <FooterLink href={getLocalePrefix(locale) + "/terms"}>{texts.terms}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/imprint'}>{texts.imprint}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/privacy'}>{texts.privacy}</FooterLink>
+          <FooterLink href={getLocalePrefix(locale) + '/terms'}>{texts.terms}</FooterLink>
         </div>
       </div>
 
@@ -299,5 +299,5 @@ const SiteLinks = ({ texts, locale }) => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,30 +1,30 @@
+import AddIcon from '@mui/icons-material/Add'
 import {
   Button,
   Chip,
   List,
   Switch,
   TextField,
+  Theme,
   Typography,
   useMediaQuery,
-  Theme,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { RefObject, useContext, useState } from "react";
-import getCollaborationTexts from "../../../public/data/collaborationTexts";
-import ROLE_TYPES from "../../../public/data/role_types";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ConfirmDialog from "../dialogs/ConfirmDialog";
-import EnterTextDialog from "../dialogs/EnterTextDialog";
-import MultiLevelSelectDialog from "../dialogs/MultiLevelSelectDialog";
-import SelectField from "../general/SelectField";
-import MiniProfilePreview from "../profile/MiniProfilePreview";
-import ProjectDescriptionHelp from "../project/ProjectDescriptionHelp";
-import DeleteProjectButton from "./DeleteProjectButton";
-import { Project, Role } from "../../types";
-import { EditProjectTypeSelector } from "./EditProjectTypeSelector";
-import ProjectDateSection from "../shareProject/ProjectDateSection";
-import AddIcon from "@mui/icons-material/Add";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { RefObject, useContext, useState } from 'react'
+import getCollaborationTexts from '../../../public/data/collaborationTexts'
+import ROLE_TYPES from '../../../public/data/role_types'
+import getTexts from '../../../public/texts/texts'
+import { Project, Role } from '../../types'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import EnterTextDialog from '../dialogs/EnterTextDialog'
+import MultiLevelSelectDialog from '../dialogs/MultiLevelSelectDialog'
+import SelectField from '../general/SelectField'
+import MiniProfilePreview from '../profile/MiniProfilePreview'
+import ProjectDescriptionHelp from '../project/ProjectDescriptionHelp'
+import ProjectDateSection from '../shareProject/ProjectDateSection'
+import DeleteProjectButton from './DeleteProjectButton'
+import { EditProjectTypeSelector } from './EditProjectTypeSelector'
 
 const useStyles = makeStyles<Theme>((theme) => ({
   select: {
@@ -32,42 +32,42 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
   startDate: {
     marginRight: theme.spacing(4),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(2),
     },
   },
   creator: {
-    display: "inline-block",
+    display: 'inline-block',
     marginLeft: theme.spacing(2),
   },
   inlineBlock: {
     marginBottom: theme.spacing(2),
-    display: "inline-block",
+    display: 'inline-block',
   },
   block: {
     marginBottom: theme.spacing(2),
   },
   subHeader: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.palette.background.default_contrastText,
   },
   skill: {
-    display: "flex",
-    border: "1px solid black",
+    display: 'flex',
+    border: '1px solid black',
     height: theme.spacing(5),
     minWidth: 220,
-    maxWidth: "100%",
+    maxWidth: '100%',
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    background: "none",
+    background: 'none',
     borderRadius: 0,
     fontSize: 16,
   },
   flexContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     padding: 0,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     marginTop: theme.spacing(2),
   },
   spacer: {
@@ -77,31 +77,31 @@ const useStyles = makeStyles<Theme>((theme) => ({
     marginTop: theme.spacing(2),
   },
   deleteBtn: {
-    display: "block",
-    float: "none",
+    display: 'block',
+    float: 'none',
     marginTop: theme.spacing(1),
   },
   buttonsContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   warning: {
     color: theme.palette.error.main,
   },
-}));
+}))
 
 type Args = {
-  project: Project;
-  handleSetProject: Function;
-  userOrganizations: any;
-  user_role: Role;
-  skillsOptions: any;
-  deleteProject: Function;
-  errors: any;
-  contentRef?: RefObject<any>;
-  projectTypeOptions?: any;
-};
+  project: Project
+  handleSetProject: Function
+  userOrganizations: any
+  user_role: Role
+  skillsOptions: any
+  deleteProject: Function
+  errors: any
+  contentRef?: RefObject<any>
+  projectTypeOptions?: any
+}
 
 export default function EditProjectContent({
   project,
@@ -114,17 +114,17 @@ export default function EditProjectContent({
   contentRef,
   projectTypeOptions,
 }: Args) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: project });
-  const collaborationTexts = getCollaborationTexts(texts);
-  const [selectedItems, setSelectedItems] = useState(project.skills ? [...project.skills] : []);
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  const [open, setOpen] = useState({ skills: false, connections: false, delete: false });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
+  const collaborationTexts = getCollaborationTexts(texts)
+  const [selectedItems, setSelectedItems] = useState(project.skills ? [...project.skills] : [])
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
+  const [open, setOpen] = useState({ skills: false, connections: false, delete: false })
 
   const handleChangeProject = (newValue, key) => {
-    handleSetProject({ ...project, [key]: newValue });
-  };
+    handleSetProject({ ...project, [key]: newValue })
+  }
 
   /*
     This is a helper function just for <ProjectDateSection>
@@ -135,64 +135,64 @@ export default function EditProjectContent({
     handleSetProject({
       ...project,
       ...newData,
-    });
-  };
+    })
+  }
 
   const onClickSkillsDialogOpen = () => {
-    setOpen({ ...open, skills: true });
-  };
+    setOpen({ ...open, skills: true })
+  }
 
   const handleSkillsDialogClose = () => {
-    setOpen({ ...open, skills: false });
-  };
+    setOpen({ ...open, skills: false })
+  }
 
   const handleSkillDelete = (skill) => {
     handleSetProject({
       ...project,
       skills: project.skills.filter((s) => s.id !== skill.id),
-    });
-    setSelectedItems(project.skills.filter((s) => s.id !== skill.id));
-  };
+    })
+    setSelectedItems(project.skills.filter((s) => s.id !== skill.id))
+  }
 
   const handleSkillsDialogSave = (skills) => {
-    if (skills) handleSetProject({ ...project, skills: skills });
-    setOpen({ ...open, skills: false });
-  };
+    if (skills) handleSetProject({ ...project, skills: skills })
+    setOpen({ ...open, skills: false })
+  }
 
   const onClickConnectionsDialogOpen = () => {
-    setOpen({ ...open, connections: true });
-  };
+    setOpen({ ...open, connections: true })
+  }
 
   const handleConnectionDelete = (connection) => {
     handleSetProject({
       ...project,
       helpful_connections: project.helpful_connections.filter((c) => c != connection),
-    });
-  };
+    })
+  }
 
   const handleConnectionsDialogClose = (connection) => {
     if (project.helpful_connections && project.helpful_connections.includes(connection))
-      alert(texts.you_can_not_add_the_same_connection_twice);
+      alert(texts.you_can_not_add_the_same_connection_twice)
     else {
       if (connection)
         handleSetProject({
           ...project,
           helpful_connections: [...project.helpful_connections, connection],
-        });
-      setOpen({ ...open, connections: false });
+        })
+      setOpen({ ...open, connections: false })
     }
-  };
+  }
 
   const handleClickDeleteProjectPopup = () => {
-    setOpen({ ...open, delete: true });
-  };
+    setOpen({ ...open, delete: true })
+  }
 
   const handleDeleteProjectDialogClose = (confirmed) => {
     if (confirmed) {
-      deleteProject();
+      deleteProject()
     }
-    setOpen({ ...open, delete: false });
-  };
+    setOpen({ ...open, delete: false })
+  }
 
   const handleSwitchChange = (event) => {
     if (
@@ -207,16 +207,16 @@ export default function EditProjectContent({
           parent_organization: userOrganizations[0],
         },
         is_personal_project: !event.target.checked,
-      });
-    else handleChangeProject(!event.target.checked, "is_personal_project");
-  };
+      })
+    else handleChangeProject(!event.target.checked, 'is_personal_project')
+  }
 
   const handleChangeProjectType = (newProjectType) => {
     handleSetProject({
       ...project,
       project_type: newProjectType,
-    });
-  };
+    })
+  }
 
   return (
     <div ref={contentRef}>
@@ -229,7 +229,7 @@ export default function EditProjectContent({
             checked={!project.is_personal_project}
             onChange={handleSwitchChange}
             name="checkedA"
-            inputProps={{ "aria-label": "secondary checkbox" }}
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
             color="primary"
           />
           <Typography component="span">{texts.organizations_project}</Typography>
@@ -263,10 +263,10 @@ export default function EditProjectContent({
                   {
                     ...project.project_parents,
                     parent_organization: userOrganizations.find(
-                      (o) => o.name === event.target.value
+                      (o) => o.name === event.target.value,
                     ),
                   },
-                  "project_parents"
+                  'project_parents',
                 )
               }
               options={userOrganizations}
@@ -300,11 +300,11 @@ export default function EditProjectContent({
             rows={9}
             label={texts.project_description}
             onChange={(event) =>
-              handleChangeProject(event.target.value.substring(0, 4000), "description")
+              handleChangeProject(event.target.value.substring(0, 4000), 'description')
             }
             helperText={texts.describe_your_project_in_detail_please_only_use_english}
             placeholder={texts.describe_your_project_in_more_detail}
-            value={project.description ? project.description : ""}
+            value={project.description ? project.description : ''}
           />
         </div>
         <div className={classes.block}>
@@ -313,9 +313,9 @@ export default function EditProjectContent({
           </Typography>
           <Switch
             checked={project.collaborators_welcome}
-            onChange={(event) => handleChangeProject(event.target.checked, "collaborators_welcome")}
+            onChange={(event) => handleChangeProject(event.target.checked, 'collaborators_welcome')}
             name="checkedA"
-            inputProps={{ "aria-label": "secondary checkbox" }}
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
             color="primary"
           />
         </div>
@@ -433,5 +433,5 @@ export default function EditProjectContent({
         text={texts.if_you_delete_your_project_it_will_be_lost}
       />
     </div>
-  );
+  )
 }

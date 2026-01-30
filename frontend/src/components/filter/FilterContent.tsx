@@ -1,14 +1,14 @@
-import { Theme } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
-import { getLocationFilterKeys } from "../../../public/data/locationFilters";
-import { getReducedPossibleFilters } from "../../../public/lib/parsingOperations";
-import theme from "../../themes/theme";
-import FilterOverlay from "./FilterOverlay";
-import Filters from "./Filters";
-import SelectedFilters from "./SelectedFilters";
-import { FilterContext } from "../context/FilterContext";
+import { Theme } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useRouter } from 'next/router'
+import React, { useContext, useEffect, useState } from 'react'
+import { getLocationFilterKeys } from '../../../public/data/locationFilters'
+import { getReducedPossibleFilters } from '../../../public/lib/parsingOperations'
+import theme from '../../themes/theme'
+import { FilterContext } from '../context/FilterContext'
+import FilterOverlay from './FilterOverlay'
+import Filters from './Filters'
+import SelectedFilters from './SelectedFilters'
 
 /**
  * Util to return an array of all potential items associated with
@@ -21,26 +21,26 @@ export const findAllItems = (currentPossibleFilter, selectedFiltersToCheck) => {
   // I.e. there aren't nested items to look through
   if (!currentPossibleFilter.options || currentPossibleFilter?.options?.length === 0) {
     // Handle the case where it could be a single item
-    return Array.from(selectedFiltersToCheck);
+    return Array.from(selectedFiltersToCheck)
   }
 
   // Ensure we've accurate set membership, and iterate over all items to choose from...
-  const items: any[] = [];
+  const items: any[] = []
   currentPossibleFilter.options.forEach((item) => {
     if (selectedFiltersToCheck.has(item.name)) {
-      items.push(item);
+      items.push(item)
     }
 
     // Check for subcategories as well
     item?.subcategories?.forEach((subcategory) => {
       if (selectedFiltersToCheck.has(subcategory.name)) {
-        items.push(subcategory);
+        items.push(subcategory)
       }
-    });
-  });
+    })
+  })
 
-  return items;
-};
+  return items
+}
 
 /**
  * For initially selected items (from the query param), we want
@@ -52,7 +52,7 @@ export const findAllItems = (currentPossibleFilter, selectedFiltersToCheck) => {
  */
 export const reduceFilters = (currentFilters, possibleFilters) => {
   const reduced = possibleFilters.reduce((accumulator, currentPossibleFilter) => {
-    if (currentPossibleFilter.type === "openMultiSelectDialogButton") {
+    if (currentPossibleFilter.type === 'openMultiSelectDialogButton') {
       if (
         currentFilters &&
         currentFilters[currentPossibleFilter.key] &&
@@ -61,28 +61,28 @@ export const reduceFilters = (currentFilters, possibleFilters) => {
       ) {
         // Ensure the membership collection is built with an array if it's a single string
         // like "energy" under the Category filter, or "crafts" under the Skills filter
-        let filtersToCheck;
+        let filtersToCheck
         if (Array.isArray(currentFilters[currentPossibleFilter.key])) {
-          filtersToCheck = new Set(currentFilters[currentPossibleFilter.key]);
+          filtersToCheck = new Set(currentFilters[currentPossibleFilter.key])
         } else {
-          filtersToCheck = new Set([currentFilters[currentPossibleFilter.key]]);
+          filtersToCheck = new Set([currentFilters[currentPossibleFilter.key]])
         }
 
         // If we currently have a filter set (e.g. category), then
         // make sure we search through the possible sub items associated
         // with that filter (e.g. options, and subcategories)
-        const potentialItems = findAllItems(currentPossibleFilter, filtersToCheck);
-        accumulator[currentPossibleFilter.key] = potentialItems;
+        const potentialItems = findAllItems(currentPossibleFilter, filtersToCheck)
+        accumulator[currentPossibleFilter.key] = potentialItems
       } else {
-        accumulator[currentPossibleFilter.key] = [];
+        accumulator[currentPossibleFilter.key] = []
       }
     }
 
-    return accumulator;
-  }, {});
+    return accumulator
+  }, {})
 
-  return reduced;
-};
+  return reduced
+}
 
 export default function FilterContent({
   applyFilters,
@@ -99,60 +99,60 @@ export default function FilterContent({
   handleUpdateFilters,
   nonFilterParams,
 }) {
-  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
 
-  const reducedPossibleFilters = getReducedPossibleFilters(possibleFilters);
+  const reducedPossibleFilters = getReducedPossibleFilters(possibleFilters)
 
   // Update possible filters from current filters
   // that are present in the query param in the URL.  Some
   // types are arrays and expected as such
   // downstream; need to handle appropriately both on initiailization
   // and when merging in parameters from query param
-  const router = useRouter();
+  const router = useRouter()
   Object.entries(router.query).forEach(([key, value]) => {
-    const locationQueryParams = getLocationFilterKeys();
+    const locationQueryParams = getLocationFilterKeys()
     if (locationQueryParams.includes(key) && initialLocationFilter) {
       if (!reducedPossibleFilters.location) {
-        reducedPossibleFilters.location = initialLocationFilter;
+        reducedPossibleFilters.location = initialLocationFilter
       }
     } else if (Array.isArray(reducedPossibleFilters[key])) {
       // If the query value is concat'd -
       // split into multiple items
-      const splitItems = (value as string).split(",");
-      reducedPossibleFilters[key] = [...splitItems];
+      const splitItems = (value as string).split(',')
+      reducedPossibleFilters[key] = [...splitItems]
     } else {
-      reducedPossibleFilters[key] = value;
+      reducedPossibleFilters[key] = value
     }
-  });
+  })
 
-  const [open, setOpen] = useState<{ prop?: any }>({});
-  const [initialized, setInitialized] = useState(false);
+  const [open, setOpen] = useState<{ prop?: any }>({})
+  const [initialized, setInitialized] = useState(false)
 
-  const { filters } = useContext(FilterContext);
-  const reduced = reduceFilters(filters, possibleFilters);
+  const { filters } = useContext(FilterContext)
+  const reduced = reduceFilters(filters, possibleFilters)
 
-  const [selectedItems, setSelectedItems] = useState(reduced);
+  const [selectedItems, setSelectedItems] = useState(reduced)
 
   //once the filters are initialized, initialize selectedItems
   useEffect(
     function () {
       if (!initialized) {
         if (Object.keys(reduced).filter((key) => reduced[key]?.length > 0)?.length > 0) {
-          setSelectedItems(reduced);
-          setInitialized(true);
+          setSelectedItems(reduced)
+          setInitialized(true)
         }
       }
     },
-    [reduced]
-  );
+    [reduced],
+  )
 
   const handleClickDialogOpen = (prop) => {
     if (!open.prop) {
-      setOpen({ ...open, [prop]: true });
+      setOpen({ ...open, [prop]: true })
     } else {
-      setOpen({ ...open, [prop]: !open[prop] });
+      setOpen({ ...open, [prop]: !open[prop] })
     }
-  };
+  }
 
   /**
    * The logic filtering and update logic
@@ -161,37 +161,37 @@ export default function FilterContent({
    */
   const handleClickDialogSave = (prop, results) => {
     if (results) {
-      const updatedFilters = { ...filters, [prop]: results.map((x) => x.name) };
-      handleUpdateFilters(updatedFilters);
+      const updatedFilters = { ...filters, [prop]: results.map((x) => x.name) }
+      handleUpdateFilters(updatedFilters)
       applyFilters({
         type: type,
         newFilters: updatedFilters,
         closeFilters: isSmallScreen,
         nonFilterParams: nonFilterParams,
-      });
+      })
     }
 
-    setOpen({ ...open, [prop]: false });
-  };
+    setOpen({ ...open, [prop]: false })
+  }
 
   /**
    * Handler when dismissing or closing (clicking the "X")
    * a dialog or modal.
    */
   const handleClickDialogClose = (prop) => {
-    setOpen({ ...open, [prop]: false });
-  };
+    setOpen({ ...open, [prop]: false })
+  }
 
   const handleValueChange = (key, newValue) => {
-    const updatedFilters = { ...filters, [key]: newValue };
+    const updatedFilters = { ...filters, [key]: newValue }
     applyFilters({
       type: type,
       newFilters: updatedFilters,
       closeFilters: isSmallScreen,
       nonFilterParams: nonFilterParams,
-    });
-    handleUpdateFilters(updatedFilters);
-  };
+    })
+    handleUpdateFilters(updatedFilters)
+  }
 
   const handleApplyFilters = () => {
     applyFilters({
@@ -199,33 +199,33 @@ export default function FilterContent({
       newFilters: filters,
       closeFilters: isSmallScreen,
       nonFilterParams: nonFilterParams,
-    });
-  };
+    })
+  }
 
   const getUpdatedFiltersAfterUnselect = (filterName, filterKey) => {
     //location is the only filter that can be unselected and is not supposed to be an array
-    if (filterKey === "location") {
+    if (filterKey === 'location') {
       const newFilters = {
         ...filters,
-        [filterKey]: "",
-      };
-      const locationFilterKeys = getLocationFilterKeys();
-      for (const key of locationFilterKeys) {
-        newFilters[key] = "";
+        [filterKey]: '',
       }
-      return newFilters;
+      const locationFilterKeys = getLocationFilterKeys()
+      for (const key of locationFilterKeys) {
+        newFilters[key] = ''
+      }
+      return newFilters
     }
     // Ensure that the filtered value is an array, e.g.
     // we can't filter on a raw string like "Energy".
     if (!Array.isArray(filters[filterKey])) {
-      filters[filterKey] = [filters[filterKey]];
+      filters[filterKey] = [filters[filterKey]]
     }
-    const prunedFilters = filters[filterKey].filter((f) => f !== filterName);
+    const prunedFilters = filters[filterKey].filter((f) => f !== filterName)
     return {
       ...filters,
       [filterKey]: prunedFilters,
-    };
-  };
+    }
+  }
 
   /**
    * Reapplies filters based on two given strings: the
@@ -233,7 +233,7 @@ export default function FilterContent({
    * key (e.g. "category").
    */
   const handleUnselectFilter = (filterName, filterKey) => {
-    const updatedFilters = getUpdatedFiltersAfterUnselect(filterName, filterKey);
+    const updatedFilters = getUpdatedFiltersAfterUnselect(filterName, filterKey)
     // When dismissing a selected filter chip, we also want to update the
     // window state to reflect the currently active filters, and fetch
     // the updated data from the server
@@ -242,17 +242,17 @@ export default function FilterContent({
       newFilters: updatedFilters,
       closeFilters: isSmallScreen,
       nonFilterParams: nonFilterParams,
-    });
-    handleUpdateFilters(updatedFilters);
+    })
+    handleUpdateFilters(updatedFilters)
 
     // Also re-select items
     if (selectedItems[filterKey]) {
       setSelectedItems({
         ...selectedItems,
         [filterKey]: selectedItems[filterKey].filter((i) => i.name !== filterName),
-      });
+      })
     }
-  };
+  }
 
   return (
     <div className={className}>
@@ -285,7 +285,7 @@ export default function FilterContent({
           handleClickDialogOpen={handleClickDialogOpen}
           handleSetLocationOptionsOpen={handleSetLocationOptionsOpen}
           handleValueChange={handleValueChange}
-          justifyContent={"center"}
+          justifyContent={'center'}
           locationInputRef={locationInputRef}
           locationOptionsOpen={locationOptionsOpen}
           open={open}
@@ -301,5 +301,5 @@ export default function FilterContent({
         possibleFilters={possibleFilters}
       />
     </div>
-  );
+  )
 }

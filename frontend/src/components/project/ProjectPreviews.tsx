@@ -1,23 +1,23 @@
-import React, { useContext, useState } from "react";
-import { Grid } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import LoadingSpinner from "../general/LoadingSpinner";
-import ProjectPreview from "./ProjectPreview";
-import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { Grid } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import LoadingSpinner from '../general/LoadingSpinner'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
+import ProjectPreview from './ProjectPreview'
 
 const useStyles = makeStyles({
   reset: {
     margin: 0,
     padding: 0,
-    listStyleType: "none",
-    width: "100%",
+    listStyleType: 'none',
+    width: '100%',
   },
   items: {
-    padding: "8px",
+    padding: '8px',
   },
-});
+})
 
 // This component is to display projects with the option to infinitely scroll to get more projects
 export default function ProjectPreviews({
@@ -29,34 +29,34 @@ export default function ProjectPreviews({
   displayOnePreviewInRow,
   parentHandlesGridItems,
 }: any) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
 
   const toProjectPreviews = (projects) =>
-    (projects || []).map((p) => <GridItem key={p.url_slug} project={p} hubUrl={hubUrl} />);
+    (projects || []).map((p) => <GridItem key={p.url_slug} project={p} hubUrl={hubUrl} />)
 
-  const [gridItems, setGridItems] = useState(toProjectPreviews(projects));
+  const [gridItems, setGridItems] = useState(toProjectPreviews(projects))
 
   const loadMore = async () => {
     if (loadFunc) {
-      const newProjects = await loadFunc();
+      const newProjects = await loadFunc()
       if (!parentHandlesGridItems) {
-        setGridItems([...gridItems, ...toProjectPreviews(newProjects)]);
+        setGridItems([...gridItems, ...toProjectPreviews(newProjects)])
       }
     }
-  };
+  }
 
   const { lastElementRef } = useInfiniteScroll({
     hasMore: hasMore || false,
     isLoading: isLoading,
     onLoadMore: loadMore,
-  });
+  })
 
-  const displayedProjects = parentHandlesGridItems ? projects : gridItems;
+  const displayedProjects = parentHandlesGridItems ? projects : gridItems
 
   if (!displayedProjects || displayedProjects.length === 0) {
-    return <div>{texts.no_projects_found}</div>;
+    return <div>{texts.no_projects_found}</div>
   }
 
   const columnValuesFromBreakpoint = {
@@ -64,13 +64,13 @@ export default function ProjectPreviews({
     smValue: displayOnePreviewInRow ? 12 : 6,
     mdValue: displayOnePreviewInRow ? 12 : 4,
     lgValue: displayOnePreviewInRow ? 12 : 3,
-  } as const;
+  } as const
 
   return (
     <>
       <Grid container spacing={1} className={classes.reset} component="ul">
         {displayedProjects.map((project, index) => {
-          const isLastElement = index === displayedProjects.length - 1;
+          const isLastElement = index === displayedProjects.length - 1
           return (
             <Grid
               item
@@ -85,14 +85,14 @@ export default function ProjectPreviews({
             >
               {project.props ? project : <ProjectPreview project={project} hubUrl={hubUrl} />}
             </Grid>
-          );
+          )
         })}
       </Grid>
       {isLoading && <LoadingSpinner isLoading />}
     </>
-  );
+  )
 }
 
 function GridItem({ project, hubUrl }) {
-  return <ProjectPreview project={project} hubUrl={hubUrl} />;
+  return <ProjectPreview project={project} hubUrl={hubUrl} />
 }

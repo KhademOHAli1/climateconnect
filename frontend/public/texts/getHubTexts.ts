@@ -1,79 +1,75 @@
-import { getFashionHubDescription } from "./hubDescriptions/fashion";
-import { getFoodHubDescription } from "./hubDescriptions/food";
+import { getFashionHubDescription } from './hubDescriptions/fashion'
+import { getFoodHubDescription } from './hubDescriptions/food'
 
 export default function getHubTexts({ hubName, hubAmbassador }) {
   const generalHubTexts = {
     search_for_solutions_in_sector: {
-      en: "Search for climate solutions in the " + hubName + " sector",
-      de: "Durchsuche Klimaschutzprojekte im Bereich " + hubName,
+      en: 'Search for climate solutions in the ' + hubName + ' sector',
+      de: 'Durchsuche Klimaschutzprojekte im Bereich ' + hubName,
     },
     search_projects_in_location: {
-      en: "Search climate projects in " + hubName,
-      de: "Suche Klimaprojekte in " + hubName,
+      en: 'Search climate projects in ' + hubName,
+      de: 'Suche Klimaprojekte in ' + hubName,
     },
     search_ideas_in_location: {
-      en: "Find inspiring climate ideas from " + hubName,
-      de: "Finde inspirierende Klimaschutz-Ideen aus " + hubName,
+      en: 'Find inspiring climate ideas from ' + hubName,
+      de: 'Finde inspirierende Klimaschutz-Ideen aus ' + hubName,
     },
     search_for_organizations_in_sector: {
-      en: "Search for climate organisations in the " + hubName + " sector",
-      de: "Durchsuche Klimaschutzorganisationen im Bereich " + hubName,
+      en: 'Search for climate organisations in the ' + hubName + ' sector',
+      de: 'Durchsuche Klimaschutzorganisationen im Bereich ' + hubName,
     },
     search_organization_in_location: {
-      en: "Search organisations in " + hubName,
-      de: "Suche Organisationen in " + hubName,
+      en: 'Search organisations in ' + hubName,
+      de: 'Suche Organisationen in ' + hubName,
     },
     search_profiles_in_location: {
-      en: "Search climate actors in " + hubName,
-      de: "Suche Klimaschützer*innen in " + hubName,
+      en: 'Search climate actors in ' + hubName,
+      de: 'Suche Klimaschützer*innen in ' + hubName,
     },
     more_info_about_hub_coming_soon: {
-      en:
-        "More Info coming soon! Have a look at the projects and solutions submitted by Climate Connect users below!",
-      de:
-        "Mehr Infos kommen in Kürze! Schau dir unten die Projekte und Lösungen an, die von Climate Connect Nutzern erstellt wurden!",
+      en: 'More Info coming soon! Have a look at the projects and solutions submitted by Climate Connect users below!',
+      de: 'Mehr Infos kommen in Kürze! Schau dir unten die Projekte und Lösungen an, die von Climate Connect Nutzern erstellt wurden!',
     },
     less_info: {
-      en: "Less Info",
-      de: "Weniger Infos",
+      en: 'Less Info',
+      de: 'Weniger Infos',
     },
     more_info: {
-      en: "More Info",
-      de: "Mehr Infos",
+      en: 'More Info',
+      de: 'Mehr Infos',
     },
     show_projects: {
-      en: "Show Projects",
-      de: "Zeige Projekte",
+      en: 'Show Projects',
+      de: 'Zeige Projekte',
     },
     browse_explainer_text: {
-      en: "Find impactful climate change solutions created by Climate Connect users.",
-      de: "Finde wirksame Klimaschutzprojekte von anderen Climate Connect Nutzer:innen.",
+      en: 'Find impactful climate change solutions created by Climate Connect users.',
+      de: 'Finde wirksame Klimaschutzprojekte von anderen Climate Connect Nutzer:innen.',
     },
     loading_chart: {
-      en: "Loading Chart",
-      de: "Lade Diagramm",
+      en: 'Loading Chart',
+      de: 'Lade Diagramm',
     },
     climate_action_hubs: {
-      en: "Climate Action Hubs",
-      de: "Klimaschutz Hubs",
+      en: 'Climate Action Hubs',
+      de: 'Klimaschutz Hubs',
     },
     hubs_overview_image_alt: {
-      en: "Beautiful flat landscape with many hot air balloons taking off",
-      de: "Schöne flache Landschaft mit vielen abhebenden Heißluftballons",
+      en: 'Beautiful flat landscape with many hot air balloons taking off',
+      de: 'Schöne flache Landschaft mit vielen abhebenden Heißluftballons',
     },
     find_climate_solutions_in_each_hub: {
-      en: "Find climate solutions in each hub",
-      de: "Finde Klima-Lösungen in jedem Hub",
+      en: 'Find climate solutions in each hub',
+      de: 'Finde Klima-Lösungen in jedem Hub',
     },
     find_the_best_ways_to_tackle_climate_change_in_each_sector: {
-      en: "Find the best ways to tackle climate change in each sector",
-      de: "Finde die besten Wege, den Klimawandel in jedem Bereich zu bekämpfen",
+      en: 'Find the best ways to tackle climate change in each sector',
+      de: 'Finde die besten Wege, den Klimawandel in jedem Bereich zu bekämpfen',
     },
     hubs_overview_mobile_explainer_text: {
-      en:
-        "Find information and concrete solutions on how to effectively fight climate change in each sector.",
-      de:
-        "Finde Informationen und konkrete Lösungen wie Klimawandel in jedem Bereich effektiv bekämpft werden kann.",
+      en: 'Find information and concrete solutions on how to effectively fight climate change in each sector.',
+      de: 'Finde Informationen und konkrete Lösungen wie Klimawandel in jedem Bereich effektiv bekämpft werden kann.',
     },
     hubs_overview_largescreen_explainer_text_first_part: {
       en: `On the hub pages you can find information on how to effectively fight climate change in each
@@ -96,8 +92,8 @@ export default function getHubTexts({ hubName, hubAmbassador }) {
       und jedes Zehntel-Grad zählt.`,
     },
     find_climate_projects_in_each_sector_in_our_hubs: {
-      en: "Find climate projects in each sector in our hubs",
-      de: "Finde Klimaprojekte in jedem Sektor in unseren Hubs",
+      en: 'Find climate projects in each sector in our hubs',
+      de: 'Finde Klimaprojekte in jedem Sektor in unseren Hubs',
     },
     find_climate_projects_in_each_sector_in_our_hubs_text: {
       en: `Discover facts and concrete climate actions, projects and solutions Climate Connect users
@@ -108,8 +104,8 @@ export default function getHubTexts({ hubName, hubAmbassador }) {
       Handlungsfelder im Kampf gegen den Klimawandel.`,
     },
     click_here_to_minimize_info: {
-      en: "Click here to minimize the info about the hub",
-      de: "Klicke hier, um den Info-Bereich der Hub auszublenden",
+      en: 'Click here to minimize the info about the hub',
+      de: 'Klicke hier, um den Info-Bereich der Hub auszublenden',
     },
     please_create_an_account_or_log_in_to_contact_the_ambassador: {
       en: `Please sign up to contact ${hubAmbassador?.user?.first_name}.`,
@@ -120,32 +116,32 @@ export default function getHubTexts({ hubName, hubAmbassador }) {
       de: `${hubAmbassador?.title} kontaktieren`,
     },
     all_locations: {
-      en: "All Locations",
-      de: "Alle Orte",
+      en: 'All Locations',
+      de: 'Alle Orte',
     },
     do_you_need_support: {
-      en: "Do you need support?",
-      de: "Brauchst du Unterstützung?",
+      en: 'Do you need support?',
+      de: 'Brauchst du Unterstützung?',
     },
     local_ambassador_is_there_for_you: {
       en: `${hubAmbassador?.user?.first_name} is responsible for the ClimateHub ${hubName} and is there for you.`,
       de: `${hubAmbassador?.user?.first_name} koordiniert den ClimateHub ${hubName} und ist für dich da.`,
     },
     all_supporters: {
-      en: "All supporters",
-      de: "Alle Unterstützer",
+      en: 'All supporters',
+      de: 'Alle Unterstützer',
     },
     the_climatehub_is_supported_by: {
-      en: "The ClimateHub is supported by",
-      de: "Der ClimateHub wird unterstützt durch",
+      en: 'The ClimateHub is supported by',
+      de: 'Der ClimateHub wird unterstützt durch',
     },
     all_supporters_and_sponsoring_members: {
-      en: "All supporters of the ClimateHub",
-      de: "Alle Unterstützer und Fördermitglieder des ClimateHub",
+      en: 'All supporters of the ClimateHub',
+      de: 'Alle Unterstützer und Fördermitglieder des ClimateHub',
     },
     would_you_like_to_support_the_ClimateHub: {
-      en: "Would you also like to support the ClimateHub?",
-      de: "Du möchtest den ClimateHub auch unterstützen?",
+      en: 'Would you also like to support the ClimateHub?',
+      de: 'Du möchtest den ClimateHub auch unterstützen?',
     },
     you_are_seeing_projects_related_to: {
       en: `You are seeing projects, ideas and events related to the topic "${hubName}"`,
@@ -159,10 +155,10 @@ export default function getHubTexts({ hubName, hubAmbassador }) {
       en: `You are seeing people interested in the topic "${hubName}"`,
       de: `Du siehst Menschen, die sich für das Thema "${hubName}" interessieren`,
     },
-  };
+  }
 
-  if (hubName === "Fashion") return { ...generalHubTexts, ...getFashionHubDescription() };
-  if (hubName === "Food") return { ...generalHubTexts, ...getFoodHubDescription() };
+  if (hubName === 'Fashion') return { ...generalHubTexts, ...getFashionHubDescription() }
+  if (hubName === 'Food') return { ...generalHubTexts, ...getFoodHubDescription() }
 
-  return generalHubTexts;
+  return generalHubTexts
 }

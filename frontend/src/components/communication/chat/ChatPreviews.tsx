@@ -7,19 +7,19 @@ import {
   Theme,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import PropTypes from "prop-types";
-import React, { Fragment, useContext } from "react";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import { getDateTime } from "../../../../public/lib/dateOperations";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
-import LoadingSpinner from "../../general/LoadingSpinner";
-import MiniProfilePreview from "../../profile/MiniProfilePreview";
-import ChatTitle from "./ChatTitle";
-import MobileChatPreview from "./MobileChatPreview";
-import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment, useContext } from 'react'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import { getDateTime } from '../../../../public/lib/dateOperations'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
+import LoadingSpinner from '../../general/LoadingSpinner'
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll'
+import MiniProfilePreview from '../../profile/MiniProfilePreview'
+import ChatTitle from './ChatTitle'
+import MobileChatPreview from './MobileChatPreview'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.grey[600],
     },
     unreadBadge: {
-      "& span": {
+      '& span': {
         backgroundColor: theme.palette.success.main,
       },
     },
@@ -35,39 +35,39 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.success.main,
     },
     miniProfilePreview: {
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center',
       flexBasis: 250,
       flexShrink: 0,
     },
     unreadPreview: {
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
     contentPreview: {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      display: "block",
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      display: 'block',
     },
     badgeAndTimeContainer: {
-      float: "right",
+      float: 'right',
       height: 40,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     NoChatsMessage: {
       marginTop: theme.spacing(2),
-      textAlign: "center",
+      textAlign: 'center',
       maxWidth: 600,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     listItem: {
-      display: "flex",
+      display: 'flex',
     },
-  };
-});
+  }
+})
 
 export default function ChatPreviews({
   chats,
@@ -76,22 +76,22 @@ export default function ChatPreviews({
   chatSearchEnabled,
   isLoading = false,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "chat", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'chat', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
 
   const loadMore = async () => {
     if (loadFunc) {
-      await loadFunc();
+      await loadFunc()
     }
-  };
+  }
 
   const { lastElementRef } = useInfiniteScroll({
     hasMore: hasMore || false,
     isLoading: isLoading,
     onLoadMore: loadMore,
-  });
+  })
 
   if (chats.length === 0 && !chatSearchEnabled)
     return (
@@ -101,7 +101,7 @@ export default function ChatPreviews({
           {texts.you_havent_chatted_to_anybody_yet_click_on}
         </Typography>
       </>
-    );
+    )
   if (chats.length === 0 && chatSearchEnabled)
     return (
       <>
@@ -110,13 +110,13 @@ export default function ChatPreviews({
           {texts.no_chats_found_for_this_search}
         </Typography>
       </>
-    );
+    )
 
   return (
     <>
       <List>
         {chats.map((chat, index) => {
-          const isLastElement = index === chats.length - 1;
+          const isLastElement = index === chats.length - 1
           return (
             <ChatPreview
               key={index}
@@ -126,21 +126,21 @@ export default function ChatPreviews({
               locale={locale}
               forwardedRef={isLastElement ? lastElementRef : null}
             />
-          );
+          )
         })}
       </List>
       {isLoading && <LoadingSpinner isLoading />}
     </>
-  );
+  )
 }
 
 const ChatPreview = ({ chat, isNarrowScreen, isFirstChat, locale, forwardedRef }) => {
-  const lastAction = chat.last_message ? chat.last_message.sent_at : chat.created_at;
-  if (!lastAction) console.log(chat);
-  const classes = useStyles();
+  const lastAction = chat.last_message ? chat.last_message.sent_at : chat.created_at
+  if (!lastAction) console.log(chat)
+  const classes = useStyles()
 
   if (isNarrowScreen)
-    return <MobileChatPreview chat={chat} isFirstChat={isFirstChat} forwardedRef={forwardedRef} />;
+    return <MobileChatPreview chat={chat} isFirstChat={isFirstChat} forwardedRef={forwardedRef} />
   else
     return (
       <Fragment>
@@ -149,7 +149,7 @@ const ChatPreview = ({ chat, isNarrowScreen, isFirstChat, locale, forwardedRef }
           ref={forwardedRef}
           button
           component="a"
-          href={getLocalePrefix(locale) + "/chat/" + chat.chat_uuid}
+          href={getLocalePrefix(locale) + '/chat/' + chat.chat_uuid}
           alignItems="center"
           className={classes.listItem}
         >
@@ -173,7 +173,7 @@ const ChatPreview = ({ chat, isNarrowScreen, isFirstChat, locale, forwardedRef }
               <>
                 <span
                   className={`${classes.contentPreview} ${
-                    chat.unread_count ? classes.unreadPreview : ""
+                    chat.unread_count ? classes.unreadPreview : ''
                   }`}
                 >
                   {chat.content}
@@ -198,9 +198,9 @@ const ChatPreview = ({ chat, isNarrowScreen, isFirstChat, locale, forwardedRef }
         </ListItem>
         <Divider component="li" />
       </Fragment>
-    );
-};
+    )
+}
 
 ChatPreviews.propTypes = {
   chats: PropTypes.array.isRequired,
-};
+}

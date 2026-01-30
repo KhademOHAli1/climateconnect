@@ -1,35 +1,35 @@
 //global imports
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react'
 
 export default function BottomOfPage({ initBottomOfPage, marginToTrigger }) {
-  const [bottomOfPage, setBottomOfPage] = useState(initBottomOfPage);
+  const [bottomOfPage, setBottomOfPage] = useState(initBottomOfPage)
 
   useEffect(() => {
-    let ticking = false;
+    let ticking = false
 
     const updateBottomOfPage = () => {
-      const scrollY = window.scrollY;
-      const triggerMargin = marginToTrigger ? marginToTrigger : 0;
+      const scrollY = window.scrollY
+      const triggerMargin = marginToTrigger ? marginToTrigger : 0
       setBottomOfPage(
         parseInt(String(window.innerHeight)) +
           parseInt(String(scrollY)) +
           parseInt(triggerMargin) >=
-          document.body.offsetHeight
-      );
-      ticking = false;
-    };
+          document.body.offsetHeight,
+      )
+      ticking = false
+    }
 
     const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateBottomOfPage);
-        ticking = true;
+        window.requestAnimationFrame(updateBottomOfPage)
+        ticking = true
       }
-    };
+    }
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener('scroll', onScroll)
 
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [initBottomOfPage]);
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [initBottomOfPage])
 
-  return bottomOfPage;
+  return bottomOfPage
 }

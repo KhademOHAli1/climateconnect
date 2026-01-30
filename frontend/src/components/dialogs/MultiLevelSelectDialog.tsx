@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import MultiLevelSelector from "../general/MultiLevelSelector";
-import GenericDialog from "./GenericDialog";
-import SaveIcon from "@mui/icons-material/Save";
+import SaveIcon from '@mui/icons-material/Save'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import MultiLevelSelector from '../general/MultiLevelSelector'
+import GenericDialog from './GenericDialog'
 
 export default function MultiLevelSelectDialog({
   options,
@@ -21,46 +21,46 @@ export default function MultiLevelSelectDialog({
    * update the persisted URL, re-fetch the data,
    * and close the dialog.
    */
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "general", locale: locale });
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'general', locale: locale })
 
   const applySkills = (shouldSave: boolean) => {
     if (onSave && shouldSave) {
-      onSave(selectedItems);
+      onSave(selectedItems)
     }
-    onClose(selectedItems);
-  };
+    onClose(selectedItems)
+  }
 
-  const itemNamePlural = texts[type];
+  const itemNamePlural = texts[type]
 
-  const possibleItems = options;
+  const possibleItems = options
 
   // Alphabetize options by name
   possibleItems?.sort((a, b) => {
     if (a?.name?.toUpperCase() < b?.name?.toUpperCase()) {
-      return -1;
+      return -1
     }
 
     if (a?.name?.toUpperCase() > b?.name?.toUpperCase()) {
-      return 1;
+      return 1
     }
 
-    return 0;
-  });
+    return 0
+  })
 
   const getTitle = () => {
     if (title) {
-      return title;
+      return title
     } else {
-      if (locale === "de") {
-        return `${itemNamePlural} ${texts.add}`;
+      if (locale === 'de') {
+        return `${itemNamePlural} ${texts.add}`
       }
       //For english and other locales
-      return texts.add + " " + itemNamePlural;
+      return texts.add + ' ' + itemNamePlural
     }
-  };
+  }
 
-  const renderedTitle = getTitle();
+  const renderedTitle = getTitle()
 
   return (
     <GenericDialog
@@ -82,5 +82,5 @@ export default function MultiLevelSelectDialog({
         setSelected={setSelectedItems}
       />
     </GenericDialog>
-  );
+  )
 }

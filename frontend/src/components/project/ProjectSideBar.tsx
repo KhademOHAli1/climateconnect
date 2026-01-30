@@ -1,17 +1,17 @@
-import React from "react";
-import { Button, IconButton, Typography, Divider } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import ProjectPreviews from "./ProjectPreviews";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
-import HubSupporters from "../hub/HubSupporters";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import { Button, Divider, IconButton, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import React from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import HubSupporters from '../hub/HubSupporters'
+import ProjectPreviews from './ProjectPreviews'
 
 type useStylesProps = {
-  isSmallScreen: boolean;
-};
+  isSmallScreen: boolean
+}
 
 const useStyles = makeStyles((theme) => ({
   projectCard: {
@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
   },
 
   smallSimilarProjectsContainer: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   subHeader: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: theme.spacing(1),
   },
   divider: {
@@ -34,24 +34,24 @@ const useStyles = makeStyles((theme) => ({
   },
 
   largeSimilarProjectsContainer: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
     borderRadius: 10,
-    backgroundColor: "#f0f2f5",
-    maxWidth: "100%",
+    backgroundColor: '#f0f2f5',
+    maxWidth: '100%',
   },
   showAllProjectsButton: (props: useStylesProps) => ({
     marginBottom: props.isSmallScreen ? theme.spacing(0) : theme.spacing(1),
     marginTop: props.isSmallScreen ? theme.spacing(0) : theme.spacing(1),
     fontSize: props.isSmallScreen ? 14 : 12,
-    width: props.isSmallScreen ? "100%" : "95%",
+    width: props.isSmallScreen ? '100%' : '95%',
     color: theme.palette.background.default_contrastText,
     borderColor: theme.palette.background.default_contrastText,
   }),
   supporterSliderWidth: {
-    width: "95%",
-    marginTop: "8px",
+    width: '95%',
+    marginTop: '8px',
     marginBottom: theme.spacing(2),
     [`@media (min-width: 900px) and (max-width: 1200px)`]: {
       marginLeft: 0,
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   expandButton: {
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function ProjectSideBar({
   similarProjects,
@@ -74,10 +74,10 @@ export default function ProjectSideBar({
 }) {
   const classes = useStyles({
     isSmallScreen: isSmallScreen,
-  });
+  })
 
-  const link = getLocalePrefix(locale) + "/browse";
-  const shouldDisplayOneProjectInRow = !isSmallScreen;
+  const link = getLocalePrefix(locale) + '/browse'
+  const shouldDisplayOneProjectInRow = !isSmallScreen
 
   return (
     <>
@@ -135,5 +135,5 @@ export default function ProjectSideBar({
         )}
       </div>
     </>
-  );
+  )
 }

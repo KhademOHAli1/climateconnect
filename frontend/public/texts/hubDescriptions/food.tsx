@@ -1,11 +1,11 @@
-import { Link } from "@mui/material";
-import React from "react";
+import { Link } from '@mui/material'
+import React from 'react'
 
 export function getFoodHubDescription() {
   return {
     food_headline: {
-      en: "Animal products are especially harmful to our climate",
-      de: "Tierische Produkte sind besonders schädlich für unser Klima",
+      en: 'Animal products are especially harmful to our climate',
+      de: 'Tierische Produkte sind besonders schädlich für unser Klima',
     },
     food_introduction: {
       en: `So what is causing the environmental footprint of food to be so large? By rule of thumb
@@ -23,12 +23,12 @@ export function getFoodHubDescription() {
       weil Kühe große Mengen an Methan produzieren, ein viel stärkeres Treibhausgas als CO2.`,
     },
     emissions_per_calories_chart_title: {
-      en: "Greenhouse gas emissions per 1000 kilocalories",
-      de: "Treibhausgasemissionen pro 1000 Kilokalorien",
+      en: 'Greenhouse gas emissions per 1000 kilocalories',
+      de: 'Treibhausgasemissionen pro 1000 Kilokalorien',
     },
     vegan_most_climate_friendly: {
-      en: "Vegan and vegetarian diets are most climate-friendly",
-      de: "Vegane und vegetarische Ernährung ist am klimafreundlichsten",
+      en: 'Vegan and vegetarian diets are most climate-friendly',
+      de: 'Vegane und vegetarische Ernährung ist am klimafreundlichsten',
     },
     vegan_most_climate_friendly_text: {
       en: (
@@ -37,13 +37,13 @@ export function getFoodHubDescription() {
           seen in the graph below we can drastically lower the carbon footprint of food by eating a
           vegan or vegatarian diet. But even lowering meat and dairy products can have a great
           impact and at scale can be more effective than a few people going vegan. Currently a diet
-          harmful to the climate is incentivized more than a climate friendly diet. According to{" "}
+          harmful to the climate is incentivized more than a climate friendly diet. According to{' '}
           <Link
             href="https://www.greenpeace.org/eu-unit/issues/nature-food/1803/feeding-problem-dangerous-intensification-animal-farming/"
             underline="hover"
           >
             research by Greenpeace
-          </Link>{" "}
+          </Link>{' '}
           the EU is currently spending around 71% of its farmland to feed livestock which is only
           possible because animal agriculture is subsidised with over € 28 billion per year.
         </>
@@ -56,13 +56,13 @@ export function getFoodHubDescription() {
           Konsum von Fleisch und Milchprodukten kann eine große Wirkung haben und im Großen und
           Ganzen effektiver sein, als wenn sich nur wenige Menschen komplett vegan ernähren. Derzeit
           wird eine klimaschädliche Ernährung mehr gefördert als eine klimafreundliche Ernährung.
-          Laut{" "}
+          Laut{' '}
           <Link
             href="https://www.greenpeace.org/eu-unit/issues/nature-food/1803/feeding-problem-dangerous-intensification-animal-farming/"
             underline="hover"
           >
             Forschung von Greenpeace
-          </Link>{" "}
+          </Link>{' '}
           werden in der EU derzeit rund 71% der landwirtschaftlichen Nutzfläche für die Fütterung
           von Nutztieren verwendet, was nur durch Subventionen der Tierhaltung mit über 28 Mrd. €
           pro Jahr möglich ist.
@@ -70,13 +70,12 @@ export function getFoodHubDescription() {
       ),
     },
     avg_daily_co2_emissions_chart_title: {
-      en: "Average daily CO2e-emissions of different diets",
-      de: "Durchschnittliche tägliche CO2e-Emissionen verschiedener Diäten",
+      en: 'Average daily CO2e-emissions of different diets',
+      de: 'Durchschnittliche tägliche CO2e-Emissionen verschiedener Diäten',
     },
     seasonal_more_important_than_local: {
-      en: "Buying seasonal food has a bigger climate impact than buying local food",
-      de:
-        "Der Kauf von saisonalen Lebensmitteln hat einen größeren Einfluss auf das Klima als der Kauf von lokalen Lebensmitteln",
+      en: 'Buying seasonal food has a bigger climate impact than buying local food',
+      de: 'Der Kauf von saisonalen Lebensmitteln hat einen größeren Einfluss auf das Klima als der Kauf von lokalen Lebensmitteln',
     },
     seasonal_more_important_than_local_text: {
       en: (
@@ -86,13 +85,13 @@ export function getFoodHubDescription() {
           great too) but considering the urgency of fixing our climate it is very important to focus
           on what actually makes a difference. It’s even sometimes more climate friendly to buy
           products from other countries, produced in acquaintance with the local climate, than in
-          your country but using greenhouses. To illustrate this with some numbers:{" "}
+          your country but using greenhouses. To illustrate this with some numbers:{' '}
           <Link
             href="https://www.sciencedirect.com/science/article/abs/pii/S0921800902002616"
             underline="hover"
           >
-            a study{" "}
-          </Link>{" "}
+            a study{' '}
+          </Link>{' '}
           from Sweden shows that tomatoes produced in local greenhouses in Sweden outside of the
           season use 10 times more energy as importing tomatoes from Southern europe where they were
           in-season. This is mainly because heating greenhouses uses a lot of energy.
@@ -106,13 +105,13 @@ export function getFoodHubDescription() {
           unser Klima zu verbessern, ist der Fokus sehr wichtig auf das, was tatsächlich einen
           Unterschied macht. Manchmal ist es sogar klimafreundlicher, Produkte aus anderen Ländern
           zu kaufen, die im Einklang mit dem lokalen Klima produziert werden, als in deinem Land, wo
-          Gewächshäusern eingesetzt werden müsse. Um dies mit einigen Zahlen zu verdeutlichen:{" "}
+          Gewächshäusern eingesetzt werden müsse. Um dies mit einigen Zahlen zu verdeutlichen:{' '}
           <Link
             href="https://www.sciencedirect.com/science/article/abs/pii/S0921800902002616"
             underline="hover"
           >
-            eine Studie{" "}
-          </Link>{" "}
+            eine Studie{' '}
+          </Link>{' '}
           aus Schweden zeigt, dass Tomaten, die in lokalen Gewächshäusern in Schweden außerhalb der
           Saison produziert wurden, 10-mal mehr Energie verbrauchen als der Import von Tomaten aus
           Südeuropa während der Saison. Das liegt vor allem daran, dass das Beheizen von
@@ -121,15 +120,12 @@ export function getFoodHubDescription() {
       ),
     },
     food_waste: {
-      en: "Food waste is responsible for 23% of emissions caused by food",
-      de:
-        "Lebensmittelabfälle sind für 23% der durch Lebensmittel verursachten Emissionen verantwortlich",
+      en: 'Food waste is responsible for 23% of emissions caused by food',
+      de: 'Lebensmittelabfälle sind für 23% der durch Lebensmittel verursachten Emissionen verantwortlich',
     },
     foodwaste_chart_alt: {
-      en:
-        "Bar chart illustrating that food production is responsible for 26% of co2 emissions from which 6% food is never eaten",
-      de:
-        "Das Balkendiagramm veranschaulicht, dass die Lebensmittelproduktion für 26% der CO2-Emissionen verantwortlich ist, von denen jedoch 6% nie gegessen werden",
+      en: 'Bar chart illustrating that food production is responsible for 26% of co2 emissions from which 6% food is never eaten',
+      de: 'Das Balkendiagramm veranschaulicht, dass die Lebensmittelproduktion für 26% der CO2-Emissionen verantwortlich ist, von denen jedoch 6% nie gegessen werden',
     },
     food_waste_text: {
       en: `Around 30% of all food is wasted. This accounts for 6% of total greenhouse gas emissions!
@@ -156,8 +152,8 @@ export function getFoodHubDescription() {
       sinnlosen Verluste stark reduzieren.`,
     },
     lab_grown_meat_could_be_a_game_changer: {
-      en: "Lab-grown meat could be a game changer",
-      de: "Im Labor gezüchtetes Fleisch könnte unser Leben verändern",
+      en: 'Lab-grown meat could be a game changer',
+      de: 'Im Labor gezüchtetes Fleisch könnte unser Leben verändern',
     },
     lab_grown_meat_could_be_a_game_changer_text: {
       en: (
@@ -169,7 +165,7 @@ export function getFoodHubDescription() {
           first producing it on large scale would allow us to stop wasting land and energy and
           forcing animals to grow up in horrible conditions while still being able to eat a product
           that is exactly the same as meat from an animal. Just recently the Singapore Food Acency
-          was{" "}
+          was{' '}
           <Link
             href="https://www.theguardian.com/environment/2020/dec/02/no-kill-lab-grown-meat-to-go-on-sale-for-first-time"
             underline="hover"
@@ -178,13 +174,13 @@ export function getFoodHubDescription() {
           </Link>
           . While lab-grown meat will be much more expensive when it starts being sold (likely in
           2021) the price will rapidly decrease as larger amounts are produced and more competition
-          enters the market. According to{" "}
+          enters the market. According to{' '}
           <Link
             href="https://edu.gcfglobal.org/en/thenow/what-is-labgrown-meat/1/"
             underline="hover"
           >
             GCFGlobal
-          </Link>{" "}
+          </Link>{' '}
           Lab grown meat is significantly more climate-friendly as it requires 45% less energy,
           99%(!) less land use, and produces 96% fewer greenhouse gas emissions.
         </>
@@ -199,7 +195,7 @@ export function getFoodHubDescription() {
           seltsam klingt, die Produktion in großem Maßstab würde es uns ermöglichen, die
           Verschwendung von Land und Energie und das Zwingen von Tieren, unter schrecklichen
           Bedingungen aufzuwachsen, zu beenden und wir können immer noch ein Produkt essen, das
-          genau dasselbe wie Fleisch von einem Tier ist. Erst kürzlich war die Singapore Food Acency{" "}
+          genau dasselbe wie Fleisch von einem Tier ist. Erst kürzlich war die Singapore Food Acency{' '}
           <Link
             href="https://www.theguardian.com/environment/2020/dec/02/no-kill-lab-grown-meat-to-go-on-sale-for-first-time"
             underline="hover"
@@ -209,22 +205,21 @@ export function getFoodHubDescription() {
           </Link>
           . Während Fleisch aus dem Labor zu Beginn viel teurer sein wird (Verkaufsstart
           wahrscheinlich im Jahr 2021), wird der Preis schnell sinken, wenn größere Mengen
-          produziert werden und mehr Konkurrenz auf den Markt kommt. Laut{" "}
+          produziert werden und mehr Konkurrenz auf den Markt kommt. Laut{' '}
           <Link
             href="https://edu.gcfglobal.org/en/thenow/what-is-labgrown-meat/1/"
             underline="hover"
           >
             GCFGlobal
-          </Link>{" "}
+          </Link>{' '}
           ist Fleisch aus dem Labor deutlich klimafreundlicher, da es 45% weniger Energie, 99%(!)
           weniger Landverbrauch benötigt und 96% weniger Treibhausgasemissionen produziert.
         </>
       ),
     },
     scalable_solutions_needed: {
-      en: "We need scalable solution to reduce emissions from food in time",
-      de:
-        "Wir brauchen eine skalierbare Lösung, um Emissionen aus Lebensmitteln rechtzeitig zu reduzieren",
+      en: 'We need scalable solution to reduce emissions from food in time',
+      de: 'Wir brauchen eine skalierbare Lösung, um Emissionen aus Lebensmitteln rechtzeitig zu reduzieren',
     },
     scalable_solutions_needed_text: {
       en: `Making changes in our personal life makes a difference but we {"don't"} have time to wait
@@ -252,60 +247,60 @@ export function getFoodHubDescription() {
       de: `Lass uns gemeinsam daran arbeiten, unseren Planeten zu reparieren! Klick unten auf "Lösung anzeigen"!`,
     },
     meat_lover: {
-      en: "Meat lover",
-      de: "Fleischliebend",
+      en: 'Meat lover',
+      de: 'Fleischliebend',
     },
     low_meat_diet: {
-      en: "Low meat diet",
-      de: "Fleischarme Ernährung",
+      en: 'Low meat diet',
+      de: 'Fleischarme Ernährung',
     },
     vegetarian: {
-      en: "Vegetarian",
-      de: "Vegetarisch",
+      en: 'Vegetarian',
+      de: 'Vegetarisch',
     },
     vegan: {
-      en: "Vegan",
-      de: "Vegan",
+      en: 'Vegan',
+      de: 'Vegan',
     },
     beef_from_beef_herd: {
-      en: "Beef (beef herd)",
-      de: "Rindfleisch (Rinderherde)",
+      en: 'Beef (beef herd)',
+      de: 'Rindfleisch (Rinderherde)',
     },
     beef_from_dairy_herd: {
-      en: "Beef (dairy herd)",
-      de: "Rindfleisch (Milchviehherde)",
+      en: 'Beef (dairy herd)',
+      de: 'Rindfleisch (Milchviehherde)',
     },
     fish_farmed: {
-      en: "Fish (farmed)",
-      de: "Fisch (gezüchtet)",
+      en: 'Fish (farmed)',
+      de: 'Fisch (gezüchtet)',
     },
     cheese: {
-      en: "Cheese",
-      de: "Käse",
+      en: 'Cheese',
+      de: 'Käse',
     },
     pig_meat: {
-      en: "Pig Meat",
-      de: "Schweinefleisch",
+      en: 'Pig Meat',
+      de: 'Schweinefleisch',
     },
     eggs: {
-      en: "Eggs",
-      de: "Eier",
+      en: 'Eggs',
+      de: 'Eier',
     },
     rice: {
-      en: "Rice",
-      de: "Reis",
+      en: 'Rice',
+      de: 'Reis',
     },
     oatmeal: {
-      en: "Oatmeal",
-      de: "Haferflocken",
+      en: 'Oatmeal',
+      de: 'Haferflocken',
     },
     potatoes: {
-      en: "Potatoes",
-      de: "Kartoffeln",
+      en: 'Potatoes',
+      de: 'Kartoffeln',
     },
     nuts: {
-      en: "Nuts",
-      de: "Nüsse",
+      en: 'Nuts',
+      de: 'Nüsse',
     },
-  };
+  }
 }

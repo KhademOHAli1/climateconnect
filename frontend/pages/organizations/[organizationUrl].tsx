@@ -1,36 +1,36 @@
-import { Button, Container, Divider, Typography, useMediaQuery } from "@mui/material";
-import { Theme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import NextCookies from "next-cookies";
-import Router from "next/router";
-import React, { useContext, useEffect, useState } from "react";
-import Cookies from "universal-cookie";
-import ROLE_TYPES from "../../public/data/role_types";
-import { apiRequest, getLocalePrefix, getRolesOptions } from "../../public/lib/apiOperations";
-import { getImageUrl } from "../../public/lib/imageOperations";
-import { startPrivateChat } from "../../public/lib/messagingOperations";
-import { parseOrganization } from "../../public/lib/organizationOperations";
-import { nullifyUndefinedValues } from "../../public/lib/profileOperations";
-import getTexts from "../../public/texts/texts";
-import AccountPage from "../../src/components/account/AccountPage";
-import LoginNudge from "../../src/components/general/LoginNudge";
-import PageNotFound from "../../src/components/general/PageNotFound";
-import WideLayout from "../../src/components/layouts/WideLayout";
-import ProfilePreviews from "../../src/components/profile/ProfilePreviews";
-import ProjectPreviews from "../../src/components/project/ProjectPreviews";
-import theme from "../../src/themes/theme";
-import getOrganizationInfoMetadata from "./../../public/data/organization_info_metadata";
-import UserContext from "./../../src/components/context/UserContext";
-import IconButton from "@mui/material/IconButton";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import ControlPointSharpIcon from "@mui/icons-material/ControlPointSharp";
-import getHubTheme from "../../src/themes/fetchHubTheme";
-import { transformThemeData } from "../../src/themes/transformThemeData";
-import { parseProjectStubs } from "../../public/lib/parsingOperations";
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import ControlPointSharpIcon from '@mui/icons-material/ControlPointSharp'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { Button, Container, Divider, Typography, useMediaQuery } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import Router from 'next/router'
+import NextCookies from 'next-cookies'
+import React, { useContext, useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
+import getOrganizationInfoMetadata from './../../public/data/organization_info_metadata'
+import ROLE_TYPES from '../../public/data/role_types'
+import { apiRequest, getLocalePrefix, getRolesOptions } from '../../public/lib/apiOperations'
+import { getImageUrl } from '../../public/lib/imageOperations'
+import { startPrivateChat } from '../../public/lib/messagingOperations'
+import { parseOrganization } from '../../public/lib/organizationOperations'
+import { parseProjectStubs } from '../../public/lib/parsingOperations'
+import { nullifyUndefinedValues } from '../../public/lib/profileOperations'
+import getTexts from '../../public/texts/texts'
+import AccountPage from '../../src/components/account/AccountPage'
+import UserContext from './../../src/components/context/UserContext'
+import LoginNudge from '../../src/components/general/LoginNudge'
+import PageNotFound from '../../src/components/general/PageNotFound'
+import WideLayout from '../../src/components/layouts/WideLayout'
+import ProfilePreviews from '../../src/components/profile/ProfilePreviews'
+import ProjectPreviews from '../../src/components/project/ProjectPreviews'
+import getHubTheme from '../../src/themes/fetchHubTheme'
+import theme from '../../src/themes/theme'
+import { transformThemeData } from '../../src/themes/transformThemeData'
 
-const DEFAULT_BACKGROUND_IMAGE = "/images/default_background_org.jpg";
+const DEFAULT_BACKGROUND_IMAGE = '/images/default_background_org.jpg'
 
 const useStyles = makeStyles((theme) => ({
   cardHeadline: {
@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
     color: `${theme.palette.secondary.main}`,
   },
   loginNudge: {
-    textAlign: "center",
-    margin: "0 auto",
+    textAlign: 'center',
+    margin: '0 auto',
   },
   button: {
-    width: "30px",
-    height: "auto",
+    width: '30px',
+    height: 'auto',
     marginBottom: theme.spacing(1),
     color: theme.palette.background.default_contrastText,
   },
@@ -59,27 +59,27 @@ const useStyles = makeStyles((theme) => ({
   },
   headline: {
     fontSize: 23,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: theme.spacing(1),
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
     color: theme?.palette?.background?.default_contrastText,
   },
   sectionHeadlineWithButtonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: theme.spacing(3),
   },
   no_content_yet: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(5),
   },
-}));
+}))
 
 export async function getServerSideProps(ctx) {
-  const { auth_token } = NextCookies(ctx);
-  const organizationUrl = encodeURI(ctx.query.organizationUrl);
-  const hubUrl = ctx.query.hub;
+  const { auth_token } = NextCookies(ctx)
+  const organizationUrl = encodeURI(ctx.query.organizationUrl)
+  const hubUrl = ctx.query.hub
   const [
     organization,
     projects,
@@ -96,7 +96,7 @@ export async function getServerSideProps(ctx) {
     getRolesOptions(auth_token, ctx.locale),
     getIsUserFollowing(organizationUrl, auth_token, ctx.locale),
     getHubTheme(hubUrl),
-  ]);
+  ])
   return {
     props: nullifyUndefinedValues({
       organization: organization,
@@ -108,7 +108,7 @@ export async function getServerSideProps(ctx) {
       hubThemeData: hubThemeData,
       hubUrl: hubUrl,
     }),
-  };
+  }
 }
 
 export default function OrganizationPage({
@@ -120,46 +120,46 @@ export default function OrganizationPage({
   hubThemeData,
   hubUrl,
 }) {
-  const { user, locale } = useContext(UserContext);
-  const infoMetadata = getOrganizationInfoMetadata(locale, organization, false);
-  const texts = getTexts({ page: "organization", locale: locale, organization: organization });
+  const { user, locale } = useContext(UserContext)
+  const infoMetadata = getOrganizationInfoMetadata(locale, organization, false)
+  const texts = getTexts({ page: 'organization', locale: locale, organization: organization })
   // l. 105-137 handles following Organizations
-  const [numberOfFollowers, setNumberOfFollowers] = useState(organization?.number_of_followers);
-  const [isUserFollowing, setIsUserFollowing] = useState(following);
-  const [followingChangePending, setFollowingChangePending] = useState(false);
+  const [numberOfFollowers, setNumberOfFollowers] = useState(organization?.number_of_followers)
+  const [isUserFollowing, setIsUserFollowing] = useState(following)
+  const [followingChangePending, setFollowingChangePending] = useState(false)
 
   const handleWindowClose = (e) => {
     if (followingChangePending) {
-      e.preventDefault();
-      return (e.returnValue = texts.changes_might_not_be_saved);
+      e.preventDefault()
+      return (e.returnValue = texts.changes_might_not_be_saved)
     }
-  };
+  }
 
   const handleFollow = (userFollows, updateCount, pending) => {
-    setIsUserFollowing(userFollows);
+    setIsUserFollowing(userFollows)
     if (updateCount) {
       if (userFollows) {
-        setNumberOfFollowers(numberOfFollowers + 1);
+        setNumberOfFollowers(numberOfFollowers + 1)
       } else {
-        setNumberOfFollowers(numberOfFollowers - 1);
+        setNumberOfFollowers(numberOfFollowers - 1)
       }
     }
-    setFollowingChangePending(pending);
-  };
+    setFollowingChangePending(pending)
+  }
 
   useEffect(() => {
-    window.addEventListener("beforeunload", handleWindowClose);
+    window.addEventListener('beforeunload', handleWindowClose)
 
     return () => {
-      window.removeEventListener("beforeunload", handleWindowClose);
-    };
-  });
+      window.removeEventListener('beforeunload', handleWindowClose)
+    }
+  })
 
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
   return (
     <WideLayout
       title={organization ? organization.name : texts.not_found_error}
-      description={organization?.name + " | " + organization?.info.short_description}
+      description={organization?.name + ' | ' + organization?.info.short_description}
       image={getImageUrl(organization?.image)}
       customTheme={customTheme}
       headerBackground={
@@ -189,7 +189,7 @@ export default function OrganizationPage({
         <PageNotFound itemName={texts.organization} />
       )}
     </WideLayout>
-  );
+  )
 }
 
 function OrganizationLayout({
@@ -207,13 +207,13 @@ function OrganizationLayout({
   rolesOptions,
   hubUrl,
 }) {
-  const classes = useStyles();
-  const cookies = new Cookies();
+  const classes = useStyles()
+  const cookies = new Cookies()
 
   const getRoleName = (permission) => {
-    const permission_to_show = permission === "all" ? "read write" : permission;
-    return rolesOptions.find((o) => o.role_type === permission_to_show).name;
-  };
+    const permission_to_show = permission === 'all' ? 'read write' : permission
+    return rolesOptions.find((o) => o.role_type === permission_to_show).name
+  }
 
   const getMembersWithAdditionalInfo = (members) => {
     return members.map((m) => ({
@@ -222,42 +222,42 @@ function OrganizationLayout({
         {
           text: m.location,
           icon: LocationOnIcon,
-          iconName: "LocationOnIcon",
-          importance: "high",
+          iconName: 'LocationOnIcon',
+          importance: 'high',
         },
         {
           text: m.role_in_organization,
           icon: AccountBoxIcon,
-          iconName: "AccountBoxIcon",
-          importance: "high",
+          iconName: 'AccountBoxIcon',
+          importance: 'high',
           toolTipText: texts.role_in_organization,
         },
         {
           text: getRoleName(m.permission),
-          importance: "low",
+          importance: 'low',
         },
       ],
-    }));
-  };
+    }))
+  }
 
   const handleConnectBtn = async (e) => {
-    e.preventDefault();
-    const token = cookies.get("auth_token");
-    const creator = members.filter((m) => m.isCreator === true)[0];
-    const chat = await startPrivateChat(creator, token, locale);
-    Router.push("/chat/" + chat.chat_uuid + "/");
-  };
+    e.preventDefault()
+    const token = cookies.get('auth_token')
+    const creator = members.filter((m) => m.isCreator === true)[0]
+    const chat = await startPrivateChat(creator, token, locale)
+    Router.push('/chat/' + chat.chat_uuid + '/')
+  }
   const canEdit =
     user &&
     !!members.find((m) => m.id === user.id) &&
     [ROLE_TYPES.all_type, ROLE_TYPES.read_write_type].includes(
-      members.find((m) => m.id === user.id).permission
-    );
+      members.find((m) => m.id === user.id).permission,
+    )
 
-  const membersWithAdditionalInfo = getMembersWithAdditionalInfo(members);
+  const membersWithAdditionalInfo = getMembersWithAdditionalInfo(members)
 
-  const isTinyScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const isTinyScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
   return (
     <AccountPage
       numberOfFollowers={numberOfFollowers}
@@ -267,7 +267,7 @@ function OrganizationLayout({
       account={organization}
       default_background={DEFAULT_BACKGROUND_IMAGE}
       editHref={`${getLocalePrefix(locale)}/editOrganization/${organization.url_slug}${
-        hubUrl ? `?hub=${hubUrl}` : ""
+        hubUrl ? `?hub=${hubUrl}` : ''
       }`}
       /*TODO(unused) type="organization" */
       infoMetadata={infoMetadata}
@@ -295,7 +295,7 @@ function OrganizationLayout({
           </Typography>
           {isTinyScreen ? (
             <IconButton
-              href={`${getLocalePrefix(locale)}/share${hubUrl ? `?hub=${hubUrl}` : ""}`}
+              href={`${getLocalePrefix(locale)}/share${hubUrl ? `?hub=${hubUrl}` : ''}`}
               size="large"
             >
               <ControlPointSharpIcon
@@ -308,7 +308,7 @@ function OrganizationLayout({
             <Button
               variant="contained"
               color="primary"
-              href={`${getLocalePrefix(locale)}/share${hubUrl ? `?hub=${hubUrl}` : ""}`}
+              href={`${getLocalePrefix(locale)}/share${hubUrl ? `?hub=${hubUrl}` : ''}`}
             >
               <ControlPointSharpIcon className={classes.innerIcon} />
               {texts.share_a_project}
@@ -334,7 +334,7 @@ function OrganizationLayout({
               <IconButton
                 href={`${getLocalePrefix(locale)}/manageOrganizationMembers/${
                   organization.url_slug
-                }${hubUrl ? `?hub=${hubUrl}` : ""}`}
+                }${hubUrl ? `?hub=${hubUrl}` : ''}`}
                 size="large"
               >
                 <GroupAddIcon className={classes.button} color="primary" />
@@ -345,7 +345,7 @@ function OrganizationLayout({
                 color="primary"
                 href={`${getLocalePrefix(locale)}/manageOrganizationMembers/${
                   organization.url_slug
-                }${hubUrl ? `?hub=${hubUrl}` : ""}`}
+                }${hubUrl ? `?hub=${hubUrl}` : ''}`}
               >
                 <GroupAddIcon className={classes.innerIcon} />
                 {texts.manage_members}
@@ -365,100 +365,100 @@ function OrganizationLayout({
         )}
       </Container>
     </AccountPage>
-  );
+  )
 }
 
 async function getOrganizationByUrlIfExists(organizationUrl, token, locale, hubUrl?: string) {
-  let query = "";
-  query += hubUrl ? `?hub=${hubUrl}` : "";
+  let query = ''
+  query += hubUrl ? `?hub=${hubUrl}` : ''
 
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizations/" + organizationUrl + "/" + query,
+      method: 'get',
+      url: '/api/organizations/' + organizationUrl + '/' + query,
       token: token,
       locale: locale,
-    });
+    })
 
-    return parseOrganization(resp.data);
+    return parseOrganization(resp.data)
   } catch (err) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getProjectsByOrganization(organizationUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizations/" + organizationUrl + "/projects/",
+      method: 'get',
+      url: '/api/organizations/' + organizationUrl + '/projects/',
       token: token,
       locale: locale,
-    });
-    if (!resp.data) return null;
+    })
+    if (!resp.data) return null
     else {
-      return parseProjectStubs(resp.data.results);
+      return parseProjectStubs(resp.data.results)
     }
   } catch (err) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getIsUserFollowing(organizationUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizations/" + organizationUrl + "/am_i_following/",
+      method: 'get',
+      url: '/api/organizations/' + organizationUrl + '/am_i_following/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return resp.data.is_following;
+      return resp.data.is_following
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getMembersByOrganization(organizationUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizations/" + organizationUrl + "/members/?page=1&page_size=24",
+      method: 'get',
+      url: '/api/organizations/' + organizationUrl + '/members/?page=1&page_size=24',
       token: token,
       locale: locale,
-    });
-    if (!resp.data) return null;
+    })
+    if (!resp.data) return null
     else {
-      return parseOrganizationMembers(resp.data.results);
+      return parseOrganizationMembers(resp.data.results)
     }
   } catch (err) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getOrganizationTypes() {
-  return [];
+  return []
 }
 
 function parseOrganizationMembers(members) {
   return members.map((m) => {
-    const member = m.user;
+    const member = m.user
     return {
       ...member,
-      name: member.first_name + " " + member.last_name,
+      name: member.first_name + ' ' + member.last_name,
       permission: m.permission.role_type,
       isCreator: m.permission.role_type === ROLE_TYPES.all_type,
       time_per_week: m.time_per_week,
       role_in_organization: m.role_in_organization,
       location: member.location,
-    };
-  });
+    }
+  })
 }

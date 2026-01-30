@@ -1,23 +1,23 @@
-import React, { ChangeEvent, ElementType, useContext } from "react";
-import { Checkbox, IconButton, Tooltip, Typography } from "@mui/material";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { makeStyles, useTheme } from "@mui/styles";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { Checkbox, IconButton, Tooltip, Typography } from '@mui/material'
+import { makeStyles, useTheme } from '@mui/styles'
+import React, { ChangeEvent, ElementType, useContext } from 'react'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles(() => ({
   text: {
-    color: "inherit",
+    color: 'inherit',
   },
-}));
+}))
 
 type Props = {
-  currentHubName: string;
+  currentHubName: string
   // eslint-disable-next-line no-unused-vars
-  handleUpdateSelectedHub: (hubName: string) => void;
-  ToolTipIcon?: ElementType;
-};
+  handleUpdateSelectedHub: (hubName: string) => void
+  ToolTipIcon?: ElementType
+}
 
 export default function CustomHubSelection({
   currentHubName,
@@ -25,25 +25,25 @@ export default function CustomHubSelection({
   ToolTipIcon,
 }: Props) {
   if (!ToolTipIcon) {
-    ToolTipIcon = HelpOutlineIcon;
+    ToolTipIcon = HelpOutlineIcon
   }
-  const classes = useStyles();
-  const theme = useTheme();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ locale: locale, page: "project" });
+  const classes = useStyles()
+  const theme = useTheme()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ locale: locale, page: 'project' })
 
-  const label = { inputProps: { "aria-label": "PRIO1 project checkbox" } };
-  const prio1Project = currentHubName == "prio1";
+  const label = { inputProps: { 'aria-label': 'PRIO1 project checkbox' } }
+  const prio1Project = currentHubName == 'prio1'
 
   function handlePrio1ProjectCheckbox(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.checked) {
-      handleUpdateSelectedHub("prio1");
+      handleUpdateSelectedHub('prio1')
     } else {
-      handleUpdateSelectedHub("");
+      handleUpdateSelectedHub('')
     }
   }
 
-  const checkboxColor = getBackgroundContrastColor(theme);
+  const checkboxColor = getBackgroundContrastColor(theme)
 
   return (
     <Typography component="h2" variant="subtitle2" className={classes.text}>
@@ -60,5 +60,5 @@ export default function CustomHubSelection({
         </IconButton>
       </Tooltip>
     </Typography>
-  );
+  )
 }

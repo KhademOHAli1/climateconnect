@@ -1,53 +1,54 @@
-import { Button, IconButton, Theme, Tooltip, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import React, { useContext, useRef, useState } from "react";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
+import { Button, IconButton, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useRef, useState } from 'react'
 import {
-  getImageDialogHeight,
   convertToJPGWithAspectRatio,
+  getImageDialogHeight,
   getResizedImage,
   whitenTransparentPixels,
-} from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import UploadImageDialog from "../dialogs/UploadImageDialog";
-const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg"];
+} from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import UploadImageDialog from '../dialogs/UploadImageDialog'
+
+const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg']
 
 const useStyles = makeStyles<Theme, { image?: string }>((theme) => {
   return {
     imageZoneWrapper: {
-      display: "block",
-      width: "100%",
-      position: "relative",
+      display: 'block',
+      width: '100%',
+      position: 'relative',
     },
     imageZone: (props) => ({
-      cursor: "pointer",
-      border: "1px dashed #000",
-      width: "100%",
-      paddingBottom: "56.25%",
+      cursor: 'pointer',
+      border: '1px dashed #000',
+      width: '100%',
+      paddingBottom: '56.25%',
       backgroundImage: `${props.image ? `url(${props.image})` : null}`,
-      backgroundSize: "contain",
+      backgroundSize: 'contain',
     }),
     photoIcon: {
-      display: "block",
+      display: 'block',
       marginBottom: theme.spacing(1),
-      margin: "0 auto",
-      cursor: "pointer",
+      margin: '0 auto',
+      cursor: 'pointer',
       fontSize: 40,
     },
     addPhotoWrapper: {
-      position: "absolute",
-      left: "calc(50% - 85px)",
-      top: "calc(50% - 44px)",
+      position: 'absolute',
+      left: 'calc(50% - 85px)',
+      top: 'calc(50% - 44px)',
     },
     addPhotoContainer: {
-      position: "absolute",
-      left: "-50%",
-      top: "-50%",
+      position: 'absolute',
+      left: '-50%',
+      top: '-50%',
       width: 170,
     },
-  };
-});
+  }
+})
 
 export default function AddPhotoSection({
   projectData,
@@ -60,60 +61,60 @@ export default function AddPhotoSection({
   open,
   handleSetOpen,
 }) {
-  const classes = useStyles(projectData);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const [tempImage, setTempImage] = useState(projectData.image);
-  const [isLoading, setIsLoading] = useState(false);
-  const inputFileRef = useRef(null as HTMLInputElement | null);
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
+  const classes = useStyles(projectData)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const [tempImage, setTempImage] = useState(projectData.image)
+  const [isLoading, setIsLoading] = useState(false)
+  const inputFileRef = useRef(null as HTMLInputElement | null)
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
 
   const handleDialogClickOpen = (dialogName) => {
-    handleSetOpen({ [dialogName]: true });
-  };
+    handleSetOpen({ [dialogName]: true })
+  }
 
   const onImageChange = async (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
     if (!file || !file.type || !ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-      alert(texts.please_upload_either_a_png_or_a_jpg_file);
-      return;
+      alert(texts.please_upload_either_a_png_or_a_jpg_file)
+      return
     }
     try {
-      setIsLoading(true);
-      handleDialogClickOpen("avatarDialog");
-      const image = await convertToJPGWithAspectRatio(file);
-      setTempImage(image);
+      setIsLoading(true)
+      handleDialogClickOpen('avatarDialog')
+      const image = await convertToJPGWithAspectRatio(file)
+      setTempImage(image)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const onUploadImageClick = (event) => {
-    event.preventDefault();
-    inputFileRef.current!.click();
-  };
+    event.preventDefault()
+    inputFileRef.current!.click()
+  }
 
   const handleAvatarDialogClose = async (image) => {
-    handleSetOpen({ avatarDialog: false });
+    handleSetOpen({ avatarDialog: false })
     if (image && image instanceof HTMLCanvasElement) {
-      whitenTransparentPixels(image);
+      whitenTransparentPixels(image)
       image.toBlob(async function (blob) {
-        const resizedBlob = URL.createObjectURL(blob!);
+        const resizedBlob = URL.createObjectURL(blob!)
         const thumbnailBlob = await getResizedImage(
           URL.createObjectURL(blob!),
           290,
           160,
-          "image/jpeg"
-        );
+          'image/jpeg',
+        )
         handleSetProjectData({
           image: resizedBlob,
           thumbnail_image: thumbnailBlob,
-        });
-      }, "image/jpeg");
+        })
+      }, 'image/jpeg')
     }
-  };
+  }
 
   return (
     <>
@@ -132,7 +133,7 @@ export default function AddPhotoSection({
             name="photo"
             ref={inputFileRef}
             id="photo"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             onChange={onImageChange}
             accept=".png,.jpeg,.jpg"
           />
@@ -159,5 +160,5 @@ export default function AddPhotoSection({
         loadingText={texts.processing_image_please_wait}
       />
     </>
-  );
+  )
 }

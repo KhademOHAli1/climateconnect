@@ -1,23 +1,23 @@
-import { Avatar, Card, CardHeader, Typography } from "@mui/material";
-import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { Avatar, Card, CardHeader, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles({
   slideInCard: {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#F8F8F8",
-    cursor: "pointer",
-    flexDirection: "column",
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: '#F8F8F8',
+    cursor: 'pointer',
+    flexDirection: 'column',
   },
   slideInRoot: {
-    textAlign: "left",
+    textAlign: 'left',
   },
   slideInSubheader: {
-    color: "black",
+    color: 'black',
   },
   slideInTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   avatar: {
     height: 50,
@@ -25,9 +25,9 @@ const useStyles = makeStyles({
   },
   customMessage: {
     fontSize: 14,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
-});
+})
 
 export default function ContactCreatorButtonInfo({
   creatorName,
@@ -35,7 +35,7 @@ export default function ContactCreatorButtonInfo({
   creatorsRoleInProject,
   customMessage,
 }: any) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Card className={classes.slideInCard} variant="outlined">
       <CardHeader
@@ -56,5 +56,5 @@ export default function ContactCreatorButtonInfo({
         }
       />
     </Card>
-  );
+  )
 }

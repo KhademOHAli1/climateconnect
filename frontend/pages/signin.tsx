@@ -1,21 +1,21 @@
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { apiRequest, getLocalePrefix } from "../public/lib/apiOperations";
-import { getParams } from "../public/lib/generalOperations";
-import { redirectOnLogin } from "../public/lib/profileOperations";
-import getTexts from "../public/texts/texts";
-import WideLayout from "../src/components/layouts/WideLayout";
-import UserContext from "./../src/components/context/UserContext";
-import { ThemeProvider } from "@emotion/react";
-import { themeSignUp } from "../src/themes/signupTheme";
-import { Container, Link, Theme, useMediaQuery } from "@mui/material";
-import getHubTheme from "../src/themes/fetchHubTheme";
-import { transformThemeData } from "../src/themes/transformThemeData";
-import Login from "../src/components/signup/Login";
+import { ThemeProvider } from '@emotion/react'
+import { Container, Link, Theme, useMediaQuery } from '@mui/material'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import { apiRequest, getLocalePrefix } from '../public/lib/apiOperations'
+import { getParams } from '../public/lib/generalOperations'
+import { redirectOnLogin } from '../public/lib/profileOperations'
+import getTexts from '../public/texts/texts'
+import UserContext from './../src/components/context/UserContext'
+import WideLayout from '../src/components/layouts/WideLayout'
+import Login from '../src/components/signup/Login'
+import getHubTheme from '../src/themes/fetchHubTheme'
+import { themeSignUp } from '../src/themes/signupTheme'
+import { transformThemeData } from '../src/themes/transformThemeData'
 
 export async function getServerSideProps(ctx) {
-  const hubSlug = ctx.query.hub;
-  const message = ctx.query.message;
-  const message_type = ctx.query.message_type;
+  const hubSlug = ctx.query.hub
+  const message = ctx.query.message
+  const message_type = ctx.query.message_type
 
   // early return to avoid fetching /undefined/theme
   if (!hubSlug) {
@@ -24,9 +24,9 @@ export async function getServerSideProps(ctx) {
         message: message || null,
         message_type: message_type || null,
       },
-    };
+    }
   }
-  const hubThemeData = await getHubTheme(hubSlug);
+  const hubThemeData = await getHubTheme(hubSlug)
 
   // early return to avoid a hubSlug, that is not supported within the backend
   if (!hubThemeData) {
@@ -36,7 +36,7 @@ export async function getServerSideProps(ctx) {
         message_type: message_type || null,
         hubSlug: hubSlug || null,
       },
-    };
+    }
   }
 
   return {
@@ -46,88 +46,88 @@ export async function getServerSideProps(ctx) {
       message: message || null,
       message_type: message_type || null,
     },
-  };
+  }
 }
 
 export default function Signin({ hubSlug, hubThemeData, message, message_type }) {
-  const { user, signIn, locale } = useContext(UserContext);
-  const texts = getTexts({ page: "profile", locale: locale, hubName: hubSlug });
-  const hugeScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up("xl"));
-  const mobileScreenSize = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const { user, signIn, locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'profile', locale: locale, hubName: hubSlug })
+  const hugeScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('xl'))
+  const mobileScreenSize = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
 
   const fields = [
     {
       required: true,
       label: texts.email,
-      key: "username",
-      type: "email",
+      key: 'username',
+      type: 'email',
     },
     {
       required: true,
       label: texts.password,
-      key: "password",
-      type: "password",
+      key: 'password',
+      type: 'password',
     },
-  ];
+  ]
 
   const messages = {
     submitMessage: texts.log_in,
     bottomMessage: (
       <span>
-        {texts.new_to_climate_connect}{" "}
+        {texts.new_to_climate_connect}{' '}
         <Link
-          style={{ textDecoration: "underline" }}
-          href={`${getLocalePrefix(locale)}/signup${hubSlug ? `?hub=${hubSlug}` : ""}`}
+          style={{ textDecoration: 'underline' }}
+          href={`${getLocalePrefix(locale)}/signup${hubSlug ? `?hub=${hubSlug}` : ''}`}
         >
           {texts.click_here_to_create_an_account}
         </Link>
       </span>
     ),
-  };
+  }
 
   const bottomLink = {
     text: texts.forgot_your_password,
-    href: `${getLocalePrefix(locale)}/resetpassword${hubSlug ? `?hub=${hubSlug}` : ""}`,
-  };
+    href: `${getLocalePrefix(locale)}/resetpassword${hubSlug ? `?hub=${hubSlug}` : ''}`,
+  }
 
   const [errorMessage, setErrorMessage] = useState<ReactElement | null>(
-    message_type !== "success" && message
-  );
-  const [isLoading, setIsLoading] = useState(false);
+    message_type !== 'success' && message,
+  )
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [initialized, setInitialized] = useState(false);
-  const [redirectUrl, setRedirectUrl] = useState<string | undefined>();
+  const [initialized, setInitialized] = useState(false)
+  const [redirectUrl, setRedirectUrl] = useState<string | undefined>()
   useEffect(function () {
     if (!initialized) {
-      const params = getParams(window.location.href);
+      const params = getParams(window.location.href)
       if (params.redirect) {
-        let redirectUrl = getLocalePrefix(locale);
-        const decodedRedirect = decodeURIComponent(params.redirect);
+        let redirectUrl = getLocalePrefix(locale)
+        const decodedRedirect = decodeURIComponent(params.redirect)
 
-        if (!decodedRedirect.startsWith("/")) {
-          redirectUrl += "/";
+        if (!decodedRedirect.startsWith('/')) {
+          redirectUrl += '/'
         }
 
-        redirectUrl += decodedRedirect;
-        setRedirectUrl(redirectUrl);
+        redirectUrl += decodedRedirect
+        setRedirectUrl(redirectUrl)
       } else if (params.hub) {
-        setRedirectUrl(getLocalePrefix(locale) + "/hubs/" + params.hub + "/browse");
+        setRedirectUrl(getLocalePrefix(locale) + '/hubs/' + params.hub + '/browse')
       }
-      setInitialized(true);
+      setInitialized(true)
       //TODO: remove router
     }
     if (user) {
-      redirectOnLogin(user, redirectUrl, locale);
+      redirectOnLogin(user, redirectUrl, locale)
     }
-  });
+  })
 
   const handleSubmit = async (event, values) => {
     //don't redirect to the post url
-    event.preventDefault();
-    setIsLoading(true);
+    event.preventDefault()
+    setIsLoading(true)
     apiRequest({
-      method: "post",
-      url: "/login/",
+      method: 'post',
+      url: '/login/',
       payload: {
         username: values.username.toLowerCase(),
         password: values.password,
@@ -135,39 +135,39 @@ export default function Signin({ hubSlug, hubThemeData, message, message_type })
       locale: locale,
     })
       .then(async function (response) {
-        await signIn(response.data.token, response.data.expiry, redirectUrl);
+        await signIn(response.data.token, response.data.expiry, redirectUrl)
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error)
         if (error.response && error.response.data) {
-          if (error.response.data.type === "not_verified")
-            setErrorMessage(<span>{texts.not_verified_error_message}</span>);
-          else setErrorMessage(error.response.data.message);
-          setIsLoading(false);
+          if (error.response.data.type === 'not_verified')
+            setErrorMessage(<span>{texts.not_verified_error_message}</span>)
+          else setErrorMessage(error.response.data.message)
+          setIsLoading(false)
         }
-      });
-  };
+      })
+  }
 
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
   const customThemeSignIn = hubThemeData
     ? transformThemeData(hubThemeData, themeSignUp)
-    : themeSignUp;
+    : themeSignUp
   return (
     <WideLayout
       title={texts.log_in}
       //message={errorMessage}z
       //messageType={errorMessage && "error"}
-      messageType={message_type ? message_type : "error"}
+      messageType={message_type ? message_type : 'error'}
       isLoading={isLoading}
       customTheme={customTheme}
-      isHubPage={hubSlug !== ""}
+      isHubPage={hubSlug !== ''}
       hubUrl={hubSlug}
       headerBackground={
-        customTheme && mobileScreenSize ? customTheme.palette.header.background : "transparent"
+        customTheme && mobileScreenSize ? customTheme.palette.header.background : 'transparent'
       }
-      footerTextColor={hubSlug && !mobileScreenSize && "white"}
+      footerTextColor={hubSlug && !mobileScreenSize && 'white'}
     >
-      <Container maxWidth={hugeScreen ? "xl" : "lg"}>
+      <Container maxWidth={hugeScreen ? 'xl' : 'lg'}>
         <ThemeProvider theme={customThemeSignIn}>
           <Login
             texts={texts}
@@ -181,5 +181,5 @@ export default function Signin({ hubSlug, hubThemeData, message, message_type })
         </ThemeProvider>
       </Container>
     </WideLayout>
-  );
+  )
 }

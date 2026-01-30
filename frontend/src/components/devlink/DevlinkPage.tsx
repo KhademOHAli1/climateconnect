@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import WideLayout from "../layouts/WideLayout";
-import { DevLinkProvider } from "../../../devlink/DevLinkProvider";
+import React, { useContext } from 'react'
+import { DevLinkProvider } from '../../../devlink/DevLinkProvider'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import WideLayout from '../layouts/WideLayout'
 
 export default function DevlinkPage({
   children,
@@ -20,8 +20,8 @@ export default function DevlinkPage({
   isLandingPage,
   showDonationGoal,
 }: any) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
 
   return (
     <>
@@ -43,5 +43,5 @@ export default function DevlinkPage({
         <DevLinkProvider>{children}</DevLinkProvider>
       </WideLayout>
     </>
-  );
+  )
 }

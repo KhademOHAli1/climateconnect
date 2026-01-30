@@ -1,20 +1,21 @@
-import { Container } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import NavigationButtons from "../general/NavigationButtons";
-import ActiveSectorsSelector from "../hub/ActiveSectorsSelector";
+import { Container } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import NavigationButtons from '../general/NavigationButtons'
+import ActiveSectorsSelector from '../hub/ActiveSectorsSelector'
+
 const useStyles = makeStyles((theme) => {
   return {
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(8),
       marginBottom: theme.spacing(8),
     },
     stepsTracker: {
       maxWidth: 600,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     block: {
       marginBottom: theme.spacing(4),
@@ -24,18 +25,18 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.primary.main,
     },
     nextStepButton: {
-      float: "right",
+      float: 'right',
     },
     appealText: {
-      textAlign: "center",
-      fontWeight: "bold",
+      textAlign: 'center',
+      fontWeight: 'bold',
     },
     appealBox: {
       marginTop: theme.spacing(4),
       marginBottom: theme.spacing(-2),
     },
-  };
-});
+  }
+})
 
 export default function SelectSectors({
   project,
@@ -45,21 +46,21 @@ export default function SelectSectors({
   onSelectNewSector,
   onClickRemoveSector,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
 
   const onClickNextStep = () => {
-    if (project.sectors.length <= 0) alert(texts.please_choose_at_least_one_sector);
-    else if (project.sectors.length > 3) alert(texts.you_can_only_choose_up_to_3_sectors);
+    if (project.sectors.length <= 0) alert(texts.please_choose_at_least_one_sector)
+    else if (project.sectors.length > 3) alert(texts.you_can_only_choose_up_to_3_sectors)
     else {
-      goToNextStep();
+      goToNextStep()
     }
-  };
+  }
 
   const onClickPreviousStep = () => {
-    goToPreviousStep();
-  };
+    goToPreviousStep()
+  }
 
   //(Share Project step 2)
   return (
@@ -81,5 +82,5 @@ export default function SelectSectors({
         onClickNextStep={onClickNextStep}
       />
     </Container>
-  );
+  )
 }

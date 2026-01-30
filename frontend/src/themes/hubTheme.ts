@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material";
-import theme from "./theme";
+import { createTheme } from '@mui/material'
+import theme from './theme'
 
 const hubTheme = createTheme({
   ...theme,
@@ -24,6 +24,6 @@ const hubTheme = createTheme({
       marginBottom: theme.spacing(0.5),
     },
   },
-});
+})
 
-export default hubTheme;
+export default hubTheme

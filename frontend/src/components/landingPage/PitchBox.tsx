@@ -1,37 +1,37 @@
-import { Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getPitchElements from "../../../public/data/pitch_elements";
-import getTexts from "../../../public/texts/texts";
-import theme from "../../themes/theme";
-import UserContext from "../context/UserContext";
-import SmallCloud from "../staticpages/SmallCloud";
+import { Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getPitchElements from '../../../public/data/pitch_elements'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import SmallCloud from '../staticpages/SmallCloud'
 
 const useStyles = makeStyles<Theme, { alternate?: boolean }>((theme) => ({
   root: {
-    position: "relative",
+    position: 'relative',
     maxWidth: 1280,
-    margin: "0 auto",
+    margin: '0 auto',
   },
   pitchElementsWrapper: {
     marginTop: theme.spacing(8),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: theme.spacing(5),
     },
   },
   pitchElementRoot: {
-    width: "90%",
+    width: '90%',
     maxWidth: 1280,
-    margin: "0 auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     marginBottom: theme.spacing(3),
-    position: "relative",
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
-      justifyContent: "space-between",
+    position: 'relative',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      justifyContent: 'space-between',
       minHeight: 500,
     },
   },
@@ -45,117 +45,117 @@ const useStyles = makeStyles<Theme, { alternate?: boolean }>((theme) => ({
     flexShrink: 0,
     height: 300,
     background: theme.palette.primary.light,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: props.alternate ? 0 : theme.spacing(3),
     marginLeft: props.alternate ? theme.spacing(3) : 0,
-    [theme.breakpoints.down("md")]: {
-      background: "none",
-      height: "auto",
+    [theme.breakpoints.down('md')]: {
+      background: 'none',
+      height: 'auto',
       maxHeight: 230,
       margin: 0,
     },
   }),
   pitchElementImage: {
-    maxWidth: "100%",
+    maxWidth: '100%',
   },
   smallCloud1: {
-    position: "absolute",
+    position: 'absolute',
     top: -100,
     width: 120,
     height: 80,
     left: -50,
   },
   smallCloud2: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
   },
   smallCloud3: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     right: -200,
   },
   smallCloud4: {
-    position: "absolute",
+    position: 'absolute',
     top: 115,
     left: -180,
     height: 80,
     width: 145,
   },
   smallCloud5: {
-    position: "absolute",
+    position: 'absolute',
     top: 295,
     right: -170,
     width: 120,
     height: 80,
   },
   smallCloud6: {
-    position: "absolute",
+    position: 'absolute',
     top: 380,
     right: -100,
   },
   smallCloud7: {
-    position: "absolute",
+    position: 'absolute',
     right: 40,
     top: 0,
   },
   pitchElementText: {
     maxWidth: 500,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       paddingBottom: theme.spacing(4),
     },
   },
   mobileCloud1: {
-    position: "absolute",
+    position: 'absolute',
     left: 50,
     top: -30,
     width: 120,
     height: 80,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       left: -60,
     },
   },
   mobileCloud2: {
-    position: "absolute",
+    position: 'absolute',
     left: -75,
     width: 130,
     height: 80,
   },
   mobileCloud3: {
-    position: "absolute",
+    position: 'absolute',
     right: -80,
     top: 130,
     width: 120,
     height: 80,
   },
   mobileCloud4: {
-    position: "absolute",
+    position: 'absolute',
     left: -30,
     top: -80,
   },
   mobileCloud5: {
-    position: "absolute",
+    position: 'absolute',
     right: -50,
     top: -40,
   },
   mobileCloud6: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -60,
     left: 0,
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
   },
-}));
+}))
 
 export default function PitchBox({ h1ClassName, className }) {
-  const classes = useStyles({});
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "about", locale: locale });
-  const pitch_elements = getPitchElements(texts);
-  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const classes = useStyles({})
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'about', locale: locale })
+  const pitch_elements = getPitchElements(texts)
+  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
   return (
     <div className={`${classes.root} ${className}`}>
       {!isMediumScreen && (
@@ -217,13 +217,13 @@ export default function PitchBox({ h1ClassName, className }) {
         </PitchElement>
       </div>
     </div>
-  );
+  )
 }
 
 const PitchElement = ({ image, headline, text, alternate, children }: any) => {
-  const classes = useStyles({ alternate: alternate });
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "landing_page", locale: locale });
+  const classes = useStyles({ alternate: alternate })
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'landing_page', locale: locale })
   return (
     <div className={classes.pitchElementRoot}>
       {children}
@@ -250,5 +250,5 @@ const PitchElement = ({ image, headline, text, alternate, children }: any) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}

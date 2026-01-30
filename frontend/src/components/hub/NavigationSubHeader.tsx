@@ -1,47 +1,47 @@
-import { Container, Link, Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import theme from "../../themes/theme";
-import UserContext from "../context/UserContext";
-import HubLinks from "../indexPage/hubsSubHeader/HubLinks";
+import { Container, Link, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import HubLinks from '../indexPage/hubsSubHeader/HubLinks'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.primary.main,
   },
   path: {
-    color: "white",
+    color: 'white',
     fontWeight: 600,
   },
   link: {
-    color: "white",
-    display: "inline-block",
+    color: 'white',
+    display: 'inline-block',
     fontWeight: 600,
     marginRight: theme.spacing(0.5),
     marginLeft: theme.spacing(0.5),
   },
   flexContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   rightSideContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   allProjectsLink: {
     marginRight: theme.spacing(1.5),
   },
-}));
+}))
 
 export default function NavigationSubHeader({ hubName, allHubs, isLocationHub }: any) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const isSmallMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const isSmallMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
   return (
     <div className={classes.root}>
       <Container className={classes.flexContainer}>
@@ -50,15 +50,15 @@ export default function NavigationSubHeader({ hubName, allHubs, isLocationHub }:
             <>
               <Link
                 className={classes.link}
-                href={getLocalePrefix(locale) + "/browse"}
+                href={getLocalePrefix(locale) + '/browse'}
                 underline="hover"
               >
                 {texts.browse}
               </Link>
-              {" / "}
+              {' / '}
               <Link
                 className={classes.link}
-                href={getLocalePrefix(locale) + "/hubs"}
+                href={getLocalePrefix(locale) + '/hubs'}
                 underline="hover"
               >
                 {texts.hubs}
@@ -66,7 +66,7 @@ export default function NavigationSubHeader({ hubName, allHubs, isLocationHub }:
 
               {hubName && (
                 <>
-                  {" / "}
+                  {' / '}
                   <Typography className={classes.link}>{hubName}</Typography>
                 </>
               )}
@@ -84,5 +84,5 @@ export default function NavigationSubHeader({ hubName, allHubs, isLocationHub }:
         </Typography>
       </Container>
     </div>
-  );
+  )
 }

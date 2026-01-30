@@ -1,11 +1,11 @@
-import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   dot: {
-    background: "transparent",
+    background: 'transparent',
     border: `1px solid ${theme.palette.secondary.main}`,
-    borderRadius: "100%",
+    borderRadius: '100%',
     margin: theme.spacing(0.5),
     width: 12,
     height: 12,
@@ -13,14 +13,12 @@ const useStyles = makeStyles((theme) => ({
   active: {
     background: theme.palette.secondary.main,
   },
-}));
+}))
 
 export default function CustomDot({ onClick, ...rest }: any) {
-  const classes = useStyles();
-  const { active } = rest;
+  const classes = useStyles()
+  const { active } = rest
   // onMove means if dragging or swiping in progress.
   // active is provided by this lib for checking if the item is active or not.
-  return (
-    <span className={`${classes.dot} ${active && classes.active}`} onClick={() => onClick()} />
-  );
+  return <span className={`${classes.dot} ${active && classes.active}`} onClick={() => onClick()} />
 }

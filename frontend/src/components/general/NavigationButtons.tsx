@@ -1,74 +1,74 @@
-import { Button, CircularProgress, Theme, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { MouseEventHandler, useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ConfirmDialog from "../dialogs/ConfirmDialog";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import SaveIcon from '@mui/icons-material/Save'
+import { Button, CircularProgress, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { MouseEventHandler, useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 
 const useStyles = makeStyles((theme) => {
   return {
     navigationButtonWrapper: (props: any) => ({
-      marginTop: props.position !== "top" ? theme.spacing(10) : theme.spacing(6),
-      marginBottom: props.position === "top" ? theme.spacing(4) : 0,
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-between",
+      marginTop: props.position !== 'top' ? theme.spacing(10) : theme.spacing(6),
+      marginBottom: props.position === 'top' ? theme.spacing(4) : 0,
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
       rowGap: theme.spacing(2),
-      [theme.breakpoints.down("md")]: {
-        position: props.fixedOnMobile && "fixed",
+      [theme.breakpoints.down('md')]: {
+        position: props.fixedOnMobile && 'fixed',
         bottom: props.fixedOnMobile && 0,
         left: props.fixedOnMobile && 0,
         right: props.fixedOnMobile && 0,
-        alignItems: props.fixedOnMobile && "center",
+        alignItems: props.fixedOnMobile && 'center',
         paddingBottom: props.fixedOnMobile && theme.spacing(1),
         background: props.fixedOnMobile && theme.palette.grey.light,
         zIndex: props.fixedOnMobile && 10,
-        display: "flex",
-        justifyContent: "center",
+        display: 'flex',
+        justifyContent: 'center',
       },
     }),
     backButton: {
       color: theme.palette.background.default_contrastText,
     },
     nextStepButtonsContainer: {
-      [theme.breakpoints.down("sm")]: {
-        display: "flex",
-        justifyContent: "space-between",
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        justifyContent: 'space-between',
       },
     },
     draftButton: {
       marginRight: theme.spacing(2),
     },
     translationLoader: {
-      color: "white",
+      color: 'white',
     },
     cancelButtonTop: {
-      float: "left",
+      float: 'left',
     },
     publishButtonOwnLine: {
-      display: "flex",
-      justifyContent: "flex-end",
+      display: 'flex',
+      justifyContent: 'flex-end',
       marginTop: theme.spacing(1),
       marginRight: theme.spacing(2),
     },
-  };
-});
+  }
+})
 
 type Args = {
-  className?: string;
-  onClickPreviousStep?: MouseEventHandler<HTMLButtonElement>;
-  onClickCancel?: Function;
-  nextStepButtonType?: "submit" | "save" | "publish";
-  onClickNextStep?: MouseEventHandler<HTMLButtonElement>;
-  saveAsDraft?: MouseEventHandler<HTMLButtonElement>;
-  additionalButtons?: any;
-  loadingSubmit?: boolean;
-  loadingSubmitDraft?: boolean;
-  position?: "top" | "bottom";
-  fixedOnMobile?: boolean;
-};
+  className?: string
+  onClickPreviousStep?: MouseEventHandler<HTMLButtonElement>
+  onClickCancel?: Function
+  nextStepButtonType?: 'submit' | 'save' | 'publish'
+  onClickNextStep?: MouseEventHandler<HTMLButtonElement>
+  saveAsDraft?: MouseEventHandler<HTMLButtonElement>
+  additionalButtons?: any
+  loadingSubmit?: boolean
+  loadingSubmitDraft?: boolean
+  position?: 'top' | 'bottom'
+  fixedOnMobile?: boolean
+}
 
 export default function NavigationButtons({
   className,
@@ -83,23 +83,23 @@ export default function NavigationButtons({
   position,
   fixedOnMobile,
 }: Args) {
-  const classes = useStyles({ position: position, fixedOnMobile: fixedOnMobile });
-  const [open, setOpen] = useState(false);
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
-  const isMobileScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  const classes = useStyles({ position: position, fixedOnMobile: fixedOnMobile })
+  const [open, setOpen] = useState(false)
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  const isMobileScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
 
   const onClickCancelDialogOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClickCancel = (cancelled) => {
     if (cancelled && onClickCancel) {
-      onClickCancel();
-      setOpen(false);
-    } else setOpen(false);
-  };
+      onClickCancel()
+      setOpen(false)
+    } else setOpen(false)
+  }
 
   const CancelButton = () => (
     <>
@@ -109,7 +109,7 @@ export default function NavigationButtons({
         onClick={onClickCancelDialogOpen}
         className={`${classes.backButton} ${classes.draftButton}`}
       >
-        {position === "top" || (isNarrowScreen && fixedOnMobile) ? <ArrowBackIcon /> : texts.cancel}
+        {position === 'top' || (isNarrowScreen && fixedOnMobile) ? <ArrowBackIcon /> : texts.cancel}
       </Button>
       <ConfirmDialog
         open={open}
@@ -120,7 +120,7 @@ export default function NavigationButtons({
         title={texts.leave_without_saving_changes}
       />
     </>
-  );
+  )
 
   return (
     <div className={`${classes.navigationButtonWrapper} ${className}`}>
@@ -134,9 +134,9 @@ export default function NavigationButtons({
           {texts.back}
         </Button>
       )}
-      {position === "top" && <CancelButton />}
+      {position === 'top' && <CancelButton />}
       <div className={classes.nextStepButtonsContainer}>
-        {onClickCancel && position !== "top" && <CancelButton />}
+        {onClickCancel && position !== 'top' && <CancelButton />}
         {additionalButtons &&
           additionalButtons.map((b, index) => (
             <Button
@@ -190,7 +190,7 @@ export default function NavigationButtons({
         </div>
       )}
     </div>
-  );
+  )
 }
 
 function NextButtons({
@@ -202,20 +202,20 @@ function NextButtons({
   fixedOnMobile,
   isNarrowScreen,
 }) {
-  const classes = useStyles({});
-  if (nextStepButtonType === "submit")
+  const classes = useStyles({})
+  if (nextStepButtonType === 'submit')
     return (
       <Button variant="contained" color="primary" type="submit">
         {texts.next_step}
       </Button>
-    );
-  else if (nextStepButtonType === "save")
+    )
+  else if (nextStepButtonType === 'save')
     return (
       <Button variant="contained" color="primary" type="submit">
         {fixedOnMobile && isNarrowScreen ? <SaveIcon /> : texts.save_changes}
       </Button>
-    );
-  else if (nextStepButtonType === "publish")
+    )
+  else if (nextStepButtonType === 'publish')
     return (
       <Button
         variant="contained"
@@ -229,11 +229,11 @@ function NextButtons({
           texts.publish
         )}
       </Button>
-    );
+    )
   else
     return (
       <Button variant="contained" color="primary" type="submit" onClick={onClickNextStep}>
         {texts.next_step}
       </Button>
-    );
+    )
 }

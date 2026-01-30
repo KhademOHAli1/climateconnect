@@ -1,135 +1,135 @@
-import React, { useContext, useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import Carousel from "react-multi-carousel";
-import { Theme, useMediaQuery, Link, Typography, Button } from "@mui/material";
-import UserContext from "../context/UserContext";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import HubSupportersDialog from "../dialogs/HubSupportersDialog";
-import { Supporter } from "../../types";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import { Button, Link, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import Carousel from 'react-multi-carousel'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import { Supporter } from '../../types'
+import UserContext from '../context/UserContext'
+import HubSupportersDialog from '../dialogs/HubSupportersDialog'
 
 type HubSupporter = {
-  supportersList: Supporter[];
-  containerClass?: string;
-  mobileVersion?: boolean;
-  hubName: string;
-};
+  supportersList: Supporter[]
+  containerClass?: string
+  mobileVersion?: boolean
+  hubName: string
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: 4,
-    paddingRight: "5px",
-    paddingLeft: "5px",
+    paddingRight: '5px',
+    paddingLeft: '5px',
     width: 320,
     [`@media (min-width: 900px) and (max-width: 1200px)`]: {
-      marginLeft: "20px",
-      alignSelf: "end",
+      marginLeft: '20px',
+      alignSelf: 'end',
     },
   },
   carouseltitle: {
     color: theme.palette?.primary?.contrastText,
-    fontSize: "13px",
-    margin: "2px",
-    textAlign: "center",
+    fontSize: '13px',
+    margin: '2px',
+    textAlign: 'center',
   },
   carouselContainer: {
     backgroundColor: theme.palette.background.default,
-    borderRadius: "4px",
-    position: "relative",
-    marginBottom: "20px",
+    borderRadius: '4px',
+    position: 'relative',
+    marginBottom: '20px',
   },
   customDot: {
-    bottom: "-16px",
+    bottom: '-16px',
     // access the class name of the react-multi-carousel to change the dot color
-    "& .react-multi-carousel-dot--active button": {
-      background: "white",
+    '& .react-multi-carousel-dot--active button': {
+      background: 'white',
     },
-    "& li button": {
-      width: "7px",
-      height: "7px",
-      border: "none",
+    '& li button': {
+      width: '7px',
+      height: '7px',
+      border: 'none',
       background: theme.palette.primary.light,
     },
   },
   itemContainer: {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
   },
   supporterImg: {
-    borderRadius: "50%",
+    borderRadius: '50%',
   },
   supporterImgStandaloneContainer: {
     width: 310,
     height: 92,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   supporterImgStandalone: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    objectFit: "contain",
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
   },
   supporterName: {
-    fontSize: "17px",
-    fontWeight: "600",
-    color: "black",
+    fontSize: '17px',
+    fontWeight: '600',
+    color: 'black',
     margin: 0,
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
   },
   supporterSubtitle: {
     margin: 0,
-    fontSize: "12px",
-    fontWeight: "normal",
-    color: "#484848",
-    overflow: "hidden",
-    wordBreak: "break-word",
+    fontSize: '12px',
+    fontWeight: 'normal',
+    color: '#484848',
+    overflow: 'hidden',
+    wordBreak: 'break-word',
   },
   carouselEntry: {
-    padding: " 8px",
-    display: "flex",
-    justifyContent: "left",
-    [theme.breakpoints.down("md")]: {
+    padding: ' 8px',
+    display: 'flex',
+    justifyContent: 'left',
+    [theme.breakpoints.down('md')]: {
       padding: 0,
     },
-    height: "100%",
+    height: '100%',
   },
   containerInSmallDevices: {
-    display: "flex",
-    gap: "20px",
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#EEEFEE",
-    borderRadius: "4px",
-    padding: "10px",
+    display: 'flex',
+    gap: '20px',
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#EEEFEE',
+    borderRadius: '4px',
+    padding: '10px',
     marginBottom: theme.spacing(3),
   },
   supporterImgSmallDevice: {
-    borderRadius: "50%",
+    borderRadius: '50%',
   },
   textAlign: {
-    marginLeft: "auto",
+    marginLeft: 'auto',
   },
   allSupporters: {
-    display: "flex",
-    alignItems: "center",
-    color: "#484848",
-    fontWeight: "600",
-    fontSize: "17px",
-    textTransform: "none",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "15px",
+    display: 'flex',
+    alignItems: 'center',
+    color: '#484848',
+    fontWeight: '600',
+    fontSize: '17px',
+    textTransform: 'none',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '15px',
     },
   },
   arrowIcon: {
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 const HubSupporters = ({
   supportersList,
@@ -137,14 +137,14 @@ const HubSupporters = ({
   mobileVersion,
   hubName,
 }: HubSupporter) => {
-  const classes = useStyles({ containerClass: containerClass });
-  const isSmallOrMediumScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
-  const [openSupportersDialog, setOpenSupportersDialog] = useState(false);
+  const classes = useStyles({ containerClass: containerClass })
+  const isSmallOrMediumScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
+  const [openSupportersDialog, setOpenSupportersDialog] = useState(false)
   const toggleOpenSupportersDialog = () => {
-    setOpenSupportersDialog(!openSupportersDialog);
-  };
+    setOpenSupportersDialog(!openSupportersDialog)
+  }
   return (
     <>
       {!isSmallOrMediumScreen && !mobileVersion ? (
@@ -173,10 +173,10 @@ const HubSupporters = ({
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default HubSupporters;
+export default HubSupporters
 
 const CarouselItem = ({ supporter, classes, locale }) => {
   return (
@@ -203,7 +203,7 @@ const CarouselItem = ({ supporter, classes, locale }) => {
               {supporter?.organization_url_slug ? (
                 <Link
                   href={
-                    getLocalePrefix(locale) + "/organizations/" + supporter?.organization_url_slug
+                    getLocalePrefix(locale) + '/organizations/' + supporter?.organization_url_slug
                   }
                   underline="none"
                   className={classes.supporterName}
@@ -219,8 +219,8 @@ const CarouselItem = ({ supporter, classes, locale }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 const HubSupportersSlider = ({ classes, texts, containerClass, supportersList, locale }) => {
   const responsive = {
@@ -228,10 +228,10 @@ const HubSupportersSlider = ({ classes, texts, containerClass, supportersList, l
       breakpoint: { max: 10000, min: 0 },
       items: 1,
     },
-  };
+  }
   return (
     <div className={`${classes.root} ${containerClass}`}>
-      <p className={classes.carouseltitle}>{texts.the_climatehub_is_supported_by + " :"}</p>
+      <p className={classes.carouseltitle}>{texts.the_climatehub_is_supported_by + ' :'}</p>
       <div className={classes.carouselContainer}>
         <Carousel
           responsive={responsive}
@@ -255,8 +255,8 @@ const HubSupportersSlider = ({ classes, texts, containerClass, supportersList, l
         </Carousel>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const HubSupportersInSmallDevice = ({
   classes,
@@ -265,7 +265,7 @@ const HubSupportersInSmallDevice = ({
   texts,
   showAllSupporters,
 }) => {
-  const slicedSupporterForSmallDevice = supportersList.slice(0, 3);
+  const slicedSupporterForSmallDevice = supportersList.slice(0, 3)
 
   return (
     <Button
@@ -285,9 +285,9 @@ const HubSupportersInSmallDevice = ({
         ))}
       <Typography className={classes.textAlign}>
         <div className={classes.allSupporters}>
-          {texts.all_supporters} <ArrowRightIcon className={classes.arrowIcon} />{" "}
+          {texts.all_supporters} <ArrowRightIcon className={classes.arrowIcon} />{' '}
         </div>
       </Typography>
     </Button>
-  );
-};
+  )
+}

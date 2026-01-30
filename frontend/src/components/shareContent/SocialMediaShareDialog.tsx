@@ -1,7 +1,7 @@
-import { Button, InputAdornment, TextField } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import LinkIcon from "@mui/icons-material/Link";
-import React from "react";
+import LinkIcon from '@mui/icons-material/Link'
+import { Button, InputAdornment, TextField } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 import {
   EmailIcon,
   EmailShareButton,
@@ -17,23 +17,23 @@ import {
   TwitterShareButton,
   WhatsappIcon,
   WhatsappShareButton,
-} from "react-share";
-import GenericDialog from "../dialogs/GenericDialog";
+} from 'react-share'
+import GenericDialog from '../dialogs/GenericDialog'
 
 const useStyles = makeStyles((theme) => ({
   shareButtonsContainer: {
     paddingBottom: theme.spacing(2),
-    display: "flex",
-    justifyContent: "space-between",
-    [theme.breakpoints.down("sm")]: {
-      justifyContent: "flex-start",
-      flexWrap: "wrap",
+    display: 'flex',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'flex-start',
+      flexWrap: 'wrap',
     },
   },
   copyButton: {
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function SocialMediaShareDialog({
   open,
@@ -47,19 +47,19 @@ export default function SocialMediaShareDialog({
   texts,
   dialogTitle,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleClose = () => {
-    onClose(false);
-  };
+    onClose(false)
+  }
 
-  const facebookHashtag = "#BelieveInTogether";
-  const twitterHastags = ["BelieveInTogether"];
+  const facebookHashtag = '#BelieveInTogether'
+  const twitterHastags = ['BelieveInTogether']
 
   const handleClick = (sharedVia) => {
-    createShareRecord(sharedVia);
-    navigator.clipboard.writeText(contentLink);
-  };
+    createShareRecord(sharedVia)
+    navigator.clipboard.writeText(contentLink)
+  }
 
   return (
     <GenericDialog onClose={handleClose} open={open} title={dialogTitle}>
@@ -143,5 +143,5 @@ export default function SocialMediaShareDialog({
         variant="outlined"
       />
     </GenericDialog>
-  );
+  )
 }

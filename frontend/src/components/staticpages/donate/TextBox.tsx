@@ -1,31 +1,31 @@
-import { Container, Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import theme from "../../../themes/theme";
-import IconWrapper from "./IconWrapper";
+import { Container, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import theme from '../../../themes/theme'
+import IconWrapper from './IconWrapper'
 
 const useStyles = makeStyles(() => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   icon: {
     width: 28,
     marginBottom: theme.spacing(-2),
     marginRight: theme.spacing(2),
   },
-}));
+}))
 
 type Props = {
-  className?: any;
-  headlineClass?: any;
-  textBodyClass?: any;
-  icon?: any;
-  text?: any;
-  headline?: any;
-  children?: any;
-  subPoints?: any;
-  subHeadlineClass?: any;
-};
+  className?: any
+  headlineClass?: any
+  textBodyClass?: any
+  icon?: any
+  text?: any
+  headline?: any
+  children?: any
+  subPoints?: any
+  subHeadlineClass?: any
+}
 export default function TextBox({
   className,
   headlineClass,
@@ -37,8 +37,8 @@ export default function TextBox({
   subPoints,
   subHeadlineClass,
 }: Props) {
-  const classes = useStyles();
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
+  const classes = useStyles()
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
   return (
     <Container className={`${className} ${classes.root}`}>
       {!isNarrowScreen && <IconWrapper src={icon} />}
@@ -60,5 +60,5 @@ export default function TextBox({
           ))}
       </div>
     </Container>
-  );
+  )
 }

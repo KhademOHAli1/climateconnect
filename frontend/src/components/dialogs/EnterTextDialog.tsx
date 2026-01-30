@@ -1,29 +1,29 @@
-import { TextField } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import GenericDialog from "./GenericDialog";
-import { useTheme } from "@mui/styles";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
+import { TextField } from '@mui/material'
+import { useTheme } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React, { useContext, useState } from 'react'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import GenericDialog from './GenericDialog'
 
 const useStyles = makeStyles({
   textField: {
-    width: "100%",
+    width: '100%',
   },
-});
+})
 
 type Props = {
-  onClose: any;
-  open: boolean;
-  title: any;
-  inputLabel: any;
-  applyText: any;
-  applyIcon?: any;
-  maxLength: any;
-  className: any;
-};
+  onClose: any
+  open: boolean
+  title: any
+  inputLabel: any
+  applyText: any
+  applyIcon?: any
+  maxLength: any
+  className: any
+}
 
 export default function EnterTextDialog({
   onClose,
@@ -35,30 +35,30 @@ export default function EnterTextDialog({
   maxLength,
   className,
 }: Props) {
-  const classes = useStyles();
-  const [element, setElement] = useState(null);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "general", locale: locale });
-  const theme = useTheme();
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const classes = useStyles()
+  const [element, setElement] = useState(null)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'general', locale: locale })
+  const theme = useTheme()
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   const handleClose = () => {
-    onClose();
-    setElement(null);
-  };
+    onClose()
+    setElement(null)
+  }
 
   const applyElement = () => {
-    onClose(element);
-    setElement(null);
-  };
+    onClose(element)
+    setElement(null)
+  }
 
   const handleChange = (event) => {
-    setElement(event.target.value);
-  };
+    setElement(event.target.value)
+  }
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") applyElement();
-  };
+    if (event.key === 'Enter') applyElement()
+  }
 
   return (
     <GenericDialog
@@ -84,7 +84,7 @@ export default function EnterTextDialog({
         />
       </div>
     </GenericDialog>
-  );
+  )
 }
 
 EnterTextDialog.propTypes = {
@@ -95,4 +95,4 @@ EnterTextDialog.propTypes = {
   applyText: PropTypes.string.isRequired,
   maxLength: PropTypes.number,
   className: PropTypes.string,
-};
+}

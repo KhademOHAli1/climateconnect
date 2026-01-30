@@ -1,19 +1,19 @@
-import { Container, Theme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import Alert from "@mui/material/Alert";
-import React, { ReactElement, ReactNode, useEffect, useState } from "react";
-import { getParams } from "../../../public/lib/generalOperations";
-import { getMessageFromUrl } from "../../../public/lib/parsingOperations";
-import theme from "../../themes/theme";
-import Footer from "../footer/Footer";
-import LoadingContainer from "../general/LoadingContainer";
-import Header from "../header/Header";
-import ElementSpaceToTop from "../hooks/ElementSpaceToTop";
-import DonationCampaignInformation from "../staticpages/donate/DonationCampaignInformation";
-import LayoutWrapper from "./LayoutWrapper";
-import { CustomBackground } from "../hub/CustomBackground";
+import { Container, Theme } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import { getParams } from '../../../public/lib/generalOperations'
+import { getMessageFromUrl } from '../../../public/lib/parsingOperations'
+import theme from '../../themes/theme'
+import Footer from '../footer/Footer'
+import LoadingContainer from '../general/LoadingContainer'
+import Header from '../header/Header'
+import ElementSpaceToTop from '../hooks/ElementSpaceToTop'
+import { CustomBackground } from '../hub/CustomBackground'
+import DonationCampaignInformation from '../staticpages/donate/DonationCampaignInformation'
+import LayoutWrapper from './LayoutWrapper'
 
-type ThemeProps = { noSpaceBottom?: boolean; isStaticPage?: boolean };
+type ThemeProps = { noSpaceBottom?: boolean; isStaticPage?: boolean }
 const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   main: (props) => ({
     padding: 0,
@@ -21,55 +21,55 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     marginBottom: props.noSpaceBottom ? 0 : theme.spacing(6),
   }),
   alert: {
-    textAlign: "center",
-    margin: "0 auto",
+    textAlign: 'center',
+    margin: '0 auto',
     zIndex: 100,
     maxWidth: 1280,
   },
   alertFixed: {
     top: 0,
-    position: "fixed",
-    width: "100%",
-    [theme.breakpoints.up("lg")]: {
-      left: "50%",
+    position: 'fixed',
+    width: '100%',
+    [theme.breakpoints.up('lg')]: {
+      left: '50%',
       marginLeft: -640,
     },
   },
-}));
+}))
 
 type Props = {
-  children?: ReactNode | undefined;
-  title?: string;
-  message?: string;
-  messageType?: string;
-  isLoading?: boolean;
-  fixedHeader?: boolean;
-  transparentHeader?: boolean;
-  isStaticPage?: boolean;
-  noFeedbackButton?: boolean;
-  noSpaceBottom?: boolean;
-  showOnScrollUp?: boolean;
-  largeFooter?: boolean;
-  description?: string;
-  headerBackground?: string;
-  subHeader?: ReactElement;
-  image?: string;
-  useFloodStdFont?: boolean;
-  rootClassName?: string;
-  hideFooter?: boolean;
-  resetAlertMessage?: () => void;
-  isHubPage?: boolean;
-  hubUrl?: string;
-  customFooterImage?: string;
-  noHeader?: boolean;
-  footerTextColor?: string;
-  customTheme?: any;
-  hideAlert?: boolean;
-  transparentBackgroundColor?: string;
-  hasHubLandingPage?: boolean;
-  isLandingPage?: boolean;
-  showDonationGoal?: boolean;
-};
+  children?: ReactNode | undefined
+  title?: string
+  message?: string
+  messageType?: string
+  isLoading?: boolean
+  fixedHeader?: boolean
+  transparentHeader?: boolean
+  isStaticPage?: boolean
+  noFeedbackButton?: boolean
+  noSpaceBottom?: boolean
+  showOnScrollUp?: boolean
+  largeFooter?: boolean
+  description?: string
+  headerBackground?: string
+  subHeader?: ReactElement
+  image?: string
+  useFloodStdFont?: boolean
+  rootClassName?: string
+  hideFooter?: boolean
+  resetAlertMessage?: () => void
+  isHubPage?: boolean
+  hubUrl?: string
+  customFooterImage?: string
+  noHeader?: boolean
+  footerTextColor?: string
+  customTheme?: any
+  hideAlert?: boolean
+  transparentBackgroundColor?: string
+  hasHubLandingPage?: boolean
+  isLandingPage?: boolean
+  showDonationGoal?: boolean
+}
 //Wrapper layout component for pages where the content takes the whole width of the screen
 export default function WideLayout({
   children,
@@ -103,24 +103,24 @@ export default function WideLayout({
   hasHubLandingPage,
   showDonationGoal,
 }: Props) {
-  const classes = useStyles({ noSpaceBottom: noSpaceBottom, isStaticPage: isStaticPage });
-  const [alertOpen, setAlertOpen] = useState(hideAlert ? false : true);
-  const [initialMessageType, setInitialMessageType] = useState(null as any);
-  const [initialMessage, setInitialMessage] = useState("");
-  const [alertEl, setAlertEl] = useState(null);
-  const spaceToTop = ElementSpaceToTop({ el: alertEl });
+  const classes = useStyles({ noSpaceBottom: noSpaceBottom, isStaticPage: isStaticPage })
+  const [alertOpen, setAlertOpen] = useState(hideAlert ? false : true)
+  const [initialMessageType, setInitialMessageType] = useState(null as any)
+  const [initialMessage, setInitialMessage] = useState('')
+  const [alertEl, setAlertEl] = useState(null)
+  const spaceToTop = ElementSpaceToTop({ el: alertEl })
 
   useEffect(() => {
-    const params = getParams(window.location.href);
-    if (params.message) setInitialMessage(decodeURI(params.message));
+    const params = getParams(window.location.href)
+    if (params.message) setInitialMessage(decodeURI(params.message))
     if (params.errorMessage) {
-      setInitialMessage(decodeURI(params.errorMessage));
-      setInitialMessageType("error");
+      setInitialMessage(decodeURI(params.errorMessage))
+      setInitialMessageType('error')
     }
-  }, []);
+  }, [])
   useEffect(() => {
-    !hideAlert && setAlertOpen(true);
-  }, [message]);
+    !hideAlert && setAlertOpen(true)
+  }, [message])
 
   return (
     <LayoutWrapper
@@ -161,17 +161,17 @@ export default function WideLayout({
                 (messageType
                   ? messageType
                   : initialMessageType
-                  ? initialMessageType
-                  : "success") as any
+                    ? initialMessageType
+                    : 'success') as any
               }
               ref={(node: any) => {
                 if (node) {
-                  setAlertEl(node);
+                  setAlertEl(node)
                 }
               }}
               onClose={() => {
-                resetAlertMessage && resetAlertMessage();
-                setAlertOpen(false);
+                resetAlertMessage && resetAlertMessage()
+                setAlertOpen(false)
               }}
             >
               {getMessageFromUrl(message ? message : initialMessage)}
@@ -193,5 +193,5 @@ export default function WideLayout({
         />
       )}
     </LayoutWrapper>
-  );
+  )
 }

@@ -1,31 +1,31 @@
-import { Slider, Theme, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import { Slider, Theme, Typography } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React, { useContext, useState } from 'react'
 //Package AvatarEditor returns an object {default: defaultFunction} instead of a function which triggers a warning. This is why we use <AvatarEditor.default> in the exported function.
-import AvatarEditor from "react-avatar-editor";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import LoadingSpinner from "../general/LoadingSpinner";
-import GenericDialog from "./GenericDialog";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
+import AvatarEditor from 'react-avatar-editor'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import LoadingSpinner from '../general/LoadingSpinner'
+import GenericDialog from './GenericDialog'
 
 const useStyles = makeStyles((theme) => ({
   avatarEditor: {
-    margin: "0 auto",
-    display: "block",
+    margin: '0 auto',
+    display: 'block',
   },
   slider: {
-    display: "block",
-    margin: "0 auto",
+    display: 'block',
+    margin: '0 auto',
   },
   loadingSpinner: {
     paddingBottom: theme.spacing(8),
   },
   dialog: {
-    position: "relative",
+    position: 'relative',
   },
   titleText: {
     marginLeft: theme.spacing(1),
@@ -33,20 +33,20 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     color: theme.palette.text.primary,
   },
-}));
+}))
 
 type Props = {
-  onClose?;
-  open?;
-  imageUrl?;
-  borderRadius?;
-  ratio?;
-  height?;
-  mobileHeight?;
-  mediumHeight?;
-  loading?;
-  loadingText?;
-};
+  onClose?
+  open?
+  imageUrl?
+  borderRadius?
+  ratio?
+  height?
+  mobileHeight?
+  mediumHeight?
+  loading?
+  loadingText?
+}
 
 export default function UploadImageDialog({
   onClose,
@@ -60,57 +60,57 @@ export default function UploadImageDialog({
   loading,
   loadingText,
 }: Props) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "general", locale: locale });
-  const classes = useStyles();
-  const theme = useTheme();
-  const defaultValue = 25;
-  const fullScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const mediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const smallScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'general', locale: locale })
+  const classes = useStyles()
+  const theme = useTheme()
+  const defaultValue = 25
+  const fullScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const mediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const smallScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
 
-  const [scale, setScale] = useState(1);
-  const [editor, setEditor] = useState<any>(null);
+  const [scale, setScale] = useState(1)
+  const [editor, setEditor] = useState<any>(null)
 
   const handleClose = () => {
-    setScale(1);
-    onClose();
-  };
+    setScale(1)
+    onClose()
+  }
 
   const handleSliderChange = (e, newValue) => {
     /*Don't allow scaling down lower than 10% for usability. 
     Dividing newValue by (defaultValue/0.9) is done so that the scale===1 at default value*/
-    setScale(0.1 + newValue / (defaultValue / 0.9));
-  };
+    setScale(0.1 + newValue / (defaultValue / 0.9))
+  }
 
   const applyImage = () => {
-    onClose(editor.getImage());
-    setScale(1);
-  };
+    onClose(editor.getImage())
+    setScale(1)
+  }
 
-  const setEditorRef = (editor) => setEditor(editor);
+  const setEditorRef = (editor) => setEditor(editor)
 
   const widthToUse =
     mobileHeight && smallScreen
       ? mobileHeight * ratio
       : mediumHeight && mediumScreen
-      ? mediumHeight * ratio
-      : height * ratio;
+        ? mediumHeight * ratio
+        : height * ratio
   const heightToUse =
     smallScreen && mobileHeight
       ? mobileHeight
       : mediumHeight && mediumScreen
-      ? mediumHeight
-      : height;
+        ? mediumHeight
+        : height
   const sliderMaxWidth =
     smallScreen && mobileHeight
       ? mobileHeight * ratio + 100
       : mediumHeight && mediumScreen
-      ? mediumHeight * ratio + 100
-      : height * ratio + 100;
+        ? mediumHeight * ratio + 100
+        : height * ratio + 100
 
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
-  const AvatarEditorComponent = AvatarEditor as any;
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
+  const AvatarEditorComponent = AvatarEditor as any
   return (
     <GenericDialog
       /*TODO(undefined) className={classes.dialog} */
@@ -157,7 +157,7 @@ export default function UploadImageDialog({
         </div>
       )}
     </GenericDialog>
-  );
+  )
 }
 
 UploadImageDialog.propTypes = {
@@ -168,4 +168,4 @@ UploadImageDialog.propTypes = {
   height: PropTypes.number.isRequired,
   mobileHeight: PropTypes.number,
   mediumHeight: PropTypes.number,
-};
+}

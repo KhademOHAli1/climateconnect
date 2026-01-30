@@ -1,25 +1,25 @@
-import { Button, ButtonProps } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React, { useContext, useRef } from "react";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
-import DropDownList from "../../header/DropDownList";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { Button, ButtonProps } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useRef } from 'react'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
+import DropDownList from '../../header/DropDownList'
 
 type MakeStylesProps = {
-  height: number;
-};
+  height: number
+}
 
 const useStyles = makeStyles((theme) => ({
   hubsDropDownButton: (props: MakeStylesProps) => ({
-    textTransform: "none",
+    textTransform: 'none',
     color: theme.palette.primary.contrastText,
     fontSize: 16,
     height: props.height ? props.height : 54,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   }),
-}));
+}))
 
 //Generic component to show a list of hubs in the HubsSubHeader
 export default function HubsDropDown({
@@ -33,28 +33,28 @@ export default function HubsDropDown({
   addLocationHubExplainerLink,
   height,
 }: any) {
-  const classes = useStyles({ height: height });
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const popperRef = useRef<HTMLAnchorElement | null>(null);
-  const { locale, user } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
+  const classes = useStyles({ height: height })
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const popperRef = useRef<HTMLAnchorElement | null>(null)
+  const { locale, user } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
 
-  const toggleButtonProps: ButtonProps = {};
+  const toggleButtonProps: ButtonProps = {}
   if (!isNarrowScreen) {
-    toggleButtonProps.onMouseEnter = onOpen;
-    toggleButtonProps.onMouseLeave = onClose;
+    toggleButtonProps.onMouseEnter = onOpen
+    toggleButtonProps.onMouseLeave = onClose
   }
 
   const handleBlur = (e) => {
     if (isNarrowScreen && !popperRef?.current?.contains(e.relatedTarget)) {
-      onClose();
+      onClose()
     }
-  };
+  }
 
   const dropDownHubItems = hubs.map((h) => ({
     href: !user && h.landing_page_component ? `/hubs/${h.url_slug}` : `/hubs/${h.url_slug}/browse`,
     text: h.name,
-  }));
+  }))
 
   const dropDownItems = addLocationHubExplainerLink
     ? [
@@ -64,7 +64,7 @@ export default function HubsDropDown({
           text: texts.all_locations,
         },
       ]
-    : [...dropDownHubItems];
+    : [...dropDownHubItems]
 
   return (
     <span onBlur={handleBlur} id={`dropdown-${label.toLowerCase()}`}>
@@ -87,5 +87,5 @@ export default function HubsDropDown({
         popperRef={popperRef}
       />
     </span>
-  );
+  )
 }

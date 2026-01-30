@@ -1,31 +1,31 @@
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   teamRoot: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
   image: {
-    width: "100%",
+    width: '100%',
   },
   infoLinkBox: {
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 0,
     marginRight: theme.spacing(5),
     flexBasis: 400,
-    textAlign: "center",
+    textAlign: 'center',
   },
-}));
+}))
 
 export default function WhoWeAreContent() {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "donate", locale: locale, classes: classes });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'donate', locale: locale, classes: classes })
   return (
     <div className={classes.teamRoot}>
       <div /*TODO(undefined) className={classes.imageContainer}*/>
@@ -34,5 +34,5 @@ export default function WhoWeAreContent() {
         </div>
       </div>
     </div>
-  );
+  )
 }

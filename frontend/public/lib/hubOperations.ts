@@ -1,35 +1,35 @@
-import { apiRequest } from "./apiOperations";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from 'next'
+import { apiRequest } from './apiOperations'
 
 export function extractHubUrlsFromContext(ctx: GetServerSidePropsContext) {
-  const hubUrl = ctx.query.hubUrl;
-  const subHub = ctx.query.subHub;
+  const hubUrl = ctx.query.hubUrl
+  const subHub = ctx.query.subHub
 
   if (!subHub) {
-    return { hubUrl, subHub: undefined };
+    return { hubUrl, subHub: undefined }
   }
 
-  return { hubUrl, subHub: hubUrl + "_" + subHub };
+  return { hubUrl, subHub: hubUrl + '_' + subHub }
 }
 
 export function getHubslugFromUrl(query) {
-  return query.hubUrl || query.hub;
+  return query.hubUrl || query.hub
 }
 
 export async function getAllHubs(locale: any, just_sector_hubs?: boolean) {
-  const url = just_sector_hubs ? `/api/sector_hubs/` : `/api/hubs/`;
+  const url = just_sector_hubs ? `/api/sector_hubs/` : `/api/hubs/`
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: url,
       locale: locale,
-    });
+    })
 
-    return resp.data.results;
+    return resp.data.results
   } catch (err: any) {
     if (err.response && err.response.data)
-      console.log("Error in getHubData: " + err.response.data.detail);
-    console.log(err);
-    return null;
+      console.log('Error in getHubData: ' + err.response.data.detail)
+    console.log(err)
+    return null
   }
 }

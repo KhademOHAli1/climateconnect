@@ -1,21 +1,21 @@
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { Mention, MentionsInput } from "react-mentions";
-import { apiRequest } from "../../../public/lib/apiOperations";
-import UserContext from "../context/UserContext";
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { Mention, MentionsInput } from 'react-mentions'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   InputWithMentionsBox: {
     fontSize: 16,
-    width: "100%",
+    width: '100%',
     borderBottom: `1px solid rgba(0, 0, 0, 0.87)`,
     marginLeft: theme.spacing(3),
-    overflow: "visible",
-    "&:hover": {
-      borderBottom: "2px solid black",
+    overflow: 'visible',
+    '&:hover': {
+      borderBottom: '2px solid black',
       marginBottom: -1,
     },
-    "&:focus-within": {
+    '&:focus-within': {
       borderBottom: `2px solid ${theme.palette.primary.main}`,
       marginBottom: -1,
     },
@@ -25,49 +25,49 @@ const useStyles = makeStyles((theme) => ({
   },
   messageInput: {
     flexGrow: 1,
-    display: "block",
+    display: 'block',
     paddingTop: 3,
 
     paddingBottom: 7,
-    "& textarea": {
+    '& textarea': {
       border: 0,
-      overflow: "auto",
-      outline: "none",
+      overflow: 'auto',
+      outline: 'none',
       fontSize: 16,
     },
-    "& li": {
+    '& li': {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
-      "&:hover": {
+      '&:hover': {
         background: theme.palette.grey[50],
       },
     },
   },
-}));
+}))
 
 export default function InputWithMentions({ baseUrl, value, onChange, placeholder, onKeyDown }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
 
   //TODO: This function might have to be throttled in the future
   function lookupUsers(searchValue, callback) {
-    if (!searchValue) return;
+    if (!searchValue) return
     apiRequest({
-      method: "get",
-      url: (baseUrl + searchValue).replace(process.env.API_URL, ""),
+      method: 'get',
+      url: (baseUrl + searchValue).replace(process.env.API_URL, ''),
       locale: locale,
     })
       .then((response) => {
-        console.log(response.data.results);
+        console.log(response.data.results)
         return response.data.results.map((user) => ({
-          display: user.first_name + " " + user.last_name,
+          display: user.first_name + ' ' + user.last_name,
           id: user.url_slug,
-        }));
+        }))
       })
       .then(callback)
-      .catch(console.error);
+      .catch(console.error)
   }
 
   return (
@@ -78,7 +78,7 @@ export default function InputWithMentions({ baseUrl, value, onChange, placeholde
           className={classes.messageInput}
           onChange={onChange}
           placeholder={placeholder}
-          a11ySuggestionsListLabel={"Suggested users for mention"}
+          a11ySuggestionsListLabel={'Suggested users for mention'}
           allowSpaceInQuery
           onKeyDown={onKeyDown}
         >
@@ -93,5 +93,5 @@ export default function InputWithMentions({ baseUrl, value, onChange, placeholde
         </MentionsInput>
       </div>
     </>
-  );
+  )
 }

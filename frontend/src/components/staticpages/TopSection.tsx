@@ -1,7 +1,7 @@
-import { Container, Theme, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import SmallCloud from "./SmallCloud";
+import { Container, Theme, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import SmallCloud from './SmallCloud'
 
 const useStyles = makeStyles<Theme, { fixedHeight?: boolean; noMarginBottom?: boolean }>(
   (theme) => ({
@@ -9,28 +9,28 @@ const useStyles = makeStyles<Theme, { fixedHeight?: boolean; noMarginBottom?: bo
       marginBottom: props.fixedHeight || props.noMarginBottom ? 0 : theme.spacing(2),
     }),
     contentContainer: (props) => ({
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center',
       padding: props.fixedHeight ? 0 : theme.spacing(3),
-      position: "relative",
+      position: 'relative',
       height: props.fixedHeight ? 0 : undefined,
-      [theme.breakpoints.down("lg")]: {
+      [theme.breakpoints.down('lg')]: {
         padding: 0,
       },
     }),
     headersContainer: {
-      position: "absolute",
+      position: 'absolute',
       width: 500,
       top: -75,
       background: theme.palette.primary.main,
       padding: theme.spacing(2),
       border: `2px solid ${theme.palette.primary.light}`,
-      boxShadow: "5px 5px 5px #00000029",
-      [theme.breakpoints.down("lg")]: {
+      boxShadow: '5px 5px 5px #00000029',
+      [theme.breakpoints.down('lg')]: {
         padding: theme.spacing(1),
         left: theme.spacing(1),
       },
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down('sm')]: {
         width: 350,
         left: theme.spacing(0.5),
       },
@@ -38,22 +38,22 @@ const useStyles = makeStyles<Theme, { fixedHeight?: boolean; noMarginBottom?: bo
     headline: {
       color: theme.palette.yellow.main,
       fontSize: 40,
-      fontWeight: "bold",
-      [theme.breakpoints.down("lg")]: {
+      fontWeight: 'bold',
+      [theme.breakpoints.down('lg')]: {
         fontSize: 25,
       },
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down('sm')]: {
         fontSize: 20,
       },
     },
     subHeader: {
       fontSize: 19,
       fontWeight: 600,
-      color: "white",
-      [theme.breakpoints.down("lg")]: {
+      color: 'white',
+      [theme.breakpoints.down('lg')]: {
         fontSize: 17,
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         fontSize: 16,
         fontWeight: 500,
       },
@@ -63,26 +63,26 @@ const useStyles = makeStyles<Theme, { fixedHeight?: boolean; noMarginBottom?: bo
     },
     imageContainer: {
       backgroundImage: "url('/images/static_page_header.svg')",
-      backgroundSize: "cover",
+      backgroundSize: 'cover',
       borderBottom: `1px solid ${theme.palette.primary.light}`,
     },
     image: {
-      width: "100%",
+      width: '100%',
       maxWidth: 1720,
       minHeight: 100,
-      visibility: "hidden",
-      [theme.breakpoints.up("md")]: {
+      visibility: 'hidden',
+      [theme.breakpoints.up('md')]: {
         minHeight: 125,
       },
     },
-  })
-);
+  }),
+)
 
 export default function TopSection({ headline, subHeader, fixedHeight, noMarginBottom }: any) {
   const classes = useStyles({
     fixedHeight: fixedHeight,
     noMarginBottom: noMarginBottom,
-  });
+  })
   return (
     <div className={classes.root}>
       <div className={classes.imageContainer}>
@@ -104,5 +104,5 @@ export default function TopSection({ headline, subHeader, fixedHeight, noMarginB
         </div>
       </Container>
     </div>
-  );
+  )
 }

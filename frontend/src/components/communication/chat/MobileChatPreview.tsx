@@ -1,11 +1,11 @@
-import { Avatar, Badge, Divider, ListItem, ListItemText } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import GroupIcon from "@mui/icons-material/Group";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import { getDateTime } from "../../../../public/lib/dateOperations";
-import { getImageUrl } from "../../../../public/lib/imageOperations";
-import UserContext from "../../context/UserContext";
+import GroupIcon from '@mui/icons-material/Group'
+import { Avatar, Badge, Divider, ListItem, ListItemText } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import { getDateTime } from '../../../../public/lib/dateOperations'
+import { getImageUrl } from '../../../../public/lib/imageOperations'
+import UserContext from '../../context/UserContext'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -16,30 +16,30 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.grey[600],
     },
     unreadBadge: {
-      "& span": {
+      '& span': {
         backgroundColor: theme.palette.success.main,
       },
     },
     badgeAndTimeContainer: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
       marginLeft: theme.spacing(2),
     },
     content: {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     },
-  };
-});
+  }
+})
 
 export default function MobileChatPreview({ chat, isFirstChat, forwardedRef }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const isGroupChat = !chat.chatting_partner && !!chat.name;
-  const last_activity = chat.last_message ? chat.last_message.sent_at : chat.created_at;
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const isGroupChat = !chat.chatting_partner && !!chat.name
+  const last_activity = chat.last_message ? chat.last_message.sent_at : chat.created_at
   return (
     <>
       {isFirstChat && <Divider component="li" />}
@@ -47,7 +47,7 @@ export default function MobileChatPreview({ chat, isFirstChat, forwardedRef }) {
         ref={forwardedRef}
         button
         component="a"
-        href={getLocalePrefix(locale) + "/chat/" + chat.chat_uuid}
+        href={getLocalePrefix(locale) + '/chat/' + chat.chat_uuid}
         alignItems="center"
       >
         {isGroupChat ? (
@@ -61,7 +61,7 @@ export default function MobileChatPreview({ chat, isFirstChat, forwardedRef }) {
           primary={
             isGroupChat
               ? chat.name
-              : chat.chatting_partner.first_name + " " + chat.chatting_partner.last_name
+              : chat.chatting_partner.first_name + ' ' + chat.chatting_partner.last_name
           }
           secondary={chat.content}
           secondaryTypographyProps={{
@@ -85,5 +85,5 @@ export default function MobileChatPreview({ chat, isFirstChat, forwardedRef }) {
       </ListItem>
       <Divider component="li" />
     </>
-  );
+  )
 }

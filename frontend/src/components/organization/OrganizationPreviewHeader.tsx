@@ -1,48 +1,48 @@
-import React from "react";
-import { Avatar, Box, Chip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { getImageUrl } from "../../../public/lib/imageOperations";
+import { Avatar, Box, Chip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { getImageUrl } from '../../../public/lib/imageOperations'
 
 const useStyles = makeStyles((theme) => {
   return {
     header: {
-      fontWeight: "bold",
-      margin: "5px",
-      overflow: "hidden",
-      wordBreak: "break-word",
+      fontWeight: 'bold',
+      margin: '5px',
+      overflow: 'hidden',
+      wordBreak: 'break-word',
       lineHeight: 1.3,
       color: theme.palette.text.primary,
-      display: "-webkit-box",
+      display: '-webkit-box',
       WebkitLineClamp: 2,
       // @ts-ignore - WebkitBoxOrient is deprecated but still required for line-clamp to work
-      WebkitBoxOrient: "vertical",
+      WebkitBoxOrient: 'vertical',
     },
     headerWrapper: {
-      justifyContent: "center",
+      justifyContent: 'center',
     },
     media: {
       height: 80,
       width: 80,
-      backgroundSize: "contain",
+      backgroundSize: 'contain',
       marginTop: theme.spacing(3),
-      margin: "0 auto",
+      margin: '0 auto',
     },
     chip: {
       height: 20,
-      position: "relative",
-      margin: "1px 1px",
+      position: 'relative',
+      margin: '1px 1px',
     },
     chipGroup: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      marginTop: "-15px",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '-15px',
     },
-  };
-});
+  }
+})
 
 export default function OrganizationPreviewHeader({ organization }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div>
@@ -72,5 +72,5 @@ export default function OrganizationPreviewHeader({ organization }) {
         </Typography>
       </Box>
     </div>
-  );
+  )
 }

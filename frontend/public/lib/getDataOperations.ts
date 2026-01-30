@@ -1,6 +1,6 @@
-import { apiRequest } from "./apiOperations";
-import { membersWithAdditionalInfo } from "./getOptions";
-import { parseData } from "./parsingOperations";
+import { apiRequest } from './apiOperations'
+import { membersWithAdditionalInfo } from './getOptions'
+import { parseData } from './parsingOperations'
 
 export async function getDataFromServer({
   type,
@@ -12,43 +12,43 @@ export async function getDataFromServer({
   idea,
   location,
 }) {
-  let url = `/api/${type}/?page=${page}`;
+  let url = `/api/${type}/?page=${page}`
 
   if (hubUrl) {
-    url += `&hub=${hubUrl}`;
+    url += `&hub=${hubUrl}`
   }
   if (idea) {
-    url += `&idea=${idea}`;
+    url += `&idea=${idea}`
   }
 
   // Handle query params as well
   if (urlEnding) {
     // &category=Lowering%20food%20waste&
-    url += urlEnding;
+    url += urlEnding
   }
 
   try {
-    console.log(`Getting data for ${type} at ${url}`);
+    console.log(`Getting data for ${type} at ${url}`)
 
     const resp = location
-      ? await apiRequest({ method: "post", url, payload: location, token, locale })
-      : await apiRequest({ method: "get", url, token, locale });
+      ? await apiRequest({ method: 'post', url, payload: location, token, locale })
+      : await apiRequest({ method: 'get', url, token, locale })
 
     if (resp.data.length === 0) {
-      console.log(`No data of type ${type} found...`);
-      return null;
+      console.log(`No data of type ${type} found...`)
+      return null
     } else {
       return {
         [type]: parseData({ type: type, data: resp.data.results }),
         hasMore: !!resp.data.next,
-      };
+      }
     }
   } catch (err: any) {
     if (err.response && err.response.data) {
-      console.log("Error: ");
-      console.log(err.response.data);
-    } else console.log(err);
-    throw err;
+      console.log('Error: ')
+      console.log(err.response.data)
+    } else console.log(err)
+    throw err
   }
 }
 
@@ -60,21 +60,21 @@ export async function loadMoreData({ type, page, urlEnding, token, locale, hubUr
       token: token,
       urlEnding: urlEnding,
       locale: locale,
-    };
-    if (hubUrl) {
-      payload.hubUrl = hubUrl;
     }
-    const newDataObject: any = await getDataFromServer(payload);
+    if (hubUrl) {
+      payload.hubUrl = hubUrl
+    }
+    const newDataObject: any = await getDataFromServer(payload)
     const newData =
-      type === "members" ? membersWithAdditionalInfo(newDataObject.members) : newDataObject[type];
+      type === 'members' ? membersWithAdditionalInfo(newDataObject.members) : newDataObject[type]
 
     return {
       hasMore: newDataObject.hasMore,
       newData: newData,
-    };
+    }
   } catch (e) {
-    console.log("error");
-    console.log(e);
-    throw e;
+    console.log('error')
+    console.log(e)
+    throw e
   }
 }

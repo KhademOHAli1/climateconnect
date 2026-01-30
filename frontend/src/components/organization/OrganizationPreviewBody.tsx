@@ -1,74 +1,74 @@
-import { Box, CardContent, Typography } from "@mui/material";
-import React, { useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import LocationDisplay from "../project/LocationDisplay";
+import { Box, CardContent, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useState } from 'react'
+import LocationDisplay from '../project/LocationDisplay'
 
 const useStyles = makeStyles((theme) => {
   return {
     locationName: {
       fontWeight: 600,
-      whiteSpace: "nowrap",
-      width: "100%",
-      overflow: "hidden",
-      OTextOverflow: "ellipsis",
-      textOverflow: "ellipsis",
+      whiteSpace: 'nowrap',
+      width: '100%',
+      overflow: 'hidden',
+      OTextOverflow: 'ellipsis',
+      textOverflow: 'ellipsis',
       color: theme.palette.text.primary,
     },
     infoLink: {
-      display: "flex",
+      display: 'flex',
     },
     cardIconBox: {
       width: 40,
-      flex: "0 0 40px",
-      display: "inline-block",
+      flex: '0 0 40px',
+      display: 'inline-block',
     },
     textContent: {
       fontSize: 14,
-      whiteSpace: "normal",
+      whiteSpace: 'normal',
     },
     locationBox: {
-      margin: "0 auto",
+      margin: '0 auto',
     },
     locationNameBox: {
-      maxWidth: "200px",
-      overflow: "hidden",
+      maxWidth: '200px',
+      overflow: 'hidden',
     },
     shortenedSummary: {
-      overflow: "hidden",
-      WebkitBoxOrient: "vertical",
-      display: "-webkit-box",
+      overflow: 'hidden',
+      WebkitBoxOrient: 'vertical',
+      display: '-webkit-box',
       lineHeight: 1.25,
     },
     summaryBox: {
-      overflow: "hidden",
+      overflow: 'hidden',
     },
     contentWrapper: {
       padding: 0,
-      display: "grid",
-      gridTemplateRows: "min-content",
+      display: 'grid',
+      gridTemplateRows: 'min-content',
     },
     placeIcon: {
       color: theme.palette.background.default_contrastText,
     },
     metadataText: {
-      display: "inline",
+      display: 'inline',
       fontSize: 14,
       marginLeft: theme.spacing(0.25),
     },
     cardIcon: {
-      verticalAlign: "bottom",
+      verticalAlign: 'bottom',
       marginRight: theme.spacing(0.5),
       marginLeft: theme.spacing(-0.25),
-      fontSize: "default",
+      fontSize: 'default',
       color: theme.palette.background.default_contrastText,
     },
-  };
-});
+  }
+})
 
 export default function OrganizationPreviewBody({ organization }) {
-  const classes = useStyles();
+  const classes = useStyles()
   // eslint-disable-next-line no-unused-vars
-  const [linesOfText, setLinesOfText] = useState(5);
+  const [linesOfText, setLinesOfText] = useState(5)
 
   return (
     <CardContent className={classes.contentWrapper}>
@@ -93,5 +93,5 @@ export default function OrganizationPreviewBody({ organization }) {
         </Typography>
       </Box>
     </CardContent>
-  );
+  )
 }

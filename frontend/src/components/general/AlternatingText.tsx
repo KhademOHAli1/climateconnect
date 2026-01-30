@@ -1,12 +1,12 @@
-import { Typography } from "@mui/material";
-import React, { useContext } from "react";
-import TextLoop from "react-text-loop";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
+import { Typography } from '@mui/material'
+import React, { useContext } from 'react'
+import TextLoop from 'react-text-loop'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 export default function AlternatingText({ classes, mobile }) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "landing_page", locale: locale });
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'landing_page', locale: locale })
   return (
     <TextLoop mask={true} interval={4000}>
       <div className={classes.titleTextFirstLine}>
@@ -46,5 +46,5 @@ export default function AlternatingText({ classes, mobile }) {
         {texts.climate_projects_with}
       </div>
     </TextLoop>
-  );
+  )
 }

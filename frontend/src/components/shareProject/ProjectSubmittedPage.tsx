@@ -1,31 +1,31 @@
-import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import LoadingContainer from "../general/LoadingContainer";
+import { Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import LoadingContainer from '../general/LoadingContainer'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    textAlign: "center",
+    textAlign: 'center',
     padding: theme.spacing(5),
     marginTop: theme.spacing(10),
   },
   headline: {
     marginBottom: theme.spacing(3),
   },
-}));
+}))
 
 export default function ProjectSubmittedPage({ user, isDraft, url_slug, hasError, hubName }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
   const texts = getTexts({
-    page: "project",
+    page: 'project',
     locale: locale,
     user: user,
     url_slug: url_slug,
     hubName: hubName,
-  });
+  })
   return (
     <div className={classes.root}>
       {hasError ? (
@@ -55,5 +55,5 @@ export default function ProjectSubmittedPage({ user, isDraft, url_slug, hasError
         </>
       )}
     </div>
-  );
+  )
 }

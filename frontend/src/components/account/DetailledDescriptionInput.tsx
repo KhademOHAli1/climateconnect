@@ -1,23 +1,23 @@
-import { IconButton, TextField, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import React from "react";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { IconButton, TextField, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   headline: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: theme.spacing(1),
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function DetailledDescriptionInput({ title, helpText, value, onChange, infoKey }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const handleDescriptionChange = (e) => {
-    e.preventDefault();
-    onChange(e, infoKey);
-  };
+    e.preventDefault()
+    onChange(e, infoKey)
+  }
   return (
     <div>
       <Typography color="contrast" variant="h2" className={classes.headline}>
@@ -37,5 +37,5 @@ export default function DetailledDescriptionInput({ title, helpText, value, onCh
         value={value}
       />
     </div>
-  );
+  )
 }

@@ -1,58 +1,58 @@
-import { Container } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useState } from "react";
-import BottomOfPage from "../../hooks/BottomOfPage";
-import ElementOnScreen from "../../hooks/ElementOnScreen";
-import ElementSpaceToTop from "../../hooks/ElementSpaceToTop";
-import DonationGoal from "./DonationGoal";
+import { Container } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useState } from 'react'
+import BottomOfPage from '../../hooks/BottomOfPage'
+import ElementOnScreen from '../../hooks/ElementOnScreen'
+import ElementSpaceToTop from '../../hooks/ElementSpaceToTop'
+import DonationGoal from './DonationGoal'
 
 const useStyles = makeStyles((theme) => {
   return {
     twingle: {
-      width: "100%",
-      height: "100%",
+      width: '100%',
+      height: '100%',
       border: 0,
     },
     twingleContainer: {
-      position: "absolute",
+      position: 'absolute',
       top: 110,
       right: theme.spacing(8),
       width: 400,
       height: 660,
-      maxHeight: "95vh",
-      [theme.breakpoints.down("lg")]: {
+      maxHeight: '95vh',
+      [theme.breakpoints.down('lg')]: {
         right: theme.spacing(2),
       },
       zIndex: 2,
     },
     twingleContainerFixed: {
-      position: "fixed",
+      position: 'fixed',
       bottom: 10,
-      top: "auto",
+      top: 'auto',
     },
     twingleContainerHidden: {
-      visibility: "hidden",
+      visibility: 'hidden',
     },
     twingleContainerAtBottom: {
-      position: "absolute",
+      position: 'absolute',
       bottom: -20,
-      top: "auto",
+      top: 'auto',
     },
-  };
-});
+  }
+})
 
 export default function FloatingWidget({ goal_name, current_amount, goal_amount }) {
-  const classes = useStyles();
-  const [el, setEl] = useState<HTMLDivElement | null>(null);
-  const [isFixed, setIsFixed] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(false);
-  const trigger = ElementOnScreen({ el: el });
-  const spaceToTop = ElementSpaceToTop({ /*initTopOfPage: true,*/ el });
-  const atBottomOfPage = BottomOfPage({ initBottomOfPage: false, marginToTrigger: 363 });
-  if (!isFixed && trigger && spaceToTop.page != null && spaceToTop.page > 215) setIsFixed(true);
-  if (isFixed && spaceToTop.page != null && spaceToTop.page < 215) setIsFixed(false);
-  if (atBottomOfPage && !isAtBottom) setIsAtBottom(true);
-  if (!atBottomOfPage && isAtBottom) setIsAtBottom(false);
+  const classes = useStyles()
+  const [el, setEl] = useState<HTMLDivElement | null>(null)
+  const [isFixed, setIsFixed] = useState(false)
+  const [isAtBottom, setIsAtBottom] = useState(false)
+  const trigger = ElementOnScreen({ el: el })
+  const spaceToTop = ElementSpaceToTop({ /*initTopOfPage: true,*/ el })
+  const atBottomOfPage = BottomOfPage({ initBottomOfPage: false, marginToTrigger: 363 })
+  if (!isFixed && trigger && spaceToTop.page != null && spaceToTop.page > 215) setIsFixed(true)
+  if (isFixed && spaceToTop.page != null && spaceToTop.page < 215) setIsFixed(false)
+  if (atBottomOfPage && !isAtBottom) setIsAtBottom(true)
+  if (!atBottomOfPage && isAtBottom) setIsAtBottom(false)
   return (
     <Container maxWidth="xl" /*TODO(undefined) className={classes.twingleWrapper}*/>
       <div
@@ -61,7 +61,7 @@ export default function FloatingWidget({ goal_name, current_amount, goal_amount 
         }`}
         ref={(node) => {
           if (node) {
-            setEl(node);
+            setEl(node)
           }
         }}
       >
@@ -80,5 +80,5 @@ export default function FloatingWidget({ goal_name, current_amount, goal_amount 
         />
       </div>
     </Container>
-  );
+  )
 }

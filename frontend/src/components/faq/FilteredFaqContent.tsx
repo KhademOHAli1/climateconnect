@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import FaqQuestionElement from "./FaqQuestionElement";
+import { Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import FaqQuestionElement from './FaqQuestionElement'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -11,17 +11,17 @@ const useStyles = makeStyles((theme) => {
       marginTop: theme.spacing(2),
     },
     header: {
-      textAlign: "center",
-      fontWeight: "bold",
+      textAlign: 'center',
+      fontWeight: 'bold',
       marginBottm: theme.spacing(2),
     },
-  };
-});
+  }
+})
 
 export default function FilteredFaqContent({ searchValue, questions }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "faq", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'faq', locale: locale })
   return (
     <div className={classes.root}>
       <Typography className={classes.header}>
@@ -36,5 +36,5 @@ export default function FilteredFaqContent({ searchValue, questions }) {
           <FaqQuestionElement key={index} questionObject={q} />
         ))}
     </div>
-  );
+  )
 }

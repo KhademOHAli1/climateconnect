@@ -1,22 +1,22 @@
-import { Card, CardContent, Theme, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
-import Form from "./../general/Form";
-import makeStyles from "@mui/styles/makeStyles";
-import ContentImageSplitView from "../layouts/ContentImageSplitLayout";
-import CustomAuthImage from "../hub/CustomAuthImage";
+import { Card, CardContent, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import Form from './../general/Form'
+import CustomAuthImage from '../hub/CustomAuthImage'
+import ContentImageSplitView from '../layouts/ContentImageSplitLayout'
 
 const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.background.default_contrastText,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(4),
       paddingBottom: theme.spacing(2),
-      textAlign: "center",
+      textAlign: 'center',
       fontSize: 35,
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
   },
-}));
+}))
 
 export default function Login({
   texts,
@@ -27,8 +27,8 @@ export default function Login({
   errorMessage,
   hubUrl,
 }) {
-  const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-  const classes = useStyles();
+  const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
+  const classes = useStyles()
 
   const LoginContent = () => (
     <>
@@ -44,7 +44,7 @@ export default function Login({
         errorMessage={errorMessage}
       />
     </>
-  );
+  )
 
   return (
     <>
@@ -66,5 +66,5 @@ export default function Login({
         />
       )}
     </>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import { Container, Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getAllHubs } from "../public/lib/hubOperations";
-import getTexts from "../public/texts/texts";
-import UserContext from "../src/components/context/UserContext";
-import HubHeaderImage from "../src/components/hub/HubHeaderImage";
-import HubPreviews from "../src/components/hub/HubPreviews";
-import NavigationSubHeader from "../src/components/hub/NavigationSubHeader";
-import WideLayout from "../src/components/layouts/WideLayout";
-import theme from "../src/themes/theme";
+import { Container, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getAllHubs } from '../public/lib/hubOperations'
+import getTexts from '../public/texts/texts'
+import UserContext from '../src/components/context/UserContext'
+import HubHeaderImage from '../src/components/hub/HubHeaderImage'
+import HubPreviews from '../src/components/hub/HubPreviews'
+import NavigationSubHeader from '../src/components/hub/NavigationSubHeader'
+import WideLayout from '../src/components/layouts/WideLayout'
+import theme from '../src/themes/theme'
 
 const useStyles = makeStyles((theme) => ({
   h1: {
@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(0.5),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 25,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 20,
     },
   },
@@ -33,27 +33,27 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
   },
   callToAction: {
-    display: "block",
+    display: 'block',
     marginTop: theme.spacing(0.5),
   },
   hubPreviews: {
     marginBottom: theme.spacing(2),
   },
-}));
+}))
 
 export async function getServerSideProps(ctx: { locale: any }) {
   return {
     props: {
       hubs: await getAllHubs(ctx.locale),
     },
-  };
+  }
 }
 
 export default function Hubs({ hubs }) {
-  const classes = useStyles();
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
+  const classes = useStyles()
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
   return (
     <WideLayout largeFooter noSpaceBottom title={texts.climate_action_hubs}>
       <HubHeaderImage
@@ -61,7 +61,7 @@ export default function Hubs({ hubs }) {
         // TODO(unused) alt={texts.hubs_overview_image_alt}
         fullWidth
       />
-      <NavigationSubHeader type={"browse"} allHubs={hubs} />
+      <NavigationSubHeader type={'browse'} allHubs={hubs} />
       <Container>
         <Typography color="primary" component="h1" className={classes.h1}>
           {texts.find_climate_solutions_in_each_hub}
@@ -79,20 +79,20 @@ export default function Hubs({ hubs }) {
         <HubPreviews hubs={hubs} className={classes.hubPreviews} />
       </Container>
     </WideLayout>
-  );
+  )
 }
 
 const MobileExplainerText = ({ texts }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Typography className={classes.explainerText}>
       {texts.hubs_overview_mobile_explainer_text}
     </Typography>
-  );
-};
+  )
+}
 
 const LargeScreenExplainerText = ({ texts }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Typography className={classes.explainerText}>
       {texts.hubs_overview_largescreen_explainer_text_first_part}
@@ -100,5 +100,5 @@ const LargeScreenExplainerText = ({ texts }) => {
         {texts.hubs_overview_largescreen_explainer_text_last_part}
       </span>
     </Typography>
-  );
-};
+  )
+}

@@ -1,29 +1,29 @@
-import React, { useContext } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../../../src/components/context/UserContext";
-import { Button } from "@mui/material";
-import ApplyFilterSearchBar from "../../search/ApplyFilterSearchBar";
+import { Button } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../../../src/components/context/UserContext'
+import ApplyFilterSearchBar from '../../search/ApplyFilterSearchBar'
 
 const useStyles = makeStyles(() => {
   return {
     buttonBar: {
       marginTop: 20,
       marginBottom: 10,
-      position: "relative",
+      position: 'relative',
       height: 40,
     },
     cancelButton: {
-      position: "absolute",
+      position: 'absolute',
       right: 0,
     },
-  };
-});
+  }
+})
 
 export default function ChatSearchField({ cancelChatSearch, applyFilterToChats }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "chat", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'chat', locale: locale })
 
   return (
     <>
@@ -40,5 +40,5 @@ export default function ChatSearchField({ cancelChatSearch, applyFilterToChats }
         </Button>
       </div>
     </>
-  );
+  )
 }

@@ -1,24 +1,24 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { Project, Organization } from "../../types";
-import ProjectTypeSelector from "./ProjectTypeSelector";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import Switcher from "../general/Switcher";
-import SelectField from "../general/SelectField";
-import { useTheme } from "@mui/material/styles";
+import { Button, Typography } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import { Organization, Project } from '../../types'
+import UserContext from '../context/UserContext'
+import SelectField from '../general/SelectField'
+import Switcher from '../general/Switcher'
+import ProjectTypeSelector from './ProjectTypeSelector'
 
 const useStyles = makeStyles((theme) => ({
   orgBottomLink: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: theme.spacing(0.5),
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   appealText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   appealBox: {
     marginTop: theme.spacing(2),
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     maxWidth: 700,
-    margin: "0 auto",
+    margin: '0 auto',
     padding: theme.spacing(4),
     paddingTop: theme.spacing(2),
   },
@@ -34,19 +34,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   button: {
-    float: "right",
+    float: 'right',
     marginTop: theme.spacing(2),
   },
-}));
+}))
 
 type Args = {
-  project: Project;
-  handleSetProjectData: Function;
-  goToNextStep: Function;
-  userOrganizations: Array<Organization>;
-  projectTypeOptions: any;
-  hubName?: string;
-};
+  project: Project
+  handleSetProjectData: Function
+  goToNextStep: Function
+  userOrganizations: Array<Organization>
+  projectTypeOptions: any
+  hubName?: string
+}
 
 export default function Share({
   project,
@@ -62,44 +62,44 @@ export default function Share({
         return {
           key: org.url_slug,
           ...org,
-        };
-      });
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, hubName: hubName });
-  const theme = useTheme();
+        }
+      })
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, hubName: hubName })
+  const theme = useTheme()
 
   const onChangeSwitch = () => {
     handleSetProjectData({
       is_organization_project: !project.is_organization_project,
       isPersonalProject: !project.isPersonalProject,
       parent_organization: project.is_organization_project ? null : organizationOptions[0],
-    });
-  };
+    })
+  }
   const onChangeParentOrganization = (e) => {
-    const selectedOrg = userOrganizations.find((o) => o.name === e.target.value);
+    const selectedOrg = userOrganizations.find((o) => o.name === e.target.value)
     handleSetProjectData({
       parent_organization: selectedOrg,
-    });
-  };
+    })
+  }
 
   const onChangeProjectType = (newValue) => {
-    handleSetProjectData({ project_type: projectTypeOptions.find((t) => t.type_id === newValue) });
-  };
+    handleSetProjectData({ project_type: projectTypeOptions.find((t) => t.type_id === newValue) })
+  }
 
   const onClickNextStep = () => {
-    goToNextStep();
-  };
+    goToNextStep()
+  }
 
   //This line is specifically for the prio1 hub
   const mainColor =
     theme.palette.background.default_contrastText === theme.palette.secondary.main
-      ? "secondary"
-      : "primary";
+      ? 'secondary'
+      : 'primary'
 
   return (
     <div className={classes.form}>
-      {locale === "en" && <PleaseOnlyUseEnglishAppeal />}
+      {locale === 'en' && <PleaseOnlyUseEnglishAppeal />}
       <Switcher
         trueLabel={texts.organizations_project}
         falseLabel={texts.personal_project}
@@ -141,15 +141,15 @@ export default function Share({
         {texts.next_step}
       </Button>
     </div>
-  );
+  )
 }
 
 const PleaseOnlyUseEnglishAppeal = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.appealBox}>
       <Typography color="secondary" className={classes.appealText}>
-        Please make sure to{" "}
+        Please make sure to{' '}
         <Typography component="span" className={classes.bold}>
           only use English when sharing a project
         </Typography>
@@ -160,5 +160,5 @@ const PleaseOnlyUseEnglishAppeal = () => {
         together!
       </Typography>
     </div>
-  );
-};
+  )
+}

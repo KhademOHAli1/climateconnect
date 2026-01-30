@@ -1,36 +1,36 @@
-import { Checkbox, ListItemText, MenuItem, TextField } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import React, { useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
+import { Checkbox, ListItemText, MenuItem, TextField } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   white: {
-    color: "white",
+    color: 'white',
   },
   selectedItem: {
     backgroundColor: `${theme.palette.background.default_contrastText} !important`,
   },
-}));
+}))
 
 type Props = {
-  className?: string;
-  controlled?: boolean;
-  controlledValue?: any;
-  defaultValue?: any;
-  disabled?;
-  InputProps?;
-  isInOverlay?;
-  label;
-  multiple?;
-  onChange;
-  options;
-  required?;
-  size?: "small" | "medium";
-  values?;
-  color?;
-};
+  className?: string
+  controlled?: boolean
+  controlledValue?: any
+  defaultValue?: any
+  disabled?
+  InputProps?
+  isInOverlay?
+  label
+  multiple?
+  onChange
+  options
+  required?
+  size?: 'small' | 'medium'
+  values?
+  color?
+}
 export default function SelectField({
   className,
   controlled,
@@ -46,14 +46,14 @@ export default function SelectField({
   required,
   size,
   values,
-  color = "primary",
+  color = 'primary',
 }: Props) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "general", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'general', locale: locale })
 
   if (!defaultValue) {
-    defaultValue = "";
+    defaultValue = ''
   }
 
   // If we want to force the checkboxes to be checked
@@ -62,31 +62,31 @@ export default function SelectField({
   const [value, setValue] = useState<{ name: string; key?: string }>({
     name: defaultValue.name,
     key: defaultValue.key,
-  });
+  })
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
+  const ITEM_HEIGHT = 48
+  const ITEM_PADDING_TOP = 8
   const MenuProps = {
     PaperProps: {
       style: {
-        maxHeight: isInOverlay ? "50%" : ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        maxHeight: isInOverlay ? '50%' : ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
         width: 250,
         marginTop: 40,
       },
     },
-    variant: "menu",
+    variant: 'menu',
     getContentAnchorEl: null,
-  };
+  }
 
   const handleChange = (event) => {
     if (!multiple) {
-      setValue({ name: event.target.value });
+      setValue({ name: event.target.value })
     }
 
     if (onChange) {
-      onChange(event);
+      onChange(event)
     }
-  };
+  }
 
   //TODO: possibly address warnings, that are produced by this component
   return (
@@ -112,7 +112,7 @@ export default function SelectField({
       size={size}
       color={color}
     >
-      {!controlledValue && (!defaultValue || defaultValue === "") && !multiple && (
+      {!controlledValue && (!defaultValue || defaultValue === '') && !multiple && (
         <option value="" />
       )}
 
@@ -130,15 +130,15 @@ export default function SelectField({
                   primary={value.name}
                 />
               </MenuItem>
-            );
+            )
           } else {
             return (
               <option value={value.name} key={index} data-key={value.key}>
                 {value.name}
               </option>
-            );
+            )
           }
         })}
     </TextField>
-  );
+  )
 }

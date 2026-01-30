@@ -1,11 +1,11 @@
-import { Link, Typography } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../../public/texts/texts";
-import hubTheme from "../../../themes/hubTheme";
-import UserContext from "../../context/UserContext";
-import SimpleBarChart from "../SimpleBarChart";
+import { Link, Typography } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../../public/texts/texts'
+import hubTheme from '../../../themes/hubTheme'
+import UserContext from '../../context/UserContext'
+import SimpleBarChart from '../SimpleBarChart'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme) => ({
   callToAction: {
     fontWeight: 600,
   },
-}));
+}))
 export default function FoodDescription() {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale, hubName: "Food" });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale, hubName: 'Food' })
 
   const chart1Config = {
-    unit: "kg CO2e / day",
+    unit: 'kg CO2e / day',
     data: [
       {
         label: texts.meat_lover,
@@ -47,10 +47,10 @@ export default function FoodDescription() {
         value: 2.89,
       },
     ],
-  };
+  }
 
   const chart2Config = {
-    unit: "kg",
+    unit: 'kg',
     data: [
       {
         label: texts.beef_from_beef_herd,
@@ -93,7 +93,7 @@ export default function FoodDescription() {
         value: 0.07,
       },
     ],
-  };
+  }
 
   return (
     <ThemeProvider theme={hubTheme}>
@@ -166,5 +166,5 @@ export default function FoodDescription() {
         </div>
       </div>
     </ThemeProvider>
-  );
+  )
 }

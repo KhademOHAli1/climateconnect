@@ -1,7 +1,7 @@
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
-import Post from "./Post";
+import Post from './Post'
 
 const useStyles = makeStyles((theme) => ({
   post: {
@@ -21,22 +21,22 @@ const useStyles = makeStyles((theme) => ({
   },
   progressPost: {
     paddingLeft: theme.spacing(10),
-    position: "relative",
+    position: 'relative',
     paddingBottom: theme.spacing(10),
-    "&::before": {
+    '&::before': {
       content: '""',
       height: 20,
       width: 20,
       backgroundColor: theme.palette.primary.main,
       borderRadius: 10,
       fontSize: 100,
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       left: -10,
     },
   },
   firstPost: {
-    "&::before": {
+    '&::before': {
       width: 40,
       height: 40,
       borderRadius: 20,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: -1,
     },
   },
-}));
+}))
 
 //@type: possible values are "openingpost", "reply", "progresspost", "preview"
 export default function Posts({
@@ -62,12 +62,12 @@ export default function Posts({
   noLink,
   hubUrl,
 }: any) {
-  const classes = useStyles();
+  const classes = useStyles()
   const classNames = {
     reply: classes.indent,
     openingpost: classes.noMargin,
     progresspost: classes.progressPosts,
-  };
+  }
   return (
     <div className={classNames[type]}>
       {posts &&
@@ -75,8 +75,8 @@ export default function Posts({
           <Post
             key={index}
             post={post}
-            className={`${classes.post} ${type === "progresspost" && classes.progressPost} ${
-              index === 0 && type === "progresspost" && classes.firstPost
+            className={`${classes.post} ${type === 'progresspost' && classes.progressPost} ${
+              index === 0 && type === 'progresspost' && classes.firstPost
             }`}
             type={type}
             maxLines={maxLines}
@@ -90,5 +90,5 @@ export default function Posts({
           />
         ))}
     </div>
-  );
+  )
 }

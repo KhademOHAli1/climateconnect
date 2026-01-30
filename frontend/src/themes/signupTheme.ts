@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material";
-import { coreTheme } from "./theme";
+import { createTheme } from '@mui/material'
+import { coreTheme } from './theme'
 
 export const themeSignUp = createTheme(coreTheme, {
   components: {
@@ -17,9 +17,9 @@ export const themeSignUp = createTheme(coreTheme, {
     MuiCard: {
       styleOverrides: {
         root: {
-          padding: "3.125rem 4.0625rem", // 50px 65px on 16px base
-          boxShadow: "inset 1px 1px 6px #00000014, 6px 4px 10px #00000029",
-          borderRadius: "3.75rem", // 60px on 16px base
+          padding: '3.125rem 4.0625rem', // 50px 65px on 16px base
+          boxShadow: 'inset 1px 1px 6px #00000014, 6px 4px 10px #00000029',
+          borderRadius: '3.75rem', // 60px on 16px base
         },
       },
     },
@@ -27,7 +27,7 @@ export const themeSignUp = createTheme(coreTheme, {
       styleOverrides: {
         root: {
           padding: 0,
-          paddingBottom: "0 !important", // otherwise the "last child" rule will overwrite the padding 0 rule
+          paddingBottom: '0 !important', // otherwise the "last child" rule will overwrite the padding 0 rule
           margin: 0,
         },
       },
@@ -35,7 +35,7 @@ export const themeSignUp = createTheme(coreTheme, {
     MuiLink: {
       styleOverrides: {
         root: {
-          textDecoration: "underline",
+          textDecoration: 'underline',
         },
       },
     },
@@ -44,33 +44,33 @@ export const themeSignUp = createTheme(coreTheme, {
       styleOverrides: {
         h1: {
           letterSpacing: 0,
-          fontWeight: "bold",
-          fontSize: "2.5rem", // 40 px on 16px base
-          textAlign: "left",
-          marginBottom: "0.5rem",
+          fontWeight: 'bold',
+          fontSize: '2.5rem', // 40 px on 16px base
+          textAlign: 'left',
+          marginBottom: '0.5rem',
         },
         h2: {
           letterSpacing: 0,
-          fontWeight: "bold",
-          fontSize: "1.875rem", // 30 px on 16px base
-          textAlign: "left",
-          marginBottom: "0.5rem",
+          fontWeight: 'bold',
+          fontSize: '1.875rem', // 30 px on 16px base
+          textAlign: 'left',
+          marginBottom: '0.5rem',
         },
         h3: {
           letterSpacing: 0,
-          fontSize: "1.25rem", // 20 px on 16px base
-          textAlign: "left",
-          marginBottom: "0.5rem",
+          fontSize: '1.25rem', // 20 px on 16px base
+          textAlign: 'left',
+          marginBottom: '0.5rem',
         },
         subtitle1: {
-          fontSize: "1rem", // 16 px on 16px base
+          fontSize: '1rem', // 16 px on 16px base
         },
       },
     },
   },
-});
+})
 
 // assign object to a variable before default export
-const signupTheme = { themeSignUp };
+const signupTheme = { themeSignUp }
 
-export default signupTheme;
+export default signupTheme

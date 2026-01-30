@@ -1,9 +1,9 @@
-import parseHtml from "html-react-parser";
-import Head from "next/head";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import WideLayout from "../layouts/WideLayout";
+import parseHtml from 'html-react-parser'
+import Head from 'next/head'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import WideLayout from '../layouts/WideLayout'
 
 export default function WebflowPage({
   bodyContent,
@@ -16,8 +16,8 @@ export default function WebflowPage({
   description,
   showDonationGoal = true,
 }: any) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
   return (
     <>
       <Head>{parseHtml(headContent)}</Head>
@@ -34,5 +34,5 @@ export default function WebflowPage({
         <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
       </WideLayout>
     </>
-  );
+  )
 }

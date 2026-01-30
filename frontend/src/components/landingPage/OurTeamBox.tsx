@@ -1,83 +1,83 @@
-import { Container, Typography, useMediaQuery, Link, Theme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import theme from "../../themes/theme";
-import UserContext from "../context/UserContext";
-import InfoLinkBox from "../staticpages/InfoLinkBox";
-import SmallCloud from "../staticpages/SmallCloud";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
+import { Container, Link, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import InfoLinkBox from '../staticpages/InfoLinkBox'
+import SmallCloud from '../staticpages/SmallCloud'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(10),
     marginBottom: theme.spacing(10),
-    position: "relative",
-    [theme.breakpoints.down("sm")]: {
+    position: 'relative',
+    [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(5),
       marginBottom: theme.spacing(5),
     },
   },
   content: {
-    display: "flex",
+    display: 'flex',
     maxWidth: 1280,
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
-      width: "100%",
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      width: '100%',
     },
   },
   infoLinkBoxes: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    position: "relative",
-    [theme.breakpoints.up("sm")]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    position: 'relative',
+    [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
     },
   },
   teamImage: {
-    maxWidth: "100%",
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-      maxWidth: "100%",
+    maxWidth: '100%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      maxWidth: '100%',
     },
   },
   smallCloud1: {
-    position: "absolute",
+    position: 'absolute',
     right: 110,
     top: 160,
     width: 120,
     height: 90,
-    [theme.breakpoints.down("lg")]: {
-      display: "none",
+    [theme.breakpoints.down('lg')]: {
+      display: 'none',
     },
   },
   smallCloud2: {
-    position: "absolute",
+    position: 'absolute',
     width: 120,
     height: 90,
     top: -60,
     left: 100,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       left: 30,
       top: -30,
       width: 80,
     },
   },
-}));
+}))
 
 export default function OurTeamBox({ h1ClassName }) {
-  const classes = useStyles();
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const { locale } = useContext(UserContext);
-  const link_to_team_page = getLocalePrefix(locale) + "/team";
-  const link_to_about_page = getLocalePrefix(locale) + "/about";
+  const classes = useStyles()
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const { locale } = useContext(UserContext)
+  const link_to_team_page = getLocalePrefix(locale) + '/team'
+  const link_to_about_page = getLocalePrefix(locale) + '/about'
   const texts = getTexts({
-    page: "landing_page",
+    page: 'landing_page',
     locale: locale,
     classes: classes,
     isNarrowScreen: isNarrowScreen,
-  });
+  })
   return (
     <Container className={classes.root}>
       <SmallCloud type={2} reverse className={classes.smallCloud2} />
@@ -100,8 +100,8 @@ export default function OurTeamBox({ h1ClassName }) {
             headline={texts.who_we_are}
             text={
               texts.find_out_more_about_our_team + !isNarrowScreen
-                ? " " + texts.and_why_we_are_doing_what_we_are_doing
-                : ""
+                ? ' ' + texts.and_why_we_are_doing_what_we_are_doing
+                : ''
             }
           >
             <SmallCloud type={1} className={classes.smallCloud1} />
@@ -113,12 +113,12 @@ export default function OurTeamBox({ h1ClassName }) {
             headline={texts.our_mission}
             text={
               texts.learn_about_our_goals_and_values + !isNarrowScreen
-                ? " " + texts.and_what_we_want_to_achieve_with_creating_a_climate_community
-                : ""
+                ? ' ' + texts.and_what_we_want_to_achieve_with_creating_a_climate_community
+                : ''
             }
           />
         </div>
       </div>
     </Container>
-  );
+  )
 }

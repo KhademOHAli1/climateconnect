@@ -1,19 +1,19 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import PropTypes from "prop-types";
-import React from "react";
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React from 'react'
 
-import GenericDialog from "./GenericDialog";
+import GenericDialog from './GenericDialog'
 
 const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
     marginTop: theme.spacing(3),
-    textAlign: "right",
+    textAlign: 'right',
   },
   button: {
     marginLeft: theme.spacing(1),
   },
-}));
+}))
 
 export default function ConfirmDialog({
   onClose,
@@ -24,15 +24,15 @@ export default function ConfirmDialog({
   title,
   className,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleCancel = () => {
-    onClose(false);
-  };
+    onClose(false)
+  }
 
   const handleConfirm = () => {
-    onClose(true);
-  };
+    onClose(true)
+  }
   return (
     <GenericDialog onClose={handleCancel} open={open} title={title} dialogContentClass={className}>
       <Typography>{text}</Typography>
@@ -55,7 +55,7 @@ export default function ConfirmDialog({
         </Button>
       </div>
     </GenericDialog>
-  );
+  )
 }
 
 ConfirmDialog.propTypes = {
@@ -66,4 +66,4 @@ ConfirmDialog.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
-};
+}

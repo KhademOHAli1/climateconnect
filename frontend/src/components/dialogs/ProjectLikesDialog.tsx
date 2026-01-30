@@ -10,19 +10,20 @@ import {
   TableCell,
   TableRow,
   Typography,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import ReactTimeago from "react-timeago";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import GenericDialog from "./GenericDialog";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import ReactTimeago from 'react-timeago'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import GenericDialog from './GenericDialog'
+
 const useStyles = makeStyles((theme) => ({
   user: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   avatar: {
     marginRight: theme.spacing(1),
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
   },
   likedText: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13,
     },
   },
@@ -39,33 +40,33 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   loginButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
-}));
+}))
 export default function ProjectLikesDialog({ open, onClose, project, likes, loading, user, url }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
   return (
-    <GenericDialog onClose={handleClose} open={open} title={texts.likes_of + " " + project.name}>
+    <GenericDialog onClose={handleClose} open={open} title={texts.likes_of + ' ' + project.name}>
       <div>
         {loading ? (
           <LinearProgress />
         ) : !user ? (
           <>
             <Typography>
-              {texts.please_log_in + " " + texts.to_see_this_projects_likes + "!"}
+              {texts.please_log_in + ' ' + texts.to_see_this_projects_likes + '!'}
             </Typography>
             <Container className={classes.loginButtonContainer}>
               <Button
                 className={classes.loginButton}
                 variant="contained"
                 color="primary"
-                href={getLocalePrefix(locale) + "/signin?redirect=" + encodeURIComponent(url)}
+                href={getLocalePrefix(locale) + '/signin?redirect=' + encodeURIComponent(url)}
               >
                 {texts.log_in}
               </Button>
@@ -78,10 +79,10 @@ export default function ProjectLikesDialog({ open, onClose, project, likes, load
         )}
       </div>
     </GenericDialog>
-  );
+  )
 }
 const ProjectLikes = ({ likes, texts, locale }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <>
       <Divider />
@@ -93,16 +94,16 @@ const ProjectLikes = ({ likes, texts, locale }) => {
                 <TableCell>
                   <Link
                     className={classes.user}
-                    href={getLocalePrefix(locale) + "/profiles/" + l.user_profile.url_slug}
+                    href={getLocalePrefix(locale) + '/profiles/' + l.user_profile.url_slug}
                     underline="hover"
                   >
                     <Avatar
                       className={classes.avatar}
                       src={getImageUrl(l.user_profile.thumbnail_image)}
-                      alt={l.user_profile.first_name + " " + l.user_profile.last_name}
+                      alt={l.user_profile.first_name + ' ' + l.user_profile.last_name}
                     />
                     <Typography component="span" color="secondary" className={classes.username}>
-                      {l.user_profile.first_name + " " + l.user_profile.last_name}
+                      {l.user_profile.first_name + ' ' + l.user_profile.last_name}
                     </Typography>
                   </Link>
                 </TableCell>
@@ -112,10 +113,10 @@ const ProjectLikes = ({ likes, texts, locale }) => {
                   </Typography>
                 </TableCell>
               </TableRow>
-            );
+            )
           })}
         </TableBody>
       </Table>
     </>
-  );
-};
+  )
+}

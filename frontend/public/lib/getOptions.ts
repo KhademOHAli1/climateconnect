@@ -1,102 +1,102 @@
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { apiRequest } from "./apiOperations";
-import { parseOptions, parseSectorOptions } from "./selectOptionsOperations";
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { apiRequest } from './apiOperations'
+import { parseOptions, parseSectorOptions } from './selectOptionsOperations'
 
 export async function getSkillsOptions(locale, parentSkillsOnly?: boolean) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: parentSkillsOnly ? "/parentskills/" : "/skills/",
+      method: 'get',
+      url: parentSkillsOnly ? '/parentskills/' : '/skills/',
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
       return parseOptions(
         resp.data.results.map((s) => ({ ...s, key: s.id })),
-        "parent_skill"
-      );
+        'parent_skill',
+      )
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 export async function getProjectTagsOptions(hub, locale) {
-  const url = hub ? `/api/projecttags/?hub=${hub}` : `/api/projecttags/`;
+  const url = hub ? `/api/projecttags/?hub=${hub}` : `/api/projecttags/`
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: url,
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
-      return parseOptions(resp.data.results, "parent_tag");
+      return parseOptions(resp.data.results, 'parent_tag')
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 export async function getSectorOptions(locale, hubUrl?: string) {
-  const query = hubUrl ? `?hub=${hubUrl}` : "";
+  const query = hubUrl ? `?hub=${hubUrl}` : ''
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: `/api/sectors/${query}`,
       locale: locale,
-    });
-    if (resp?.data?.results.length === 0) return null;
+    })
+    if (resp?.data?.results.length === 0) return null
     else {
-      const sectorOptions = parseSectorOptions(resp.data.results);
-      return sectorOptions;
+      const sectorOptions = parseSectorOptions(resp.data.results)
+      return sectorOptions
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 export async function getProjectTypeOptions(locale) {
-  const url = `/api/project_type_options/`;
+  const url = `/api/project_type_options/`
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: url,
       locale: locale,
-    });
-    if (resp.data === null) return null;
+    })
+    if (resp.data === null) return null
     else {
-      return resp.data;
+      return resp.data
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 export async function getOrganizationTagsOptions(locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizationtags/",
+      method: 'get',
+      url: '/api/organizationtags/',
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
       return resp.data.results.map((t) => {
-        return { ...t, key: t.id, additionalInfo: t.additional_info ? t.additional_info : [] };
-      });
+        return { ...t, key: t.id, additionalInfo: t.additional_info ? t.additional_info : [] }
+      })
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
@@ -109,10 +109,10 @@ export function membersWithAdditionalInfo(members) {
         {
           text: p.location,
           icon: LocationOnIcon,
-          iconName: "LocationOnIcon",
-          importance: "high",
+          iconName: 'LocationOnIcon',
+          importance: 'high',
         },
       ],
-    };
-  });
+    }
+  })
 }

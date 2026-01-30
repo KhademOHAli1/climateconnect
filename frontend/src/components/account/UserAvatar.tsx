@@ -1,140 +1,140 @@
-import { Avatar, Theme, useMediaQuery } from "@mui/material";
-import React, { ReactElement, useContext, useRef, useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import CloseIcon from "@mui/icons-material/Close";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
+import CloseIcon from '@mui/icons-material/Close'
+import { Avatar, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { ReactElement, useContext, useRef, useState } from 'react'
 import {
   convertToJPGWithAspectRatio,
   getImageDialogHeight,
   getResizedImage,
   whitenTransparentPixels,
-} from "../../../public/lib/imageOperations";
-import UploadImageDialog from "../dialogs/UploadImageDialog";
-import UserContext from "../context/UserContext";
-import getTexts from "../../../public/texts/texts";
-import ConfirmDialog from "../dialogs/ConfirmDialog";
+} from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import UploadImageDialog from '../dialogs/UploadImageDialog'
 
 export interface AvatarImage {
-  imageUrl?: string;
-  thumbnailImageUrl?: string;
+  imageUrl?: string
+  thumbnailImageUrl?: string
 }
 
 interface UserAvatarProps {
-  mode: "read" | "edit";
-  imageUrl?: string;
-  thumbnailImageUrl?: string;
-  alternativeText?: string;
+  mode: 'read' | 'edit'
+  imageUrl?: string
+  thumbnailImageUrl?: string
+  alternativeText?: string
   // eslint-disable-next-line no-unused-vars
-  onAvatarChanged?: (image?: AvatarImage) => void;
+  onAvatarChanged?: (image?: AvatarImage) => void
 }
 
-const dimensions = 150;
+const dimensions = 150
 
 const useStyles = makeStyles<Theme, { avatarImage?: string }>((theme) => ({
   avatarImage: {
     width: `${dimensions}px`,
     height: `${dimensions}px`,
-    border: "4px solid white",
+    border: '4px solid white',
   },
   imageOverlay: {
-    position: "absolute",
+    position: 'absolute',
     opacity: 0.4,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     width: `calc(${dimensions}px - 4px)`,
     height: `calc(${dimensions}px - 4px)`,
-    borderRadius: "100px",
+    borderRadius: '100px',
   },
   editIconContainer: {
-    display: "flex",
-    flexDirection: "row",
-    position: "absolute",
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'absolute',
     width: `${dimensions}px`,
     height: `${dimensions}px`,
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: (props) => (!props.avatarImage ? "pointer" : "default"),
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: (props) => (!props.avatarImage ? 'pointer' : 'default'),
     columnGap: theme.spacing(1),
   },
   editIcon: {
-    fontSize: "40px",
-    cursor: "pointer",
+    fontSize: '40px',
+    cursor: 'pointer',
   },
-}));
+}))
 
 export function UserAvatar(props: UserAvatarProps): ReactElement {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "account", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("lg"));
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'account', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('lg'))
 
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
-  const closeIconRef = useRef<SVGSVGElement | null>(null);
+  const inputFileRef = useRef<HTMLInputElement | null>(null)
+  const closeIconRef = useRef<SVGSVGElement | null>(null)
 
-  const [tempImage, setTempImage] = useState<string | undefined>(undefined);
+  const [tempImage, setTempImage] = useState<string | undefined>(undefined)
   const [dialogStates, setDialogStates] = useState<{
-    uploadOpen: boolean;
-    confirmDeleteOpen: boolean;
-  }>({ uploadOpen: false, confirmDeleteOpen: false });
+    uploadOpen: boolean
+    confirmDeleteOpen: boolean
+  }>({ uploadOpen: false, confirmDeleteOpen: false })
 
   const [avatarImage, setAvatarImage] = useState<AvatarImage>({
     imageUrl: props.imageUrl,
     thumbnailImageUrl: props.thumbnailImageUrl,
-  });
+  })
 
-  const classes = useStyles({ avatarImage: avatarImage.imageUrl });
-  const [isLoading, setIsLoading] = useState(false);
+  const classes = useStyles({ avatarImage: avatarImage.imageUrl })
+  const [isLoading, setIsLoading] = useState(false)
   const onImageChanged = async (avatarEvent) => {
-    const file = avatarEvent.target.files[0];
+    const file = avatarEvent.target.files[0]
     if (file && file.type) {
       try {
-        setIsLoading(true);
-        setDialogStates({ ...dialogStates, uploadOpen: true });
-        const compressedImage = await convertToJPGWithAspectRatio(file);
-        setTempImage(() => compressedImage);
+        setIsLoading(true)
+        setDialogStates({ ...dialogStates, uploadOpen: true })
+        const compressedImage = await convertToJPGWithAspectRatio(file)
+        setTempImage(() => compressedImage)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  };
+  }
 
   const removeAvatarImage = (confirm) => {
     if (confirm) {
-      setAvatarImage({ imageUrl: undefined, thumbnailImageUrl: undefined });
-      props.onAvatarChanged && props.onAvatarChanged(undefined);
+      setAvatarImage({ imageUrl: undefined, thumbnailImageUrl: undefined })
+      props.onAvatarChanged && props.onAvatarChanged(undefined)
     }
-    setDialogStates({ ...dialogStates, confirmDeleteOpen: false });
-  };
+    setDialogStates({ ...dialogStates, confirmDeleteOpen: false })
+  }
 
   const handleAvatarClose = async (image) => {
-    setDialogStates({ ...dialogStates, uploadOpen: false });
+    setDialogStates({ ...dialogStates, uploadOpen: false })
     if (image && image instanceof HTMLCanvasElement) {
-      whitenTransparentPixels(image);
+      whitenTransparentPixels(image)
       image.toBlob(async function (blob) {
-        const imageUrl = URL.createObjectURL(blob!);
+        const imageUrl = URL.createObjectURL(blob!)
         const thumbnailImageUrl = await getResizedImage(
           URL.createObjectURL(blob!),
           120,
           120,
-          "image/jpeg"
-        );
+          'image/jpeg',
+        )
 
-        const image = { imageUrl, thumbnailImageUrl };
-        setAvatarImage(image);
-        props.onAvatarChanged && props.onAvatarChanged(image);
-      }, "image/jpeg");
+        const image = { imageUrl, thumbnailImageUrl }
+        setAvatarImage(image)
+        props.onAvatarChanged && props.onAvatarChanged(image)
+      }, 'image/jpeg')
     }
-  };
+  }
 
   const onClickChangeImage = (e) => {
-    console.log("target", e.target);
+    console.log('target', e.target)
     if (e.target === closeIconRef.current) {
       //If we clicked on the remove image button don't open the interface to change your image
-      return;
+      return
     } else {
-      inputFileRef.current?.click();
+      inputFileRef.current?.click()
     }
-  };
+  }
 
   return (
     <>
@@ -143,9 +143,9 @@ export function UserAvatar(props: UserAvatarProps): ReactElement {
         alt={props.alternativeText}
         src={avatarImage.imageUrl}
       />
-      {props.mode === "edit" && <div className={classes.imageOverlay} />}
+      {props.mode === 'edit' && <div className={classes.imageOverlay} />}
 
-      {props.mode === "edit" && (
+      {props.mode === 'edit' && (
         <div
           className={classes.editIconContainer}
           onClick={avatarImage.imageUrl ? () => void 0 : onClickChangeImage}
@@ -171,7 +171,7 @@ export function UserAvatar(props: UserAvatarProps): ReactElement {
         name="avatarPhoto"
         id="avatarPhoto"
         ref={inputFileRef}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         onChange={onImageChanged}
         accept=".png,.jpeg,.jpg"
       />
@@ -196,5 +196,5 @@ export function UserAvatar(props: UserAvatarProps): ReactElement {
         confirmText={texts.yes}
       />
     </>
-  );
+  )
 }

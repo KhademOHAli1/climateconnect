@@ -1,40 +1,40 @@
-import { Container, Theme, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import Alert from "@mui/material/Alert";
-import React, { useEffect, useState } from "react";
-import { getParams } from "../../../public/lib/generalOperations";
-import { getMessageFromUrl } from "../../../public/lib/parsingOperations";
-import theme from "../../themes/theme";
-import Footer from "../footer/Footer";
-import LoadingContainer from "../general/LoadingContainer";
-import Header from "../header/Header";
-import LayoutWrapper from "./LayoutWrapper";
+import { Container, Theme, Typography } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useEffect, useState } from 'react'
 //We are ignoring the "missing" devlink import because it will be there at runtime
 //You will need to run 'npx webflow devlink sync' to generate this file.
 //If you do not have access to an API key you can line out.
 // @ts-ignore
-import { DevLinkProvider } from "../../../devlink/DevLinkProvider";
+import { DevLinkProvider } from '../../../devlink/DevLinkProvider'
+import { getParams } from '../../../public/lib/generalOperations'
+import { getMessageFromUrl } from '../../../public/lib/parsingOperations'
+import theme from '../../themes/theme'
+import Footer from '../footer/Footer'
+import LoadingContainer from '../general/LoadingContainer'
+import Header from '../header/Header'
+import LayoutWrapper from './LayoutWrapper'
 
 interface StyleProps {
-  customTheme_default_contrastText?: string;
-  donationCampaignRunning?: boolean;
+  customTheme_default_contrastText?: string
+  donationCampaignRunning?: boolean
 }
 
 const useStyles = makeStyles<Theme, StyleProps>((theme) => {
   return {
     mainHeading: (props) => ({
-      textAlign: "center",
+      textAlign: 'center',
       margin: `${theme.spacing(4)} 0`,
       color: props.customTheme_default_contrastText
         ? props.customTheme_default_contrastText
         : theme.palette.background.default_contrastText,
     }),
     alert: () => ({
-      width: "100%",
+      width: '100%',
       zIndex: 100,
     }),
-  };
-});
+  }
+})
 
 export default function Layout({
   title,
@@ -51,19 +51,19 @@ export default function Layout({
   const classes = useStyles({
     donationCampaignRunning: !!process.env.DONATION_CAMPAIGN_RUNNING,
     customTheme_default_contrastText: customTheme?.palette?.background?.default_contrastText,
-  });
-  const [hideAlertMessage, setHideAlertMessage] = useState(false);
-  const [initialMessageType, setInitialMessageType] = useState(null as string | null);
-  const [initialMessage, setInitialMessage] = useState("");
+  })
+  const [hideAlertMessage, setHideAlertMessage] = useState(false)
+  const [initialMessageType, setInitialMessageType] = useState(null as string | null)
+  const [initialMessage, setInitialMessage] = useState('')
 
   useEffect(() => {
-    const params = getParams(window.location.href);
-    if (params.message) setInitialMessage(decodeURI(params.message));
+    const params = getParams(window.location.href)
+    if (params.message) setInitialMessage(decodeURI(params.message))
     if (params.errorMessage) {
-      setInitialMessage(decodeURI(params.errorMessage));
-      setInitialMessageType("error");
+      setInitialMessage(decodeURI(params.errorMessage))
+      setInitialMessageType('error')
     }
-  }, []);
+  }, [])
   return (
     <DevLinkProvider>
       <LayoutWrapper theme={customTheme ?? theme} title={title}>
@@ -81,10 +81,10 @@ export default function Layout({
               <Alert
                 className={classes.alert}
                 severity={
-                  messageType ? messageType : initialMessageType ? initialMessageType : "success"
+                  messageType ? messageType : initialMessageType ? initialMessageType : 'success'
                 }
                 onClose={() => {
-                  setHideAlertMessage(message);
+                  setHideAlertMessage(message)
                 }}
               >
                 {getMessageFromUrl(message ? message : initialMessage)}
@@ -105,5 +105,5 @@ export default function Layout({
         <Footer />
       </LayoutWrapper>
     </DevLinkProvider>
-  );
+  )
 }

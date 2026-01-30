@@ -1,36 +1,36 @@
-import React from "react";
-import { Project } from "../../types";
-import ProjectDateSection from "./ProjectDateSection";
-import makeStyles from "@mui/styles/makeStyles";
-import ProjectLocationSearchBar from "./ProjectLocationSearchBar";
-import { Theme } from "@mui/material";
-import CustomHubSelection from "../project/CustomHubSelection";
+import { Theme } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { Project } from '../../types'
+import CustomHubSelection from '../project/CustomHubSelection'
+import ProjectDateSection from './ProjectDateSection'
+import ProjectLocationSearchBar from './ProjectLocationSearchBar'
 
 const useStyles = makeStyles<Theme>((theme) => {
   return {
     root: {
-      [theme.breakpoints.up("md")]: {
-        display: "flex",
-        justifyContent: "space-between",
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+        justifyContent: 'space-between',
       },
     },
     verticalFlex: {
       flexGrow: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "left",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'left',
     },
-  };
-});
+  }
+})
 
 type Args = {
-  projectData: Project;
-  handleSetProjectData: Function;
-  locationInputRef: any;
-  locationOptionsOpen: boolean;
-  setLocationOptionsOpen: Function;
-  errors: any;
-};
+  projectData: Project
+  handleSetProjectData: Function
+  locationInputRef: any
+  locationOptionsOpen: boolean
+  setLocationOptionsOpen: Function
+  errors: any
+}
 
 export default function ProjectTimeAndPlaceSectionAndCustomHub({
   projectData,
@@ -40,10 +40,10 @@ export default function ProjectTimeAndPlaceSectionAndCustomHub({
   setLocationOptionsOpen,
   errors,
 }: Args) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   function handleUpdateSelectedHub(hubName: string) {
-    handleSetProjectData({ hubName: hubName });
+    handleSetProjectData({ hubName: hubName })
   }
 
   return (
@@ -62,10 +62,10 @@ export default function ProjectTimeAndPlaceSectionAndCustomHub({
           handleSetLocationOptionsOpen={setLocationOptionsOpen}
         />
         <CustomHubSelection
-          currentHubName={projectData.hubName ?? ""}
+          currentHubName={projectData.hubName ?? ''}
           handleUpdateSelectedHub={handleUpdateSelectedHub}
         />
       </div>
     </div>
-  );
+  )
 }

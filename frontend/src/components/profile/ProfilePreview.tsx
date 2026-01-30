@@ -1,24 +1,24 @@
-import { Avatar, Button, Link, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ProfileBadge from "./ProfileBadge";
+import { Avatar, Button, Link, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ProfileBadge from './ProfileBadge'
 
 const useStyles = makeStyles((theme) => {
   return {
     avatarWithInfo: {
-      textAlign: "center",
-      alginSelf: "center",
+      textAlign: 'center',
+      alginSelf: 'center',
       maxWidth: theme.spacing(36),
       padding: theme.spacing(2),
     },
     avatar: {
       height: theme.spacing(20),
       width: theme.spacing(20),
-      margin: "0 auto",
+      margin: '0 auto',
       fontSize: 50,
     },
     name: {
@@ -26,60 +26,60 @@ const useStyles = makeStyles((theme) => {
       padding: theme.spacing(1),
       paddingBottom: 0,
       marginTop: theme.spacing(2),
-      textAlign: "center",
+      textAlign: 'center',
     },
     subtitle: {
       color: `${theme.palette.secondary.main}`,
     },
     messageButton: {
-      margin: "0 auto",
+      margin: '0 auto',
     },
     additionalInfo: {
       paddingBottom: theme.spacing(1),
     },
     info: {
-      display: "flex",
-      alignItems: "center",
-      margin: "0 auto",
-      textAlign: "center",
-      justifyContent: "center",
+      display: 'flex',
+      alignItems: 'center',
+      margin: '0 auto',
+      textAlign: 'center',
+      justifyContent: 'center',
       marginTop: theme.spacing(0.5),
     },
     lowImportanceInfo: {
       color: theme.palette.grey[700],
-      fontSize: "12px",
+      fontSize: '12px',
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
     highImportanceInfo: {
-      color: "#000",
+      color: '#000',
     },
     disableHover: {
       color: theme.palette.background?.default_contrastText,
-      "&:hover": {
-        textDecoration: "none",
+      '&:hover': {
+        textDecoration: 'none',
       },
     },
     icon: {
       marginRight: theme.spacing(0.5),
     },
     badge: {
-      bottom: "10%",
+      bottom: '10%',
     },
-  };
-});
+  }
+})
 
 export default function ProfilePreview({ profile, allowMessage, showAdditionalInfo, hubUrl }: any) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "profile", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'profile', locale: locale })
   const avatarProps = {
     alt: profile.name,
-    size: "large",
+    size: 'large',
     src: getImageUrl(profile.thumbnail_image),
     className: classes.avatar,
-  };
-  const queryString = hubUrl ? "?hub=" + hubUrl : "";
+  }
+  const queryString = hubUrl ? '?hub=' + hubUrl : ''
 
   return (
     <div className={classes.avatarWithInfo}>
@@ -96,18 +96,18 @@ export default function ProfilePreview({ profile, allowMessage, showAdditionalIn
           <Avatar {...avatarProps} />
         )}
         <Typography variant="h6" className={classes.name}>
-          {profile.first_name + " " + profile.last_name}
+          {profile.first_name + ' ' + profile.last_name}
         </Typography>
         {showAdditionalInfo && (
           <div className={classes.additionalInfo}>
             {Object.keys(profile.additionalInfo).map((key, index) => {
-              const item = profile.additionalInfo[key];
+              const item = profile.additionalInfo[key]
               return (
                 <Typography
                   key={index}
                   className={`${classes.info}
                     ${
-                      item.importance === "low"
+                      item.importance === 'low'
                         ? classes.lowImportanceInfo
                         : classes.highImportanceInfo
                     }`}
@@ -122,7 +122,7 @@ export default function ProfilePreview({ profile, allowMessage, showAdditionalIn
                     ))}
                   {item.text}
                 </Typography>
-              );
+              )
             })}
           </div>
         )}
@@ -131,7 +131,7 @@ export default function ProfilePreview({ profile, allowMessage, showAdditionalIn
         <div>
           <Button
             variant="contained"
-            href={"/messageUser/" + profile.url_slug}
+            href={'/messageUser/' + profile.url_slug}
             color="primary"
             className={classes.messageButton}
           >
@@ -140,5 +140,5 @@ export default function ProfilePreview({ profile, allowMessage, showAdditionalIn
         </div>
       )}
     </div>
-  );
+  )
 }

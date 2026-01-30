@@ -1,27 +1,26 @@
-import React from "react";
-import { Typography, Link, Theme } from "@mui/material";
-
-import makeStyles from "@mui/styles/makeStyles";
+import { Link, Theme, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles<Theme, { centerContent?: boolean }>((theme) => ({
   infoLinkBox: (props) => ({
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     maxWidth: 600,
     marginLeft: props.centerContent ? theme.spacing(5) : 0,
-    background: "#E6E5E5",
+    background: '#E6E5E5',
     padding: theme.spacing(3),
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
       maxWidth: 700,
-      margin: "0 auto",
+      margin: '0 auto',
       marginTop: theme.spacing(3),
     },
   }),
   icon: (props) => ({
     marginRight: props.centerContent ? 0 : theme.spacing(3),
     width: 80,
-    ["@media (max-width: 400px)"]: {
+    ['@media (max-width: 400px)']: {
       width: 45,
     },
   }),
@@ -30,23 +29,23 @@ const useStyles = makeStyles<Theme, { centerContent?: boolean }>((theme) => ({
     fontSize: 20,
     fontWeight: 700,
     marginBottom: theme.spacing(1),
-    ["@media (max-width: 400px)"]: {
+    ['@media (max-width: 400px)']: {
       fontSize: 21,
     },
   },
 
   noUnderline: {
-    textDecoration: "inherit",
-    "&:hover": {
-      textDecoration: "inherit",
+    textDecoration: 'inherit',
+    '&:hover': {
+      textDecoration: 'inherit',
     },
-    color: "inherit",
+    color: 'inherit',
   },
 
   text: {
     fontWeight: 600,
   },
-}));
+}))
 
 export default function InfoLinkBox({
   className,
@@ -58,7 +57,7 @@ export default function InfoLinkBox({
   centerContent,
   link,
 }: any) {
-  const classes = useStyles({ centerContent: centerContent });
+  const classes = useStyles({ centerContent: centerContent })
   return (
     <Link href={link} className={classes.noUnderline} underline="hover">
       <div className={`${classes.infoLinkBox} ${className}`}>
@@ -75,5 +74,5 @@ export default function InfoLinkBox({
         </div>
       </div>
     </Link>
-  );
+  )
 }

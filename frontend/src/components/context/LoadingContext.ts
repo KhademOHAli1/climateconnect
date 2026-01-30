@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 // Default to not loading anything
-const LoadingContext = createContext({ spinning: false });
+const LoadingContext = createContext({ spinning: false })
 
-export default LoadingContext;
+export default LoadingContext

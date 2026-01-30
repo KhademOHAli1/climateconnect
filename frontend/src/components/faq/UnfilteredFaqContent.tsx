@@ -1,32 +1,31 @@
-import React, { useState } from "react";
-import { Tabs, Tab, Divider } from "@mui/material";
+import { Divider, Tab, Tabs } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useState } from 'react'
 
-import makeStyles from "@mui/styles/makeStyles";
-
-import FaqQuestionElement from "./FaqQuestionElement";
+import FaqQuestionElement from './FaqQuestionElement'
 
 const useStyles = makeStyles((theme) => {
   return {
     tabs: {
-      width: "100%",
+      width: '100%',
       marginTop: theme.spacing(2),
     },
     divider: {
       marginBottom: theme.spacing(2),
     },
-  };
-});
+  }
+})
 
 export default function UnfilteredFaqContent({ questionsBySection }) {
-  const [tabValue, setTabValue] = useState(0);
-  const classes = useStyles();
+  const [tabValue, setTabValue] = useState(0)
+  const classes = useStyles()
 
   const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+    setTabValue(newValue)
+  }
 
   function TabContent({ value, index, children }) {
-    return <div hidden={value !== index}>{children}</div>;
+    return <div hidden={value !== index}>{children}</div>
   }
 
   return (
@@ -50,10 +49,10 @@ export default function UnfilteredFaqContent({ questionsBySection }) {
       {Object.keys(questionsBySection).map((key, index) => (
         <TabContent value={tabValue} index={index} key={key}>
           {questionsBySection[key].map((q) => (
-            <FaqQuestionElement key={key + "-" + q.question} questionObject={q} />
+            <FaqQuestionElement key={key + '-' + q.question} questionObject={q} />
           ))}
         </TabContent>
       ))}
     </>
-  );
+  )
 }

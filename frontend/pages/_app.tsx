@@ -1,20 +1,20 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import { Theme, StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import ReactGA from "react-ga4";
+import CssBaseline from '@mui/material/CssBaseline'
+import { StyledEngineProvider, Theme, ThemeProvider } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import ReactGA from 'react-ga4'
 // Add global styles
-import "react-multi-carousel/lib/styles.css";
-import Cookies from "universal-cookie";
-import { apiRequest } from "../public/lib/apiOperations";
-import { getCookieProps } from "../public/lib/cookieOperations";
-import WebSocketService from "../public/lib/webSockets";
-import UserContext from "../src/components/context/UserContext";
-import theme from "../src/themes/theme";
-import { CcLocale, DonationGoal } from "../src/types";
-import * as Sentry from "@sentry/react";
-import "../devlink/global.css";
-import { getHubslugFromUrl } from "../public/lib/hubOperations";
+import 'react-multi-carousel/lib/styles.css'
+import * as Sentry from '@sentry/react'
+import Cookies from 'universal-cookie'
+import { apiRequest } from '../public/lib/apiOperations'
+import { getCookieProps } from '../public/lib/cookieOperations'
+import WebSocketService from '../public/lib/webSockets'
+import UserContext from '../src/components/context/UserContext'
+import theme from '../src/themes/theme'
+import { CcLocale, DonationGoal } from '../src/types'
+import '../devlink/global.css'
+import { getHubslugFromUrl } from '../public/lib/hubOperations'
 
 // initialize sentry
 
@@ -26,9 +26,9 @@ Sentry.init({
   // Session Replay
   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-});
+})
 
-declare module "@mui/styles/defaultTheme" {
+declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line no-unused-vars
   interface DefaultTheme extends Theme {}
 }
@@ -36,42 +36,42 @@ declare module "@mui/styles/defaultTheme" {
 // This is lifted from a Material UI template at https://github.com/mui-org/material-ui/blob/master/examples/nextjs/pages/_app.js.
 
 export default function MyApp({ Component, pageProps = {} }) {
-  const router = useRouter();
+  const router = useRouter()
   // Cookies
-  const cookies = new Cookies();
-  const token = cookies.get("auth_token");
-  const [gaInitialized, setGaInitialized] = useState(false);
-  const [isLoading, setLoading] = useState(true);
+  const cookies = new Cookies()
+  const token = cookies.get('auth_token')
+  const [gaInitialized, setGaInitialized] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
-  const [acceptedStatistics, setAcceptedStatistics] = useState(cookies.get("acceptedStatistics"));
-  const [acceptedNecessary, setAcceptedNecessary] = useState(cookies.get("acceptedNecessary"));
+  const [acceptedStatistics, setAcceptedStatistics] = useState(cookies.get('acceptedStatistics'))
+  const [acceptedNecessary, setAcceptedNecessary] = useState(cookies.get('acceptedNecessary'))
   const updateCookies = () => {
-    setAcceptedStatistics(cookies.get("acceptedStatistics"));
-    setAcceptedNecessary(cookies.get("acceptedNecessary"));
-  };
-  const pathName = router.asPath;
-  const { locale, locales } = router;
+    setAcceptedStatistics(cookies.get('acceptedStatistics'))
+    setAcceptedNecessary(cookies.get('acceptedNecessary'))
+  }
+  const pathName = router.asPath
+  const { locale, locales } = router
   if (
     acceptedStatistics &&
     !gaInitialized &&
-    !["develop", "development", "test"].includes(process.env.ENVIRONMENT!)
+    !['develop', 'development', 'test'].includes(process.env.ENVIRONMENT!)
   ) {
     ReactGA.initialize(process.env.GOOGLE_ANALYTICS_CODE!, {
-      debug: ["develop", "development", "test"].includes(process.env.ENVIRONMENT!),
+      debug: ['develop', 'development', 'test'].includes(process.env.ENVIRONMENT!),
       gaOptions: {
         cookieDomain: process.env.BASE_URL_HOST,
         anonymizeIp: true,
       },
-    } as any);
-    setGaInitialized(true);
+    } as any)
+    setGaInitialized(true)
   }
 
-  const API_URL = process.env.API_URL;
-  const API_HOST = process.env.API_HOST;
-  const ENVIRONMENT = process.env.ENVIRONMENT;
-  const SOCKET_URL = process.env.SOCKET_URL;
-  const CUSTOM_HUB_URLS = process.env.CUSTOM_HUB_URLS ? process.env.CUSTOM_HUB_URLS.split(",") : [];
-  const LOCATION_HUBS = process.env.LOCATION_HUBS ? process.env.LOCATION_HUBS.split(",") : [];
+  const API_URL = process.env.API_URL
+  const API_HOST = process.env.API_HOST
+  const ENVIRONMENT = process.env.ENVIRONMENT
+  const SOCKET_URL = process.env.SOCKET_URL
+  const CUSTOM_HUB_URLS = process.env.CUSTOM_HUB_URLS ? process.env.CUSTOM_HUB_URLS.split(',') : []
+  const LOCATION_HUBS = process.env.LOCATION_HUBS ? process.env.LOCATION_HUBS.split(',') : []
   // TODO: this should probably be decomposed
   // into individual state updates for
   // user, and notifications
@@ -79,96 +79,96 @@ export default function MyApp({ Component, pageProps = {} }) {
     user: token ? {} : (null as any),
     notifications: [] as any[],
     donationGoals: [] as DonationGoal[],
-  });
+  })
 
-  const [webSocketClient, setWebSocketClient] = useState<WebSocket | null | undefined>(null);
+  const [webSocketClient, setWebSocketClient] = useState<WebSocket | null | undefined>(null)
 
   // Possible socket connection states: "disconnected", "connecting", "connected"
-  const [socketConnectionState, setSocketConnectionState] = useState("connecting");
+  const [socketConnectionState, setSocketConnectionState] = useState('connecting')
 
   //TODO: reload current path or main page while being logged out
   const signOut = async () => {
-    const develop = ["develop", "development", "test"].includes(process.env.ENVIRONMENT!);
+    const develop = ['develop', 'development', 'test'].includes(process.env.ENVIRONMENT!)
     const cookieProps: any = {
-      path: "/",
-    };
-    if (!develop) cookieProps.domain = "." + API_HOST;
+      path: '/',
+    }
+    if (!develop) cookieProps.domain = '.' + API_HOST
     try {
       await apiRequest({
-        method: "post",
-        url: "/logout/",
+        method: 'post',
+        url: '/logout/',
         token: token,
         payload: {},
         locale: locale as CcLocale,
-      });
-      cookies.remove("auth_token", cookieProps);
+      })
+      cookies.remove('auth_token', cookieProps)
       setState({
         ...state,
         user: null,
-      });
+      })
     } catch (err) {
-      console.log(err);
-      cookies.remove("auth_token", cookieProps);
+      console.log(err)
+      cookies.remove('auth_token', cookieProps)
       setState({
         ...state,
         user: null,
-      });
-      return null;
+      })
+      return null
     }
-  };
+  }
 
   const hideNotification = (notificationId) => {
-    const notifications = state.notifications;
+    const notifications = state.notifications
     setState({
       ...state,
       notifications: notifications.filter((n) => n.id !== notificationId),
-    });
-  };
+    })
+  }
 
   const refreshNotifications = async () => {
-    const notifications = await getNotifications(cookies.get("auth_token"), locale);
+    const notifications = await getNotifications(cookies.get('auth_token'), locale)
     setState({
       ...state,
       notifications: notifications,
-    });
-  };
+    })
+  }
 
   const signIn = async (token, expiry) => {
-    const cookieProps = getCookieProps(expiry);
+    const cookieProps = getCookieProps(expiry)
 
-    cookies.set("auth_token", token, cookieProps);
+    cookies.set('auth_token', token, cookieProps)
     const user = await getLoggedInUser(
-      cookies.get("auth_token") ? cookies.get("auth_token") : token
-    );
+      cookies.get('auth_token') ? cookies.get('auth_token') : token,
+    )
     setState({
       ...state,
       user: user,
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       // Remove the server-side injected CSS.
-      const jssStyles: any = document.querySelector("#jss-server-side");
+      const jssStyles: any = document.querySelector('#jss-server-side')
       if (jssStyles) {
-        jssStyles.parentElement.removeChild(jssStyles);
+        jssStyles.parentElement.removeChild(jssStyles)
       }
       const [fetchedDonationGoals, userResult, fetchedNotifications] = await Promise.all([
         getDonationGoalsData(locale),
         getLoggedInUser(token),
         getNotifications(token, locale),
-      ]);
-      let fetchedUser = userResult;
+      ])
+      let fetchedUser = userResult
 
-      if (fetchedUser?.error === "invalid token") {
-        const develop = ["develop", "development", "test"].includes(process.env.ENVIRONMENT!);
+      if (fetchedUser?.error === 'invalid token') {
+        const develop = ['develop', 'development', 'test'].includes(process.env.ENVIRONMENT!)
         const cookieProps: any = {
-          path: "/",
-        };
-        if (!develop) cookieProps.domain = "." + API_HOST;
-        cookies.remove("auth_token", cookieProps);
-        console.log("Deleted auth_token because it was invalid");
-        fetchedUser = null;
+          path: '/',
+        }
+        if (!develop) cookieProps.domain = '.' + API_HOST
+        cookies.remove('auth_token', cookieProps)
+        console.log('Deleted auth_token because it was invalid')
+        fetchedUser = null
       }
 
       setState({
@@ -176,43 +176,43 @@ export default function MyApp({ Component, pageProps = {} }) {
         user: fetchedUser,
         notifications: fetchedNotifications,
         donationGoals: fetchedDonationGoals,
-      });
-      setLoading(false);
-    })();
-  }, []);
+      })
+      setLoading(false)
+    })()
+  }, [])
 
   useEffect(() => {
     if (state.user) {
-      const notificationsToSetRead = getNotificationsToSetRead(state.notifications, pageProps);
-      const client = WebSocketService("/ws/chat/");
+      const notificationsToSetRead = getNotificationsToSetRead(state.notifications, pageProps)
+      const client = WebSocketService('/ws/chat/')
 
       setState({
         ...state,
         user: state.user,
         notifications: state.notifications?.filter((n) => !notificationsToSetRead.includes(n)),
-      });
+      })
 
-      setWebSocketClient(client);
+      setWebSocketClient(client)
 
       if (notificationsToSetRead.length > 0) {
-        setNotificationsRead(token, notificationsToSetRead, locale);
+        setNotificationsRead(token, notificationsToSetRead, locale)
       }
 
       // Try to connect to the WebSocket
-      connect(client);
+      connect(client)
     }
-  }, [state.user]);
+  }, [state.user])
 
   const connect = (initialClient) => {
-    const client = initialClient ? initialClient : WebSocketService("/ws/chat/");
+    const client = initialClient ? initialClient : WebSocketService('/ws/chat/')
 
     client.onopen = () => {
-      setSocketConnectionState("connected");
-    };
+      setSocketConnectionState('connected')
+    }
 
     client.onmessage = async () => {
-      await refreshNotifications();
-    };
+      await refreshNotifications()
+    }
 
     client.onclose = () => {
       // TODO: when this state is updated, it looks
@@ -223,16 +223,16 @@ export default function MyApp({ Component, pageProps = {} }) {
       //
       // Revisit this code after the most recent state testing from
       // https://github.com/climateconnect/climateconnect/pull/709
-      if (socketConnectionState !== "closed") {
-        setSocketConnectionState("closed");
+      if (socketConnectionState !== 'closed') {
+        setSocketConnectionState('closed')
       }
 
       if (process.env.SOCKET_URL) {
         setTimeout(function () {
-          connect(client);
-        }, 1000);
+          connect(client)
+        }, 1000)
       }
-    };
+    }
 
     if (!initialClient) {
       // TODO: when this state is updated, it looks
@@ -243,17 +243,17 @@ export default function MyApp({ Component, pageProps = {} }) {
       //
       // Revisit this code after the most recent state testing from
       // https://github.com/climateconnect/climateconnect/pull/709
-      setWebSocketClient(client);
+      setWebSocketClient(client)
     }
-  };
+  }
 
   const startLoading = () => {
-    setLoading(true);
-  };
+    setLoading(true)
+  }
 
   const stopLoading = () => {
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const contextValues = {
     user: state.user,
@@ -282,7 +282,7 @@ export default function MyApp({ Component, pageProps = {} }) {
     stopLoading: stopLoading,
     hideNotification: hideNotification,
     LOCATION_HUBS: LOCATION_HUBS,
-  };
+  }
 
   return (
     <>
@@ -296,81 +296,81 @@ export default function MyApp({ Component, pageProps = {} }) {
         </ThemeProvider>
       </StyledEngineProvider>
     </>
-  );
+  )
 }
 
 const getNotificationsToSetRead = (notifications, pageProps) => {
-  let notifications_to_set_unread: any[] = [];
+  let notifications_to_set_unread: any[] = []
   if (pageProps.comments) {
-    const comment_ids = pageProps.comments.map((p) => p.id);
+    const comment_ids = pageProps.comments.map((p) => p.id)
     const comment_notifications_to_set_unread = notifications.filter((n) => {
       if (n.project_comment) {
         if (
           comment_ids.includes(n.project_comment.id) ||
           comment_ids.includes(n.project_comment.parent_comment_id)
         ) {
-          return true;
+          return true
         }
       }
-    });
+    })
     notifications_to_set_unread = [
       ...notifications_to_set_unread,
       ...comment_notifications_to_set_unread,
-    ];
+    ]
   }
   if (pageProps.chatUUID && pageProps.messages) {
     const chat_notifications_to_set_unread = notifications.filter((n) => {
-      if (n.chat_uuid) return n.chat_uuid === pageProps.chatUUID;
-      if (n.idea_supporter_chat) return n.idea_supporter_chat === pageProps.chatUUID;
-    });
+      if (n.chat_uuid) return n.chat_uuid === pageProps.chatUUID
+      if (n.idea_supporter_chat) return n.idea_supporter_chat === pageProps.chatUUID
+    })
     notifications_to_set_unread = [
       ...notifications_to_set_unread,
       ...chat_notifications_to_set_unread,
-    ];
+    ]
   }
-  return notifications_to_set_unread;
-};
+  return notifications_to_set_unread
+}
 
 const setNotificationsRead = async (token, notifications, locale) => {
   if (token) {
     try {
       const resp = await apiRequest({
-        method: "post",
-        url: "/api/set_user_notifications_read/",
+        method: 'post',
+        url: '/api/set_user_notifications_read/',
         payload: { notifications: notifications.map((n) => n.id) },
         token: token,
         locale: locale,
-      });
-      return resp.data;
+      })
+      return resp.data
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  } else return null;
-};
+  } else return null
+}
 
 async function getLoggedInUser(token) {
   if (token) {
     try {
       const resp = await apiRequest({
-        method: "get",
-        url: "/api/my_profile/",
+        method: 'get',
+        url: '/api/my_profile/',
         token: token,
-      });
-      return resp.data;
+      })
+      return resp.data
     } catch (err: any) {
-      const invalid_token_messages = ["Invalid token.", "Ungültiges Token"];
-      console.log(err);
+      const invalid_token_messages = ['Invalid token.', 'Ungültiges Token']
+      console.log(err)
       if (err.response && err.response.data)
-        console.log("Error in getLoggedInUser: " + err.response.data.detail);
+        console.log('Error in getLoggedInUser: ' + err.response.data.detail)
       if (invalid_token_messages.includes(err?.response?.data?.detail)) {
         return {
-          error: "invalid token",
-        };
+          error: 'invalid token',
+        }
       }
-      return null;
+      return null
     }
   } else {
-    return null;
+    return null
   }
 }
 
@@ -381,34 +381,34 @@ async function getNotifications(token, locale) {
   if (token) {
     try {
       const resp = await apiRequest({
-        method: "get",
-        url: "/api/notifications/",
+        method: 'get',
+        url: '/api/notifications/',
         locale: locale,
         token: token,
-      });
-      return resp.data.results.sort((a, b) => b.id - a.id);
+      })
+      return resp.data.results.sort((a, b) => b.id - a.id)
     } catch (err: any) {
       if (err.response && err.response.data)
-        console.log("Error in getNotifications: " + err.response.data.detail);
-      if (err.response && err.response.data.detail === "Invalid token")
-        console.log("invalid token! token:" + token);
-      return null;
+        console.log('Error in getNotifications: ' + err.response.data.detail)
+      if (err.response && err.response.data.detail === 'Invalid token')
+        console.log('invalid token! token:' + token)
+      return null
     }
   } else {
-    return [];
+    return []
   }
 }
 
 async function getDonationGoalsData(locale): Promise<DonationGoal[]> {
-  if (process.env.DONATION_CAMPAIGN_RUNNING !== "true") {
-    return [];
+  if (process.env.DONATION_CAMPAIGN_RUNNING !== 'true') {
+    return []
   }
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/donation_goals_progresses/",
+      method: 'get',
+      url: '/api/donation_goals_progresses/',
       locale: locale,
-    });
+    })
     const ret: DonationGoal[] = resp?.data?.map((goal) => ({
       goal_name: goal?.name,
       goal_start: goal?.start_date,
@@ -418,14 +418,14 @@ async function getDonationGoalsData(locale): Promise<DonationGoal[]> {
       hub: goal?.hub?.url_slug,
       call_to_action_text: goal?.call_to_action_text,
       call_to_action_link: goal?.call_to_action_link,
-    }));
-    console.log(ret);
-    return ret;
+    }))
+    console.log(ret)
+    return ret
   } catch (err: any) {
-    console.log("ERROR");
+    console.log('ERROR')
     if (err.response && err.response.data) {
-      console.log(err.response.data);
-    } else console.log(err);
-    return [];
+      console.log(err.response.data)
+    } else console.log(err)
+    return []
   }
 }

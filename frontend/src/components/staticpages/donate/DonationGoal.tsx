@@ -1,77 +1,77 @@
-import { Container, LinearProgress, Theme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
+import { Container, LinearProgress, Theme } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 type StyleProps = {
-  embedded: boolean;
-  barOnly: boolean;
-  textBackground?: string;
-  isInWidget: boolean;
-  barColor?: string;
-  small: boolean;
-  textMarginLeft?: string;
-};
+  embedded: boolean
+  barOnly: boolean
+  textBackground?: string
+  isInWidget: boolean
+  barColor?: string
+  small: boolean
+  textMarginLeft?: string
+}
 const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
   root: (props) => ({
     paddingTop: props.embedded || props.barOnly ? 0 : theme.spacing(1),
     paddingBottom: props.embedded || props.barOnly ? 0 : theme.spacing(1.5),
-    background: props.embedded ? "transparent" : "#DFDFDF",
-    position: props.embedded ? undefined : "absolute",
+    background: props.embedded ? 'transparent' : '#DFDFDF',
+    position: props.embedded ? undefined : 'absolute',
     top: -90,
     zIndex: 3,
     left: 0,
-    width: "100%",
-    height: props.embedded ? "auto" : 95,
-    [theme.breakpoints.down("md")]: {
-      position: props.embedded ? undefined : "fixed",
-      top: "auto",
+    width: '100%',
+    height: props.embedded ? 'auto' : 95,
+    [theme.breakpoints.down('md')]: {
+      position: props.embedded ? undefined : 'fixed',
+      top: 'auto',
       bottom: 42,
     },
   }),
   container: {
-    position: "relative",
+    position: 'relative',
     paddingLeft: 0,
     paddingRight: 0,
   },
   rootFixed: {
-    [theme.breakpoints.up("md")]: {
-      position: "fixed",
+    [theme.breakpoints.up('md')]: {
+      position: 'fixed',
       top: 0,
       borderTop: 0,
     },
   },
   text: (props) => ({
-    textAlign: "center",
+    textAlign: 'center',
     fontWeight: 600,
-    color: props.embedded ? "white" : theme.palette.secondary.main,
+    color: props.embedded ? 'white' : theme.palette.secondary.main,
     marginBottom: theme.spacing(1),
-    background: props.textBackground ? props.textBackground : "auto",
-    position: props.textBackground ? "relative" : undefined,
+    background: props.textBackground ? props.textBackground : 'auto',
+    position: props.textBackground ? 'relative' : undefined,
   }),
   amount: (props) => ({
-    fontSize: props.embedded ? "auto" : 22,
+    fontSize: props.embedded ? 'auto' : 22,
     fontWeight: 600,
   }),
   barContainer: (props) => ({
     height: props.small || props.isInWidget ? 15 : 25,
     borderRadius: 15,
-    backgroundColor: theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 700],
   }),
   bar: (props) => ({
     borderRadius: 5,
     backgroundColor: props.barColor ? props.barColor : theme.palette.primary.main,
   }),
   barText: (props) => ({
-    position: "absolute",
-    top: "50%",
+    position: 'absolute',
+    top: '50%',
     left: props.textMarginLeft,
-    transform: "translate(0, -50%)", // Center the text
+    transform: 'translate(0, -50%)', // Center the text
     zIndex: 1000,
     color: theme.palette.primary.main,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 20,
   }),
-}));
+}))
 
 export default function DonationGoal({
   className,
@@ -92,7 +92,7 @@ export default function DonationGoal({
     isInWidget: isInWidget,
     textMarginLeft:
       current / goal < 0.9 ? `${(current / goal) * 100 + 1}%` : `${(current / goal) * 100 - 25}%`,
-  });
+  })
   return (
     <div className={`${className} ${classes.root}`}>
       <Container className={classes.container}>
@@ -109,5 +109,5 @@ export default function DonationGoal({
         </div>
       </Container>
     </div>
-  );
+  )
 }

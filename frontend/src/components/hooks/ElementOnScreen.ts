@@ -1,5 +1,5 @@
 //global imports
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 //returns true if the el is currently visible on screen
 //@el: ref of the element
@@ -9,43 +9,43 @@ export default function ElementOnScreen({
   triggerIfUnderScreen,
   minSpaceFromBottom = 0,
 }: {
-  el;
-  triggerIfUnderScreen?: boolean;
-  minSpaceFromBottom?: number;
+  el
+  triggerIfUnderScreen?: boolean
+  minSpaceFromBottom?: number
 }) {
   const [elementOnScreen, setElementOnScreen] = useState(
-    isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom)
-  );
+    isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom),
+  )
   useEffect(() => {
-    let ticking = false;
+    let ticking = false
 
     const updateElementOnScreen = () => {
-      setElementOnScreen(isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom));
-      ticking = false;
-    };
+      setElementOnScreen(isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom))
+      ticking = false
+    }
 
     const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateElementOnScreen);
-        ticking = true;
+        window.requestAnimationFrame(updateElementOnScreen)
+        ticking = true
       }
-    };
+    }
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener('scroll', onScroll)
 
-    return () => window.removeEventListener("scroll", onScroll);
-  });
+    return () => window.removeEventListener('scroll', onScroll)
+  })
 
   useEffect(() => {
-    setElementOnScreen(isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom));
-  }, el);
+    setElementOnScreen(isElementInViewport(el, triggerIfUnderScreen, minSpaceFromBottom))
+  }, el)
 
-  return elementOnScreen;
+  return elementOnScreen
 }
 
 const isElementInViewport = (el, triggerIfUnderScreen, minSpaceFromBottom) => {
-  if (!el) return false;
-  const rect = el.getBoundingClientRect();
+  if (!el) return false
+  const rect = el.getBoundingClientRect()
   return (
     (triggerIfUnderScreen || rect.top >= 0) &&
     rect.left >= 0 &&
@@ -54,5 +54,5 @@ const isElementInViewport = (el, triggerIfUnderScreen, minSpaceFromBottom) => {
         minSpaceFromBottom /* or $(window).height() */ &&
     rect.right <=
       (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
-  );
-};
+  )
+}

@@ -1,25 +1,25 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField } from '@mui/material'
 
-import throttle from "lodash/throttle";
-import React, { Fragment, useContext, useEffect, useMemo, useState } from "react";
-import { apiRequest } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
+import throttle from 'lodash/throttle'
+import React, { Fragment, useContext, useEffect, useMemo, useState } from 'react'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 type Props = {
-  label?;
-  baseUrl?;
-  filterOut?;
-  className?;
-  clearOnSelect?;
-  onSelect?;
-  getOptionLabel?;
-  renderOption?;
-  helperText?;
-  freeSolo?;
-  onUnselect?;
-  color?;
-};
+  label?
+  baseUrl?
+  filterOut?
+  className?
+  clearOnSelect?
+  onSelect?
+  getOptionLabel?
+  renderOption?
+  helperText?
+  freeSolo?
+  onUnselect?
+  color?
+}
 export default function AutoCompleteSearchBar({
   label,
   baseUrl,
@@ -32,90 +32,90 @@ export default function AutoCompleteSearchBar({
   helperText,
   freeSolo,
   onUnselect,
-  color = "primary",
+  color = 'primary',
 }: Props) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "filter_and_search", locale: locale });
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'filter_and_search', locale: locale })
+  const [open, setOpen] = useState(false)
+  const [options, setOptions] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+  const [inputValue, setInputValue] = useState('')
 
   useEffect(() => {
-    let active = true;
+    let active = true
 
-    (async () => {
+    ;(async () => {
       if (searchValue) {
         try {
           const response = await apiRequest({
-            method: "get",
-            url: (baseUrl + searchValue).replace(process.env.API_URL!, ""),
+            method: 'get',
+            url: (baseUrl + searchValue).replace(process.env.API_URL!, ''),
             locale: locale,
-          });
+          })
           if (active) {
             setOptions(
               response.data.results
                 .map((o) => ({ ...o, key: o.url_slug }))
                 .filter((o) =>
-                  filterOut ? !filterOut.find((fo) => fo.url_slug === o.url_slug) : true
-                )
-            );
+                  filterOut ? !filterOut.find((fo) => fo.url_slug === o.url_slug) : true,
+                ),
+            )
           }
         } catch (error) {
-          console.error(error);
+          console.error(error)
         }
       } else {
-        setOptions([]);
+        setOptions([])
       }
-    })();
+    })()
 
     return () => {
-      active = false;
-    };
-  }, [searchValue]);
+      active = false
+    }
+  }, [searchValue])
 
   useEffect(() => {
     if (!open) {
-      setOptions([]);
+      setOptions([])
     }
-  }, [open]);
+  }, [open])
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    setSearchValueThrottled(event.target.value);
-    if (onUnselect) onUnselect();
-  };
+    setInputValue(event.target.value)
+    setSearchValueThrottled(event.target.value)
+    if (onUnselect) onUnselect()
+  }
 
   const setSearchValueThrottled = useMemo(
     () =>
       throttle((value) => {
-        setSearchValue(value);
+        setSearchValue(value)
       }, 1000),
-    []
-  );
+    [],
+  )
 
   const handleChange = (event, value, reason) => {
-    if (reason === "selectOption") {
-      if (onSelect) onSelect(value);
+    if (reason === 'selectOption') {
+      if (onSelect) onSelect(value)
       if (clearOnSelect) {
-        setInputValue("");
-        setSearchValue("");
+        setInputValue('')
+        setSearchValue('')
       } else {
-        setInputValue(value.name);
-        setSearchValue("");
+        setInputValue(value.name)
+        setSearchValue('')
       }
     }
-  };
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   return (
     <Autocomplete
       open={open}
       className={className}
       onOpen={() => {
-        setOpen(true);
+        setOpen(true)
       }}
       handleHomeEndKeys
       disableClearable
@@ -142,5 +142,5 @@ export default function AutoCompleteSearchBar({
         />
       )}
     />
-  );
+  )
 }

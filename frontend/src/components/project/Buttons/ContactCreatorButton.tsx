@@ -1,20 +1,20 @@
-import { Avatar, Button, Collapse, Fade, Theme, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import SendIcon from "@mui/icons-material/Send";
-import React, { useContext, useState } from "react";
-import { getImageUrl } from "../../../../public/lib/imageOperations";
-import getTexts from "../../../../public/texts/texts";
-import theme from "../../../themes/theme";
-import UserContext from "../../context/UserContext";
-import ContactCreatorButtonInfo from "../../communication/contactcreator/ContactCreatorButtonInfo";
+import SendIcon from '@mui/icons-material/Send'
+import { Avatar, Button, Collapse, Fade, Theme, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import { getImageUrl } from '../../../../public/lib/imageOperations'
+import getTexts from '../../../../public/texts/texts'
+import theme from '../../../themes/theme'
+import ContactCreatorButtonInfo from '../../communication/contactcreator/ContactCreatorButtonInfo'
+import UserContext from '../../context/UserContext'
 
 const useStyles = makeStyles<
   Theme,
   { collapsable: boolean; customCardWidth: number; explanationBackground: string }
 >({
   root: (props) => ({
-    height: props.collapsable ? 40 : "auto",
-    position: "relative",
+    height: props.collapsable ? 40 : 'auto',
+    position: 'relative',
     width: props.customCardWidth ? props.customCardWidth : 220,
     zIndex: 1,
   }),
@@ -23,14 +23,14 @@ const useStyles = makeStyles<
     width: theme.spacing(3),
   },
   slideInCard: {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#F8F8F8",
-    cursor: "pointer",
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: '#F8F8F8',
+    cursor: 'pointer',
   },
   slideInRoot: {
-    textAlign: "left",
-    maxWidth: "100%",
+    textAlign: 'left',
+    maxWidth: '100%',
   },
   textContainer: {
     // theme.spacing(2): the right margin of the card's avatar (mui default)
@@ -38,40 +38,40 @@ const useStyles = makeStyles<
     maxWidth: `calc(100% - (${theme.spacing(2)} + 50px))`,
   },
   slideInSubheader: {
-    color: "black",
+    color: 'black',
   },
   slideInTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   preventTextOverflow: {
-    maxWidth: "100%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    maxWidth: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   collapsableContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     right: 0,
   },
   applyCustomCardWidth: {
-    width: "100%",
+    width: '100%',
   },
   contactButton: {
     height: 40,
-    width: "100%",
+    width: '100%',
   },
   helperText: (props) => ({
-    position: "absolute",
+    position: 'absolute',
     fontSize: 13,
-    textAlign: "center",
-    cursor: "pointer",
-    background: props.explanationBackground ? props.explanationBackground : "auto",
+    textAlign: 'center',
+    cursor: 'pointer',
+    background: props.explanationBackground ? props.explanationBackground : 'auto',
   }),
   avatar: {
     height: 50,
     width: 50,
   },
-});
+})
 export default function ContactCreatorButton({
   className,
   creator,
@@ -88,28 +88,28 @@ export default function ContactCreatorButton({
     explanationBackground: explanationBackground,
     customCardWidth: customCardWidth,
     collapsable: collapsable,
-  });
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, creator: creator });
-  const [hoveringButton, setHoveringButton] = useState(false);
+  })
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, creator: creator })
+  const [hoveringButton, setHoveringButton] = useState(false)
 
   const handleMouseEnter = () => {
-    setHoveringButton(true);
-  };
+    setHoveringButton(true)
+  }
   const handleMouseLeave = () => {
-    setHoveringButton(false);
-  };
+    setHoveringButton(false)
+  }
 
-  const creatorImageURL = getImageUrl(creator?.thumbnail_image);
-  const creatorName = creator?.name;
+  const creatorImageURL = getImageUrl(creator?.thumbnail_image)
+  const creatorName = creator?.name
   const creatorsRoleInProject = creator?.role
     ? creator?.role
-    : contentType === "idea"
-    ? texts.responsible_person_idea
-    : contentType === "organization"
-    ? texts.responsible_person_org
-    : texts.responsible_person_project;
-  const buttonText = texts.contact;
+    : contentType === 'idea'
+      ? texts.responsible_person_idea
+      : contentType === 'organization'
+        ? texts.responsible_person_org
+        : texts.responsible_person_project
+  const buttonText = texts.contact
 
   return (
     <div
@@ -119,7 +119,7 @@ export default function ContactCreatorButton({
       onClick={handleClickContact}
     >
       <div
-        className={`${collapsable ? classes.collapsableContainer : ""} ${
+        className={`${collapsable ? classes.collapsableContainer : ''} ${
           classes.applyCustomCardWidth
         }`}
       >
@@ -154,11 +154,11 @@ export default function ContactCreatorButton({
         {collapsable && (
           <Fade in={hoveringButton}>
             <Typography className={classes.helperText}>
-              {texts[`contact_creator_to_know_more_about_${contentType ? contentType : "project"}`]}
+              {texts[`contact_creator_to_know_more_about_${contentType ? contentType : 'project'}`]}
             </Typography>
           </Fade>
         )}
       </div>
     </div>
-  );
+  )
 }

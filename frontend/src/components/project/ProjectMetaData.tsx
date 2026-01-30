@@ -1,18 +1,18 @@
-import { Box, Collapse, Container, Theme, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import PlaceIcon from "@mui/icons-material/Place";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import MiniOrganizationPreview from "../organization/MiniOrganizationPreview";
-import MiniProfilePreview from "../profile/MiniProfilePreview";
-import LocationDisplay from "./LocationDisplay";
-import ProjectSectorsDisplay from "./ProjectSectorsDisplay";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ModeCommentIcon from "@mui/icons-material/ModeComment";
-import { Project } from "../../types";
-import BrowseContext from "../context/BrowseContext";
-import ProjectTypeDisplay from "./ProjectTypeDisplay";
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import ModeCommentIcon from '@mui/icons-material/ModeComment'
+import PlaceIcon from '@mui/icons-material/Place'
+import { Box, Collapse, Container, Theme, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import { Project } from '../../types'
+import BrowseContext from '../context/BrowseContext'
+import UserContext from '../context/UserContext'
+import MiniOrganizationPreview from '../organization/MiniOrganizationPreview'
+import MiniProfilePreview from '../profile/MiniProfilePreview'
+import LocationDisplay from './LocationDisplay'
+import ProjectSectorsDisplay from './ProjectSectorsDisplay'
+import ProjectTypeDisplay from './ProjectTypeDisplay'
 
 const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
   creatorImage: {
@@ -21,20 +21,20 @@ const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
     marginBottom: -5,
   },
   creator: {
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
     marginBottom: theme.spacing(0.25),
   },
   cardIcon: {
-    verticalAlign: "bottom",
+    verticalAlign: 'bottom',
     marginRight: theme.spacing(0.5),
     marginLeft: theme.spacing(-0.25),
-    fontSize: "default",
+    fontSize: 'default',
     color: theme.palette.background.default_contrastText,
   },
   categories: (props) => ({
-    display: "flex",
+    display: 'flex',
     marginTop: theme.spacing(0.5),
-    background: props.hovering ? "#e1e1e147" : "auto",
+    background: props.hovering ? '#e1e1e147' : 'auto',
     padding: props.hovering ? theme.spacing(2) : 0,
     paddingTop: props.hovering ? theme.spacing(1) : 0,
     paddingBottom: props.hovering ? theme.spacing(1) : 0,
@@ -43,7 +43,7 @@ const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
     marginTop: theme.spacing(0.5),
   },
   metadataText: {
-    display: "inline",
+    display: 'inline',
     fontSize: 14,
     marginLeft: theme.spacing(0.25),
   },
@@ -55,11 +55,11 @@ const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
   wrapper: (props) => ({
     padding: theme.spacing(2),
     paddingTop: 0,
-    paddingBottom: props.hovering ? theme.spacing(0.5) : "auto",
+    paddingBottom: props.hovering ? theme.spacing(0.5) : 'auto',
   }),
   involvedOrganizationsContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     marginBottom: theme.spacing(0.5),
   },
   horizontalSpacing: {
@@ -67,13 +67,13 @@ const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
   },
   additionalInfoIcon: {
     marginRight: theme.spacing(1),
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     color: theme.palette.background.default_contrastText,
   },
   additionalInfoContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     marginTop: theme.spacing(1),
     marginLeft: theme.spacing(-0.25),
   },
@@ -87,14 +87,14 @@ const useStyles = makeStyles<Theme, { hovering?: boolean }>((theme) => ({
     marginLeft: 2,
     marginRight: 6,
   },
-}));
+}))
 
-type Props = { project: Project; hovering: boolean; withDescription?: boolean };
+type Props = { project: Project; hovering: boolean; withDescription?: boolean }
 export default function ProjectMetaData({ project, hovering, withDescription }: Props) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const project_parent = project.project_parents![0];
-  const main_project_sector = project.sectors!.map((t) => t.name)[0];
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const project_parent = project.project_parents![0]
+  const main_project_sector = project.sectors!.map((t) => t.name)[0]
   if (withDescription) {
     return (
       <WithDescription
@@ -105,7 +105,7 @@ export default function ProjectMetaData({ project, hovering, withDescription }: 
         main_project_sector={main_project_sector}
         texts={texts}
       />
-    );
+    )
   }
 
   return (
@@ -116,7 +116,7 @@ export default function ProjectMetaData({ project, hovering, withDescription }: 
       main_project_sector={main_project_sector}
       texts={texts}
     />
-  );
+  )
 }
 
 const WithDescription = ({
@@ -126,7 +126,7 @@ const WithDescription = ({
   project,
   main_project_sector,
 }: any) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <Box className={className}>
       <Container className={classes.wrapper}>
@@ -165,8 +165,8 @@ const WithDescription = ({
         />
       )}
     </Box>
-  );
-};
+  )
+}
 
 const WithOutDescription = ({
   className,
@@ -175,7 +175,7 @@ const WithOutDescription = ({
   main_project_sector,
   texts,
 }: any) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <Box className={className}>
       <Container className={classes.wrapper}>
@@ -197,12 +197,12 @@ const WithOutDescription = ({
         </Box>
       </Container>
     </Box>
-  );
-};
+  )
+}
 
 const CreatorAndCollaboratorPreviews = ({ collaborating_organization, project_parent }) => {
-  const collaborating_organizations = collaborating_organization.slice(0, 2); // only show 2 collaborating orgs
-  const classes = useStyles({});
+  const collaborating_organizations = collaborating_organization.slice(0, 2) // only show 2 collaborating orgs
+  const classes = useStyles({})
   return (
     <>
       {project_parent && project_parent.parent_organization && (
@@ -216,7 +216,7 @@ const CreatorAndCollaboratorPreviews = ({ collaborating_organization, project_pa
           {collaborating_organizations.length > 0 && (
             <>
               <div className={classes.horizontalSpacing} />
-              <>{"+"}</>
+              <>{'+'}</>
               <div className={classes.horizontalSpacing} />
               {collaborating_organizations.map((co, index) => (
                 <MiniOrganizationPreview
@@ -242,16 +242,16 @@ const CreatorAndCollaboratorPreviews = ({ collaborating_organization, project_pa
         />
       )}
     </>
-  );
-};
+  )
+}
 
 const AdditionalPreviewInfo = ({ project }) => {
-  const classes = useStyles({});
-  const { projectTypes } = useContext(BrowseContext);
+  const classes = useStyles({})
+  const { projectTypes } = useContext(BrowseContext)
   const projectType =
     projectTypes && projectTypes.length > 0
       ? projectTypes.find((t) => t.type_id === project.project_type)
-      : { name: project.project_type, type_id: project.project_type };
+      : { name: project.project_type, type_id: project.project_type }
 
   return (
     <Box className={classes.additionalInfoContainer}>
@@ -270,7 +270,7 @@ const AdditionalPreviewInfo = ({ project }) => {
       <Box className={classes.additionalInfoIcon}>
         {(project.number_of_comments > 0 || project.number_of_likes > 2) && (
           <>
-            {" • "}
+            {' • '}
             <div className={classes.horizontalSpacing} />
           </>
         )}
@@ -281,5 +281,5 @@ const AdditionalPreviewInfo = ({ project }) => {
         />
       </Box>
     </Box>
-  );
-};
+  )
+}

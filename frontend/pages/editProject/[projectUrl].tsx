@@ -1,46 +1,46 @@
-import { Link, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import NextCookies from "next-cookies";
-import React, { useContext, useState } from "react";
-import ROLE_TYPES from "../../public/data/role_types";
-import { apiRequest, getLocalePrefix, sendToLogin } from "../../public/lib/apiOperations";
+import { Link, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import NextCookies from 'next-cookies'
+import React, { useContext, useState } from 'react'
+import ROLE_TYPES from '../../public/data/role_types'
+import { apiRequest, getLocalePrefix, sendToLogin } from '../../public/lib/apiOperations'
 import {
   getProjectTypeOptions,
-  getSkillsOptions,
   getSectorOptions,
-} from "../../public/lib/getOptions";
-import { getImageUrl } from "../../public/lib/imageOperations";
-import { nullifyUndefinedValues } from "../../public/lib/profileOperations";
-import getTexts from "../../public/texts/texts";
-import UserContext from "../../src/components/context/UserContext";
-import EditProjectRoot from "../../src/components/editProject/EditProjectRoot";
-import LoginNudge from "../../src/components/general/LoginNudge";
-import Layout from "../../src/components/layouts/layout";
-import WideLayout from "../../src/components/layouts/WideLayout";
-import getHubTheme from "../../src/themes/fetchHubTheme";
-import { transformThemeData } from "../../src/themes/transformThemeData";
-import { Project, Sector } from "../../src/types";
-import theme from "../../src/themes/theme";
+  getSkillsOptions,
+} from '../../public/lib/getOptions'
+import { getImageUrl } from '../../public/lib/imageOperations'
+import { nullifyUndefinedValues } from '../../public/lib/profileOperations'
+import getTexts from '../../public/texts/texts'
+import UserContext from '../../src/components/context/UserContext'
+import EditProjectRoot from '../../src/components/editProject/EditProjectRoot'
+import LoginNudge from '../../src/components/general/LoginNudge'
+import Layout from '../../src/components/layouts/layout'
+import WideLayout from '../../src/components/layouts/WideLayout'
+import getHubTheme from '../../src/themes/fetchHubTheme'
+import theme from '../../src/themes/theme'
+import { transformThemeData } from '../../src/themes/transformThemeData'
+import { Project, Sector } from '../../src/types'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   errorTitle: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: theme.spacing(8),
   },
-}));
+}))
 
 export async function getServerSideProps(ctx) {
-  const { auth_token } = NextCookies(ctx);
-  const texts = getTexts({ page: "project", locale: ctx.locale });
+  const { auth_token } = NextCookies(ctx)
+  const texts = getTexts({ page: 'project', locale: ctx.locale })
   if (ctx.req && !auth_token) {
-    const message = texts.please_log_in_to_edit_project;
-    return sendToLogin(ctx, message);
+    const message = texts.please_log_in_to_edit_project
+    return sendToLogin(ctx, message)
   }
-  const projectUrl = encodeURI(ctx.query.projectUrl);
-  const hubUrl = ctx.query.hub;
+  const projectUrl = encodeURI(ctx.query.projectUrl)
+  const hubUrl = ctx.query.hub
   const [
     project,
     members,
@@ -57,7 +57,7 @@ export async function getServerSideProps(ctx) {
     getProjectTypeOptions(ctx.locale),
     getHubTheme(hubUrl),
     getSectorOptions(ctx.locale),
-  ]);
+  ])
   return {
     props: nullifyUndefinedValues({
       project: project,
@@ -69,7 +69,7 @@ export async function getServerSideProps(ctx) {
       hubUrl: hubUrl,
       sectorOptions: sectorOptions,
     }),
-  };
+  }
 }
 
 export default function EditProjectPage({
@@ -82,20 +82,20 @@ export default function EditProjectPage({
   hubUrl,
   sectorOptions,
 }: {
-  project: Project;
-  members: any[];
-  skillsOptions: any[];
-  userOrganizations: any[];
-  projectTypeOptions: any[];
-  hubThemeData: any;
-  hubUrl: string;
-  sectorOptions: Sector[];
+  project: Project
+  members: any[]
+  skillsOptions: any[]
+  userOrganizations: any[]
+  projectTypeOptions: any[]
+  hubThemeData: any
+  hubUrl: string
+  sectorOptions: Sector[]
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [curProject, setCurProject] = useState({
     ...project,
     hubUrl: project?.related_hubs?.length ? project.related_hubs[0] : null,
-  });
+  })
 
   // add all sectors that are assigned to the project to the possible sectors
   // so that, when editing a project with e.g. specific sectors all sectors - even
@@ -104,29 +104,29 @@ export default function EditProjectPage({
   if (project.sectors) {
     for (const sector of project.sectors) {
       // match by sector.key
-      const exists = sectorOptions.find((s) => s.key === sector.key);
+      const exists = sectorOptions.find((s) => s.key === sector.key)
       if (!exists) {
-        sectorOptions.push(sector);
+        sectorOptions.push(sector)
       }
     }
     // sort sectors by name
-    sectorOptions.sort((a, b) => (a.name < b.name ? -1 : 1));
+    sectorOptions.sort((a, b) => (a.name < b.name ? -1 : 1))
   }
 
   project = {
     ...project,
-  };
-  const [errorMessage, setErrorMessage] = useState("");
-  const { user, locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  }
+  const [errorMessage, setErrorMessage] = useState('')
+  const { user, locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
 
   const handleSetErrorMessage = (newErrorMessage) => {
-    setErrorMessage(newErrorMessage);
-  };
+    setErrorMessage(newErrorMessage)
+  }
   const handleSetProject = (newProject) => {
-    setCurProject({ ...newProject });
-  };
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+    setCurProject({ ...newProject })
+  }
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
 
   if (!user)
     return (
@@ -140,19 +140,19 @@ export default function EditProjectPage({
       >
         <LoginNudge fullPage whatToDo={texts.to_edit_this_project} />
       </WideLayout>
-    );
+    )
   else if (!project)
     return (
       <Layout className={classes.root} title={texts.project_not_found}>
         <Typography className={classes.errorTitle} variant="h3">
-          {texts.project_does_not_exist}{" "}
-          <Link href={getLocalePrefix(locale) + "/share"} underline="hover">
+          {texts.project_does_not_exist}{' '}
+          <Link href={getLocalePrefix(locale) + '/share'} underline="hover">
             {texts.click_here}
-          </Link>{" "}
+          </Link>{' '}
           {texts.to_create_a_project}
         </Typography>
       </Layout>
-    );
+    )
   else if (!members.find((m) => m.user && m.user.id === user.id))
     return (
       <WideLayout
@@ -164,14 +164,14 @@ export default function EditProjectPage({
         hubUrl={hubUrl}
       >
         <Typography variant="h4" color="primary" className={classes.errorTitle}>
-          {texts.not_a_member}. {texts.go_to_the}{" "}
-          <a href={getLocalePrefix(locale) + "/projects/" + project.url_slug}>
+          {texts.not_a_member}. {texts.go_to_the}{' '}
+          <a href={getLocalePrefix(locale) + '/projects/' + project.url_slug}>
             {texts.project_page}
-          </a>{" "}
+          </a>{' '}
           {texts.and_ask_to_be_part_of_the_team}
         </Typography>
       </WideLayout>
-    );
+    )
   else if (
     members.find((m) => m.user && m.user.id === user.id).role.role_type != ROLE_TYPES.all_type &&
     members.find((m) => m.user && m.user.id === user.id).role.role_type !=
@@ -190,14 +190,14 @@ export default function EditProjectPage({
           {texts.need_to_be_admin_to_manage_project_team}
         </Typography>
       </WideLayout>
-    );
+    )
   else {
-    const user_role = members.find((m) => m.user && m.user.id === user.id).role;
+    const user_role = members.find((m) => m.user && m.user.id === user.id).role
     return (
       <WideLayout
-        title={texts.edit_project + " " + project.name}
+        title={texts.edit_project + ' ' + project.name}
         message={errorMessage}
-        messageType={errorMessage && "error"}
+        messageType={errorMessage && 'error'}
         customTheme={customTheme}
         headerBackground={
           customTheme ? customTheme.palette.header.background : theme.palette.background.default
@@ -218,26 +218,26 @@ export default function EditProjectPage({
           hubUrl={hubUrl}
         />
       </WideLayout>
-    );
+    )
   }
 }
 
 async function getProjectByIdIfExists(projectUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/?edit_view=true",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/?edit_view=true',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return parseProject(resp.data);
+      return parseProject(resp.data)
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
@@ -249,42 +249,42 @@ const parseProject = (project) => ({
   is_personal_project: !project.project_parents[0].parent_organization,
   skills: project.skills.map((s) => ({ ...s, key: s.id })),
   sectors: project.sectors.map((item) => ({ ...item.sector, order: item.order })),
-});
+})
 
 const getUserOrganizations = async (token, locale) => {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/my_organizations/",
+      method: 'get',
+      url: '/api/my_organizations/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return resp.data.map((o) => o.organization);
+      return resp.data.map((o) => o.organization)
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
-};
+}
 
 async function getMembersByProject(projectUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/members/",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/members/',
       token: token,
       locale: locale,
-    });
-    if (!resp.data) return null;
+    })
+    if (!resp.data) return null
     else {
-      return resp.data.results;
+      return resp.data.results
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }

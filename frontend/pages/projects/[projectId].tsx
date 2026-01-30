@@ -1,47 +1,47 @@
-import NextCookies from "next-cookies";
-import React, { useContext, useEffect, useState } from "react";
-import Cookies from "universal-cookie";
-import ROLE_TYPES from "../../public/data/role_types";
-import { apiRequest } from "../../public/lib/apiOperations";
-import { nullifyUndefinedValues } from "../../public/lib/profileOperations";
-import getTexts from "../../public/texts/texts";
-import UserContext from "../../src/components/context/UserContext";
-import PageNotFound from "../../src/components/general/PageNotFound";
-import WideLayout from "../../src/components/layouts/WideLayout";
-import ProjectPageRoot from "../../src/components/project/ProjectPageRoot";
-import HubsSubHeader from "../../src/components/indexPage/hubsSubHeader/HubsSubHeader";
-import { getAllHubs } from "../../public/lib/hubOperations";
-import { useMediaQuery } from "@mui/material";
-import { getImageUrl } from "../../public/lib/imageOperations";
-import { Theme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import ProjectSideBar from "../../src/components/project/ProjectSideBar";
-import { transformThemeData } from "../../src/themes/transformThemeData";
-import getHubTheme from "../../src/themes/fetchHubTheme";
-import theme from "../../src/themes/theme";
-import { NOTIFICATION_TYPES } from "../../src/components/communication/notifications/Notification";
-import { getProjectTypeOptions } from "../../public/lib/getOptions";
-import BrowseContext from "../../src/components/context/BrowseContext";
-import { parseData } from "../../public/lib/parsingOperations";
+import { useMediaQuery } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import NextCookies from 'next-cookies'
+import React, { useContext, useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
+import ROLE_TYPES from '../../public/data/role_types'
+import { apiRequest } from '../../public/lib/apiOperations'
+import { getProjectTypeOptions } from '../../public/lib/getOptions'
+import { getAllHubs } from '../../public/lib/hubOperations'
+import { getImageUrl } from '../../public/lib/imageOperations'
+import { parseData } from '../../public/lib/parsingOperations'
+import { nullifyUndefinedValues } from '../../public/lib/profileOperations'
+import getTexts from '../../public/texts/texts'
+import { NOTIFICATION_TYPES } from '../../src/components/communication/notifications/Notification'
+import BrowseContext from '../../src/components/context/BrowseContext'
+import UserContext from '../../src/components/context/UserContext'
+import PageNotFound from '../../src/components/general/PageNotFound'
+import HubsSubHeader from '../../src/components/indexPage/hubsSubHeader/HubsSubHeader'
+import WideLayout from '../../src/components/layouts/WideLayout'
+import ProjectPageRoot from '../../src/components/project/ProjectPageRoot'
+import ProjectSideBar from '../../src/components/project/ProjectSideBar'
+import getHubTheme from '../../src/themes/fetchHubTheme'
+import theme from '../../src/themes/theme'
+import { transformThemeData } from '../../src/themes/transformThemeData'
 
 type StyleProps = {
-  showSimilarProjects: boolean;
-};
+  showSimilarProjects: boolean
+}
 const useStyles = makeStyles<Theme, StyleProps>((theme) => {
   return {
     contentWrapper: {
-      display: "flex",
+      display: 'flex',
     },
     mainContent: (props) => ({
-      width: props.showSimilarProjects ? "80%" : "100%",
-      [theme.breakpoints.down("lg")]: {
-        width: "100%",
+      width: props.showSimilarProjects ? '80%' : '100%',
+      [theme.breakpoints.down('lg')]: {
+        width: '100%',
       },
     }),
     secondaryContent: (props) => ({
-      width: props.showSimilarProjects ? "20%" : "0%",
-      [theme.breakpoints.down("lg")]: {
-        width: "0%",
+      width: props.showSimilarProjects ? '20%' : '0%',
+      [theme.breakpoints.down('lg')]: {
+        width: '0%',
         marginTop: theme.spacing(0),
         marginRight: theme.spacing(0),
         marginLeft: theme.spacing(0),
@@ -49,17 +49,17 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => {
       marginTop: theme.spacing(2),
       marginRight: theme.spacing(7),
       marginLeft: theme.spacing(1),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-end",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
     }),
-  };
-});
+  }
+})
 
 const parseComments = (comments) => {
   return comments
     .filter((c) => {
-      return !c.parent_comment_id;
+      return !c.parent_comment_id
     })
     .map((c) => {
       return {
@@ -67,18 +67,18 @@ const parseComments = (comments) => {
         replies: comments
           .filter((r) => r.parent_comment_id === c.id)
           .sort((a, b) => {
-            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
           }),
-      };
-    });
-};
+      }
+    })
+}
 
 export async function getServerSideProps(ctx) {
-  const { auth_token } = NextCookies(ctx);
-  const projectUrl = encodeURI(ctx?.query?.projectId);
+  const { auth_token } = NextCookies(ctx)
+  const projectUrl = encodeURI(ctx?.query?.projectId)
   // Updated to ensure `hubUrl` is only encoded if `ctx.query.hub` is defined and not null.
   // This prevents `encodeURI` from converting `undefined` or `null` into the string "undefined" or "null".
-  const hubUrl = ctx?.query?.hub ? encodeURI(ctx.query.hub) : null;
+  const hubUrl = ctx?.query?.hub ? encodeURI(ctx.query.hub) : null
   const [
     project,
     members,
@@ -99,7 +99,7 @@ export async function getServerSideProps(ctx) {
     getSimilarProjects(projectUrl, ctx.locale, hubUrl),
     hubUrl ? getHubSupporters(hubUrl, ctx.locale) : null,
     hubUrl ? getHubTheme(hubUrl) : null,
-  ]);
+  ])
   return {
     props: nullifyUndefinedValues({
       project: project,
@@ -115,7 +115,7 @@ export async function getServerSideProps(ctx) {
       hubUrl,
       hubThemeData: hubThemeData,
     }),
-  };
+  }
 }
 
 export default function ProjectPage({
@@ -132,88 +132,86 @@ export default function ProjectPage({
   hubUrl,
   hubThemeData,
 }) {
-  const token = new Cookies().get("auth_token");
-  const [curComments, setCurComments] = useState(parseComments(comments));
-  const [message, setMessage] = useState({ message: undefined, messageType: undefined });
-  const [isUserFollowing, setIsUserFollowing] = useState(following);
-  const [isUserLiking, setIsUserLiking] = useState(liking);
-  const [requestedToJoinProject, setRequestedToJoinProject] = useState(hasRequestedToJoin);
-  const [followingChangePending, setFollowingChangePending] = useState(false);
-  const [likingChangePending, setLikingChangePending] = useState(false);
-  const [numberOfLikes, setNumberOfLikes] = useState(project?.number_of_likes);
-  const [numberOfFollowers, setNumberOfFollowers] = useState(project?.number_of_followers);
-  const { CUSTOM_HUB_URLS, locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: project });
-  const [showSimilarProjects, setShowSimilarProjects] = useState(true);
-  const [projectTypes, setProjectTypes] = useState([]);
+  const token = new Cookies().get('auth_token')
+  const [curComments, setCurComments] = useState(parseComments(comments))
+  const [message, setMessage] = useState({ message: undefined, messageType: undefined })
+  const [isUserFollowing, setIsUserFollowing] = useState(following)
+  const [isUserLiking, setIsUserLiking] = useState(liking)
+  const [requestedToJoinProject, setRequestedToJoinProject] = useState(hasRequestedToJoin)
+  const [followingChangePending, setFollowingChangePending] = useState(false)
+  const [likingChangePending, setLikingChangePending] = useState(false)
+  const [numberOfLikes, setNumberOfLikes] = useState(project?.number_of_likes)
+  const [numberOfFollowers, setNumberOfFollowers] = useState(project?.number_of_followers)
+  const { CUSTOM_HUB_URLS, locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
+  const [showSimilarProjects, setShowSimilarProjects] = useState(true)
+  const [projectTypes, setProjectTypes] = useState([])
 
   const retrieveAndSetProjectTypes = async () => {
-    const projectTypeOptions = await getProjectTypeOptions(locale);
-    setProjectTypes(projectTypeOptions);
-  };
+    const projectTypeOptions = await getProjectTypeOptions(locale)
+    setProjectTypes(projectTypeOptions)
+  }
 
   useEffect(function () {
-    retrieveAndSetProjectTypes();
-  }, []);
+    retrieveAndSetProjectTypes()
+  }, [])
 
   const contextValues = {
     projectTypes: projectTypes,
-  };
+  }
 
   const classes = useStyles({
     showSimilarProjects: showSimilarProjects,
-  });
+  })
 
   const handleHideContent = () => {
-    setShowSimilarProjects(!showSimilarProjects);
-  };
-  const smallScreenSize = useMediaQuery<Theme>((theme) => theme.breakpoints.down("lg"));
+    setShowSimilarProjects(!showSimilarProjects)
+  }
+  const smallScreenSize = useMediaQuery<Theme>((theme) => theme.breakpoints.down('lg'))
 
   // Handle remove bell icon notification
-  const { notifications, setNotificationsRead, refreshNotifications } = useContext(UserContext);
+  const { notifications, setNotificationsRead, refreshNotifications } = useContext(UserContext)
   const handleReadNotifications = async (notificationType) => {
     const notification_to_set_read = notifications.filter(
-      (n) => n.notification_type === notificationType && n.project.url_slug === project.url_slug
-    );
-    await setNotificationsRead(token, notification_to_set_read, locale);
-    await refreshNotifications();
-  };
+      (n) => n.notification_type === notificationType && n.project.url_slug === project.url_slug,
+    )
+    await setNotificationsRead(token, notification_to_set_read, locale)
+    await refreshNotifications()
+  }
 
   useEffect(() => {
-    handleReadNotifications(NOTIFICATION_TYPES.indexOf("org_project_published"));
-  }, [
-    notifications.length !== 0,
-  ]); /* end of removing bell icon notification 
+    handleReadNotifications(NOTIFICATION_TYPES.indexOf('org_project_published'))
+  }, [notifications.length !== 0]) /* end of removing bell icon notification 
   TODO: need a better way of getting rid of the  bell notification */
 
   const handleFollow = (userFollows, updateCount, pending) => {
-    setIsUserFollowing(userFollows);
+    setIsUserFollowing(userFollows)
     if (updateCount) {
       if (userFollows) {
-        setNumberOfFollowers(numberOfFollowers + 1);
+        setNumberOfFollowers(numberOfFollowers + 1)
       } else {
-        setNumberOfFollowers(numberOfFollowers - 1);
+        setNumberOfFollowers(numberOfFollowers - 1)
       }
     }
-    setFollowingChangePending(pending);
-  };
+    setFollowingChangePending(pending)
+  }
 
   //We only update the count once the frontend received a response from the backend. This is what the updateCount variable is for
   const handleLike = (userLikes, updateCount, pending) => {
-    setIsUserLiking(userLikes);
+    setIsUserLiking(userLikes)
     if (updateCount) {
       if (userLikes) {
-        setNumberOfLikes(numberOfLikes + 1);
+        setNumberOfLikes(numberOfLikes + 1)
       } else {
-        setNumberOfLikes(numberOfLikes - 1);
+        setNumberOfLikes(numberOfLikes - 1)
       }
     }
-    setLikingChangePending(pending);
-  };
+    setLikingChangePending(pending)
+  }
 
   const handleJoinRequest = (newValue) => {
-    setRequestedToJoinProject(newValue);
-  };
+    setRequestedToJoinProject(newValue)
+  }
 
   const handleWindowClose = (e) => {
     if (
@@ -221,29 +219,29 @@ export default function ProjectPage({
       followingChangePending ||
       likingChangePending
     ) {
-      e.preventDefault();
-      return (e.returnValue = texts.changes_might_not_be_saved);
+      e.preventDefault()
+      return (e.returnValue = texts.changes_might_not_be_saved)
     }
-  };
+  }
 
   useEffect(() => {
-    window.addEventListener("beforeunload", handleWindowClose);
+    window.addEventListener('beforeunload', handleWindowClose)
 
     return () => {
-      window.removeEventListener("beforeunload", handleWindowClose);
-    };
-  });
+      window.removeEventListener('beforeunload', handleWindowClose)
+    }
+  })
 
-  const tinyScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl);
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+  const tinyScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
+  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl)
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
 
   return (
     <WideLayout
       description={project?.short_description}
       message={message?.message}
       messageType={message?.messageType}
-      title={project ? project.name : texts.project + " " + texts.not_found}
+      title={project ? project.name : texts.project + ' ' + texts.not_found}
       showDonationGoal={true}
       subHeader={
         !tinyScreen ? (
@@ -315,136 +313,136 @@ export default function ProjectPage({
         )}
       </BrowseContext.Provider>
     </WideLayout>
-  );
+  )
 }
 
 async function getProjectByIdIfExists(projectUrl, token, locale, hubUrl?: string | null) {
-  const query = hubUrl ? `?hub=${hubUrl}` : "";
+  const query = hubUrl ? `?hub=${hubUrl}` : ''
 
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/" + query,
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/' + query,
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return parseProject(resp.data);
+      return parseProject(resp.data)
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getUsersInteractionWithProject(projectUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/my_interactions/",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/my_interactions/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return resp.data;
+      return resp.data
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getPostsByProject(projectUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/posts/",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/posts/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return resp.data.results;
+      return resp.data.results
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getCommentsByProject(projectUrl, token, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/comments/",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/comments/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.length === 0) return null;
+    })
+    if (resp.data.length === 0) return null
     else {
-      return resp.data.results;
+      return resp.data.results
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getProjectMembersByIdIfExists(projectUrl, locale) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/members/",
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/members/',
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
-      return parseProjectMembers(resp.data.results);
+      return parseProjectMembers(resp.data.results)
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
 async function getSimilarProjects(projectUrl, locale, hubUrl?: string | null) {
-  const query = hubUrl ? `?hub=${hubUrl}` : "";
+  const query = hubUrl ? `?hub=${hubUrl}` : ''
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/projects/" + projectUrl + "/similar/" + query,
+      method: 'get',
+      url: '/api/projects/' + projectUrl + '/similar/' + query,
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
-      return parseData({ type: "projects", data: resp.data.results });
+      return parseData({ type: 'projects', data: resp.data.results })
     }
   } catch (err) {
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 const getHubSupporters = async (url_slug, locale) => {
   try {
     const resp = await apiRequest({
-      method: "get",
+      method: 'get',
       url: `/api/hubs/${url_slug}/supporters/`,
       locale: locale,
-    });
-    return resp.data;
+    })
+    return resp.data
   } catch (err: any) {
     //Don't log an error if there simply are no supporters for this hub
     if (err?.response?.status === 404) {
-      return null;
+      return null
     }
     if (err.response && err.response.data)
-      console.log("Error in getHubSupportersData: " + err.response.data.detail);
-    console.log(err);
-    return null;
+      console.log('Error in getHubSupportersData: ' + err.response.data.detail)
+    console.log(err)
+    return null
   }
-};
+}
 
 // TODO duplicated code? manage project members also has this function
 function parseProject(project) {
@@ -469,14 +467,14 @@ function parseProject(project) {
     is_draft: project.is_draft,
     sectors: project.sectors.sort((a, b) => a.order - b.order).map((s) => s.sector),
     collaborating_organizations: project.collaborating_organizations.map(
-      (o) => o.collaborating_organization
+      (o) => o.collaborating_organization,
     ),
     website: project.website,
     number_of_followers: project.number_of_followers,
     number_of_likes: project.number_of_likes,
     project_type: project.project_type,
     additional_loc_info: project.additional_loc_info,
-  };
+  }
 }
 
 function parseProjectMembers(projectMembers) {
@@ -487,8 +485,8 @@ function parseProjectMembers(projectMembers) {
       role: m.role_in_project,
       permission: m.role.role_type,
       availability: m.availability,
-      name: m.user.first_name + " " + m.user.last_name,
+      name: m.user.first_name + ' ' + m.user.last_name,
       location: m.user.location,
-    };
-  });
+    }
+  })
 }

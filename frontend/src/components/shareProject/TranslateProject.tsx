@@ -1,41 +1,41 @@
-import { Button, Container, TextField, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useEffect, useState } from "react";
-import { apiRequest } from "../../../public/lib/apiOperations";
-import getProjectTexts from "../../../public/texts/project_texts";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import NavigationButtons from "../general/NavigationButtons";
-import ButtonLoader from "../general/ButtonLoader";
+import { Button, Container, TextField, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect, useState } from 'react'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import getProjectTexts from '../../../public/texts/project_texts'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ButtonLoader from '../general/ButtonLoader'
+import NavigationButtons from '../general/NavigationButtons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
   explanation: {
-    margin: "0 auto",
-    textAlign: "center",
+    margin: '0 auto',
+    textAlign: 'center',
   },
   sectionHeader: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: theme.spacing(1.5),
   },
   translationBlocksHeader: {
     marginTop: theme.spacing(3),
   },
   translationBlock: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     marginBottom: theme.spacing(2),
   },
   translationBlockElement: {
     flexGrow: 0.48,
   },
   topButtonRow: {
-    display: "inline-flex",
-    width: "100%",
-    justifyContent: "center",
+    display: 'inline-flex',
+    width: '100%',
+    justifyContent: 'center',
     marginTop: theme.spacing(2),
   },
   translateButton: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     width: 265,
   },
-}));
+}))
 
 export default function TranslateProject({
   projectData,
@@ -55,58 +55,58 @@ export default function TranslateProject({
   translations,
   targetLanguage,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const [waitingForTranslation, setWaitingForTranslation] = useState(false);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const [waitingForTranslation, setWaitingForTranslation] = useState(false)
 
-  if (translations[targetLanguage]) console.log(translations[targetLanguage]);
+  if (translations[targetLanguage]) console.log(translations[targetLanguage])
 
   useEffect(() => {
-    initializeTranslationsObject();
-  }, []);
+    initializeTranslationsObject()
+  }, [])
 
-  const arrayTranslations = ["helpful_connections"];
+  const arrayTranslations = ['helpful_connections']
 
   const initializeTranslationsObject = () => {
     if (!translations[targetLanguage]) {
-      const initializedObject = {};
+      const initializedObject = {}
       for (const key of arrayTranslations) {
-        initializedObject[key] = [];
+        initializedObject[key] = []
       }
-      handleChangeTranslationContent(targetLanguage, { ...initializedObject }, false);
+      handleChangeTranslationContent(targetLanguage, { ...initializedObject }, false)
     }
-  };
+  }
 
   const onClickPreviousStep = () => {
-    goToPreviousStep();
-  };
+    goToPreviousStep()
+  }
 
   const handleOriginalTextChange = (newValue, projectDataKey) => {
     handleSetProjectData({
       [projectDataKey]: newValue,
-    });
-  };
+    })
+  }
 
   const handleTranslationChange = (newValue, projectDataKey, indexInArray) => {
     const newTranslationsObject = {
       [projectDataKey]: newValue,
-    };
+    }
     //If it's an array, pass the whole array as the value
     if (indexInArray || indexInArray === 0) {
-      const arrayValue = [...translations[targetLanguage][projectDataKey]];
-      arrayValue[indexInArray] = newValue;
-      newTranslationsObject[projectDataKey] = [...arrayValue];
+      const arrayValue = [...translations[targetLanguage][projectDataKey]]
+      arrayValue[indexInArray] = newValue
+      newTranslationsObject[projectDataKey] = [...arrayValue]
     }
-    handleChangeTranslationContent(targetLanguage, { ...newTranslationsObject }, true);
-  };
+    handleChangeTranslationContent(targetLanguage, { ...newTranslationsObject }, true)
+  }
 
   const automaticallyTranslateProject = async () => {
-    setWaitingForTranslation(true);
+    setWaitingForTranslation(true)
     try {
       const response = await apiRequest({
-        method: "post",
-        url: "/api/translate_many/",
+        method: 'post',
+        url: '/api/translate_many/',
         payload: {
           texts: {
             name: projectData.name,
@@ -114,28 +114,28 @@ export default function TranslateProject({
             description: projectData.description,
             helpful_connections: projectData.helpful_connections,
           },
-          target_language: "en",
+          target_language: 'en',
         },
         locale: locale,
-      });
-      const translations = response.data.translations;
+      })
+      const translations = response.data.translations
       const translationsObject = Object.keys(translations).reduce(function (obj, key) {
         if (Array.isArray(translations[key]))
-          obj[key] = translations[key].map((t) => t?.translated_text);
-        else obj[key] = translations[key]?.translated_text;
-        return obj;
-      }, {});
-      console.log(translationsObject);
-      handleChangeTranslationContent(targetLanguage, translationsObject);
-      setWaitingForTranslation(false);
+          obj[key] = translations[key].map((t) => t?.translated_text)
+        else obj[key] = translations[key]?.translated_text
+        return obj
+      }, {})
+      console.log(translationsObject)
+      handleChangeTranslationContent(targetLanguage, translationsObject)
+      setWaitingForTranslation(false)
     } catch (e) {
-      console.log(e);
-      console.log(e?.response?.data);
-      setWaitingForTranslation(false);
+      console.log(e)
+      console.log(e?.response?.data)
+      setWaitingForTranslation(false)
     }
-  };
+  }
 
-  console.log(projectData?.helpful_connections?.length > 0);
+  console.log(projectData?.helpful_connections?.length > 0)
 
   return (
     <Container className={classes.root}>
@@ -216,7 +216,7 @@ export default function TranslateProject({
         />
       </form>
     </Container>
-  );
+  )
 }
 
 //@textKey: the key of the headline text in public/texts/project_texts.js
@@ -233,8 +233,8 @@ function TranslationBlock({
   indexInArray,
   noHeadline,
 }) {
-  const texts = getProjectTexts({});
-  const classes = useStyles();
+  const texts = getProjectTexts({})
+  const classes = useStyles()
   return (
     <div className={classes.translationBlock}>
       <TranslationBlockElement
@@ -264,11 +264,11 @@ function TranslationBlock({
         }
       />
     </div>
-  );
+  )
 }
 
 function TranslationBlockElement({ headline, rows, content, handleContentChange, noHeadline }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.translationBlockElement}>
       {!noHeadline && (
@@ -285,5 +285,5 @@ function TranslationBlockElement({ headline, rows, content, handleContentChange,
         onChange={handleContentChange}
       />
     </div>
-  );
+  )
 }

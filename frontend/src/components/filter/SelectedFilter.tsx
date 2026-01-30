@@ -1,15 +1,15 @@
-import { Chip, Tooltip } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import { getLocationFilterKeys } from "../../../public/data/locationFilters";
+import { Chip, Tooltip } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { getLocationFilterKeys } from '../../../public/data/locationFilters'
 
 const useStyles = makeStyles((theme) => {
   return {
     selectedBlock: {
-      display: "inline-flex",
-      alignItems: "center",
+      display: 'inline-flex',
+      alignItems: 'center',
       marginBottom: theme.spacing(1),
-      flexWrap: "wrap",
+      flexWrap: 'wrap',
     },
     selectedToolTip: {
       marginRight: theme.spacing(1),
@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => {
       width: 20,
       height: 20,
     },
-  };
-});
+  }
+})
 
 export default function SelectedFilter({
   filterKey,
@@ -30,34 +30,34 @@ export default function SelectedFilter({
   possibleFilters,
   handleUnselectFilter,
 }) {
-  const classes = useStyles();
-  let currentFilterValues = currentFilters[filterKey];
-  const locationFilterKeys = getLocationFilterKeys();
-  const possibleFilterKeys = possibleFilters.map((entry) => entry.key);
+  const classes = useStyles()
+  let currentFilterValues = currentFilters[filterKey]
+  const locationFilterKeys = getLocationFilterKeys()
+  const possibleFilterKeys = possibleFilters.map((entry) => entry.key)
   // Get the metadata associated with the filter (e.g. what type it is, like "Category")
-  const filterMetadata = possibleFilters.find((f) => f.key === filterKey);
+  const filterMetadata = possibleFilters.find((f) => f.key === filterKey)
   //When the location is a string the filter is not submitted yet (the user is just typing)
   //Therefore only show location as a selected filter if it's an object
-  if (filterMetadata?.type === "location") {
-    if (typeof currentFilterValues !== "object" || locationFilterKeys.includes(filterKey)) {
-      return <></>;
+  if (filterMetadata?.type === 'location') {
+    if (typeof currentFilterValues !== 'object' || locationFilterKeys.includes(filterKey)) {
+      return <></>
     }
   }
-  if (filterMetadata?.type === "select") {
-    return <></>;
+  if (filterMetadata?.type === 'select') {
+    return <></>
   }
-  if (filterKey === "search") {
-    return <></>;
+  if (filterKey === 'search') {
+    return <></>
   }
   if (
     !currentFilterValues ||
-    (typeof currentFilterValues !== "object" && !currentFilterValues.length)
+    (typeof currentFilterValues !== 'object' && !currentFilterValues.length)
   ) {
-    return <></>;
+    return <></>
   }
 
   if (!Array.isArray(currentFilterValues)) {
-    currentFilterValues = [currentFilterValues];
+    currentFilterValues = [currentFilterValues]
   }
   return (
     <div key={filterKey} className={classes.selectedBlock}>
@@ -67,13 +67,13 @@ export default function SelectedFilter({
           /*the location filter either has the 'name' or 'simple_name' prop set
           depending on whether it was caught as the initial location or not*/
           const filterName =
-            typeof filter === "object" ? (filter.name ? filter.name : filter.simple_name) : filter;
+            typeof filter === 'object' ? (filter.name ? filter.name : filter.simple_name) : filter
 
           // Find matching metadata by original_name or name
           const matchedOption = filterMetadata?.options?.find(
-            (opt) => opt.original_name === filterName || opt.name === filterName
-          );
-          const iconUrl = matchedOption ? matchedOption?.icon : null;
+            (opt) => opt.original_name === filterName || opt.name === filterName,
+          )
+          const iconUrl = matchedOption ? matchedOption?.icon : null
           return (
             <Tooltip title={filterMetadata.title} key={filterName}>
               <Chip
@@ -94,8 +94,8 @@ export default function SelectedFilter({
                 onDelete={() => handleUnselectFilter(filter, filterMetadata.key)}
               />
             </Tooltip>
-          );
+          )
         })}
     </div>
-  );
+  )
 }

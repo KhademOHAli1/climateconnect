@@ -1,52 +1,52 @@
-import { Button, Theme, useMediaQuery, Popper, Paper, MenuList } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import LanguageIcon from "@mui/icons-material/Language";
-import { useRouter } from "next/router";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Cookies from "universal-cookie";
-import { getCookieProps } from "../../../public/lib/cookieOperations";
-import theme from "../../themes/theme";
-import UserContext from "../context/UserContext";
-import StyledMenu from "../general/StyledMenu";
-import StyledMenuItem from "../general/StyledMenuItem";
+import LanguageIcon from '@mui/icons-material/Language'
+import { Button, MenuList, Paper, Popper, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import { useRouter } from 'next/router'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import Cookies from 'universal-cookie'
+import { getCookieProps } from '../../../public/lib/cookieOperations'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import StyledMenu from '../general/StyledMenu'
+import StyledMenuItem from '../general/StyledMenuItem'
 
 const useStyles = makeStyles<
   Theme,
   {
-    transparentHeader: boolean;
-    isCustomHub: boolean;
-    isNarrowScreen: boolean;
-    isLandingPage?: boolean;
+    transparentHeader: boolean
+    isCustomHub: boolean
+    isNarrowScreen: boolean
+    isLandingPage?: boolean
   }
 >((theme) => ({
   root: (props) => ({
     color:
       props.transparentHeader || (props.isLandingPage && !props.isNarrowScreen)
-        ? "white"
+        ? 'white'
         : props.isCustomHub
-        ? !props.isNarrowScreen
-          ? theme.palette.primary.contrastText
-          : theme.palette.background.default_contrastText
-        : theme.palette.primary.main,
-    cursor: "pointer",
+          ? !props.isNarrowScreen
+            ? theme.palette.primary.contrastText
+            : theme.palette.background.default_contrastText
+          : theme.palette.primary.main,
+    cursor: 'pointer',
   }),
   languageIcon: {
     fontSize: 16,
   },
   popover: {
-    pointerEvents: "none",
+    pointerEvents: 'none',
   },
   popoverContent: {
-    pointerEvents: "auto",
+    pointerEvents: 'auto',
   },
   centerText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   popper: {
-    width: "67px",
+    width: '67px',
     zIndex: 99,
   },
-}));
+}))
 
 /**
  * Hover button that's used in the global navbar to switch
@@ -54,64 +54,64 @@ const useStyles = makeStyles<
  * English).
  */
 type LanguageSelectProps = {
-  transparentHeader?: boolean;
-  isCustomHub: boolean;
-  isLandingPage?: boolean;
-};
+  transparentHeader?: boolean
+  isCustomHub: boolean
+  isLandingPage?: boolean
+}
 
 export default function LanguageSelect({
   transparentHeader = false,
   isCustomHub,
   isLandingPage = false,
 }: LanguageSelectProps) {
-  const { locale, locales, startLoading } = useContext(UserContext);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(buttonRef.current);
-  const [open, setOpen] = useState(false);
-  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const classes = useStyles({ transparentHeader, isCustomHub, isNarrowScreen, isLandingPage });
-  const router = useRouter();
+  const { locale, locales, startLoading } = useContext(UserContext)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(buttonRef.current)
+  const [open, setOpen] = useState(false)
+  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const classes = useStyles({ transparentHeader, isCustomHub, isNarrowScreen, isLandingPage })
+  const router = useRouter()
 
   useEffect(function () {
-    setAnchorEl(buttonRef.current);
-  }, []);
+    setAnchorEl(buttonRef.current)
+  }, [])
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleToggleOpen = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleLanguageClick = (e, newLocale) => {
-    e.preventDefault();
-    setOpen(false);
+    e.preventDefault()
+    setOpen(false)
     if (newLocale !== locale) {
-      const now = new Date();
-      const cookies = new Cookies();
-      const expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-      const cookieProps = getCookieProps(expiry);
-      cookies.set("NEXT_LOCALE", newLocale, cookieProps);
-      const hasHash = router.asPath.split("#").length > 1;
+      const now = new Date()
+      const cookies = new Cookies()
+      const expiry = new Date(now.setFullYear(now.getFullYear() + 1))
+      const cookieProps = getCookieProps(expiry)
+      cookies.set('NEXT_LOCALE', newLocale, cookieProps)
+      const hasHash = router.asPath.split('#').length > 1
       if (hasHash) {
-        window.location.href = "/" + newLocale + router.asPath;
-        startLoading();
+        window.location.href = '/' + newLocale + router.asPath
+        startLoading()
       } else {
-        router.push(router.asPath, router.asPath, { locale: newLocale });
+        router.push(router.asPath, router.asPath, { locale: newLocale })
       }
     }
-  };
+  }
 
-  const hoverButtonProps: any = {};
+  const hoverButtonProps: any = {}
 
   if (!isNarrowScreen) {
-    (hoverButtonProps.onMouseEnter = handleOpen), (hoverButtonProps.onMouseLeave = handleClose);
+    ;(hoverButtonProps.onMouseEnter = handleOpen), (hoverButtonProps.onMouseLeave = handleClose)
   }
 
   // TODO: this could be generalized into a HoverButton component,
@@ -131,7 +131,7 @@ export default function LanguageSelect({
         </StyledMenuItem>
       ))}
     </>
-  );
+  )
 
   return (
     <>
@@ -158,8 +158,8 @@ export default function LanguageSelect({
           keepMounted
           open={open}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: 'bottom',
+            horizontal: 'center',
           }}
           container={anchorEl?.parentNode}
           PaperProps={{ onMouseEnter: handleOpen, onMouseLeave: handleClose }}
@@ -179,5 +179,5 @@ export default function LanguageSelect({
         </Popper>
       )}
     </>
-  );
+  )
 }

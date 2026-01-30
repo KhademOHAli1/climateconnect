@@ -1,19 +1,19 @@
-import { Card, CardMedia, Link, Theme, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
+import { Card, CardMedia, Link, Theme, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles<Theme, { disableBoxShadow?: boolean }>((theme) => ({
   root: (props) => ({
     boxShadow: props.disableBoxShadow ? undefined : `3px 3px 3px #e0e0e0`,
-    borderColor: "#e0e0e0",
+    borderColor: '#e0e0e0',
   }),
   placeholderImg: {
-    visibility: "hidden",
-    width: "100%",
+    visibility: 'hidden',
+    width: '100%',
   },
   title: {
     fontSize: 25,
@@ -22,22 +22,22 @@ const useStyles = makeStyles<Theme, { disableBoxShadow?: boolean }>((theme) => (
   },
   cardContentWrapper: {
     height: 120,
-    background: "#f8f8f8",
+    background: '#f8f8f8',
     padding: theme.spacing(1),
     paddingLeft: theme.spacing(2),
   },
   noUnderline: {
-    textDecoration: "inherit",
-    "&:hover": {
-      textDecoration: "inherit",
+    textDecoration: 'inherit',
+    '&:hover': {
+      textDecoration: 'inherit',
     },
   },
-}));
+}))
 
 export default function HubPreview({ hub, disableBoxShadow = false }) {
-  const classes = useStyles({ disableBoxShadow: disableBoxShadow });
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
+  const classes = useStyles({ disableBoxShadow: disableBoxShadow })
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
 
   return (
     <Link
@@ -54,7 +54,7 @@ export default function HubPreview({ hub, disableBoxShadow = false }) {
           <img
             src={getImageUrl(hub.thumbnail_image)}
             className={classes.placeholderImg}
-            alt={texts.image_for + " " + hub.name}
+            alt={texts.image_for + ' ' + hub.name}
           />
         </CardMedia>
         <div className={classes.cardContentWrapper}>
@@ -62,5 +62,5 @@ export default function HubPreview({ hub, disableBoxShadow = false }) {
         </div>
       </Card>
     </Link>
-  );
+  )
 }

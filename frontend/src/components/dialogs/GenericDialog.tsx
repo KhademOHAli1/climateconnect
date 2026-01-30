@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close'
 import {
   Button,
   Dialog,
@@ -6,36 +7,35 @@ import {
   Theme,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import CloseIcon from "@mui/icons-material/Close";
-import PropTypes from "prop-types";
-import React, { PropsWithChildren } from "react";
-import theme from "../../themes/theme";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import PropTypes from 'prop-types'
+import React, { PropsWithChildren } from 'react'
+import theme from '../../themes/theme'
 
 const useStyles = makeStyles<
   Theme,
   { fullScreen?: boolean; useApplyButton?: boolean; closeButtonRightSide?: boolean }
 >((theme) => ({
   dialog: (props) => ({
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       padding: props.fullScreen ? 0 : theme.spacing(8),
     },
   }),
   noScrollDialog: {
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   dialogContent: (props) => ({
     padding: theme.spacing(2),
-    height: props.fullScreen ? "100%" : "auto",
-    [theme.breakpoints.down("lg")]: {
+    height: props.fullScreen ? '100%' : 'auto',
+    [theme.breakpoints.down('lg')]: {
       padding: theme.spacing(2),
       paddingTop: 0,
     },
   }),
   scrollDialogContent: {
-    height: "auto",
-    overflow: "auto",
+    height: 'auto',
+    overflow: 'auto',
   },
   closeButtonLeft: {
     marginLeft: theme.spacing(-1),
@@ -51,41 +51,41 @@ const useStyles = makeStyles<
     color: theme.palette.text.primary,
   }),
   dialogTitle: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   saveIconButton: {
     background: theme.palette.primary.main,
-    color: "white",
+    color: 'white',
   },
   buttomBtnContainer: {
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: theme.spacing(2),
   },
-}));
+}))
 
 type Props = PropsWithChildren<{
-  applyText?: string;
-  fullScreen?: boolean;
-  maxWidth?: "sm" | "lg";
-  onApply?: () => void;
+  applyText?: string
+  fullScreen?: boolean
+  maxWidth?: 'sm' | 'lg'
+  onApply?: () => void
   // eslint-disable-next-line no-unused-vars
-  onClose: ((arg: false) => void) | (() => void);
-  open: boolean;
-  title: string;
-  topBarFixed?: boolean;
-  useApplyButton?: boolean;
-  paperClassName?: string;
-  closeButtonRightSide?: boolean;
-  closeButtonSmall?: boolean;
-  titleTextClassName?: string;
-  dialogContentClass?: string;
-  applyIcon?: any;
-  closeButtonRightStyle?: string;
-  showApplyAtBottom?: boolean;
-  buttonAsLink?: string;
-}>;
+  onClose: ((arg: false) => void) | (() => void)
+  open: boolean
+  title: string
+  topBarFixed?: boolean
+  useApplyButton?: boolean
+  paperClassName?: string
+  closeButtonRightSide?: boolean
+  closeButtonSmall?: boolean
+  titleTextClassName?: string
+  dialogContentClass?: string
+  applyIcon?: any
+  closeButtonRightStyle?: string
+  showApplyAtBottom?: boolean
+  buttonAsLink?: string
+}>
 /**
  * Simple base wrapper on top of the Material UI (MUI)
  * core Dialog component. This component
@@ -117,20 +117,20 @@ export default function GenericDialog({
     useApplyButton,
     fullScreen,
     closeButtonRightSide,
-  });
+  })
 
-  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
 
   const handleCancel = () => {
-    onClose(false);
-  };
+    onClose(false)
+  }
 
   return (
     <Dialog
       className={`${classes.dialog} ${topBarFixed && classes.noScrollDialog}`}
       onClose={handleCancel}
       open={open}
-      maxWidth={maxWidth ? maxWidth : "md"}
+      maxWidth={maxWidth ? maxWidth : 'md'}
       fullScreen={fullScreen}
       classes={{
         paper: paperClassName,
@@ -142,7 +142,7 @@ export default function GenericDialog({
             aria-label="close"
             className={classes.closeButtonLeft}
             onClick={() => onClose(false)}
-            size={closeButtonSmall ? "small" : undefined}
+            size={closeButtonSmall ? 'small' : undefined}
           >
             <CloseIcon />
           </IconButton>
@@ -173,7 +173,7 @@ export default function GenericDialog({
             aria-label="close"
             className={`classes.closeButtonRight ${closeButtonRightStyle}`}
             onClick={() => onClose(false)}
-            size={closeButtonSmall ? "small" : undefined}
+            size={closeButtonSmall ? 'small' : undefined}
           >
             <CloseIcon />
           </IconButton>
@@ -215,7 +215,7 @@ export default function GenericDialog({
         )}
       </div>
     </Dialog>
-  );
+  )
 }
 
 GenericDialog.propTypes = {
@@ -225,4 +225,4 @@ GenericDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   useApplyButton: PropTypes.bool,
-};
+}

@@ -1,17 +1,16 @@
-import { Avatar, Button, IconButton, TextField, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import DeleteIcon from "@mui/icons-material/Delete";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import React, { useContext, useEffect, useState } from "react";
-
-import ROLE_TYPES from "../../../public/data/role_types";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ConfirmDialog from "../dialogs/ConfirmDialog";
-import SelectField from "../general/SelectField";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
-import { useTheme } from "@emotion/react";
+import { useTheme } from '@emotion/react'
+import DeleteIcon from '@mui/icons-material/Delete'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { Avatar, Button, IconButton, TextField, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect, useState } from 'react'
+import ROLE_TYPES from '../../../public/data/role_types'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import SelectField from '../general/SelectField'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => {
     avatar: {
       height: theme.spacing(7),
       width: theme.spacing(7),
-      margin: "0 auto",
+      margin: '0 auto',
       fontSize: 50,
     },
     field: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => {
       marginBottom: theme.spacing(1),
     },
     fieldLabel: {
-      textAlign: "left",
+      textAlign: 'left',
       marginBottom: theme.spacing(0.5),
       color: theme.palette.background.default_contrastText,
     },
@@ -39,24 +38,24 @@ const useStyles = makeStyles((theme) => {
     },
     removeButton: {
       backgroundColor: theme.palette.error.main,
-      color: "white",
+      color: 'white',
       marginTop: theme.spacing(2),
-      "&:hover": {
+      '&:hover': {
         backgroundColor: theme.palette.error.main,
       },
     },
     dialogText: {
-      textAlign: "center",
+      textAlign: 'center',
     },
     cantEdit: {
-      color: "red",
+      color: 'red',
       fontSize: 14,
     },
     appointCreatorButton: {
       color: theme.palette.background.default_contrastText,
     },
-  };
-});
+  }
+})
 
 export default function MiniProfileInput({
   className,
@@ -73,11 +72,11 @@ export default function MiniProfileInput({
   fullRolesOptions,
   dontPickRole,
 }: any) {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "profile", locale: locale, profile: profile });
-  const theme = useTheme();
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'profile', locale: locale, profile: profile })
+  const theme = useTheme()
 
   useEffect(() => {
     if (
@@ -87,52 +86,52 @@ export default function MiniProfileInput({
       setOptions(
         rolesOptions
           .map((r) => ({ ...r, key: r.id }))
-          .filter((r) => r.role_type !== ROLE_TYPES.all_type)
-      );
+          .filter((r) => r.role_type !== ROLE_TYPES.all_type),
+      )
     }
-  });
+  })
 
   const [options, setOptions] = useState(
     profile.role.role_type === ROLE_TYPES.all_type
       ? fullRolesOptions.map((r) => ({ ...r, key: r.id }))
       : rolesOptions
           .map((r) => ({ ...r, key: r.id }))
-          .filter((r) => r.role_type !== ROLE_TYPES.all_type)
-  );
+          .filter((r) => r.role_type !== ROLE_TYPES.all_type),
+  )
 
   const handleChangeRolePermissions = (event) => {
-    onChange({ ...profile, role: rolesOptions.find((r) => r.name === event.target.value) });
-  };
+    onChange({ ...profile, role: rolesOptions.find((r) => r.name === event.target.value) })
+  }
 
   const handleChangeRoleInProject = (event) => {
-    onChange({ ...profile, role_in_project: event.target.value });
-  };
+    onChange({ ...profile, role_in_project: event.target.value })
+  }
 
   const handleChangeRoleInOrganization = (event) => {
-    onChange({ ...profile, role_in_organization: event.target.value });
-  };
+    onChange({ ...profile, role_in_organization: event.target.value })
+  }
   const handleChangeAvailability = (event) => {
     onChange({
       ...profile,
       availability: availabilityOptions.find((a) => a.name === event.target.value),
-    });
-  };
+    })
+  }
   const handleOpenConfirmCreatorDialog = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleConfirmTransferCreator = (shouldBeTransfered) => {
-    setOpen(false);
+    setOpen(false)
     if (shouldBeTransfered) {
-      setOptions(fullRolesOptions);
+      setOptions(fullRolesOptions)
       onChange({
         ...profile,
         role: creatorRole,
         changeCreator: true,
-      });
+      })
     }
-  };
+  }
 
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   return (
     <div className={className}>
@@ -143,7 +142,7 @@ export default function MiniProfileInput({
         className={classes.avatar}
       />
       <Typography variant="h6" className={classes.name}>
-        {profile.first_name + " " + profile.last_name}
+        {profile.first_name + ' ' + profile.last_name}
       </Typography>
       <Typography className={classes.fieldLabel}>
         {texts.permissions}
@@ -268,5 +267,5 @@ export default function MiniProfileInput({
         confirmText={texts.yes}
       />
     </div>
-  );
+  )
 }

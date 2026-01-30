@@ -1,19 +1,18 @@
-import { Button, IconButton } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
-import React, { MouseEventHandler, useContext } from "react";
-
-import ButtonIcon from "../../general/ButtonIcon";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
+import AddIcon from '@mui/icons-material/Add'
+import { Button, IconButton } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { MouseEventHandler, useContext } from 'react'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
+import ButtonIcon from '../../general/ButtonIcon'
 
 const useStyles = makeStyles((theme: Theme) => ({
   largeScreenButtonContainer: {
-    display: "inline-flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginRight: "3px",
+    display: 'inline-flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginRight: '3px',
   },
 
   largeJoinButton: {
@@ -25,45 +24,45 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 40,
   },
   mobileButtonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    cursor: "pointer",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    cursor: 'pointer',
     height: 40,
   },
   iconButton: {
     padding: theme.spacing(1),
-    "&:hover": {
-      background: "none",
+    '&:hover': {
+      background: 'none',
     },
   },
   fabProgress: {
-    color: "white",
-    position: "absolute",
+    color: 'white',
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: "auto",
-    marginBottom: "auto",
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   buttonLabel: {
-    position: "relative",
+    position: 'relative',
   },
   hidden: {
-    visibility: "hidden",
+    visibility: 'hidden',
   },
-}));
+}))
 
 type Props = {
-  hasAdminPermissions?: Boolean;
-  screenSize?: any;
-  handleSendProjectJoinRequest: MouseEventHandler<HTMLButtonElement>;
-  requestedToJoin: boolean;
-  className?: string;
-};
+  hasAdminPermissions?: Boolean
+  screenSize?: any
+  handleSendProjectJoinRequest: MouseEventHandler<HTMLButtonElement>
+  requestedToJoin: boolean
+  className?: string
+}
 
 export default function JoinButton({
   hasAdminPermissions,
@@ -72,10 +71,10 @@ export default function JoinButton({
   requestedToJoin,
   className,
 }: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ locale: locale, page: "project" });
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ locale: locale, page: 'project' })
 
   if (screenSize?.belowSmall) {
     return (
@@ -84,10 +83,10 @@ export default function JoinButton({
         onClick={handleSendProjectJoinRequest}
       >
         <IconButton className={classes.iconButton} disabled={requestedToJoin} size="large">
-          <ButtonIcon icon="add" size={40} color={"primary"} />
+          <ButtonIcon icon="add" size={40} color={'primary'} />
         </IconButton>
       </span>
-    );
+    )
   }
 
   if (screenSize?.belowMedium && !screenSize.belowSmall && !hasAdminPermissions) {
@@ -99,17 +98,17 @@ export default function JoinButton({
           onClick={handleSendProjectJoinRequest}
           size="large"
         >
-          <ButtonIcon icon="add" size={40} color={"primary"} />
+          <ButtonIcon icon="add" size={40} color={'primary'} />
         </IconButton>
       </span>
-    );
+    )
   }
 
   return (
     <span className={`${className} ${classes.largeScreenButtonContainer}`}>
       <Button
         className={classes.largeJoinButton}
-        color={"primary"}
+        color={'primary'}
         disabled={requestedToJoin === true}
         onClick={handleSendProjectJoinRequest}
         startIcon={!requestedToJoin && <AddIcon />}
@@ -120,5 +119,5 @@ export default function JoinButton({
         </div>
       </Button>
     </span>
-  );
+  )
 }

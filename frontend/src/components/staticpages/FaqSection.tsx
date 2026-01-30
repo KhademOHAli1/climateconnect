@@ -1,13 +1,13 @@
-import { Button, Container, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ContactSupportOutlinedIcon from "@mui/icons-material/ContactSupportOutlined";
-import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
-import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
-import React, { useContext, useState } from "react";
+import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined'
+import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined'
+import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
+import { Button, Container, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
 
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import FaqQuestionElement from "../faq/FaqQuestionElement";
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import FaqQuestionElement from '../faq/FaqQuestionElement'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   explanationWrapper: {
-    display: "flex",
+    display: 'flex',
     maxWidth: 800,
-    margin: "0 auto",
+    margin: '0 auto',
     marginBottom: theme.spacing(2),
   },
   icon: {
@@ -29,23 +29,23 @@ const useStyles = makeStyles((theme) => ({
     width: 120,
   },
   faqLink: {
-    color: "inherit",
-    textDecoration: "underline",
+    color: 'inherit',
+    textDecoration: 'underline',
     fontWeight: 600,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   explanationText: {
-    color: "white",
+    color: 'white',
     zIndex: 1,
   },
   headline: {
-    color: "white",
-    textAlign: "left",
+    color: 'white',
+    textAlign: 'left',
   },
   iconWrapper: {
     marginRight: theme.spacing(4),
-    [theme.breakpoints.down("sm")]: {
-      position: "absolute",
+    [theme.breakpoints.down('sm')]: {
+      position: 'absolute',
       opacity: 0,
     },
   },
@@ -57,31 +57,31 @@ const useStyles = makeStyles((theme) => ({
     borderLeft: `5px solid ${theme.palette.yellow.main} !important`,
   },
   showMoreButton: {
-    color: "white",
+    color: 'white',
   },
   showMoreButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: theme.spacing(2),
   },
   questionText: {
     color: theme.palette.secondary.main,
-    [theme.breakpoints.down("sm")]: {
-      fontWeight: "bold",
+    [theme.breakpoints.down('sm')]: {
+      fontWeight: 'bold',
     },
   },
-}));
+}))
 
 export default function FaqSection({ headlineClass, questions }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
 
-  const texts = getTexts({ page: "faq", locale: locale, classes: classes });
-  const [expanded, setExpanded] = useState(false);
+  const texts = getTexts({ page: 'faq', locale: locale, classes: classes })
+  const [expanded, setExpanded] = useState(false)
   const handleToggleShowMore = (e) => {
-    e.preventDefault();
-    setExpanded(!expanded);
-  };
+    e.preventDefault()
+    setExpanded(!expanded)
+  }
   return (
     <div className={classes.root}>
       <Container>
@@ -110,7 +110,7 @@ export default function FaqSection({ headlineClass, questions }) {
                     questionObject={q}
                     questionTextClassName={classes.questionText}
                   />
-                )
+                ),
             )}
         </div>
         <div className={classes.showMoreButtonContainer}>
@@ -121,5 +121,5 @@ export default function FaqSection({ headlineClass, questions }) {
         </div>
       </Container>
     </div>
-  );
+  )
 }

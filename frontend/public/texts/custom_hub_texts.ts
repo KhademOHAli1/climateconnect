@@ -1,42 +1,37 @@
 const prio1_texts = {
   here_you_can_create_your_personal_account: {
-    en: "Create your personal Climate Connect account here to join the PRIO1 Hub.",
-    de: "Erstelle hier deinen persönlichen Climate Connect Account, um dem PRIO1 Hub beizuteten.",
+    en: 'Create your personal Climate Connect account here to join the PRIO1 Hub.',
+    de: 'Erstelle hier deinen persönlichen Climate Connect Account, um dem PRIO1 Hub beizuteten.',
   },
   // overwrite/delete the default text
   you_will_have_an_opportunity_to_create_or_add_an_organization_once_signed_up: {
-    en: "",
-    de: "",
+    en: '',
+    de: '',
   },
   auth_image_subtitle: {
-    en:
-      "PRIO1 Hub is integrated into the Germany-wide Climate Connect platform. To become part of the PRIO1 Hub, simply register here and you're in!",
-    de:
-      "PRIO1 Hub ist integriert in die deutschlandweite Climate Connect Plattform. Um Teil des PRIO1 Hubs zu werden, melde dich einfach hier an und schon bist du dabei!",
+    en: "PRIO1 Hub is integrated into the Germany-wide Climate Connect platform. To become part of the PRIO1 Hub, simply register here and you're in!",
+    de: 'PRIO1 Hub ist integriert in die deutschlandweite Climate Connect Plattform. Um Teil des PRIO1 Hubs zu werden, melde dich einfach hier an und schon bist du dabei!',
   },
-};
+}
 // TODO: make generic these texts, because they are the same for PRIO1 and Perth
 const perth_texts = {
   here_you_can_create_your_personal_account: {
-    en: "Create your personal Climate Connect account here to join the Perth and Kinross Hub.",
-    de:
-      "Erstelle hier deinen persönlichen Climate Connect Account, um dem Perth und Kinross Hub beizuteten.",
+    en: 'Create your personal Climate Connect account here to join the Perth and Kinross Hub.',
+    de: 'Erstelle hier deinen persönlichen Climate Connect Account, um dem Perth und Kinross Hub beizuteten.',
   },
   // overwrite/delete the default text
   you_will_have_an_opportunity_to_create_or_add_an_organization_once_signed_up: {
-    en: "",
-    de: "",
+    en: '',
+    de: '',
   },
   auth_image_subtitle: {
-    en:
-      "Perth and Kinross Hub is integrated into the global Climate Connect platform. To become part of the Perth and Kinross Hub, simply register here and you're in!",
-    de:
-      "Der Perth und Kinross Hub ist integriert in die global Climate Connect Plattform. Um Teil des Perth and Kinross Hubs zu werden, melde dich einfach hier an und schon bist du dabei!",
+    en: "Perth and Kinross Hub is integrated into the global Climate Connect platform. To become part of the Perth and Kinross Hub, simply register here and you're in!",
+    de: 'Der Perth und Kinross Hub ist integriert in die global Climate Connect Plattform. Um Teil des Perth and Kinross Hubs zu werden, melde dich einfach hier an und schon bist du dabei!',
   },
   // hubUrl
   perth_welcometext: {
-    en: "",
-    de: "",
+    en: '',
+    de: '',
   },
   //subHub
   nature_welcometext: {
@@ -61,10 +56,8 @@ const perth_texts = {
   },
   //subHub
   transport_welcometext: {
-    en:
-      "Supported by Glenfarg Community Transport, this network connects those involved in active travel, community transport and sustainable transport projects across communities.",
-    de:
-      "Unterstützt von Glenfarg Community Transport verbindet dieses Netzwerk diejenigen, die an Projekten für aktives Reisen, Gemeinschaftstransport und nachhaltigen Transport in den Gemeinden beteiligt sind.",
+    en: 'Supported by Glenfarg Community Transport, this network connects those involved in active travel, community transport and sustainable transport projects across communities.',
+    de: 'Unterstützt von Glenfarg Community Transport verbindet dieses Netzwerk diejenigen, die an Projekten für aktives Reisen, Gemeinschaftstransport und nachhaltigen Transport in den Gemeinden beteiligt sind.',
   },
   //subHub
   energy_welcometext: {
@@ -80,11 +73,11 @@ const perth_texts = {
     de: `Unterstützt von Giraffe baut dieses Netzwerk auf jahrelanger Zusammenarbeit für eine gute Lebensmittelversorgung auf. Es bringt ein breites Spektrum von Menschen zusammen, die an der Produktion, Verarbeitung, Lieferung, Zubereitung, dem Teilen von Lebensmitteln und der Reduzierung von Lebensmittelverschwendung beteiligt sind.
       Um Dich zu beteiligen und Updates zum Netzwerk zu erhalten, kontaktiere food@climateconnect.scot`,
   },
-};
+}
 
 const custom_hub_texts = {
   prio1: prio1_texts,
   perth: perth_texts, // Perth uses the same texts as Prio1
-};
+}
 
-export default custom_hub_texts;
+export default custom_hub_texts

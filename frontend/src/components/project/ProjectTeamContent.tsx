@@ -1,86 +1,86 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import React, { useContext, useEffect } from "react";
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect } from 'react'
 
-import ROLE_TYPES from "../../../public/data/role_types";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import { NOTIFICATION_TYPES } from "../communication/notifications/Notification";
-import UserContext from "../context/UserContext";
-import LoginNudge from "../general/LoginNudge";
-import ProfilePreviews from "./../profile/ProfilePreviews";
+import ROLE_TYPES from '../../../public/data/role_types'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import { NOTIFICATION_TYPES } from '../communication/notifications/Notification'
+import UserContext from '../context/UserContext'
+import LoginNudge from '../general/LoginNudge'
+import ProfilePreviews from './../profile/ProfilePreviews'
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
-    float: "right",
+    float: 'right',
     marginBottom: theme.spacing(1),
   },
   leaveProjectButton: {
-    float: "right",
+    float: 'right',
     background: theme.palette.error.main,
-    color: "white",
-    ["&:hover"]: {
+    color: 'white',
+    ['&:hover']: {
       backgroundColor: theme.palette.error.main,
     },
   },
-}));
+}))
 
 function getTeamWithAdditionalInfo(team, texts) {
   return team.map((m) => {
-    const additionalInfo = [];
+    const additionalInfo = []
     if (m.location) {
       additionalInfo.push({
         text: m.location,
-        importance: "high",
+        importance: 'high',
         icon: LocationOnIcon,
-        iconName: "LocationOnIcon",
+        iconName: 'LocationOnIcon',
         toolTipText: texts.location,
-      });
+      })
     }
 
     if (m.role) {
       additionalInfo.push({
         text: m.role,
-        importance: "high",
+        importance: 'high',
         icon: AccountBoxIcon,
-        iconName: "AccountBoxIcon",
+        iconName: 'AccountBoxIcon',
         toolTipText: texts.role_in_project,
-      });
+      })
     }
 
-    if (m.availability && m.availability !== "not_specified") {
+    if (m.availability && m.availability !== 'not_specified') {
       additionalInfo.push({
         text: m.availability.name,
-        importance: "low",
-      });
+        importance: 'low',
+      })
     }
 
-    return { ...m, additionalInfo: additionalInfo };
-  });
+    return { ...m, additionalInfo: additionalInfo }
+  })
 }
 
 export default function TeamContent({ project, handleReadNotifications, hubUrl }) {
-  const { user, locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const classes = useStyles();
+  const { user, locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const classes = useStyles()
 
   useEffect(() => {
     const readNotifications = async () => {
       try {
-        await handleReadNotifications(NOTIFICATION_TYPES.indexOf("project_join_request_approved"));
+        await handleReadNotifications(NOTIFICATION_TYPES.indexOf('project_join_request_approved'))
       } catch (error) {
-        console.error("Error reading notifications:", error);
+        console.error('Error reading notifications:', error)
       }
-    };
-    void readNotifications();
+    }
+    void readNotifications()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   // Not logged in
   if (!user) {
-    return <LoginNudge whatToDo={texts.to_see_this_projects_team_members} />;
+    return <LoginNudge whatToDo={texts.to_see_this_projects_team_members} />
   }
 
   // TODO: admin access, review members
@@ -90,16 +90,16 @@ export default function TeamContent({ project, handleReadNotifications, hubUrl }
         {user && !!project.team.find((m) => m.id === user.id) && (
           <>
             {[ROLE_TYPES.all_type, ROLE_TYPES.read_write_type].includes(
-              project.team.find((m) => m.id === user.id).permission
+              project.team.find((m) => m.id === user.id).permission,
             ) && (
               <Button
                 className={classes.editButton}
                 variant="contained"
                 href={
                   getLocalePrefix(locale) +
-                  "/manageProjectMembers/" +
+                  '/manageProjectMembers/' +
                   project.url_slug +
-                  (hubUrl ? "?hub=" + hubUrl : "")
+                  (hubUrl ? '?hub=' + hubUrl : '')
                 }
               >
                 {texts.manage_members}
@@ -114,8 +114,8 @@ export default function TeamContent({ project, handleReadNotifications, hubUrl }
           hubUrl={hubUrl}
         />
       </>
-    );
+    )
   }
 
-  return <Typography>{texts.we_could_not_find_any_members_of_this_project}</Typography>;
+  return <Typography>{texts.we_could_not_find_any_members_of_this_project}</Typography>
 }

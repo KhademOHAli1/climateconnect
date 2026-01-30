@@ -1,84 +1,84 @@
-import { Box, Link, Theme, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import SocialMediaButton from "../general/SocialMediaButton";
-import LargeFooter from "./LargeFooter";
+import FacebookIcon from '@mui/icons-material/Facebook'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import YouTubeIcon from '@mui/icons-material/YouTube'
+import { Box, Link, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import SocialMediaButton from '../general/SocialMediaButton'
+import LargeFooter from './LargeFooter'
 
 type StyleProps = {
-  textColor?: "string";
-};
+  textColor?: 'string'
+}
 
 const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
   root: (props) => ({
     padding: theme.spacing(2),
     borderTop: props.textColor ? 0 : `1px solid ${theme.palette.grey[100]}`,
-    width: "100%",
-    zIndex: "9",
-    color: props.textColor ? props.textColor : "inherit",
+    width: '100%',
+    zIndex: '9',
+    color: props.textColor ? props.textColor : 'inherit',
   }),
   absolutePosition: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
   },
   relativePosition: {
-    position: "fixed",
+    position: 'fixed',
     bottom: 0,
-    backgroundColor: "#FFFFFF",
-    height: "49px",
+    backgroundColor: '#FFFFFF',
+    height: '49px',
   },
   spacingTop: {
     marginTop: theme.spacing(2),
   },
   flexContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
     },
   },
   centerText: {
-    display: "flex",
-    alignItems: "center",
-    textAlign: "center",
-    margin: "0 auto",
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
+    margin: '0 auto',
   },
   rightBox: {
-    marginLeft: "auto",
-    display: "flex",
-    alignItems: "center",
-    [theme.breakpoints.down("md")]: {
+    marginLeft: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
       marginLeft: 0,
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(2),
     },
   },
   leftBox: {
-    marginRight: "auto",
-    [theme.breakpoints.down("md")]: {
+    marginRight: 'auto',
+    [theme.breakpoints.down('md')]: {
       marginRight: 0,
       marginBottom: theme.spacing(1),
     },
   },
 
   inheritColor: {
-    color: "inherit",
+    color: 'inherit',
   },
   heart: {
-    color: "red",
+    color: 'red',
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.5),
   },
   earth: {
-    color: "blue",
+    color: 'blue',
     marginLeft: theme.spacing(1),
     height: 20,
   },
@@ -88,7 +88,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
   customFooterImage: {
     height: 100,
   },
-}));
+}))
 
 //TODO: make footer stay on bottom on normal layout again
 export default function Footer({
@@ -110,8 +110,8 @@ export default function Footer({
         customFooterImage={customFooterImage}
         textColor={textColor}
       />
-    );
-  else return <LargeFooter className={className} />;
+    )
+  else return <LargeFooter className={className} />
 }
 
 const SmallFooter = ({
@@ -122,36 +122,36 @@ const SmallFooter = ({
   customFooterImage,
   textColor,
 }) => {
-  const classes = useStyles({ textColor: textColor });
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
+  const classes = useStyles({ textColor: textColor })
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
   const socialMediaLinks = [
     {
-      href: "https://github.com/climateconnect/climateconnect",
+      href: 'https://github.com/climateconnect/climateconnect',
       icon: GitHubIcon,
-      altText: "GitHub",
+      altText: 'GitHub',
       isFooterIcon: true,
     },
     {
-      href: "https://www.instagram.com/climate_connect.earth/",
+      href: 'https://www.instagram.com/climate_connect.earth/',
       icon: InstagramIcon,
-      altText: "Instagram",
+      altText: 'Instagram',
       isFooterIcon: true,
     },
     {
-      href: "https://www.facebook.com/climateconnect.earth/",
+      href: 'https://www.facebook.com/climateconnect.earth/',
       icon: FacebookIcon,
-      altText: "Facebook",
+      altText: 'Facebook',
       isFooterIcon: true,
     },
     {
-      href: "https://www.youtube.com/channel/UC10rPriptUxYilMfvt-8Tkw",
+      href: 'https://www.youtube.com/channel/UC10rPriptUxYilMfvt-8Tkw',
       icon: YouTubeIcon,
-      altText: "Youtube",
+      altText: 'Youtube',
       isFooterIcon: true,
     },
-  ];
+  ]
 
   return (
     <Box
@@ -163,13 +163,13 @@ const SmallFooter = ({
     >
       <Box className={classes.flexContainer}>
         <Box className={classes.leftBox}>
-          <Link href={getLocalePrefix(locale) + "/imprint"} color="inherit" underline="hover">
+          <Link href={getLocalePrefix(locale) + '/imprint'} color="inherit" underline="hover">
             <span className={`${classes.inheritColor} ${classes.link}`}>{texts.imprint}</span>
           </Link>
-          <Link href={getLocalePrefix(locale) + "/privacy"} color="inherit" underline="hover">
+          <Link href={getLocalePrefix(locale) + '/privacy'} color="inherit" underline="hover">
             <span className={`${classes.inheritColor} ${classes.link}`}>{texts.privacy}</span>
           </Link>
-          <Link href={getLocalePrefix(locale) + "/terms"} color="inherit" underline="hover">
+          <Link href={getLocalePrefix(locale) + '/terms'} color="inherit" underline="hover">
             <span className={classes.inheritColor}>{texts.terms}</span>
           </Link>
         </Box>
@@ -199,17 +199,17 @@ const SmallFooter = ({
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
 const MadeWithLoveForEarthSign = () => {
-  const classes = useStyles({});
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
+  const classes = useStyles({})
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
   return (
     <>
-      Made with <FavoriteIcon className={classes.heart} /> for{" "}
+      Made with <FavoriteIcon className={classes.heart} /> for{' '}
       <img className={classes.earth} src="/images/earth.svg" alt={texts.picture_of_our_earth} />
     </>
-  );
-};
+  )
+}

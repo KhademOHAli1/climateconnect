@@ -1,26 +1,26 @@
-import { Switch, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import { Theme } from "@mui/material/styles";
+import { Switch, Typography } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) => ({
   flexBlock: {
-    display: "flex",
-    justifyContent: "space-around",
+    display: 'flex',
+    justifyContent: 'space-around',
   },
   switchTextContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   switchText: {
-    textAlign: "center",
-    position: "relative",
+    textAlign: 'center',
+    position: 'relative',
   },
   switchedActive: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function Switcher({
   trueLabel,
@@ -30,11 +30,11 @@ export default function Switcher({
   handleChangeValue,
   color,
 }: any) {
-  const classes = useStyles({ value: value });
+  const classes = useStyles({ value: value })
 
   const handleValueChange = (event) => {
-    handleChangeValue(event.target.value);
-  };
+    handleChangeValue(event.target.value)
+  }
   return (
     <div className={classes.flexBlock}>
       <span className={classes.switchTextContainer}>
@@ -45,9 +45,9 @@ export default function Switcher({
       <Switch
         checked={value}
         required={required}
-        color={color ? color : "primary"}
+        color={color ? color : 'primary'}
         name="checkedA"
-        inputProps={{ "aria-label": "secondary checkbox" }}
+        inputProps={{ 'aria-label': 'secondary checkbox' }}
         onChange={handleValueChange}
       />
       <span className={classes.switchTextContainer}>
@@ -56,5 +56,5 @@ export default function Switcher({
         </Typography>
       </span>
     </div>
-  );
+  )
 }

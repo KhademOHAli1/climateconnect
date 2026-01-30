@@ -1,15 +1,15 @@
-import { Link, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
+import { Link, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
 
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import Stat from "./Stat";
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import Stat from './Stat'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 310,
-    background: "#EBEBEB",
+    background: '#EBEBEB',
     padding: theme.spacing(2),
   },
   h2: {
@@ -17,21 +17,21 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: 21,
     marginBottom: theme.spacing(1),
-    textAlign: "center",
+    textAlign: 'center',
   },
   link: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   source: {
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
   },
-}));
+}))
 
 export default function StatBox({ title, stats }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
 
   return (
     <div className={classes.root}>
@@ -40,7 +40,7 @@ export default function StatBox({ title, stats }) {
       </Typography>
       {stats?.length > 0 && stats.map((s) => <Stat key={s.name} statData={s} />)}
       <Typography className={classes.source}>
-        {texts.source}:{" "}
+        {texts.source}:{' '}
         <Link
           className={classes.link}
           target="_blank"
@@ -51,5 +51,5 @@ export default function StatBox({ title, stats }) {
         </Link>
       </Typography>
     </div>
-  );
+  )
 }

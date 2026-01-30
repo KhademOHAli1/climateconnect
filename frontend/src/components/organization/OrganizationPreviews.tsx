@@ -1,20 +1,20 @@
-import Grid from "@mui/material/Unstable_Grid2";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import LoadingSpinner from "../general/LoadingSpinner";
-import OrganizationPreview from "./OrganizationPreview";
-import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import Grid from '@mui/material/Unstable_Grid2'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import LoadingSpinner from '../general/LoadingSpinner'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
+import OrganizationPreview from './OrganizationPreview'
 
 const useStyles = makeStyles({
   reset: {
     margin: 0,
     padding: 0,
-    listStyleType: "none",
-    width: "100%",
+    listStyleType: 'none',
+    width: '100%',
   },
-});
+})
 
 export default function OrganizationPreviews({
   hasMore,
@@ -24,40 +24,40 @@ export default function OrganizationPreviews({
   hubUrl,
   isLoading = false,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "organization", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'organization', locale: locale })
   const toOrganizationPreviews = (organizations) =>
-    organizations.map((o) => <GridItem key={o.url_slug} organization={o} hubUrl={hubUrl} />);
+    organizations.map((o) => <GridItem key={o.url_slug} organization={o} hubUrl={hubUrl} />)
 
-  const [gridItems, setGridItems] = useState(toOrganizationPreviews(organizations));
+  const [gridItems, setGridItems] = useState(toOrganizationPreviews(organizations))
 
   const loadMore = async () => {
     if (loadFunc) {
-      const newOrganizations = await loadFunc();
+      const newOrganizations = await loadFunc()
       if (!parentHandlesGridItems) {
-        setGridItems([...gridItems, ...toOrganizationPreviews(newOrganizations)]);
+        setGridItems([...gridItems, ...toOrganizationPreviews(newOrganizations)])
       }
     }
-  };
+  }
 
   const { lastElementRef } = useInfiniteScroll({
     hasMore: hasMore || false,
     isLoading: isLoading,
     onLoadMore: loadMore,
-  });
+  })
 
-  const displayedOrganizations = parentHandlesGridItems ? organizations : gridItems;
+  const displayedOrganizations = parentHandlesGridItems ? organizations : gridItems
 
   if (!displayedOrganizations || displayedOrganizations.length === 0) {
-    return <div>{texts.no_organization_found}</div>;
+    return <div>{texts.no_organization_found}</div>
   }
 
   return (
     <>
       <Grid className={`${classes.reset}`} component="ul" container spacing={2}>
         {displayedOrganizations.map((organization, index) => {
-          const isLastElement = index === displayedOrganizations.length - 1;
+          const isLastElement = index === displayedOrganizations.length - 1
           return (
             <Grid
               key={organization.props?.organization?.url_slug || organization.url_slug}
@@ -74,14 +74,14 @@ export default function OrganizationPreviews({
                 <OrganizationPreview organization={organization} hubUrl={hubUrl} />
               )}
             </Grid>
-          );
+          )
         })}
       </Grid>
       {isLoading && <LoadingSpinner isLoading />}
     </>
-  );
+  )
 }
 
 function GridItem({ organization, hubUrl }) {
-  return <OrganizationPreview organization={organization} hubUrl={hubUrl} />;
+  return <OrganizationPreview organization={organization} hubUrl={hubUrl} />
 }

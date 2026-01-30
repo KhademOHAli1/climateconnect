@@ -1,3 +1,4 @@
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Button,
   Checkbox,
@@ -6,28 +7,27 @@ import {
   FormControlLabel,
   TextField,
   Typography,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Link from "next/link";
-import React, { useContext, useState } from "react";
-import Cookies from "universal-cookie";
-import { apiRequest, getLocalePrefix, redirect } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import { removeUnnecesaryCookies } from "./../../../public/lib/cookieOperations";
+} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import Link from 'next/link'
+import React, { useContext, useState } from 'react'
+import Cookies from 'universal-cookie'
+import { apiRequest, getLocalePrefix, redirect } from '../../../public/lib/apiOperations'
+import { removeUnnecesaryCookies } from './../../../public/lib/cookieOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   blockElement: {
-    display: "block",
+    display: 'block',
     marginTop: theme.spacing(2),
   },
   displayBlock: {
-    display: "block",
+    display: 'block',
   },
   forgotPasswordLink: {
     marginTop: theme.spacing(2),
-    display: "block",
+    display: 'block',
   },
   marginBottom: {
     marginBottom: theme.spacing(1),
@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   deleteMessage: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
   },
@@ -52,141 +52,141 @@ const useStyles = makeStyles((theme) => ({
   textColor: {
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function SettingsPage({ settings, setSettings, token, setMessage }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "settings", locale: locale });
-  const emailLink = "contact@climateconnect.earth";
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'settings', locale: locale })
+  const emailLink = 'contact@climateconnect.earth'
   const possibleEmailPreferences = [
     {
-      key: "send_newsletter",
+      key: 'send_newsletter',
       text: texts.send_newsletter_text,
     },
     {
-      key: "email_on_private_chat_message",
+      key: 'email_on_private_chat_message',
       text: texts.email_on_private_chat_message_text,
     },
     {
-      key: "email_on_group_chat_message",
+      key: 'email_on_group_chat_message',
       text: texts.email_on_group_chat_message_text,
     },
     {
-      key: "email_on_comment_on_your_project",
+      key: 'email_on_comment_on_your_project',
       text: texts.email_on_comment_on_your_project_text,
     },
     {
-      key: "email_on_comment_on_your_idea",
+      key: 'email_on_comment_on_your_idea',
       text: texts.email_on_comment_on_your_idea_text,
     },
     {
-      key: "email_on_reply_to_your_comment",
+      key: 'email_on_reply_to_your_comment',
       text: texts.email_on_reply_to_your_comment_text,
     },
     {
-      key: "email_on_new_project_follower",
+      key: 'email_on_new_project_follower',
       text: texts.email_on_new_project_follower_text,
     },
     {
-      key: "email_on_new_project_like",
+      key: 'email_on_new_project_like',
       text: texts.email_on_new_project_like_text,
     },
     {
-      key: "email_on_mention",
+      key: 'email_on_mention',
       text: texts.email_on_mention_text,
     },
     {
-      key: "email_on_idea_join",
+      key: 'email_on_idea_join',
       text: texts.email_on_new_idea_join_text,
     },
     {
-      key: "email_on_join_request",
+      key: 'email_on_join_request',
       text: texts.email_on_join_request_text,
     },
     {
-      key: "email_on_new_organization_follower",
+      key: 'email_on_new_organization_follower',
       text: texts.email_on_new_org_follower_text,
     },
     {
-      key: "email_on_new_project_from_followed_org",
+      key: 'email_on_new_project_from_followed_org',
       text: texts.email_on_new_org_project_text,
     },
-  ];
+  ]
 
   const possibleCookiePreferences = [
     {
-      key: "acceptedStatistics",
+      key: 'acceptedStatistics',
       text: texts.accepted_statistics_text,
     },
-  ];
+  ]
   const [errors, setErrors] = useState({
-    passworderror: "",
-    newemailerror: "",
+    passworderror: '',
+    newemailerror: '',
     /*profileurlerror: "",*/
-    emailpreferenceserror: "",
-    cookiepreferencesserror: "",
-  });
+    emailpreferenceserror: '',
+    cookiepreferencesserror: '',
+  })
 
   const [passwordInputs, setPasswordInputs] = useState({
-    oldpassword: "",
-    newpassword: "",
-    confirmnewpassword: "",
+    oldpassword: '',
+    newpassword: '',
+    confirmnewpassword: '',
     /*profileurlerror: ""*/
-  });
-  const [newEmail, setNewEmail] = useState("");
-  const cookies = new Cookies();
+  })
+  const [newEmail, setNewEmail] = useState('')
+  const cookies = new Cookies()
   const [cookiePreferences, setCookiePreferences] = useState(
     possibleCookiePreferences.reduce((obj, p) => {
-      obj[p.key] = !!cookies.get(p.key);
-      return obj;
-    }, {})
-  );
+      obj[p.key] = !!cookies.get(p.key)
+      return obj
+    }, {}),
+  )
 
   const [emailPreferences, setEmailPreferences] = useState(
     possibleEmailPreferences.reduce((obj, p) => {
-      obj[p.key] = settings[p.key];
-      return obj;
-    }, {})
-  );
+      obj[p.key] = settings[p.key]
+      return obj
+    }, {}),
+  )
   /*const [newProfileUrl, setNewProfileUrl] = useState("");*/
 
   const handleNewEmailChange = (event) => {
-    setNewEmail(event.target.value);
-  };
+    setNewEmail(event.target.value)
+  }
 
   const handlePasswordInputsChange = (event, key) => {
-    setPasswordInputs({ ...passwordInputs, [key]: event.target.value });
-  };
+    setPasswordInputs({ ...passwordInputs, [key]: event.target.value })
+  }
 
   const handlePreferenceChange = (event, key) => {
     setEmailPreferences({
       ...emailPreferences,
       [key]: event.target.checked,
-    });
-  };
+    })
+  }
 
   const handleCookiePreferenceChange = (event, key) => {
     setCookiePreferences({
       ...cookiePreferences,
       [key]: event.target.checked,
-    });
-  };
+    })
+  }
 
   /*const handleNewProfileUrlChange = event => {
     setNewProfileUrl(event.target.value);
   };*/
 
   const changePassword = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (passwordInputs.newpassword !== passwordInputs.confirmnewpassword) {
-      setErrors({ ...errors, passworderror: texts.your_new_passwords_dont_match });
-      setPasswordInputs({ ...passwordInputs, newpassword: "", confirmnewpassword: "" });
+      setErrors({ ...errors, passworderror: texts.your_new_passwords_dont_match })
+      setPasswordInputs({ ...passwordInputs, newpassword: '', confirmnewpassword: '' })
     } else {
-      setErrors({ ...errors, passworderror: "" });
+      setErrors({ ...errors, passworderror: '' })
       apiRequest({
-        method: "post",
-        url: "/api/account_settings/",
+        method: 'post',
+        url: '/api/account_settings/',
         payload: {
           password: passwordInputs.newpassword,
           confirm_password: passwordInputs.confirmnewpassword,
@@ -196,143 +196,143 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
         locale: locale,
       })
         .then(function (response) {
-          setMessage(response.data.message);
+          setMessage(response.data.message)
           setErrors({
             ...errors,
-            passworderror: "",
-          });
+            passworderror: '',
+          })
           setPasswordInputs({
-            oldpassword: "",
-            newpassword: "",
-            confirmnewpassword: "",
+            oldpassword: '',
+            newpassword: '',
+            confirmnewpassword: '',
             /* profileurlerror: "", */
-          });
-          window.scrollTo(0, 0);
+          })
+          window.scrollTo(0, 0)
         })
         .catch(function (error) {
           if (error.response && error.response.data)
             setErrors({
               ...errors,
               passworderror: error.response.data[0],
-            });
-          setMessage("");
-          if (error) console.log(error.response);
-        });
+            })
+          setMessage('')
+          if (error) console.log(error.response)
+        })
     }
-  };
+  }
 
   const changeEmail = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (newEmail === settings.email)
       setErrors({
         ...errors,
         newemailerror: texts.your_new_email_can_not_be_the_same_as_your_old_email,
-      });
+      })
     else {
-      setErrors({ ...errors, newemailerror: "" });
+      setErrors({ ...errors, newemailerror: '' })
       apiRequest({
-        method: "post",
-        url: "/api/account_settings/",
+        method: 'post',
+        url: '/api/account_settings/',
         payload: { email: newEmail },
         token: token,
         locale: locale,
       })
         .then(function () {
-          redirect("/browse", {
+          redirect('/browse', {
             message:
               texts.an_e_mail_to_confirm_this_e_mail_address_change_has_been_sent_to_your_old_e_mail_address,
-          });
+          })
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error)
           setErrors({
             ...errors,
-            newemailerror: texts.error + "!",
-          });
-          if (error) console.log(error.response);
-        });
+            newemailerror: texts.error + '!',
+          })
+          if (error) console.log(error.response)
+        })
     }
-  };
-  const [emailPreferencesLoading, setEmailPreferencesLoading] = useState(false);
+  }
+  const [emailPreferencesLoading, setEmailPreferencesLoading] = useState(false)
   const changeEmailPreferences = async () => {
     if (
       hasChanges(
         settings,
         possibleEmailPreferences.map((p) => p.key),
-        Object.keys(possibleEmailPreferences).map((k) => possibleEmailPreferences[k])
+        Object.keys(possibleEmailPreferences).map((k) => possibleEmailPreferences[k]),
       )
     ) {
-      setEmailPreferencesLoading(true);
+      setEmailPreferencesLoading(true)
       try {
         const response = await apiRequest({
-          method: "post",
-          url: "/api/account_settings/",
+          method: 'post',
+          url: '/api/account_settings/',
           payload: emailPreferences,
           token: token,
           locale: locale,
-        });
-        setEmailPreferencesLoading(false);
-        setMessage(response.data.message);
+        })
+        setEmailPreferencesLoading(false)
+        setMessage(response.data.message)
         setSettings({
           ...settings,
           ...emailPreferences,
-        });
+        })
         setErrors({
           ...errors,
-          emailpreferenceserror: "",
-        });
-        window.scrollTo(0, 0);
+          emailpreferenceserror: '',
+        })
+        window.scrollTo(0, 0)
       } catch (error: any) {
-        setEmailPreferencesLoading(false);
-        console.log(error);
+        setEmailPreferencesLoading(false)
+        console.log(error)
         setErrors({
           ...errors,
-          emailpreferenceserror: texts.error + "!",
-        });
-        if (error) console.log(error.response);
+          emailpreferenceserror: texts.error + '!',
+        })
+        if (error) console.log(error.response)
       }
     } else
       setErrors({
         ...errors,
         emailpreferenceserror: texts.you_havent_made_any_changes,
-      });
-  };
+      })
+  }
 
   const changeCookiePreferences = async () => {
-    const now = new Date();
-    const oneYearFromNow = new Date(now.setFullYear(now.getFullYear() + 1));
-    let hasChanges = false;
+    const now = new Date()
+    const oneYearFromNow = new Date(now.setFullYear(now.getFullYear() + 1))
+    let hasChanges = false
     Object.keys(cookiePreferences).map((p) => {
-      if (cookies.get(p) === "true" && cookiePreferences[p] === false) {
-        cookies.remove(p, { path: "/" });
-        if (p === "acceptedStatistics") removeUnnecesaryCookies();
-        hasChanges = true;
+      if (cookies.get(p) === 'true' && cookiePreferences[p] === false) {
+        cookies.remove(p, { path: '/' })
+        if (p === 'acceptedStatistics') removeUnnecesaryCookies()
+        hasChanges = true
       }
-      if (cookies.get(p) !== "true" && cookiePreferences[p] === true) {
-        cookies.set(p, true, { path: "/", expires: oneYearFromNow, sameSite: "lax" });
-        hasChanges = true;
+      if (cookies.get(p) !== 'true' && cookiePreferences[p] === true) {
+        cookies.set(p, true, { path: '/', expires: oneYearFromNow, sameSite: 'lax' })
+        hasChanges = true
       }
-    });
+    })
     if (hasChanges) {
-      setMessage(texts.cookie_settings_successfully_updated);
-      window.scrollTo(0, 0);
+      setMessage(texts.cookie_settings_successfully_updated)
+      window.scrollTo(0, 0)
       setErrors({
         ...errors,
-        cookiepreferencesserror: "",
-      });
+        cookiepreferencesserror: '',
+      })
     } else
       setErrors({
         ...errors,
         cookiepreferencesserror: texts.you_havent_made_any_changes,
-      });
-  };
+      })
+  }
 
   const hasChanges = (oldObject, oldKeys, newValues) => {
     const changedKeys = oldKeys.filter((key, index) => {
-      return oldObject[key] !== newValues[index];
-    });
-    return changedKeys.length > 0;
-  };
+      return oldObject[key] !== newValues[index]
+    })
+    return changedKeys.length > 0
+  }
 
   return (
     <>
@@ -352,7 +352,7 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
           type="password"
           label={texts.old_password}
           value={passwordInputs.oldpassword}
-          onChange={(event) => handlePasswordInputsChange(event, "oldpassword")}
+          onChange={(event) => handlePasswordInputsChange(event, 'oldpassword')}
           required
         />
         <TextField
@@ -361,7 +361,7 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
           type="password"
           label={texts.new_password}
           value={passwordInputs.newpassword}
-          onChange={(event) => handlePasswordInputsChange(event, "newpassword")}
+          onChange={(event) => handlePasswordInputsChange(event, 'newpassword')}
           required
         />
         <TextField
@@ -370,7 +370,7 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
           type="password"
           label={texts.confirm_new_password}
           value={passwordInputs.confirmnewpassword}
-          onChange={(event) => handlePasswordInputsChange(event, "confirmnewpassword")}
+          onChange={(event) => handlePasswordInputsChange(event, 'confirmnewpassword')}
           required
         />
         <div className={classes.blockElement}>
@@ -381,7 +381,7 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
             {texts.change_password}
           </Button>
           <Link
-            href={getLocalePrefix(locale) + "/resetpassword"}
+            href={getLocalePrefix(locale) + '/resetpassword'}
             className={`${classes.forgotPasswordLink} ${classes.textColor}`}
           >
             {texts.i_forgot_my_password}
@@ -508,7 +508,7 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
       </Typography>
       <Divider />
       <Button
-        href={getLocalePrefix(locale) + "/editprofile"}
+        href={getLocalePrefix(locale) + '/editprofile'}
         className={`${classes.editProfilePageButton}`}
         variant="contained"
         color="primary"
@@ -524,5 +524,5 @@ export default function SettingsPage({ settings, setSettings, token, setMessage 
         </Link>
       </Typography>
     </>
-  );
+  )
 }

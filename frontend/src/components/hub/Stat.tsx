@@ -1,20 +1,20 @@
-import React from "react";
-import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import theme from "../../themes/theme";
-import { PieChart } from "react-minimal-pie-chart";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { PieChart } from 'react-minimal-pie-chart'
+import theme from '../../themes/theme'
 
 const useStyles = makeStyles((theme) => ({
   pieChartContainer: {
-    display: "flex",
+    display: 'flex',
     marginBottom: theme.spacing(2),
   },
   chartInfo: {
     marginLeft: theme.spacing(2),
   },
   chartInfoHeadline: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 25,
   },
   pieChart: {
@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: -4,
     marginRight: theme.spacing(0.25),
   },
-}));
+}))
 
 export default function Stat({ statData }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const data = [
     { value: parseInt(statData.value), title: statData.name, color: theme.palette.primary.main },
-    { value: 100 - parseInt(statData.value), title: "Rest", color: "#D6D6D6" },
-  ];
+    { value: 100 - parseInt(statData.value), title: 'Rest', color: '#D6D6D6' },
+  ]
   return (
     <div>
       <div className={classes.pieChartContainer}>
@@ -61,5 +61,5 @@ export default function Stat({ statData }) {
         </Typography>
       )}
     </div>
-  );
+  )
 }

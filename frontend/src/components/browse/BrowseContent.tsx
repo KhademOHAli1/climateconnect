@@ -1,51 +1,52 @@
-import makeStyles from "@mui/styles/makeStyles";
-import { Container, Theme, useMediaQuery } from "@mui/material";
-import _ from "lodash";
-import React, { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState } from "react";
-import Cookies from "universal-cookie";
-import getFilters from "../../../public/data/possibleFilters";
-import { splitFiltersFromQueryObject } from "../../../public/lib/filterOperations";
-import { loadMoreData } from "../../../public/lib/getDataOperations";
-import { membersWithAdditionalInfo } from "../../../public/lib/getOptions";
-import { indicateWrongLocation, isLocationValid } from "../../../public/lib/locationOperations";
+import { Container, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import _ from 'lodash'
+import React, { lazy, Suspense, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import Cookies from 'universal-cookie'
+import getFilters from '../../../public/data/possibleFilters'
+import { splitFiltersFromQueryObject } from '../../../public/lib/filterOperations'
+import { loadMoreData } from '../../../public/lib/getDataOperations'
+import { membersWithAdditionalInfo } from '../../../public/lib/getOptions'
+import isLocationHubLikeHub from '../../../public/lib/isLocationHubLikeHub'
+import { indicateWrongLocation, isLocationValid } from '../../../public/lib/locationOperations'
 import {
   getInfoMetadataByType,
   getReducedPossibleFilters,
-} from "../../../public/lib/parsingOperations";
+} from '../../../public/lib/parsingOperations'
 import {
   findOptionByNameDeep,
   getFilterUrl,
   getSearchParams,
-} from "../../../public/lib/urlOperations";
-import getTexts from "../../../public/texts/texts";
-import FeedbackContext from "../context/FeedbackContext";
-import LoadingContext from "../context/LoadingContext";
-import UserContext from "../context/UserContext";
-import LoadingSpinner from "../general/LoadingSpinner";
-import MobileBottomMenu from "./MobileBottomMenu";
-import HubTabsNavigation from "../hub/HubTabsNavigation";
-import HubSupporters from "../hub/HubSupporters";
-import isLocationHubLikeHub from "../../../public/lib/isLocationHubLikeHub";
-import { BrowseTab, LinkedHub } from "../../types";
-import { FilterContext } from "../context/FilterContext";
-import HubLinkButton from "../hub/HubLinkButton";
-const FilterSection = lazy(() => import("../indexPage/FilterSection"));
-const OrganizationPreviews = lazy(() => import("../organization/OrganizationPreviews"));
-const ProfilePreviews = lazy(() => import("../profile/ProfilePreviews"));
-const ProjectPreviews = lazy(() => import("../project/ProjectPreviews"));
-const TabContentWrapper = lazy(() => import("./TabContentWrapper"));
+} from '../../../public/lib/urlOperations'
+import getTexts from '../../../public/texts/texts'
+import { BrowseTab, LinkedHub } from '../../types'
+import FeedbackContext from '../context/FeedbackContext'
+import { FilterContext } from '../context/FilterContext'
+import LoadingContext from '../context/LoadingContext'
+import UserContext from '../context/UserContext'
+import LoadingSpinner from '../general/LoadingSpinner'
+import HubLinkButton from '../hub/HubLinkButton'
+import HubSupporters from '../hub/HubSupporters'
+import HubTabsNavigation from '../hub/HubTabsNavigation'
+import MobileBottomMenu from './MobileBottomMenu'
+
+const FilterSection = lazy(() => import('../indexPage/FilterSection'))
+const OrganizationPreviews = lazy(() => import('../organization/OrganizationPreviews'))
+const ProfilePreviews = lazy(() => import('../profile/ProfilePreviews'))
+const ProjectPreviews = lazy(() => import('../project/ProjectPreviews'))
+const TabContentWrapper = lazy(() => import('./TabContentWrapper'))
 
 const useStyles = makeStyles((theme) => {
   return {
     contentRefContainer: {
       paddingTop: theme.spacing(4),
-      position: "relative",
-      [theme.breakpoints.down("md")]: {
+      position: 'relative',
+      [theme.breakpoints.down('md')]: {
         paddingTop: theme.spacing(2),
       },
     },
     contentRef: {
-      position: "absolute",
+      position: 'absolute',
       top: -90,
     },
     mainContentDivider: {
@@ -57,42 +58,42 @@ const useStyles = makeStyles((theme) => {
       right: 0,
     },
     hubLinksContainer: {
-      display: "flex",
-      overflowX: "auto",
-      scrollBehavior: "smooth",
+      display: 'flex',
+      overflowX: 'auto',
+      scrollBehavior: 'smooth',
       // scrollbarWidth: "none",
       gap: theme.spacing(2),
       padding: theme.spacing(2, 0),
       marginBottom: theme.spacing(2),
     },
     subHubInfoText: {
-      fontStyle: "italic",
+      fontStyle: 'italic',
       marginTop: theme.spacing(-1),
       marginBottom: theme.spacing(2),
     },
-  };
-});
+  }
+})
 
 type BrowseContentProps = {
-  initialMembers?: any;
-  initialOrganizations?: any;
-  initialProjects?: any;
-  customSearchBarLabels?: any;
-  errorMessage?: any;
-  filterChoices: any;
-  hideMembers?: any;
-  hubName?: string;
-  allHubs?: any;
-  hubData?: any;
-  initialLocationFilter?: any;
-  hubUrl?: string;
-  hubAmbassador?: any;
-  contentRef?: any;
-  hubSupporters?: any;
-  isLocationHub?: boolean;
-  linkedHubs?: LinkedHub[];
-  fromPage?: "hub";
-};
+  initialMembers?: any
+  initialOrganizations?: any
+  initialProjects?: any
+  customSearchBarLabels?: any
+  errorMessage?: any
+  filterChoices: any
+  hideMembers?: any
+  hubName?: string
+  allHubs?: any
+  hubData?: any
+  initialLocationFilter?: any
+  hubUrl?: string
+  hubAmbassador?: any
+  contentRef?: any
+  hubSupporters?: any
+  isLocationHub?: boolean
+  linkedHubs?: LinkedHub[]
+  fromPage?: 'hub'
+}
 
 export default function BrowseContent({
   initialMembers,
@@ -131,60 +132,61 @@ export default function BrowseContent({
       members: 2,
       organizations: 2,
     },
-    urlEnding: "",
-  };
+    urlEnding: '',
+  }
 
-  const token = new Cookies().get("auth_token");
-  const isLocationHubFlag = isLocationHub || isLocationHubLikeHub(hubData?.hub_type);
+  const token = new Cookies().get('auth_token')
+  const isLocationHubFlag = isLocationHub || isLocationHubLikeHub(hubData?.hub_type)
   const {
     filters,
     handleUpdateFilterValues,
     handleSetErrorMessage,
     handleApplyNewFilters: applyNewFilters,
-  } = useContext(FilterContext);
+  } = useContext(FilterContext)
 
-  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === "true";
-  const classes = useStyles();
+  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === 'true'
+  const classes = useStyles()
   const TYPES_BY_TAB_VALUE: BrowseTab[] = hideMembers
-    ? ["projects", "organizations"] // TODO: add "events" here, after implementing event calendar
-    : ["projects", "organizations", "members"]; // TODO: add "events" here, after implementing event calendar
-  const { locale } = useContext(UserContext);
-  const texts = useMemo(() => getTexts({ page: "hub", locale: locale, hubName: hubData?.name }), [
-    locale,
-  ]);
+    ? ['projects', 'organizations'] // TODO: add "events" here, after implementing event calendar
+    : ['projects', 'organizations', 'members'] // TODO: add "events" here, after implementing event calendar
+  const { locale } = useContext(UserContext)
+  const texts = useMemo(
+    () => getTexts({ page: 'hub', locale: locale, hubName: hubData?.name }),
+    [locale],
+  )
 
-  const [hash, setHash] = useState<BrowseTab | null>(null);
-  const [tabValue, setTabValue] = useState(hash ? TYPES_BY_TAB_VALUE.indexOf(hash) : 0);
+  const [hash, setHash] = useState<BrowseTab | null>(null)
+  const [tabValue, setTabValue] = useState(hash ? TYPES_BY_TAB_VALUE.indexOf(hash) : 0)
 
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
   const type_names = {
     projects: texts.projects,
     organizations: isNarrowScreen ? texts.orgs : texts.organizations,
     members: texts.members,
-  };
+  }
   // Always default to filters being expanded
-  const [filtersExpanded, setFiltersExpanded] = useState(true);
+  const [filtersExpanded, setFiltersExpanded] = useState(true)
   // On mobile filters take up the whole screen, so they aren't expanded by default
-  const [filtersExandedOnMobile, setFiltersExpandedOnMobile] = useState(false);
-  const [state, setState] = useState(initialState);
+  const [filtersExandedOnMobile, setFiltersExpandedOnMobile] = useState(false)
+  const [state, setState] = useState(initialState)
   const locationInputRefs = {
     projects: useRef(null),
     organizations: useRef(null),
     members: useRef(null),
     ideas: useRef(null),
-  };
-  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false);
+  }
+  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false)
   const handleSetLocationOptionsOpen = (bool) => {
-    setLocationOptionsOpen(bool);
-  };
+    setLocationOptionsOpen(bool)
+  }
 
   // We have 2 distinct loading states: filtering, and loading more data. For
   // each state, we want to treat the loading spinner a bit differently, hence
   // why we have two separate pieces of state
-  const [isFiltering, setIsFiltering] = useState(false);
-  const [isFetchingMoreData, setIsFetchingMoreData] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false)
+  const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
 
-  const { showFeedbackMessage } = useContext(FeedbackContext);
+  const { showFeedbackMessage } = useContext(FeedbackContext)
   /**
    * Support the functionality of a user entering
    * a provided URL, that already has URL encoded
@@ -192,19 +194,19 @@ export default function BrowseContent({
    * case, we should automatically set the filters dynamically. Ensure
    * that this isn't invoked on extraneous renders.
    */
-  const [initialized, setInitialized] = useState(false);
+  const [initialized, setInitialized] = useState(false)
 
-  const [nonFilterParams, setNonFilterParams] = useState({});
+  const [nonFilterParams, setNonFilterParams] = useState({})
 
   useEffect(() => {
-    const newHash = window?.location?.hash.replace("#", "") as BrowseTab;
+    const newHash = window?.location?.hash.replace('#', '') as BrowseTab
 
     if (window.location.hash && TYPES_BY_TAB_VALUE.includes(newHash)) {
-      setHash(newHash);
-      setTabValue(TYPES_BY_TAB_VALUE.indexOf(newHash));
+      setHash(newHash)
+      setTabValue(TYPES_BY_TAB_VALUE.indexOf(newHash))
     } else {
-      setHash(TYPES_BY_TAB_VALUE[0]);
-      setTabValue(0);
+      setHash(TYPES_BY_TAB_VALUE[0])
+      setTabValue(0)
     }
 
     // this init is nessesary to be resilient if the component is remounted
@@ -219,27 +221,27 @@ export default function BrowseContent({
 
       // For each query param option, ensure that it's
       // split into array before spreading onto the new filters object.
-      const tabKey = newHash ? newHash : TYPES_BY_TAB_VALUE[0];
+      const tabKey = newHash ? newHash : TYPES_BY_TAB_VALUE[0]
       const possibleFilters = getFilters({
         key: tabKey,
         filterChoices: filterChoices,
         locale: locale,
-      });
-      const queryObject = getQueryObjectFromUrl(getSearchParams(window.location.search));
-      const splitQueryObject = splitFiltersFromQueryObject(queryObject, possibleFilters);
+      })
+      const queryObject = getQueryObjectFromUrl(getSearchParams(window.location.search))
+      const splitQueryObject = splitFiltersFromQueryObject(queryObject, possibleFilters)
       const newFilters = {
         ...splitQueryObject.filters,
-      };
-      setNonFilterParams(splitQueryObject.nonFilters);
+      }
+      setNonFilterParams(splitQueryObject.nonFilters)
       if (splitQueryObject?.nonFilters?.message) {
         showFeedbackMessage({
           message: splitQueryObject.nonFilters.message,
-        });
+        })
       }
 
       if (initialLocationFilter) {
-        const locationFilter: any = possibleFilters.find((f) => f.type === "location");
-        newFilters[locationFilter.key] = initialLocationFilter;
+        const locationFilter: any = possibleFilters.find((f) => f.type === 'location')
+        newFilters[locationFilter.key] = initialLocationFilter
       }
       // Apply new filters with the query object immediately:
       handleApplyNewFilters({
@@ -247,12 +249,12 @@ export default function BrowseContent({
         newFilters: newFilters,
         closeFilters: false,
         nonFilterParams: splitQueryObject.nonFilters,
-      });
+      })
 
       // And then update state
-      setInitialized(true);
+      setInitialized(true)
     }
-  }, []);
+  }, [])
 
   const handleTabChange = (event, newValue) => {
     // Update the state of the visual filters, like Select, Dialog, etc
@@ -269,44 +271,44 @@ export default function BrowseContent({
         key: TYPES_BY_TAB_VALUE[0],
         filterChoices: filterChoices,
         locale: locale,
-      })
-    );
-    delete emptyFilters.location; // TODO: refactor this?
-    const queryObject = getQueryObjectFromUrl(getSearchParams(window.location.search));
+      }),
+    )
+    delete emptyFilters.location // TODO: refactor this?
+    const queryObject = getQueryObjectFromUrl(getSearchParams(window.location.search))
     //location is always set to "" here
 
     //persist the old location filter when switching tabs
-    const tabKey = TYPES_BY_TAB_VALUE[newValue];
+    const tabKey = TYPES_BY_TAB_VALUE[newValue]
 
-    if (tabKey === "events") {
+    if (tabKey === 'events') {
       // TODO: add event calendar here!
     } else {
       const possibleFilters = getFilters({
         key: tabKey,
         filterChoices: filterChoices,
         locale: locale,
-      });
-      const locationFilter: any = possibleFilters.find((f) => f.type === "location");
-      queryObject[locationFilter.key] = filters[locationFilter.key];
+      })
+      const locationFilter: any = possibleFilters.find((f) => f.type === 'location')
+      queryObject[locationFilter.key] = filters[locationFilter.key]
       const splitQueryObject = splitFiltersFromQueryObject(
         /*TODO(undefined) newFilters*/ queryObject,
-        possibleFilters
-      );
+        possibleFilters,
+      )
 
-      const newFilters = { ...emptyFilters, ...splitQueryObject.filters };
-      const tabValue = TYPES_BY_TAB_VALUE[newValue];
+      const newFilters = { ...emptyFilters, ...splitQueryObject.filters }
+      const tabValue = TYPES_BY_TAB_VALUE[newValue]
       // Apply new filters with the query object immediately:
       handleApplyNewFilters({
         type: tabValue,
         newFilters: newFilters,
         closeFilters: false,
         nonFilterParams: splitQueryObject.nonFilters,
-      });
+      })
     }
 
-    window.location.hash = TYPES_BY_TAB_VALUE[newValue];
-    setTabValue(newValue);
-  };
+    window.location.hash = TYPES_BY_TAB_VALUE[newValue]
+    setTabValue(newValue)
+  }
 
   /* We always save filter values in the url in english.
                 Therefore we need to get the name in the current language
@@ -314,49 +316,49 @@ export default function BrowseContent({
   const getValueInCurrentLanguage = (metadata, value) => {
     return findOptionByNameDeep({
       filterChoices: metadata.options,
-      propertyToFilterBy: "original_name",
+      propertyToFilterBy: 'original_name',
       valueToFilterBy: value,
-    }).name;
-  };
+    }).name
+  }
 
   const getQueryObjectFromUrl = (query) => {
-    const queryObject = _.cloneDeep(query);
+    const queryObject = _.cloneDeep(query)
     const possibleFiltersMetadata = getFilters({
-      key: "all",
+      key: 'all',
       filterChoices: filterChoices,
       locale: locale,
-    });
-    const splitQueryObject = splitFiltersFromQueryObject(queryObject, possibleFiltersMetadata);
+    })
+    const splitQueryObject = splitFiltersFromQueryObject(queryObject, possibleFiltersMetadata)
     for (const [key, value] of Object.entries(splitQueryObject.filters) as any) {
-      const metadata = possibleFiltersMetadata.find((f) => f.key === key);
+      const metadata = possibleFiltersMetadata.find((f) => f.key === key)
 
-      if (value.indexOf(",") > 0) {
-        queryObject[key] = value.split(",").map((v) => getValueInCurrentLanguage(metadata, v));
+      if (value.indexOf(',') > 0) {
+        queryObject[key] = value.split(',').map((v) => getValueInCurrentLanguage(metadata, v))
       } else if (
-        metadata?.type === "multiselect" ||
-        metadata?.type === "openMultiSelectDialogButton"
+        metadata?.type === 'multiselect' ||
+        metadata?.type === 'openMultiSelectDialogButton'
       ) {
-        queryObject[key] = [getValueInCurrentLanguage(metadata, value)];
-      } else if (key === "radius") {
-        queryObject[key] = value + "km";
+        queryObject[key] = [getValueInCurrentLanguage(metadata, value)]
+      } else if (key === 'radius') {
+        queryObject[key] = value + 'km'
       }
     }
-    return queryObject;
-  };
+    return queryObject
+  }
 
   const unexpandFilters = () => {
-    setFiltersExpanded(false);
-  };
+    setFiltersExpanded(false)
+  }
 
   const unexpandFiltersOnMobile = () => {
-    setFiltersExpandedOnMobile(false);
-  };
+    setFiltersExpandedOnMobile(false)
+  }
 
   const handleLoadMoreData = async (type) => {
-    if (isFetchingMoreData) return; // Prevent multiple simultaneous requests
+    if (isFetchingMoreData) return // Prevent multiple simultaneous requests
 
     try {
-      setIsFetchingMoreData(true);
+      setIsFetchingMoreData(true)
       const res = await loadMoreData({
         type: type,
         page: state.nextPages[type],
@@ -364,7 +366,7 @@ export default function BrowseContent({
         token: token,
         locale: locale,
         hubUrl: hubData?.url_slug,
-      });
+      })
 
       setState({
         ...state,
@@ -380,17 +382,17 @@ export default function BrowseContent({
           ...state.items,
           [type]: [...state.items[type], ...res.newData],
         },
-      });
-      return [...res.newData];
+      })
+      return [...res.newData]
     } catch (e) {
       setState({
         ...state,
         hasMore: { ...state.hasMore, [type]: false },
-      });
+      })
     } finally {
-      setIsFetchingMoreData(false);
+      setIsFetchingMoreData(false)
     }
-  };
+  }
 
   /**
    * Sets loading state to true to until the results are
@@ -404,9 +406,9 @@ export default function BrowseContent({
       filterChoices: filterChoices,
       locale: locale,
       nonFilterParams: nonFilterParams,
-    });
+    })
     if (newUrl !== window?.location?.href) {
-      window.history.pushState({}, "", newUrl);
+      window.history.pushState({}, '', newUrl)
     }
     // Only push state if there's a URL change. Be sure to account for the
     // hash link / fragment on the end of the URL (e.g. #skills).
@@ -416,21 +418,21 @@ export default function BrowseContent({
         locationInputRefs[type],
         setLocationOptionsOpen,
         handleSetErrorMessage,
-        texts
-      );
-      return;
+        texts,
+      )
+      return
     }
 
-    handleSetErrorMessage("");
-    setIsFiltering(true);
+    handleSetErrorMessage('')
+    setIsFiltering(true)
     const res = await applyNewFilters({
       type: type,
       newFilters: newFilters,
       closeFilters: closeFilters,
-    });
+    })
     if (res?.closeFilters) {
-      if (isNarrowScreen) setFiltersExpandedOnMobile(false);
-      else setFiltersExpanded(false);
+      if (isNarrowScreen) setFiltersExpandedOnMobile(false)
+      else setFiltersExpanded(false)
     }
     if (res?.filteredItemsObject) {
       setState({
@@ -439,33 +441,33 @@ export default function BrowseContent({
         hasMore: { ...state.hasMore, [type]: res.filteredItemsObject.hasMore },
         urlEnding: res.newUrlEnding,
         nextPages: { ...state.nextPages, [type]: 2 },
-      });
+      })
     }
-    setIsFiltering(false);
-  };
+    setIsFiltering(false)
+  }
 
   /**
    * Asynchonously get new projects, orgs or members. We render
    * a loading spinner until the request is done.
    */
   const handleSearchSubmit = async (type, searchValue) => {
-    setIsFiltering(true);
-    const newFilters = { ...filters, search: searchValue };
+    setIsFiltering(true)
+    const newFilters = { ...filters, search: searchValue }
     const newUrl = getFilterUrl({
       activeFilters: newFilters,
       infoMetadata: getInfoMetadataByType(type),
       filterChoices: filterChoices,
       locale: locale,
       nonFilterParams: nonFilterParams,
-    });
+    })
     const res = await applyNewFilters({
       type: type,
       newFilters: newFilters,
       closeFilters: false,
-    });
-    setIsFiltering(false);
+    })
+    setIsFiltering(false)
     if (newUrl !== window?.location?.href) {
-      window.history.pushState({}, "", newUrl);
+      window.history.pushState({}, '', newUrl)
     }
 
     if (res?.filteredItemsObject) {
@@ -475,9 +477,9 @@ export default function BrowseContent({
         hasMore: { ...state.hasMore, [type]: res.filteredItemsObject.hasMore },
         urlEnding: res.newUrlEnding,
         nextPages: { ...state.nextPages, [type]: 2 },
-      });
+      })
     }
-  };
+  }
 
   const tabContentWrapperProps = {
     tabValue: tabValue,
@@ -497,11 +499,11 @@ export default function BrowseContent({
     initialLocationFilter: initialLocationFilter,
     isFiltering: isFiltering,
     state: state,
-    hubName: hubName || "",
+    hubName: hubName || '',
     nonFilterParams: nonFilterParams,
     linkedHubs: linkedHubs || [],
     isFetchingMoreData: isFetchingMoreData,
-  };
+  }
   return (
     <LoadingContext.Provider
       value={{
@@ -555,7 +557,7 @@ export default function BrowseContent({
           />
         )}
         <Suspense fallback={<LoadingSpinner isLoading />}>
-          <TabContentWrapper type={"projects"} {...tabContentWrapperProps}>
+          <TabContentWrapper type={'projects'} {...tabContentWrapperProps}>
             {hubData?.parent_hub && (
               <div className={classes.subHubInfoText}>
                 {texts.you_are_seeing_projects_related_to}
@@ -563,14 +565,14 @@ export default function BrowseContent({
             )}
             <ProjectPreviews
               hasMore={state.hasMore.projects}
-              loadFunc={() => handleLoadMoreData("projects")}
+              loadFunc={() => handleLoadMoreData('projects')}
               parentHandlesGridItems
               projects={state.items.projects}
               hubUrl={hubUrl}
               isLoading={isFetchingMoreData}
             />
           </TabContentWrapper>
-          <TabContentWrapper type={"organizations"} {...tabContentWrapperProps}>
+          <TabContentWrapper type={'organizations'} {...tabContentWrapperProps}>
             {hubData?.parent_hub && (
               <div className={classes.subHubInfoText}>
                 {texts.you_are_seeing_organizations_related_to}
@@ -578,7 +580,7 @@ export default function BrowseContent({
             )}
             <OrganizationPreviews
               hasMore={state.hasMore.organizations}
-              loadFunc={() => handleLoadMoreData("organizations")}
+              loadFunc={() => handleLoadMoreData('organizations')}
               organizations={state.items.organizations}
               hubUrl={hubUrl}
               parentHandlesGridItems
@@ -586,7 +588,7 @@ export default function BrowseContent({
             />
           </TabContentWrapper>
           {!hideMembers && (
-            <TabContentWrapper type={"members"} {...tabContentWrapperProps}>
+            <TabContentWrapper type={'members'} {...tabContentWrapperProps}>
               {hubData?.parent_hub && (
                 <div className={classes.subHubInfoText}>
                   {texts.you_are_seeing_members_related_to}
@@ -594,7 +596,7 @@ export default function BrowseContent({
               )}
               <ProfilePreviews
                 hasMore={state.hasMore.members}
-                loadFunc={() => handleLoadMoreData("members")}
+                loadFunc={() => handleLoadMoreData('members')}
                 parentHandlesGridItems
                 profiles={state.items.members}
                 hubUrl={hubUrl}
@@ -606,5 +608,5 @@ export default function BrowseContent({
         </Suspense>
       </Container>
     </LoadingContext.Provider>
-  );
+  )
 }

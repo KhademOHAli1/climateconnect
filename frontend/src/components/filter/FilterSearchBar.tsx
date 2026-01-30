@@ -1,7 +1,7 @@
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
+import CloseIcon from '@mui/icons-material/Close'
+import SearchIcon from '@mui/icons-material/Search'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
+import React from 'react'
 
 export default function FilterSearchBar({
   className,
@@ -13,21 +13,21 @@ export default function FilterSearchBar({
   value,
 }: any) {
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       // Perform the search: this invokes the search
       // handling func from its top-level ancestor, within browse.js
-      const currentSearchValue = event?.target?.value;
-      onSubmit(type, currentSearchValue);
-      event.target.blur();
+      const currentSearchValue = event?.target?.value
+      onSubmit(type, currentSearchValue)
+      event.target.blur()
     }
-  };
+  }
 
   const removeSearchFilter = () => {
-    if (value !== "") {
-      onChange({ preventDefault: () => {}, target: { value: "" } });
-      onSubmit(type, "");
+    if (value !== '') {
+      onChange({ preventDefault: () => {}, target: { value: '' } })
+      onSubmit(type, '')
     }
-  };
+  }
 
   return (
     <TextField
@@ -57,5 +57,5 @@ export default function FilterSearchBar({
       variant="outlined"
       value={value && value}
     />
-  );
+  )
 }

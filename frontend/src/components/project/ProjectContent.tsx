@@ -1,49 +1,48 @@
-import { Button, Typography, useTheme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import humanizeDuration from "humanize-duration";
-import React, { useState, useContext } from "react";
-import youtubeRegex from "youtube-regex";
-import { Theme } from "@mui/material/styles";
-
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Button, Typography, useTheme } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import humanizeDuration from 'humanize-duration'
+import React, { useContext, useState } from 'react'
+import youtubeRegex from 'youtube-regex'
+import getTexts from '../../../public/texts/texts'
+import MessageContent from '../communication/MessageContent'
+import Posts from './../communication/Posts'
+import UserContext from '../context/UserContext'
 // Relative imports
-import DateDisplay from "./../general/DateDisplay";
-import LocalizedTimeAgo from "./../general/LocalizedTimeAgo";
-import DiscussionPreview from "./DiscussionPreview";
-import getTexts from "../../../public/texts/texts";
-import MessageContent from "../communication/MessageContent";
-import MiniOrganizationPreview from "../organization/MiniOrganizationPreview";
-import MiniProfilePreview from "../profile/MiniProfilePreview";
-import Posts from "./../communication/Posts";
-import UserContext from "../context/UserContext";
-import ProjectContentSideButtons from "./Buttons/ProjectContentSideButtons";
+import DateDisplay from './../general/DateDisplay'
+import LocalizedTimeAgo from './../general/LocalizedTimeAgo'
+import MiniOrganizationPreview from '../organization/MiniOrganizationPreview'
+import MiniProfilePreview from '../profile/MiniProfilePreview'
+import ProjectContentSideButtons from './Buttons/ProjectContentSideButtons'
+import DiscussionPreview from './DiscussionPreview'
 
-const MAX_DISPLAYED_DESCRIPTION_LENGTH = 500;
+const MAX_DISPLAYED_DESCRIPTION_LENGTH = 500
 
 const useStyles = makeStyles((theme: Theme) => ({
   createdBy: {
     fontSize: 16,
   },
   info: {
-    fontStyle: "italic",
+    fontStyle: 'italic',
     marginBottom: theme.spacing(1),
-    display: "block",
+    display: 'block',
     fontSize: 14,
   },
   creator: (props) => ({
     paddingTop: props.isPersonalProject && theme.spacing(0.25),
     paddingLeft: theme.spacing(1),
     color: theme.palette.grey[800],
-    cursor: "pointer",
-    wordBreak: "break-word",
+    cursor: 'pointer',
+    wordBreak: 'break-word',
   }),
   collaboratingOrganization: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     color: theme.palette.grey[800],
-    cursor: "pointer",
-    breakWord: "break-word",
+    cursor: 'pointer',
+    breakWord: 'break-word',
   },
   creatorImage: {
     height: 24,
@@ -51,15 +50,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: theme.spacing(0.5),
   },
   subHeader: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingBottom: theme.spacing(1),
   },
   expandButton: {
-    width: "100%",
+    width: '100%',
     color: theme.palette.background.default_contrastText,
   },
   icon: {
-    verticalAlign: "bottom",
+    verticalAlign: 'bottom',
     marginTop: 2,
     paddingRight: theme.spacing(0.5),
   },
@@ -78,19 +77,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(4),
   },
   collabList: {
-    listStyle: "none",
+    listStyle: 'none',
     padding: 0,
     margin: 0,
-    "& li": {
+    '& li': {
       paddingLeft: theme.spacing(3),
-      position: "relative",
-      lineHeight: "30px",
-      "&::before": {
+      position: 'relative',
+      lineHeight: '30px',
+      '&::before': {
         content: '"• "',
-        fontWeight: "bold",
+        fontWeight: 'bold',
         fontSize: 20,
-        lineHeight: "30px",
-        position: "absolute",
+        lineHeight: '30px',
+        position: 'absolute',
         top: 0,
         left: 0,
         color: theme?.palette?.background?.default_contrastText,
@@ -101,39 +100,39 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(5),
   },
   collabSection: {
-    display: "inline-block",
-    width: "50%",
-    "@media (max-width:900px)": {
-      width: "100%",
+    display: 'inline-block',
+    width: '50%',
+    '@media (max-width:900px)': {
+      width: '100%',
     },
   },
   collabSectionContainer: {
-    display: "flex",
+    display: 'flex',
     marginRight: theme.spacing(3),
-    justifyContent: "space-between",
-    "@media (max-width:900px)": {
-      display: "block",
+    justifyContent: 'space-between',
+    '@media (max-width:900px)': {
+      display: 'block',
     },
   },
   openToCollabBool: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   projectDescription: {
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
   },
   projectParentContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   collaborationContainer: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
-}));
+}))
 
 export default function ProjectContent({
   discussionTabLabel,
@@ -149,47 +148,47 @@ export default function ProjectContent({
   requestedToJoinProject,
   hubUrl,
 }) {
-  const classes = useStyles({ isPersonalProject: project.isPersonalProject });
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: project });
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const handleToggleFullDescriptionClick = () => setShowFullDescription(!showFullDescription);
+  const classes = useStyles({ isPersonalProject: project.isPersonalProject })
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
+  const [showFullDescription, setShowFullDescription] = useState(false)
+  const handleToggleFullDescriptionClick = () => setShowFullDescription(!showFullDescription)
 
   const calculateMaxDisplayedDescriptionLength = (description) => {
-    const words = description.split(" ");
-    const youtubeLink = words.find((el) => youtubeRegex().test(el));
+    const words = description.split(' ')
+    const youtubeLink = words.find((el) => youtubeRegex().test(el))
     if (youtubeLink) {
-      const firstIndex = description.indexOf(youtubeLink);
-      const lastIndex = firstIndex + youtubeLink.length - 1;
+      const firstIndex = description.indexOf(youtubeLink)
+      const lastIndex = firstIndex + youtubeLink.length - 1
       const maxLength =
         firstIndex <= MAX_DISPLAYED_DESCRIPTION_LENGTH &&
         lastIndex > MAX_DISPLAYED_DESCRIPTION_LENGTH
           ? lastIndex
-          : MAX_DISPLAYED_DESCRIPTION_LENGTH;
-      return maxLength;
+          : MAX_DISPLAYED_DESCRIPTION_LENGTH
+      return maxLength
     } else {
-      return MAX_DISPLAYED_DESCRIPTION_LENGTH;
+      return MAX_DISPLAYED_DESCRIPTION_LENGTH
     }
-  };
+  }
   const maxDisplayedDescriptionLength = project.description
     ? calculateMaxDisplayedDescriptionLength(project.description)
-    : 0;
+    : 0
 
   //return the right static text depending on the project type
   const getProjectDescriptionHeadline = () => {
-    const type = project.project_type.type_id;
-    if (type === "event") return texts.event_description;
-    if (type === "idea") return texts.idea_description;
-    return texts.project_description;
-  };
+    const type = project.project_type.type_id
+    if (type === 'event') return texts.event_description
+    if (type === 'idea') return texts.idea_description
+    return texts.project_description
+  }
 
   const getNoProjectDescriptionText = () => {
-    const type = project.project_type.type_id;
-    if (type === "event") return texts.this_event_hasnt_added_a_description_yet;
-    if (type === "idea") return texts.this_idea_hasnt_added_a_description_yet;
-    return texts.this_project_hasnt_added_a_description_yet;
-  };
-  const theme = useTheme();
+    const type = project.project_type.type_id
+    if (type === 'event') return texts.this_event_hasnt_added_a_description_yet
+    if (type === 'idea') return texts.this_idea_hasnt_added_a_description_yet
+    return texts.this_project_hasnt_added_a_description_yet
+  }
+  const theme = useTheme()
   return (
     <>
       <div className={classes.contentBlock}>
@@ -210,11 +209,11 @@ export default function ProjectContent({
           <div>
             <div className={classes.projectParentContainer}>
               <Typography component="span">
-                {project.project_type.type_id === "event" ? (
+                {project.project_type.type_id === 'event' ? (
                   <>{texts.event_organized_by}</>
                 ) : (
                   <>
-                    {texts.started + " "}
+                    {texts.started + ' '}
                     <LocalizedTimeAgo date={new Date(project.start_date)} /> {texts.by}
                   </>
                 )}
@@ -236,33 +235,34 @@ export default function ProjectContent({
                 )}
               </Typography>
             </div>
-            {project.project_type.type_id === "project" && project.end_date && (
+            {project.project_type.type_id === 'project' && project.end_date && (
               <Typography>
-                {texts.finished + " "}
-                <LocalizedTimeAgo date={new Date(project.end_date)} />{" "}
+                {texts.finished + ' '}
+                <LocalizedTimeAgo date={new Date(project.end_date)} />{' '}
               </Typography>
             )}
 
-            {project.collaborating_organizations && project.collaborating_organizations.length > 0 && (
-              <div className={classes.collaborationContainer}>
-                <span> {texts.in_collaboration_with}</span>
-                {project.collaborating_organizations.map((o) => (
-                  <MiniOrganizationPreview
-                    key={o.id}
-                    size="small"
-                    inline
-                    className={classes.collaboratingOrganization}
-                    organization={o}
-                    hubUrl={hubUrl}
-                  />
-                ))}
-              </div>
-            )}
+            {project.collaborating_organizations &&
+              project.collaborating_organizations.length > 0 && (
+                <div className={classes.collaborationContainer}>
+                  <span> {texts.in_collaboration_with}</span>
+                  {project.collaborating_organizations.map((o) => (
+                    <MiniOrganizationPreview
+                      key={o.id}
+                      size="small"
+                      inline
+                      className={classes.collaboratingOrganization}
+                      organization={o}
+                      hubUrl={hubUrl}
+                    />
+                  ))}
+                </div>
+              )}
           </div>
           {project.end_date && (
             <Typography>
-              {texts.finished} <LocalizedTimeAgo date={new Date(project.end_date)} />.{" "}
-              {texts.total_duration}:{" "}
+              {texts.finished} <LocalizedTimeAgo date={new Date(project.end_date)} />.{' '}
+              {texts.total_duration}:{' '}
               {humanizeDuration(new Date(project.end_date) - new Date(project.start_date), {
                 largest: 1,
                 language: locale,
@@ -286,7 +286,7 @@ export default function ProjectContent({
               <MessageContent content={project.description} renderYoutubeVideos={true} />
             ) : (
               <MessageContent
-                content={project.description.substr(0, maxDisplayedDescriptionLength) + "..."}
+                content={project.description.substr(0, maxDisplayedDescriptionLength) + '...'}
                 renderYoutubeVideos={true}
               />
             )
@@ -360,11 +360,11 @@ export default function ProjectContent({
         )}
       </div>
     </>
-  );
+  )
 }
 
 function CollaborateContent({ project, texts }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <>
       <Typography variant="body2" className={classes.info}>
@@ -382,7 +382,7 @@ function CollaborateContent({ project, texts }) {
             <ul className={classes.collabList}>
               {project.helpful_skills.length > 0 &&
                 project.helpful_skills.map((skill) => {
-                  return <li key={skill.id}>{skill.name}</li>;
+                  return <li key={skill.id}>{skill.name}</li>
                 })}
             </ul>
           </div>
@@ -394,12 +394,12 @@ function CollaborateContent({ project, texts }) {
             </Typography>
             <ul className={classes.collabList}>
               {project.helpful_connections.map((connection, index) => {
-                return <li key={index}>{connection}</li>;
+                return <li key={index}>{connection}</li>
               })}
             </ul>
           </div>
         )}
       </div>
     </>
-  );
+  )
 }

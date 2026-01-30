@@ -4,7 +4,7 @@ export function parseOptions(options, parentPropertyName) {
     .filter(
       (o) =>
         o[parentPropertyName] === null ||
-        options.filter((io) => io.id === o[parentPropertyName]).length === 0
+        options.filter((io) => io.id === o[parentPropertyName]).length === 0,
     )
     .map((o) => {
       return {
@@ -19,19 +19,19 @@ export function parseOptions(options, parentPropertyName) {
               name: so.name,
               key: so.id,
               id: so.id,
-            };
+            }
           }),
-      };
-    });
+      }
+    })
 }
 
 export function parseSectorOptions(options) {
   return options.map((o) => {
-    const { image, ...rest } = o;
+    const { image, ...rest } = o
     return {
       ...rest,
       thumbnail_image: image,
       image: image,
-    };
-  });
+    }
+  })
 }

@@ -1,52 +1,52 @@
-import makeStyles from "@mui/styles/makeStyles";
-import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
-import ArrowBack from "@mui/icons-material/ArrowBack";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import { Box, Card, CardContent, IconButton, Typography, Button } from "@mui/material";
-import ActiveSectorsSelector from "../hub/ActiveSectorsSelector";
-import { Sector } from "../../types";
+import ArrowBack from '@mui/icons-material/ArrowBack'
+import { Box, Button, Card, CardContent, IconButton, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import { Sector } from '../../types'
+import UserContext from '../context/UserContext'
+import ActiveSectorsSelector from '../hub/ActiveSectorsSelector'
 
 type AddInterestAreaProps = {
   // eslint-disable-next-line no-unused-vars
-  handleSubmit: (event: FormEvent, values: any) => void;
-  errorMessage?: string;
-  values: any;
+  handleSubmit: (event: FormEvent, values: any) => void
+  errorMessage?: string
+  values: any
   // eslint-disable-next-line no-unused-vars
-  handleGoBack: (event?: any, values?: any) => void;
-  isSmallScreen: boolean;
-  sectorOptions: Sector[];
-};
+  handleGoBack: (event?: any, values?: any) => void
+  isSmallScreen: boolean
+  sectorOptions: Sector[]
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       padding: 0,
       borderRadius: 0,
-      boxShadow: "none",
+      boxShadow: 'none',
     },
   },
   smallScreenHeadline: {
     fontSize: 35,
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     padding: theme.spacing(4),
     color: theme.palette.background.default_contrastText,
   },
   cardHeaderBox: {
-    display: "flex",
-    gap: "2rem",
-    alignItems: "center",
+    display: 'flex',
+    gap: '2rem',
+    alignItems: 'center',
     marginBottom: 2,
   },
   rightAlignedButton: {
-    float: "right",
+    float: 'right',
     marginTop: theme.spacing(4),
   },
   textColor: {
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 /**
  * AddInterestArea component allows users to select their areas of interest during signup
@@ -59,9 +59,9 @@ export default function AddInterestArea({
   isSmallScreen,
   sectorOptions,
 }: AddInterestAreaProps) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "profile", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'profile', locale: locale })
 
   const GoBackArrow = () => (
     <IconButton
@@ -69,71 +69,71 @@ export default function AddInterestArea({
       onClick={() =>
         handleGoBack(
           undefined,
-          selectedSectors.map((sector) => sector.key)
+          selectedSectors.map((sector) => sector.key),
         )
       }
     >
       <ArrowBack />
     </IconButton>
-  );
+  )
 
   const StepCounter = () => (
     <Typography variant="subtitle1" component="div">
       {isSmallScreen && <GoBackArrow />}
       {texts.step_3_of_3_sign_up}
     </Typography>
-  );
+  )
 
   const getInitialSelectedSectors = () => {
     if (values.sectors && Array.isArray(values.sectors) && values.sectors.length > 0) {
-      return sectorOptions.filter((sector) => values.sectors.includes(sector.key));
+      return sectorOptions.filter((sector) => values.sectors.includes(sector.key))
     }
-    return [];
-  };
+    return []
+  }
 
-  const [selectedSectors, setSelectedSectors] = useState<Sector[]>(getInitialSelectedSectors());
+  const [selectedSectors, setSelectedSectors] = useState<Sector[]>(getInitialSelectedSectors())
 
   const [formValues, setFormValues] = useState({
     ...values,
     sectors: values.sectors || [],
-  });
+  })
 
   const handleSectorSelection = (event: ChangeEvent<HTMLSelectElement | { value: string }>) => {
-    event.preventDefault();
-    const sectorName = event.target.value;
-    const selectedSector = sectorOptions.find((s) => s.name === sectorName);
+    event.preventDefault()
+    const sectorName = event.target.value
+    const selectedSector = sectorOptions.find((s) => s.name === sectorName)
 
     if (selectedSector && !selectedSectors.some((s) => s.key === selectedSector.key)) {
-      const updatedSectors = [...selectedSectors, selectedSector];
-      const sectorKeys = updatedSectors.map((sector) => sector.key);
+      const updatedSectors = [...selectedSectors, selectedSector]
+      const sectorKeys = updatedSectors.map((sector) => sector.key)
 
-      setSelectedSectors(updatedSectors);
+      setSelectedSectors(updatedSectors)
       setFormValues({
         ...formValues,
         sectors: sectorKeys,
-      });
+      })
     }
-  };
+  }
 
   const handleSectorRemoval = (sectorToRemove: any) => {
     if (!sectorToRemove) {
-      console.warn("handleSectorRemoval was called without a sector.");
-      return;
+      console.warn('handleSectorRemoval was called without a sector.')
+      return
     }
-    const updatedSectors = selectedSectors.filter((sector) => sector.key !== sectorToRemove.key);
-    const sectorKeys = updatedSectors.map((sector) => sector.key);
+    const updatedSectors = selectedSectors.filter((sector) => sector.key !== sectorToRemove.key)
+    const sectorKeys = updatedSectors.map((sector) => sector.key)
 
-    setSelectedSectors(updatedSectors);
+    setSelectedSectors(updatedSectors)
     setFormValues({
       ...formValues,
       sectors: sectorKeys,
-    });
-  };
+    })
+  }
 
   // Filter out sectors that are already in the selectedSectors array.
   const availableSectors = sectorOptions.filter(
-    (sector) => !selectedSectors.some((selected) => selected.key === sector.key)
-  );
+    (sector) => !selectedSectors.some((selected) => selected.key === sector.key),
+  )
 
   return (
     <Card className={classes.root}>
@@ -179,5 +179,5 @@ export default function AddInterestArea({
         </Button>
       </CardContent>
     </Card>
-  );
+  )
 }

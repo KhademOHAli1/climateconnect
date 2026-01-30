@@ -1,5 +1,5 @@
-import { CcLocale } from "../../src/types";
-import { apiRequest } from "./apiOperations";
+import { CcLocale } from '../../src/types'
+import { apiRequest } from './apiOperations'
 
 /**
  * Calls endpoint to return a current list
@@ -11,12 +11,12 @@ import { apiRequest } from "./apiOperations";
  */
 export async function getMembershipRequests(url_slug: string, locale: CcLocale, token: string) {
   const resp = await apiRequest({
-    method: "get",
+    method: 'get',
     url: `/api/projects/${url_slug}/requesters/`,
     locale: locale,
     token: token,
-  });
+  })
 
   // TODO: we should probably have an associated timestamp with each request too.
-  return resp.data.results;
+  return resp.data.results
 }

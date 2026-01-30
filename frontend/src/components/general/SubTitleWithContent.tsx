@@ -1,43 +1,43 @@
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 
 const useStyles = makeStyles<Theme>((theme) => ({
   subtitleWithIcon: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     fontWeight: 700,
     minWidth: 200,
     fontSize: 15,
   },
   subtitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   content: {
     paddingBottom: theme.spacing(2),
     // color: `${theme.palette.secondary.main}`,
     fontSize: 16,
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
   },
   marginRight: {
     marginRight: theme.spacing(0.5),
   },
   iconAndTitleWrapper: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     marginBottom: theme.spacing(0.5),
   },
-}));
+}))
 
 export default function SubTitleWithContent({
   subTitleIcon,
   subtitle,
   content,
 }: {
-  subTitleIcon?: { icon: any };
-  subtitle: string;
-  content: string;
+  subTitleIcon?: { icon: any }
+  subtitle: string
+  content: string
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <>
       <div className={`${subTitleIcon ? classes.subtitleWithIcon : classes.subtitle}`}>
@@ -53,5 +53,5 @@ export default function SubTitleWithContent({
       </div>
       <div className={classes.content}>{content}</div>
     </>
-  );
+  )
 }

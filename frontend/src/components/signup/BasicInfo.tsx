@@ -1,43 +1,43 @@
-import { Card, Typography, IconButton, Box, CardContent } from "@mui/material";
-import Close from "@mui/icons-material/Close";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import UserContext from "../context/UserContext";
-import Form from "./../general/Form";
+import Close from '@mui/icons-material/Close'
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import UserContext from '../context/UserContext'
+import Form from './../general/Form'
 
 const useStyles = makeStyles((theme) => ({
   contrastBackground: {
     color: theme.palette.background.default_contrastText,
   },
   appealText: {
-    [theme.breakpoints.down("sm")]: {
-      fontWeight: "bold",
-      textAlign: "center",
+    [theme.breakpoints.down('sm')]: {
+      fontWeight: 'bold',
+      textAlign: 'center',
     },
   },
   formRootClass: {
     padding: 0,
     maxWidth: 700,
-    margin: "0 auto 0 0", // basically a left align
+    margin: '0 auto 0 0', // basically a left align
   },
   headline: {
     color: theme.palette.background.default_contrastText,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 35,
-      textAlign: "center",
-      fontWeight: "bold",
+      textAlign: 'center',
+      fontWeight: 'bold',
       padding: theme.spacing(4),
     },
   },
   stepIndicator: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(1),
-      textAlign: "center",
-      color: "secondary",
+      textAlign: 'center',
+      color: 'secondary',
     },
   },
-}));
+}))
 
 export default function BasicInfo({
   handleSubmit,
@@ -47,48 +47,48 @@ export default function BasicInfo({
   isSmallScreen,
   hub,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
   const fields = [
     {
       required: true,
       label: texts.email,
-      type: "email",
-      key: "email",
-      value: values["email"],
+      type: 'email',
+      key: 'email',
+      value: values['email'],
     },
     {
       required: true,
       label: texts.password,
-      type: "password",
-      key: "password",
-      value: values["password"],
+      type: 'password',
+      key: 'password',
+      value: values['password'],
     },
     {
       required: true,
       label: texts.repeat_password,
-      type: "password",
-      key: "repeatpassword",
-      value: values["repeatpassword"],
+      type: 'password',
+      key: 'repeatpassword',
+      value: values['repeatpassword'],
     },
-  ];
+  ]
 
   const messages = {
     submitMessage: texts.next_step,
     bottomMessage: texts.already_have_an_account,
-  };
+  }
 
   const bottomLink = {
     text: texts.log_in,
-    href: `${getLocalePrefix(locale)}/signin${hub ? `?hub=${hub}` : ""}`,
-  };
+    href: `${getLocalePrefix(locale)}/signin${hub ? `?hub=${hub}` : ''}`,
+  }
 
   const StepIndicator = () => (
     <Typography component="div" className={classes.stepIndicator}>
       {/* TODO: use texts */}
       {texts.step_1_of_3_sign_up}
     </Typography>
-  );
+  )
 
   const BasicInfoContent = () => (
     <>
@@ -110,10 +110,10 @@ export default function BasicInfo({
         errorMessage={errorMessage}
       />
     </>
-  );
+  )
 
   if (isSmallScreen) {
-    return <BasicInfoContent />;
+    return <BasicInfoContent />
   }
 
   return (
@@ -122,16 +122,16 @@ export default function BasicInfo({
       see https://mui.com/material-ui/react-card/ for other usefull card components */}
       <Box
         sx={{
-          display: "flex",
-          gap: "2rem",
-          alignItems: "center",
+          display: 'flex',
+          gap: '2rem',
+          alignItems: 'center',
           marginBottom: 2,
         }}
       >
         <IconButton
           aria-label="close"
           onClick={() => {
-            window.history.back();
+            window.history.back()
           }}
         >
           <Close />
@@ -142,5 +142,5 @@ export default function BasicInfo({
         <BasicInfoContent />
       </CardContent>
     </Card>
-  );
+  )
 }

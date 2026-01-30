@@ -2,21 +2,21 @@
 //The other part comes from webflow pages that our design team built
 //The skeleton for this page was built using this tutorial: https://dev.to/kennedyrose/integrating-webflow-and-next-js-39kk
 
-import React from "react";
-import WebflowPage from "../src/components/webflow/WebflowPage";
-import { retrievePage } from "../src/utils/webflow";
+import React from 'react'
+import WebflowPage from '../src/components/webflow/WebflowPage'
+import { retrievePage } from '../src/utils/webflow'
 
 export default function About({ bodyContent, headContent }) {
-  return <WebflowPage bodyContent={bodyContent} headContent={headContent} pageKey="about" />;
+  return <WebflowPage bodyContent={bodyContent} headContent={headContent} pageKey="about" />
 }
 
 export async function getServerSideProps(ctx) {
   const WEBFLOW_URLS = {
-    de: "https://climateconnect.webflow.io/uber-uns",
-    en: "https://climateconnect.webflow.io/about-us",
-  };
-  const props = await retrievePage(WEBFLOW_URLS[ctx.locale]);
+    de: 'https://climateconnect.webflow.io/uber-uns',
+    en: 'https://climateconnect.webflow.io/about-us',
+  }
+  const props = await retrievePage(WEBFLOW_URLS[ctx.locale])
   return {
     props: props,
-  };
+  }
 }

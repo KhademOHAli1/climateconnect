@@ -1,32 +1,32 @@
-import { Avatar, Button } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { redirect } from "../../../public/lib/apiOperations";
-import { startPrivateChat } from "../../../public/lib/messagingOperations";
-import Router from "next/router";
-import UserContext from "../context/UserContext";
-import getTexts from "../../../public/texts/texts";
-import Cookies from "universal-cookie";
-import ContactCreatorButtonInfo from "../communication/contactcreator/ContactCreatorButtonInfo";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import SendIcon from "@mui/icons-material/Send";
-import theme from "../../themes/theme";
+import SendIcon from '@mui/icons-material/Send'
+import { Avatar, Button } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import Router from 'next/router'
+import React, { useContext } from 'react'
+import Cookies from 'universal-cookie'
+import { redirect } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import { startPrivateChat } from '../../../public/lib/messagingOperations'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import ContactCreatorButtonInfo from '../communication/contactcreator/ContactCreatorButtonInfo'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles(() => ({
   root: {
     zIndex: 10,
-    position: "fixed",
+    position: 'fixed',
     bottom: 0,
-    right: "1%",
-    display: "flex",
-    flexDirection: "column",
+    right: '1%',
+    display: 'flex',
+    flexDirection: 'column',
     maxWidth: 350,
   },
   mobileButton: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },
@@ -36,29 +36,29 @@ const useStyles = makeStyles(() => ({
   ambassadorText: {
     padding: theme.spacing(1, 2),
   },
-}));
+}))
 
 export default function ContactAmbassadorButton({ hubAmbassador, mobile, hubUrl = null }) {
-  const classes = useStyles();
-  const { locale, user } = useContext(UserContext);
-  const cookies = new Cookies();
-  const token = cookies.get("auth_token");
-  const texts = getTexts({ page: "hub", hubAmbassador: hubAmbassador, locale: locale });
+  const classes = useStyles()
+  const { locale, user } = useContext(UserContext)
+  const cookies = new Cookies()
+  const token = cookies.get('auth_token')
+  const texts = getTexts({ page: 'hub', hubAmbassador: hubAmbassador, locale: locale })
 
   const handleClickContact = async (e) => {
-    e.preventDefault();
-    const queryString = hubUrl ? `?hub=${hubUrl}` : "";
+    e.preventDefault()
+    const queryString = hubUrl ? `?hub=${hubUrl}` : ''
 
     if (!user) {
       const queryString: any = {
         errorMessage: texts.please_create_an_account_or_log_in_to_contact_the_ambassador,
-      };
-      return redirect("/signup", queryString);
+      }
+      return redirect('/signup', queryString)
     }
 
-    const chat = await startPrivateChat(hubAmbassador?.user, token, locale);
-    Router.push("/chat/" + chat.chat_uuid + "/" + queryString);
-  };
+    const chat = await startPrivateChat(hubAmbassador?.user, token, locale)
+    Router.push('/chat/' + chat.chat_uuid + '/' + queryString)
+  }
   if (mobile) {
     return (
       <>
@@ -79,7 +79,7 @@ export default function ContactAmbassadorButton({ hubAmbassador, mobile, hubUrl 
           </Button>
         )}
       </>
-    );
+    )
   }
   return (
     <>
@@ -96,5 +96,5 @@ export default function ContactAmbassadorButton({ hubAmbassador, mobile, hubUrl 
         </div>
       )}
     </>
-  );
+  )
 }

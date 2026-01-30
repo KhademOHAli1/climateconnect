@@ -1,9 +1,9 @@
-import { TextField, Autocomplete } from "@mui/material";
-import throttle from "lodash/throttle";
-import React, { Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Autocomplete, TextField } from '@mui/material'
+import throttle from 'lodash/throttle'
+import React, { Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 export default function ApplyFilterSearchBar({
   label,
@@ -16,64 +16,64 @@ export default function ApplyFilterSearchBar({
 
   applyFilterToChats,
 }: any) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "filter_and_search", locale: locale });
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const isMounted = useRef(false);
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'filter_and_search', locale: locale })
+  const [open, setOpen] = useState(false)
+  const [options, setOptions] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+  const [inputValue, setInputValue] = useState('')
+  const isMounted = useRef(false)
 
   useEffect(() => {
     if (isMounted.current) {
-      applyFilterToChats(searchValue);
+      applyFilterToChats(searchValue)
     } else {
-      isMounted.current = true;
+      isMounted.current = true
     }
-  }, [searchValue]);
+  }, [searchValue])
 
   useEffect(() => {
     if (!open) {
-      setOptions([]);
+      setOptions([])
     }
-  }, [open]);
+  }, [open])
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    setSearchValueThrottled(event.target.value);
-    if (onUnselect) onUnselect();
-  };
+    setInputValue(event.target.value)
+    setSearchValueThrottled(event.target.value)
+    if (onUnselect) onUnselect()
+  }
 
   const setSearchValueThrottled = useMemo(
     () =>
       throttle((value) => {
-        setSearchValue(value);
+        setSearchValue(value)
       }, 1000),
-    []
-  );
+    [],
+  )
 
   const handleChange = (value, reason) => {
-    if (reason === "selectOption") {
-      if (onSelect) onSelect(value);
+    if (reason === 'selectOption') {
+      if (onSelect) onSelect(value)
       if (clearOnSelect) {
-        setInputValue("");
-        setSearchValue("");
+        setInputValue('')
+        setSearchValue('')
       } else {
-        setInputValue(value.name);
-        setSearchValue("");
+        setInputValue(value.name)
+        setSearchValue('')
       }
     }
-  };
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   return (
     <Autocomplete
       open={open}
       className={className}
       onOpen={() => {
-        setOpen(true);
+        setOpen(true)
       }}
       handleHomeEndKeys
       disableClearable
@@ -97,5 +97,5 @@ export default function ApplyFilterSearchBar({
         />
       )}
     />
-  );
+  )
 }

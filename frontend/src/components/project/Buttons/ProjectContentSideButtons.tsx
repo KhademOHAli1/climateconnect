@@ -1,36 +1,34 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Badge, useMediaQuery, IconButton } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import Cookies from "universal-cookie";
-
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import EditIcon from "@mui/icons-material/Edit";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
-import UserContext from "../../context/UserContext";
-import ROLE_TYPES from "../../../../public/data/role_types";
-import getTexts from "../../../../public/texts/texts";
-import { getMembershipRequests } from "../../../../public/lib/projectOperations";
-import ProjectRequestersDialog from "../../dialogs/ProjectRequestersDialog";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import JoinButton from "./JoinButton";
-import theme from "../../../themes/theme";
+import EditIcon from '@mui/icons-material/Edit'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import { Badge, Button, IconButton, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
+import ROLE_TYPES from '../../../../public/data/role_types'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import { getMembershipRequests } from '../../../../public/lib/projectOperations'
+import getTexts from '../../../../public/texts/texts'
+import theme from '../../../themes/theme'
+import UserContext from '../../context/UserContext'
+import ProjectRequestersDialog from '../../dialogs/ProjectRequestersDialog'
+import JoinButton from './JoinButton'
 
 const useStyles = makeStyles((theme) => ({
   memberButtons: {
-    float: "right",
-    display: "flex",
-    flexDirection: "column",
+    float: 'right',
+    display: 'flex',
+    flexDirection: 'column',
   },
 
   editProjectButton: {
     marginTop: theme.spacing(1),
   },
   showRequestsButton: {
-    background: "#f7f7f7",
+    background: '#f7f7f7',
     color: theme.palette.secondary.main,
-    "&:hover": {
-      background: "#e3e3e3",
+    '&:hover': {
+      background: '#e3e3e3',
     },
   },
   leaveProjectButton: {
@@ -40,29 +38,29 @@ const useStyles = makeStyles((theme) => ({
     // the frontend code more maintainable, and spacing more deterministic
     marginTop: theme.spacing(1),
     background: theme.palette.error.main,
-    color: "white",
-    ["&:hover"]: {
+    color: 'white',
+    ['&:hover']: {
       backgroundColor: theme.palette.error.main,
     },
   },
   joinButton: {
-    float: "right",
+    float: 'right',
   },
   iconButton: {
-    color: "white",
+    color: 'white',
     marginBottom: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
-    "&:hover": {
-      backgroundColor: "#36797e",
+    '&:hover': {
+      backgroundColor: '#36797e',
     },
   },
   leaveIconButton: {
     background: theme.palette.error.main,
-    "&:hover": {
-      backgroundColor: "#c96262",
+    '&:hover': {
+      backgroundColor: '#c96262',
     },
   },
-}));
+}))
 
 export default function ProjectContentSideButtons({
   project,
@@ -73,53 +71,53 @@ export default function ProjectContentSideButtons({
   leaveProject,
   hubUrl,
 }) {
-  const token = new Cookies().get("auth_token");
-  const classes = useStyles();
-  const { user, locale, CUSTOM_HUB_URLS } = useContext(UserContext);
-  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl);
+  const token = new Cookies().get('auth_token')
+  const classes = useStyles()
+  const { user, locale, CUSTOM_HUB_URLS } = useContext(UserContext)
+  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl)
 
-  const texts = getTexts({ page: "project", locale: locale, project: project });
-  const isNarrowScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
+  const isNarrowScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   const user_permission =
     user && project.team && project.team.find((m) => m.id === user.id)
       ? project.team.find((m) => m.id === user.id).permission
-      : null;
+      : null
   const hasAdminPermissions = [ROLE_TYPES.all_type, ROLE_TYPES.read_write_type].includes(
-    user_permission
-  );
+    user_permission,
+  )
 
-  const [requesters, setRequesters] = useState([]);
-  const [requestersRetrieved, setRequestersRetrieved] = useState(false);
-  const queryString = hubUrl ? `?hub=${hubUrl}` : "";
+  const [requesters, setRequesters] = useState([])
+  const [requestersRetrieved, setRequestersRetrieved] = useState(false)
+  const queryString = hubUrl ? `?hub=${hubUrl}` : ''
 
   // Fetch and populate requesters on initial load
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       //short circuit if the user doesn't have the necessary permissions to see join requests
       if (!(user_permission && hasAdminPermissions)) {
-        return;
+        return
       }
       // Returns an array of objects with an ID (request ID) and
       // associated user profile.
       try {
-        const membershipRequests = await getMembershipRequests(project.url_slug, locale, token);
+        const membershipRequests = await getMembershipRequests(project.url_slug, locale, token)
         // Now transform to a shape of objects where a specific request ID is
         // alongside a user profile.
         const userRequests = membershipRequests.map((r) => {
           const user = {
             requestId: r.id,
             user: r.user_profile,
-          };
-          return user;
-        });
-        setRequesters(userRequests);
-        setRequestersRetrieved(true);
+          }
+          return user
+        })
+        setRequesters(userRequests)
+        setRequestersRetrieved(true)
       } catch (e) {
-        console.log(e.response.data);
+        console.log(e.response.data)
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
   const ShowRequestsButton = () => {
     if (isNarrowScreen) {
@@ -129,7 +127,7 @@ export default function ProjectContentSideButtons({
             <GroupAddIcon />
           </IconButton>
         </Badge>
-      );
+      )
     } else {
       return (
         <Badge badgeContent={requesters.length} color="primary">
@@ -141,9 +139,9 @@ export default function ProjectContentSideButtons({
             {texts.review_join_requests}
           </Button>
         </Badge>
-      );
+      )
     }
-  };
+  }
 
   const EditProjectButton = () => {
     if (isNarrowScreen) {
@@ -151,23 +149,23 @@ export default function ProjectContentSideButtons({
         <IconButton
           size="large"
           className={classes.iconButton}
-          href={getLocalePrefix(locale) + "/editProject/" + project.url_slug + queryString}
+          href={getLocalePrefix(locale) + '/editProject/' + project.url_slug + queryString}
         >
           <EditIcon />
         </IconButton>
-      );
+      )
     } else {
       return (
         <Button
           className={classes.editProjectButton}
           variant="contained"
-          href={getLocalePrefix(locale) + "/editProject/" + project.url_slug + queryString}
+          href={getLocalePrefix(locale) + '/editProject/' + project.url_slug + queryString}
         >
           {project.is_draft ? texts.edit_draft : texts.edit}
         </Button>
-      );
+      )
     }
-  };
+  }
 
   const LeaveProjectButton = () => {
     if (isNarrowScreen) {
@@ -179,15 +177,15 @@ export default function ProjectContentSideButtons({
         >
           <ExitToAppIcon />
         </IconButton>
-      );
+      )
     } else {
       return (
         <Button className={classes.leaveProjectButton} variant="contained" onClick={leaveProject}>
           {texts.leave_project}
         </Button>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div>
@@ -208,7 +206,7 @@ export default function ProjectContentSideButtons({
       {/* If the user is an admin on the project, or is already part
         of the project (has read only permissions), then we don't want to show the membership request button. */}
       {!hasAdminPermissions &&
-        project.project_type.type_id !== "event" &&
+        project.project_type.type_id !== 'event' &&
         !(user_permission && [ROLE_TYPES.read_only_type].includes(user_permission)) && (
           <JoinButton
             handleSendProjectJoinRequest={handleSendProjectJoinRequest}
@@ -229,5 +227,5 @@ export default function ProjectContentSideButtons({
         user_permission={user_permission}
       />
     </div>
-  );
+  )
 }

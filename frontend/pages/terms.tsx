@@ -1,5 +1,5 @@
-import Layout from "../src/components/layouts/layout";
-import React from "react";
+import React from 'react'
+import Layout from '../src/components/layouts/layout'
 
 export default function Terms() {
   return (
@@ -57,5 +57,5 @@ export default function Terms() {
         <li>Date of last modification of the terms of use: July 22 2020.</li>
       </ol>
     </Layout>
-  );
+  )
 }

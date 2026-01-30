@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 export function getFashionHubDescription() {
   return {
     fashion_headline: {
-      en: "Fast fashion is harming our planet",
-      de: "Fast Fashion schadet unserem Planeten",
+      en: 'Fast fashion is harming our planet',
+      de: 'Fast Fashion schadet unserem Planeten',
     },
     fashion_short_description_first_part: {
       en: `The increase in textile production and fashion consumption is reflected in the success of
@@ -31,44 +31,44 @@ export function getFashionHubDescription() {
       Folgen sind deutlich sichtbar.`,
     },
     production_step: {
-      en: "Production step",
-      de: "Produktionsschritt",
+      en: 'Production step',
+      de: 'Produktionsschritt',
     },
     percent_of_total_ghg_emissions: {
-      en: "Percent of total ghg emissions",
-      de: "Prozent der gesamten Treibhausgas-Emissionen",
+      en: 'Percent of total ghg emissions',
+      de: 'Prozent der gesamten Treibhausgas-Emissionen',
     },
     garment_production: {
-      en: "Garment production",
-      de: "Bekleidungsherstellung",
+      en: 'Garment production',
+      de: 'Bekleidungsherstellung',
     },
     yarn_production: {
-      en: "Yarn production",
-      de: "Garnherstellung",
+      en: 'Yarn production',
+      de: 'Garnherstellung',
     },
     user_phase: {
-      en: "User phase",
-      de: "Nutzungsphase",
+      en: 'User phase',
+      de: 'Nutzungsphase',
     },
     distribution_and_retail: {
-      en: "Distribution and retail",
-      de: "Vertrieb und Einzelhandel",
+      en: 'Distribution and retail',
+      de: 'Vertrieb und Einzelhandel',
     },
     cotton_production: {
-      en: "Cotton production",
-      de: "Baumwollherstellung",
+      en: 'Cotton production',
+      de: 'Baumwollherstellung',
     },
     t_shirt_chart_title: {
-      en: "CO2-emissions of a T-shirt",
-      de: "CO2-Emissionen eines T-Shirts",
+      en: 'CO2-emissions of a T-shirt',
+      de: 'CO2-Emissionen eines T-Shirts',
     },
     jeans_chart_title: {
-      en: "CO2-emissions of a pair of jeans",
-      de: "CO2-Emissionen einer Jeans",
+      en: 'CO2-emissions of a pair of jeans',
+      de: 'CO2-Emissionen einer Jeans',
     },
     massive_increase_in_fashion_carbon_emissions: {
-      en: "Massive increase in carbon emissions",
-      de: "Massiver Anstieg der Kohlenstoff-Emissionen",
+      en: 'Massive increase in carbon emissions',
+      de: 'Massiver Anstieg der Kohlenstoff-Emissionen',
     },
     massive_increase_in_fashion_carbon_emissions_text: {
       en: (
@@ -114,8 +114,8 @@ export function getFashionHubDescription() {
       und mit erneuerbarer Energie verarbeitet wurden, Gruppierung der Produktionsschritte und lokale Produktion`,
     },
     water_consumption_and_pollution_of_natural_resources: {
-      en: "Water consumption and pollution of natural resources",
-      de: "Wasserverbrauch und Verschmutzung natürlicher Ressourcen",
+      en: 'Water consumption and pollution of natural resources',
+      de: 'Wasserverbrauch und Verschmutzung natürlicher Ressourcen',
     },
     water_consumption_and_pollution_of_natural_resources_text: {
       en: `The fashion industry is a major consumer of water (79 trillion litres per year),
@@ -148,8 +148,8 @@ export function getFashionHubDescription() {
       einzuführen. Natürliche Ressourcen müssen bewusst genutzt werden`,
     },
     chemical_pollution_and_health_risks: {
-      en: "Chemical pollution and health risks",
-      de: "Chemische Verschmutzung und Gesundheitsrisiken",
+      en: 'Chemical pollution and health risks',
+      de: 'Chemische Verschmutzung und Gesundheitsrisiken',
     },
     chemical_pollution_and_health_text: {
       en: `The textile industry uses over 15,000 different chemicals during the manufacturing
@@ -178,8 +178,8 @@ export function getFashionHubDescription() {
       sollte die Kleidung ohne gesundheitsgefährdende Chemikalien hergestellt werden.`,
     },
     textile_waste_and_lack_of_recycling_in_the_fashion_industry: {
-      en: "Textile waste and lack of recycling in the fashion industry",
-      de: "Textiler Abfall und ein Mangel an Recycling in der Modeindustrie",
+      en: 'Textile waste and lack of recycling in the fashion industry',
+      de: 'Textiler Abfall und ein Mangel an Recycling in der Modeindustrie',
     },
     textile_waste_and_lack_of_recycling_in_the_fashion_industry_text_first_part: {
       en: (
@@ -189,8 +189,8 @@ export function getFashionHubDescription() {
           calculations and communications mistakes that often take place because of the distance
           between the design and production facilities. The stock arriving in the shops often
           remains unsold, or is returned becoming mostly a “waste”. This is a fundamental problem
-          that every company is facing: Swedish fast-fashion brand{" "}
-          <b>{"H&M"} was reported to hold $4.3 billion worth of unsold products</b> in warehouses,
+          that every company is facing: Swedish fast-fashion brand{' '}
+          <b>{'H&M'} was reported to hold $4.3 billion worth of unsold products</b> in warehouses,
           following reports of the company incinerating them at a waste-to-energy plant in Denmark.
           Online shopping returns, in particular clothes, have a massive return rate, between 40-50%
           as people order different products just to try the best fitting as they would do in a
@@ -208,10 +208,10 @@ export function getFashionHubDescription() {
           Berechnungen und Kommunikationsfehlern, die oft aufgrund der Entfernung zwischen zwischen
           den Design- und Produktionsstätten vorkommen. Die in den Geschäften ankommende Ware bleibt
           oft unverkauft oder wird zurückgeschickt und ist meist Abfall. Dies ist ein grundlegendes
-          Problem mit dem jedes Unternehmen konfrontiert ist: Die schwedische Fast-Fashion-Marke{" "}
+          Problem mit dem jedes Unternehmen konfrontiert ist: Die schwedische Fast-Fashion-Marke{' '}
           <b>
-            {"H&M"} hatte Berichten zufolge unverkaufte Produkte im Wert von 4,3 Milliarden Dollar
-          </b>{" "}
+            {'H&M'} hatte Berichten zufolge unverkaufte Produkte im Wert von 4,3 Milliarden Dollar
+          </b>{' '}
           in Ihren Lagerhäusern, die in einem Müllheizkraftwerk in Dänemark verbrannt wurden. Die
           Retourenquote beim Online-Shopping, insbesondere bei Kleidung, liegt bei 40-50%, weil
           verschiedene Produkte bestellt werden, nur um die beste Passform auszuprobieren. Die
@@ -246,8 +246,8 @@ export function getFashionHubDescription() {
       Kleidung seltener benötigt wird.`,
     },
     multiple_solutions_for_a_common_goal: {
-      en: "Multiple solutions for a common goal",
-      de: "Mehrere Lösungen für ein gemeinsames Ziel",
+      en: 'Multiple solutions for a common goal',
+      de: 'Mehrere Lösungen für ein gemeinsames Ziel',
     },
     multiple_solutions_for_a_common_goal_first_part: {
       en: `To prevent clothing waste and implement sustainable models require a double action:
@@ -294,10 +294,8 @@ export function getFashionHubDescription() {
       Fortschritt beginnt mit uns!`,
     },
     circular_economy_alt: {
-      en:
-        "Shows sustainable lifecycle of fashion in a circular way through: raw materials, design, production, distribution, use, collection and recycling",
-      de:
-        "Zeigt den nachhaltigen Lebenszyklus von Mode in einem Kreislauf durch: Rohstoffe, Design, Produktion, Vertrieb, Nutzung, Sammlung und Recycling",
+      en: 'Shows sustainable lifecycle of fashion in a circular way through: raw materials, design, production, distribution, use, collection and recycling',
+      de: 'Zeigt den nachhaltigen Lebenszyklus von Mode in einem Kreislauf durch: Rohstoffe, Design, Produktion, Vertrieb, Nutzung, Sammlung und Recycling',
     },
-  };
+  }
 }

@@ -1,29 +1,29 @@
-import { alpha, createTheme } from "@mui/material/styles";
-import { grey } from "@mui/material/colors";
-import "../types.ts";
+import { grey } from '@mui/material/colors'
+import { alpha, createTheme } from '@mui/material/styles'
+import '../types.ts'
 
-declare module "@mui/material" {
+declare module '@mui/material' {
   // eslint-disable-next-line no-unused-vars
   interface Color {
-    main: string;
-    dark: string;
-    light?: string;
+    main: string
+    dark: string
+    light?: string
   }
 }
 
-declare module "@mui/material/Button" {
+declare module '@mui/material/Button' {
   // eslint-disable-next-line no-unused-vars
   interface ButtonPropsColorOverrides {
-    grey: true;
-    contrast: true;
+    grey: true
+    contrast: true
   }
 }
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   // eslint-disable-next-line no-unused-vars
   interface TypeBackground {
-    default_contrastText?: string;
-    main?: string;
+    default_contrastText?: string
+    main?: string
   }
 }
 
@@ -31,32 +31,32 @@ declare module "@mui/material/styles" {
 export const coreTheme = createTheme({
   palette: {
     primary: {
-      main: "#207178",
-      light: "#66BCB5",
-      extraLight: "#D7F7F5",
-      contrastText: "#FFFFFF",
-      lightHover: "#7dd1ca",
+      main: '#207178',
+      light: '#66BCB5',
+      extraLight: '#D7F7F5',
+      contrastText: '#FFFFFF',
+      lightHover: '#7dd1ca',
     },
     secondary: {
-      main: "#484848",
-      light: "#484848",
-      extraLight: "#EBEBEB",
-      contrastText: "#FFFFFF",
+      main: '#484848',
+      light: '#484848',
+      extraLight: '#EBEBEB',
+      contrastText: '#FFFFFF',
     },
     yellow: {
-      main: "#FFDE0A",
+      main: '#FFDE0A',
     },
     background: {
-      default: "#FFFFFF",
-      paper: "#FFFFFF",
-      default_contrastText: "#207178",
+      default: '#FFFFFF',
+      paper: '#FFFFFF',
+      default_contrastText: '#207178',
     },
     contrast: {
-      main: "#207178",
-      contrastText: "#FFFFFF",
+      main: '#207178',
+      contrastText: '#FFFFFF',
     },
     action: {
-      selected: "#387077",
+      selected: '#387077',
     },
     grey: {
       light: grey[100],
@@ -65,23 +65,23 @@ export const coreTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Open Sans",
+    fontFamily: 'Open Sans',
     h1: {
-      fontSize: "3rem",
-      align: "center",
+      fontSize: '3rem',
+      align: 'center',
     },
     subtitle1: {
-      fontSize: "0.9rem",
+      fontSize: '0.9rem',
     },
     subtitle2: {
-      fontSize: "0.9rem",
-      fontWeight: "bold",
+      fontSize: '0.9rem',
+      fontWeight: 'bold',
     },
     button: {
       fontWeight: 600,
     },
   },
-});
+})
 
 /**
  * Extend on top of the core foundational theme (currently spacing
@@ -109,36 +109,36 @@ const theme = createTheme(coreTheme, {
     MuiButton: {
       variants: [
         {
-          props: { variant: "contained", color: "grey" },
+          props: { variant: 'contained', color: 'grey' },
           style: {
             color: coreTheme.palette.getContrastText(coreTheme.palette.grey[300]),
           },
         },
         {
-          props: { variant: "outlined" },
+          props: { variant: 'outlined' },
           style: {
-            border: "1px solid !important",
+            border: '1px solid !important',
           },
         },
         {
-          props: { variant: "outlined", color: "grey" },
+          props: { variant: 'outlined', color: 'grey' },
           style: {
             color: coreTheme.palette.text.primary,
             borderColor:
-              coreTheme.palette.mode === "light"
-                ? "rgba(0, 0, 0, 0.23)"
-                : "rgba(255, 255, 255, 0.23)",
-            "&.Mui-disabled": {
+              coreTheme.palette.mode === 'light'
+                ? 'rgba(0, 0, 0, 0.23)'
+                : 'rgba(255, 255, 255, 0.23)',
+            '&.Mui-disabled': {
               border: `1px solid ${coreTheme.palette.action.disabledBackground}`,
             },
-            "&:hover": {
+            '&:hover': {
               borderColor:
-                coreTheme.palette.mode === "light"
-                  ? "rgba(0, 0, 0, 0.23)"
-                  : "rgba(255, 255, 255, 0.23)",
+                coreTheme.palette.mode === 'light'
+                  ? 'rgba(0, 0, 0, 0.23)'
+                  : 'rgba(255, 255, 255, 0.23)',
               backgroundColor: alpha(
                 coreTheme.palette.text.primary,
-                coreTheme.palette.action.hoverOpacity
+                coreTheme.palette.action.hoverOpacity,
               ),
             },
           },
@@ -161,7 +161,7 @@ const theme = createTheme(coreTheme, {
       styleOverrides: {
         root: {
           minWidth: 0,
-          [coreTheme.breakpoints.up("xs")]: {
+          [coreTheme.breakpoints.up('xs')]: {
             minWidth: 0,
           },
         },
@@ -177,12 +177,12 @@ const theme = createTheme(coreTheme, {
     MuiChip: {
       variants: [
         {
-          props: { variant: "filled", color: "secondary" },
+          props: { variant: 'filled', color: 'secondary' },
           style: {
-            background: "#e0e0e0",
+            background: '#e0e0e0',
             color: coreTheme.palette.secondary.main,
-            "&:hover": {
-              background: "#cacaca",
+            '&:hover': {
+              background: '#cacaca',
             },
           },
         },
@@ -195,23 +195,23 @@ const theme = createTheme(coreTheme, {
         },
         deleteIconColorSecondary: {
           color: coreTheme.palette.secondary.main,
-          "&:hover": {
+          '&:hover': {
             color: coreTheme.palette.secondary.light,
           },
         },
         clickable: {
-          "&:hover": {
-            background: "#cacaca",
+          '&:hover': {
+            background: '#cacaca',
           },
         },
       },
     },
     MuiLink: {
       defaultProps: {
-        underline: "hover",
+        underline: 'hover',
       },
     },
   },
-});
+})
 
-export default theme;
+export default theme

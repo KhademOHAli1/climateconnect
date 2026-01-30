@@ -1,32 +1,32 @@
-import PlaceIcon from "@mui/icons-material/Place";
-import getTexts from "../texts/texts";
+import PlaceIcon from '@mui/icons-material/Place'
+import getTexts from '../texts/texts'
 
 export default function getProfileInfoMetadata(locale) {
-  const texts = getTexts({ page: "profile", locale: locale });
+  const texts = getTexts({ page: 'profile', locale: locale })
   return {
     sectors: {
       name: texts.area_of_interest,
-      key: "sectors",
-      type: "sectors",
+      key: 'sectors',
+      type: 'sectors',
     },
     availability: {
       name: texts.availability,
-      key: "availability",
-      type: "select",
+      key: 'availability',
+      type: 'select',
       missingMessage: texts.availability_user_profile_missing_message,
     },
     skills: {
       name: texts.skills,
-      key: "skills",
-      type: "array",
+      key: 'skills',
+      type: 'array',
       addText: texts.add_skill,
       missingMessage: texts.skills_user_profile_missing_message,
       maxEntries: 8,
     },
     bio: {
       name: texts.bio,
-      type: "bio",
-      key: "bio",
+      type: 'bio',
+      key: 'bio',
       missingMessage: texts.bio_user_profile_missing_message,
       maxLength: 280,
       weight: 1,
@@ -36,34 +36,34 @@ export default function getProfileInfoMetadata(locale) {
     },
     website: {
       name: texts.website,
-      type: "text",
-      key: "website",
+      type: 'text',
+      key: 'website',
       maxLength: 240,
       linkify: true,
     },
     location: {
       name: texts.location,
-      key: "location",
+      key: 'location',
       icon: PlaceIcon,
       missingMessage: texts.location_user_profile_missing_message,
-      type: "location",
+      type: 'location',
       weight: 0,
       legacy: {
         city: {
           icon: PlaceIcon,
-          iconName: "PlaceIcon",
+          iconName: 'PlaceIcon',
           name: texts.city,
-          type: "text",
-          key: "city",
+          type: 'text',
+          key: 'city',
         },
         country: {
           icon: PlaceIcon,
-          iconName: "PlaceIcon",
+          iconName: 'PlaceIcon',
           name: texts.country,
-          key: "country",
-          type: "text",
+          key: 'country',
+          type: 'text',
         },
       },
     },
-  };
+  }
 }

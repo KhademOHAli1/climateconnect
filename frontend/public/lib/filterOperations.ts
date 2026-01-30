@@ -1,33 +1,33 @@
-import _ from "lodash";
-import { getLocationFilterKeys } from "../data/locationFilters";
-import possibleFilters from "../data/possibleFilters";
-import { getDataFromServer } from "./getDataOperations";
-import { membersWithAdditionalInfo } from "./getOptions";
-import { getInfoMetadataByType, getReducedPossibleFilters } from "./parsingOperations";
-import { encodeQueryParamsFromFilters } from "./urlOperations";
+import _ from 'lodash'
+import { getLocationFilterKeys } from '../data/locationFilters'
+import possibleFilters from '../data/possibleFilters'
+import { getDataFromServer } from './getDataOperations'
+import { membersWithAdditionalInfo } from './getOptions'
+import { getInfoMetadataByType, getReducedPossibleFilters } from './parsingOperations'
+import { encodeQueryParamsFromFilters } from './urlOperations'
 
 const getLocationFilterUrl = (location) => {
   /*Pass place id. If the place id is found in our db we can use it's polygon,
   otherwise make a request to the location API with the backend */
-  return `place=${location.place_id}&osm=${location.osm_id}&loc_type=${location.osm_type}&`;
-};
+  return `place=${location.place_id}&osm=${location.osm_id}&loc_type=${location.osm_type}&`
+}
 
 export function buildUrlEndingFromFilters(filters) {
-  let url = "&";
+  let url = '&'
   Object.keys(filters).map((filterKey) => {
     if (
       filters[filterKey] &&
       (filters[filterKey].length > 0 || Object.keys(filters[filterKey]).length > 0)
     ) {
       //only use location filter if we have selected a location
-      if (filterKey === "location" && typeof filters[filterKey] === "object") {
-        url += getLocationFilterUrl(filters[filterKey]);
+      if (filterKey === 'location' && typeof filters[filterKey] === 'object') {
+        url += getLocationFilterUrl(filters[filterKey])
       } else if (Array.isArray(filters[filterKey]))
-        url += encodeURI(filterKey + "=" + filters[filterKey].join()) + "&";
-      else url += encodeURI(filterKey + "=" + filters[filterKey] + "&");
+        url += encodeURI(filterKey + '=' + filters[filterKey].join()) + '&'
+      else url += encodeURI(filterKey + '=' + filters[filterKey] + '&')
     }
-  });
-  return url;
+  })
+  return url
 }
 
 export function getKeysOfDifferingValues({ obj, newObj, type, filterChoices, locale }) {
@@ -35,21 +35,21 @@ export function getKeysOfDifferingValues({ obj, newObj, type, filterChoices, loc
     key: type,
     filterChoices: filterChoices,
     locale: locale,
-  }).map((f) => f.key);
-  const locationKeys = getLocationFilterKeys();
-  const differingKeys: string[] = [];
+  }).map((f) => f.key)
+  const locationKeys = getLocationFilterKeys()
+  const differingKeys: string[] = []
   for (const key of possibleFilterKeys) {
-    if (key === "location" && (!newObj[key] || typeof newObj[key] === "object")) {
-      let isLocationEqual = true;
+    if (key === 'location' && (!newObj[key] || typeof newObj[key] === 'object')) {
+      let isLocationEqual = true
       //if there are no location keys in either object we still check whether the user selected a location
       //If a user selects a location from the options it changes from a string to an obj
-      if (typeof obj?.location === "string" && typeof newObj?.location === "object") {
-        isLocationEqual = false;
+      if (typeof obj?.location === 'string' && typeof newObj?.location === 'object') {
+        isLocationEqual = false
       } else {
         //Otherwise we'll have to check for each key from the url whether it has changed.
         for (const locKey of locationKeys) {
           if (!_.isEqual(newObj[locKey], obj[locKey])) {
-            isLocationEqual = false;
+            isLocationEqual = false
           }
         }
         //If no location was selected before and after the change but the radius changed:
@@ -57,20 +57,20 @@ export function getKeysOfDifferingValues({ obj, newObj, type, filterChoices, loc
         if (
           _.isEqual(
             locationKeys.filter((k) => newObj[k]?.length > 0 && obj[k]?.length > 0),
-            ["radius"]
+            ['radius'],
           )
         ) {
-          isLocationEqual = true;
+          isLocationEqual = true
         }
       }
       if (!isLocationEqual) {
-        differingKeys.push("location");
+        differingKeys.push('location')
       }
     } else if (!_.isEqual(newObj[key], obj[key])) {
-      differingKeys.push(key);
+      differingKeys.push(key)
     }
   }
-  return differingKeys;
+  return differingKeys
 }
 
 export function hasDifferingValues({ obj, newObj, type, filterChoices, locale }) {
@@ -82,7 +82,7 @@ export function hasDifferingValues({ obj, newObj, type, filterChoices, locale })
       filterChoices: filterChoices,
       locale: locale,
     }).length > 0
-  );
+  )
 }
 
 export function getUnaffectedTabs({ tabs, filterChoices, locale, filters, newFilters, type }) {
@@ -91,50 +91,50 @@ export function getUnaffectedTabs({ tabs, filterChoices, locale, filters, newFil
       key: tab,
       filterChoices: filterChoices,
       locale: locale,
-    });
+    })
     const keysOfDifferingValues = getKeysOfDifferingValues({
       obj: filters,
       newObj: newFilters,
       type: type,
       filterChoices: filterChoices,
       locale: locale,
-    });
+    })
     for (const filter of possibleFiltersInTab) {
       if (keysOfDifferingValues.includes(filter.key)) {
-        return false;
+        return false
       }
     }
-    return true;
-  });
+    return true
+  })
 }
 
 export function getInitialFilters({ filterChoices, locale, initialLocationFilter }) {
   return {
     ...getReducedPossibleFilters(
-      possibleFilters({ key: "all", filterChoices: filterChoices, locale: locale }),
-      initialLocationFilter
+      possibleFilters({ key: 'all', filterChoices: filterChoices, locale: locale }),
+      initialLocationFilter,
     ),
-    search: "",
-  };
+    search: '',
+  }
 }
 
 //Splits a query array from a url into filters and non-fitlers
 export function splitFiltersFromQueryObject(queryObject, possibleFilters): any {
-  if (!queryObject) return { filters: {}, nonFilters: {} };
-  const possibleFilterKeys = possibleFilters.map((f) => f.key);
+  if (!queryObject) return { filters: {}, nonFilters: {} }
+  const possibleFilterKeys = possibleFilters.map((f) => f.key)
   const filters = Object.keys(queryObject).reduce((obj, curKey) => {
     if (possibleFilterKeys.includes(curKey)) {
-      obj[curKey] = queryObject[curKey];
+      obj[curKey] = queryObject[curKey]
     }
-    return obj;
-  }, {});
+    return obj
+  }, {})
   const restOfQueryObject = Object.keys(queryObject).reduce((obj, curKey) => {
     if (!possibleFilterKeys.includes(curKey)) {
-      obj[curKey] = queryObject[curKey];
+      obj[curKey] = queryObject[curKey]
     }
-    return obj;
-  }, {});
-  return { filters: filters, nonFilters: restOfQueryObject };
+    return obj
+  }, {})
+  return { filters: filters, nonFilters: restOfQueryObject }
 }
 
 /**
@@ -180,7 +180,7 @@ export async function applyNewFilters({
     }) &&
     tabsWhereFiltersWereApplied.includes(type)
   ) {
-    return null;
+    return null
   }
   //Record the tabs in which the filters were applied already
   if (
@@ -192,7 +192,7 @@ export async function applyNewFilters({
       locale: locale,
     })
   ) {
-    handleSetTabsWhereFiltersWereApplied([...tabsWhereFiltersWereApplied, type]);
+    handleSetTabsWhereFiltersWereApplied([...tabsWhereFiltersWereApplied, type])
   } else {
     //If there was a change to the filters, we'll only remove the affected tabs from the tabs that were affected by the change
     //e.g. your cannot browse organizations by project category at the moment, so if you change this filter and then switch to the organizations tab
@@ -204,17 +204,17 @@ export async function applyNewFilters({
       filters: filters,
       newFilters: newFilters,
       type: type,
-    });
-    handleSetTabsWhereFiltersWereApplied([...unaffectedTabs, type]);
+    })
+    handleSetTabsWhereFiltersWereApplied([...unaffectedTabs, type])
   }
-  handleAddFilters(newFilters);
+  handleAddFilters(newFilters)
   const newUrlEnding = encodeQueryParamsFromFilters({
     filters: newFilters,
     infoMetadata: getInfoMetadataByType(type, locale),
     filterChoices: filterChoices,
     locale: locale,
-  });
-  handleSetErrorMessage(null);
+  })
+  handleSetErrorMessage(null)
 
   try {
     const payload: any = {
@@ -224,28 +224,28 @@ export async function applyNewFilters({
       urlEnding: newUrlEnding,
       location: newFilters.location ?? undefined,
       locale: locale,
-    };
+    }
 
     if (hubUrl) {
-      payload.hubUrl = hubUrl;
+      payload.hubUrl = hubUrl
     }
-    const filteredItemsObject: any = await getDataFromServer(payload);
+    const filteredItemsObject: any = await getDataFromServer(payload)
 
-    if (type === "members") {
-      filteredItemsObject.members = membersWithAdditionalInfo(filteredItemsObject.members);
+    if (type === 'members') {
+      filteredItemsObject.members = membersWithAdditionalInfo(filteredItemsObject.members)
     }
 
     return {
       closeFilters: closeFilters,
       filteredItemsObject: filteredItemsObject,
       newUrlEnding: newUrlEnding,
-    };
+    }
   } catch (e) {
-    console.log(e);
+    console.log(e)
     // TODO: in the future, throw the error
     // but make sure that the calling component catches
     /// the error and gives feedback to the user
     // throw e;
   }
-  return null;
+  return null
 }

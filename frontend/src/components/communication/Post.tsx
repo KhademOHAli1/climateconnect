@@ -1,80 +1,80 @@
-import { Avatar, Button, CircularProgress, Link, Theme, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ConfirmDialog from "../dialogs/ConfirmDialog";
-import ProfileBadge from "../profile/ProfileBadge";
-import DateDisplay from "./../general/DateDisplay";
-import CommentInput from "./CommentInput";
-import MessageContent from "./MessageContent";
-import Posts from "./Posts";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Avatar, Button, CircularProgress, Link, Theme, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
+import DateDisplay from './../general/DateDisplay'
+import ProfileBadge from '../profile/ProfileBadge'
+import CommentInput from './CommentInput'
+import MessageContent from './MessageContent'
+import Posts from './Posts'
 
 const useStyles = makeStyles<Theme, { preview?: boolean }>((theme) => ({
   postDate: {
     color: theme.palette.grey[700],
   },
   commentFlexBox: (props) => ({
-    display: "flex",
-    alignItems: props.preview ? "center" : "stretch",
+    display: 'flex',
+    alignItems: props.preview ? 'center' : 'stretch',
   }),
   messageWithMetaData: {
     minWidth: 0,
-    overflowWrap: "break-word",
+    overflowWrap: 'break-word',
   },
   avatar: {
     marginRight: theme.spacing(2),
   },
   username: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginRight: theme.spacing(0.5),
   },
   metadata: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   message: {
     lineHeight: 1.2,
   },
   content: {
-    wordBreak: "break-word",
+    wordBreak: 'break-word',
     fontSize: 14,
-    whiteSpace: "pre-wrap",
+    whiteSpace: 'pre-wrap',
   },
   toggleExpanded: {
     fontWeight: 600,
     fontSize: 14,
-    cursor: "pointer",
+    cursor: 'pointer',
     color: theme.palette.grey[700],
   },
   replyButton: {
     color: theme.palette.grey[700],
   },
   toggleReplies: {
-    display: "flex",
-    alignItems: "center",
-    cursor: "pointer",
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
   },
   inlineBadge: {
     marginRight: theme.spacing(0.5),
   },
   commentBox: {
-    display: "flex",
+    display: 'flex',
   },
   deleteButton: {
     color: theme.palette.background.default_contrastText,
   },
   truncatedContent: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitBoxOrient: "vertical",
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
   },
-}));
+}))
 
 export default function Post({
   post,
@@ -89,65 +89,65 @@ export default function Post({
   noLink,
   hubUrl,
 }) {
-  const classes = useStyles({ preview: type === "preview" });
+  const classes = useStyles({ preview: type === 'preview' })
 
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "communication", locale: locale });
-  const [open, setOpen] = useState(false);
-  const [displayReplies, setDisplayReplies] = useState(true);
-  const [replyInterfaceExpanded, setInterfaceExpanded] = useState(false);
-  const expandReplyInterface = () => setInterfaceExpanded(true);
-  const unexpandReplyInterface = () => setInterfaceExpanded(false);
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'communication', locale: locale })
+  const [open, setOpen] = useState(false)
+  const [displayReplies, setDisplayReplies] = useState(true)
+  const [replyInterfaceExpanded, setInterfaceExpanded] = useState(false)
+  const expandReplyInterface = () => setInterfaceExpanded(true)
+  const unexpandReplyInterface = () => setInterfaceExpanded(false)
 
   const handleViewRepliesClick = () => {
-    setDisplayReplies(!displayReplies);
-  };
+    setDisplayReplies(!displayReplies)
+  }
 
   const handleSendComment = (curComment, parent_comment, clearInput) => {
-    onSendComment(curComment, parent_comment, clearInput, setDisplayReplies);
-  };
+    onSendComment(curComment, parent_comment, clearInput, setDisplayReplies)
+  }
 
-  const [isTextExpanded, setIsTextExpanded] = useState(false);
-  const [isTextTruncated, setIsTextTruncated] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [isTextExpanded, setIsTextExpanded] = useState(false)
+  const [isTextTruncated, setIsTextTruncated] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (type !== "preview" && contentRef.current) {
-      const element = contentRef.current;
-      const isTruncated = element.scrollHeight > element.clientHeight;
-      setIsTextTruncated(isTruncated);
+    if (type !== 'preview' && contentRef.current) {
+      const element = contentRef.current
+      const isTruncated = element.scrollHeight > element.clientHeight
+      setIsTextTruncated(isTruncated)
     }
-  }, [post.content, type]);
+  }, [post.content, type])
 
   const handleExpandText = () => {
-    setIsTextExpanded(!isTextExpanded);
-  };
+    setIsTextExpanded(!isTextExpanded)
+  }
 
-  const toggleDeleteDialogOpen = () => setOpen(!open);
+  const toggleDeleteDialogOpen = () => setOpen(!open)
 
   const onConfirmDialogClose = (confirmed) => {
-    setOpen(false);
-    if (confirmed) onDeletePost(post);
-  };
+    setOpen(false)
+    if (confirmed) onDeletePost(post)
+  }
 
-  const handleClick = (element) => noLink && element.preventDefault();
+  const handleClick = (element) => noLink && element.preventDefault()
   const avatarProps = {
     src: post.author_user.image
       ? getImageUrl(post.author_user.image)
       : getImageUrl(post.author_user.thumbnail_image),
     className: classes.avatar,
-  };
-  const queryString = hubUrl ? "?hub=" + hubUrl : "";
+  }
+  const queryString = hubUrl ? '?hub=' + hubUrl : ''
 
   return (
     <div className={className}>
-      {type === "progresspost" ? (
+      {type === 'progresspost' ? (
         <Typography
           component="h3"
           variant="h6"
           color="primary" /*TODO(undefined) className={classes.nameOfPoster} */
         >
-          {post.author_user.first_name + " " + post.author_user.last_name}
+          {post.author_user.first_name + ' ' + post.author_user.last_name}
         </Typography>
       ) : (
         <div className={classes.commentFlexBox}>
@@ -171,7 +171,7 @@ export default function Post({
                 underline="hover"
               >
                 <Typography variant="body2" className={classes.username}>
-                  {post.author_user.first_name + " " + post.author_user.last_name}
+                  {post.author_user.first_name + ' ' + post.author_user.last_name}
                 </Typography>
               </Link>
               {post.author_user.badges?.length > 0 && (
@@ -184,7 +184,7 @@ export default function Post({
               )}
               <Typography variant="body2" className={classes.postDate}>
                 {post.unconfirmed && (
-                  <Tooltip title={texts.sending_message + "..."}>
+                  <Tooltip title={texts.sending_message + '...'}>
                     <CircularProgress
                       size={10}
                       color="inherit" /*TODO(undefined) className={classes.loader} */
@@ -194,7 +194,7 @@ export default function Post({
                 <DateDisplay date={new Date(post.created_at)} />
               </Typography>
             </div>
-            {type === "preview" ? (
+            {type === 'preview' ? (
               <Typography
                 className={classes.truncatedContent}
                 style={{ WebkitLineClamp: truncate }}
@@ -223,8 +223,8 @@ export default function Post({
               </div>
             )}
             <>
-              {type !== "reply" &&
-                type !== "preview" &&
+              {type !== 'reply' &&
+                type !== 'preview' &&
                 (replyInterfaceExpanded ? (
                   <CommentInput
                     user={user}
@@ -238,32 +238,35 @@ export default function Post({
                     {texts.reply}
                   </Button>
                 ))}
-              {user && user.id === post.author_user.id && type !== "preview" && (
+              {user && user.id === post.author_user.id && type !== 'preview' && (
                 <Button onClick={toggleDeleteDialogOpen} className={classes.deleteButton}>
                   {texts.delete}
                 </Button>
               )}
             </>
             <>
-              {type !== "reply" && !!post.replies && post.replies.length > 0 && type !== "preview" && (
-                <Link
-                  className={classes.toggleReplies}
-                  onClick={handleViewRepliesClick}
-                  underline="hover"
-                >
-                  {!displayReplies ? (
-                    <>
-                      <ExpandMoreIcon />
-                      {texts.show_replies}
-                    </>
-                  ) : (
-                    <>
-                      <ExpandLessIcon />
-                      {texts.hide_replies}
-                    </>
-                  )}
-                </Link>
-              )}
+              {type !== 'reply' &&
+                !!post.replies &&
+                post.replies.length > 0 &&
+                type !== 'preview' && (
+                  <Link
+                    className={classes.toggleReplies}
+                    onClick={handleViewRepliesClick}
+                    underline="hover"
+                  >
+                    {!displayReplies ? (
+                      <>
+                        <ExpandMoreIcon />
+                        {texts.show_replies}
+                      </>
+                    ) : (
+                      <>
+                        <ExpandLessIcon />
+                        {texts.hide_replies}
+                      </>
+                    )}
+                  </Link>
+                )}
             </>
           </span>
         </div>
@@ -272,8 +275,8 @@ export default function Post({
         {post.replies &&
           post.replies.length > 0 &&
           displayReplies &&
-          (type === "openingpost" || type === "progresspost") &&
-          type !== "preview" && (
+          (type === 'openingpost' || type === 'progresspost') &&
+          type !== 'preview' && (
             <Posts
               posts={post.replies}
               type="reply"
@@ -293,5 +296,5 @@ export default function Post({
         cancelText={texts.no}
       />
     </div>
-  );
+  )
 }

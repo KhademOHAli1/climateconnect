@@ -1,10 +1,10 @@
-import { Container, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import LightBigButton from "./LightBigButton";
+import { Container, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import LightBigButton from './LightBigButton'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,28 +13,28 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
   },
   headline: {
-    color: "white",
+    color: 'white',
     maxWidth: 580,
-    textAlign: "center",
-    margin: "0 auto",
+    textAlign: 'center',
+    margin: '0 auto',
   },
   signUpButton: {
-    margin: "0 auto",
+    margin: '0 auto',
   },
   buttonContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: theme.spacing(3),
   },
   yellow: {
     color: theme.palette.yellow.main,
   },
-}));
+}))
 
 export default function StartNowBanner({ h1ClassName, className }: any) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "landing_page", locale: locale, classes: classes });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'landing_page', locale: locale, classes: classes })
   return (
     <div className={`${classes.root} ${className}`}>
       <Container>
@@ -45,7 +45,7 @@ export default function StartNowBanner({ h1ClassName, className }: any) {
         </div>
         <div className={classes.buttonContainer}>
           <LightBigButton
-            href={getLocalePrefix(locale) + "/signup"}
+            href={getLocalePrefix(locale) + '/signup'}
             className={classes.signUpButton}
           >
             {texts.sign_up}
@@ -53,5 +53,5 @@ export default function StartNowBanner({ h1ClassName, className }: any) {
         </div>
       </Container>
     </div>
-  );
+  )
 }

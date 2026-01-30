@@ -1,12 +1,12 @@
-import { Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import getTexts from "../../../public/texts/texts";
-import theme from "../../themes/theme";
-import UserContext from "../context/UserContext";
-import LightBigButton from "../staticpages/LightBigButton";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import { Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import LightBigButton from '../staticpages/LightBigButton'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: 848,
-    margin: "0 auto",
-    display: "flex",
-    alignItems: "center",
-    [theme.breakpoints.down("md")]: {
-      width: "auto",
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: 'auto',
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
     },
@@ -31,16 +31,16 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
   },
   headline: {
-    color: "white",
+    color: 'white',
   },
   text: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
     fontWeight: 600,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
       fontWeight: 500,
-      textAlign: "center",
+      textAlign: 'center',
     },
   },
   heartIcon: {
@@ -48,19 +48,19 @@ const useStyles = makeStyles((theme) => ({
     height: 120,
   },
   donateButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: theme.spacing(3),
   },
   yellow: {
     color: theme.palette.yellow.main,
   },
-}));
+}))
 export default function DonationsBanner({ h1ClassName }) {
-  const classes = useStyles();
-  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "donate", locale: locale, classes: classes });
+  const classes = useStyles()
+  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'donate', locale: locale, classes: classes })
   return (
     <div className={classes.root}>
       <div className={classes.content}>
@@ -81,12 +81,12 @@ export default function DonationsBanner({ h1ClassName }) {
       <div className={classes.donateButtonContainer}>
         <LightBigButton
           href={
-            getLocalePrefix(locale) + "/donate"
+            getLocalePrefix(locale) + '/donate'
           } /*TODO(undefined) className={classes.donateButton}*/
         >
           {texts.donate_now}
         </LightBigButton>
       </div>
     </div>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import { Link, Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { ThemeProvider } from "@mui/material/styles";
-import React, { useContext } from "react";
-import { Chart } from "react-google-charts";
-import getTexts from "../../../../public/texts/texts";
-import hubTheme from "../../../themes/hubTheme";
-import theme from "../../../themes/theme";
-import UserContext from "../../context/UserContext";
+import { Link, Theme, Typography, useMediaQuery } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { Chart } from 'react-google-charts'
+import getTexts from '../../../../public/texts/texts'
+import hubTheme from '../../../themes/hubTheme'
+import theme from '../../../themes/theme'
+import UserContext from '../../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   pieChart: {
@@ -20,25 +20,25 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   pieChartsContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   imgWrapper: {
     maxWidth: 600,
-    margin: "0 auto",
+    margin: '0 auto',
   },
   img: {
-    maxWidth: "100%",
+    maxWidth: '100%',
   },
-}));
+}))
 
 export default function FashionDescription() {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale, hubName: "Fashion" });
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale, hubName: 'Fashion' })
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
   return (
     <ThemeProvider theme={hubTheme}>
       <div>
@@ -53,8 +53,8 @@ export default function FashionDescription() {
         </Typography>
         <div className={classes.pieChartsContainer}>
           <Chart
-            width={isNarrowScreen ? "330px" : isMediumScreen ? "400px" : "500px"}
-            height={"300px"}
+            width={isNarrowScreen ? '330px' : isMediumScreen ? '400px' : '500px'}
+            height={'300px'}
             chartType="PieChart"
             loader={<div>{texts.loading_chart}</div>}
             data={[
@@ -69,11 +69,11 @@ export default function FashionDescription() {
               title: texts.t_shirt_chart_title,
               pieStartAngle: 180,
             }}
-            rootProps={{ "data-testid": "1" }}
+            rootProps={{ 'data-testid': '1' }}
           />
           <Chart
-            width={isNarrowScreen ? "330px" : isMediumScreen ? "400px" : "500px"}
-            height={"300px"}
+            width={isNarrowScreen ? '330px' : isMediumScreen ? '400px' : '500px'}
+            height={'300px'}
             chartType="PieChart"
             loader={<div>{texts.loading_chart}</div>}
             data={[
@@ -88,14 +88,14 @@ export default function FashionDescription() {
               title: texts.jeans_chart_title,
               pieStartAngle: 180,
             }}
-            rootProps={{ "data-testid": "2" }}
+            rootProps={{ 'data-testid': '2' }}
           />
         </div>
         <Typography>
-          {texts.source}:{" "}
+          {texts.source}:{' '}
           <Link href="https://www.nature.com/articles/s43017-020-0039-9.epdf" target="_blank">
             Nature
-          </Link>{" "}
+          </Link>{' '}
           (2020)
         </Typography>
         <Typography component="h2" variant="h2" className={classes.headline}>
@@ -162,5 +162,5 @@ export default function FashionDescription() {
         </Typography>
       </div>
     </ThemeProvider>
-  );
+  )
 }

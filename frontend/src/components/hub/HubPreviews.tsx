@@ -1,19 +1,19 @@
-import React from "react";
-import Grid from "@mui/material/Unstable_Grid2";
-import makeStyles from "@mui/styles/makeStyles";
-import HubPreview from "./HubPreview";
+import Grid from '@mui/material/Unstable_Grid2'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import HubPreview from './HubPreview'
 
 const useStyles = makeStyles(() => ({
   reset: {
     margin: 0,
     padding: 0,
-    listStyleType: "none",
-    width: "100%",
+    listStyleType: 'none',
+    width: '100%',
   },
-}));
+}))
 
 export default function HubPreviews({ hubs, className }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Grid className={`${classes.reset} ${className}`} spacing={2} container component="ul">
       {hubs.map((hub, index) => (
@@ -22,5 +22,5 @@ export default function HubPreviews({ hubs, className }) {
         </Grid>
       ))}
     </Grid>
-  );
+  )
 }

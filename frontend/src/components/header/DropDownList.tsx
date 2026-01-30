@@ -1,29 +1,29 @@
-import { Link, MenuItem, MenuList, Paper, Popper } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import UserContext from "../context/UserContext";
-import { getStaticLinkFromItem } from "../../../public/lib/headerLinks";
+import { Link, MenuItem, MenuList, Paper, Popper } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getStaticLinkFromItem } from '../../../public/lib/headerLinks'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   climateHubOption: {
-    textAlign: "center",
+    textAlign: 'center',
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
     fontWeight: 600,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
     color: theme.palette.background.default_contrastText,
   },
   popper: {
     zIndex: 25,
   },
   hoverBorderColor: {
-    "&:hover": {
+    '&:hover': {
       color: theme.palette.background.default_contrastText,
     },
   },
-}));
+}))
 
 export default function DropDownList({
   buttonRef,
@@ -34,11 +34,11 @@ export default function DropDownList({
   loadOnClick,
   popperRef,
 }: any) {
-  const classes = useStyles();
-  const { locale, startLoading } = useContext(UserContext);
+  const classes = useStyles()
+  const { locale, startLoading } = useContext(UserContext)
   const handleClickLink = () => {
-    startLoading();
-  };
+    startLoading()
+  }
 
   return (
     <Popper open={open} anchorEl={buttonRef.current} className={classes.popper}>
@@ -51,7 +51,7 @@ export default function DropDownList({
               onClick={loadOnClick && handleClickLink}
               underline="hover"
               className={classes.hoverBorderColor}
-              target={item.target || "_self"}
+              target={item.target || '_self'}
             >
               <MenuItem component="button" className={classes.climateHubOption}>
                 {item.text}
@@ -61,5 +61,5 @@ export default function DropDownList({
         </MenuList>
       </Paper>
     </Popper>
-  );
+  )
 }

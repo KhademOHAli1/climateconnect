@@ -1,17 +1,17 @@
-import { ButtonBase, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
-import React from "react";
-import Posts from "../communication/Posts";
-import { Theme } from "@mui/material/styles";
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
+import { ButtonBase, Typography } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import Posts from '../communication/Posts'
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonBase: {
-    width: "100%",
-    textAlign: "start",
+    width: '100%',
+    textAlign: 'start',
     marginBottom: theme.spacing(4),
-    "&:hover": {
-      backgroundColor: "#f5f5f5",
+    '&:hover': {
+      backgroundColor: '#f5f5f5',
     },
   },
   discussionPreview: {
@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(2),
-    width: "100%",
+    width: '100%',
   },
   topSectionDiscussionPreview: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   headingDiscussionPreview: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.palette.background.default_contrastText,
   },
-}));
+}))
 
 export default function DiscussionPreview({
   latestParentComment,
@@ -41,11 +41,11 @@ export default function DiscussionPreview({
   projectTabsRef,
   hubUrl,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   function switchToDiscussionTab(event) {
-    handleTabChange(event, typesByTabValue.indexOf("comments"));
-    projectTabsRef.current.scrollIntoView();
+    handleTabChange(event, typesByTabValue.indexOf('comments'))
+    projectTabsRef.current.scrollIntoView()
   }
 
   return (
@@ -67,5 +67,5 @@ export default function DiscussionPreview({
         />
       </div>
     </ButtonBase>
-  );
+  )
 }

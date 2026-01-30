@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import { Project } from "../../types";
-import UserContext from "../context/UserContext";
-import LocationSearchBar from "../search/LocationSearchBar";
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import { Project } from '../../types'
+import UserContext from '../context/UserContext'
+import LocationSearchBar from '../search/LocationSearchBar'
 
 type Args = {
-  projectData: Project;
-  handleSetProjectData: Function;
-  className?: any;
-  hideHelperText?: boolean;
-  locationInputRef?: any;
-  locationOptionsOpen?: boolean;
-  handleSetLocationOptionsOpen?: Function;
-  onChangeLocation?: Function; //Set this if you want the component to be controlled
-};
+  projectData: Project
+  handleSetProjectData: Function
+  className?: any
+  hideHelperText?: boolean
+  locationInputRef?: any
+  locationOptionsOpen?: boolean
+  handleSetLocationOptionsOpen?: Function
+  onChangeLocation?: Function //Set this if you want the component to be controlled
+}
 
 export default function ProjectLocationSearchBar({
   projectData,
@@ -25,34 +25,34 @@ export default function ProjectLocationSearchBar({
   handleSetLocationOptionsOpen,
   onChangeLocation,
 }: Args) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const PROJECT_TYPES_WITH_ADD_INFO = ["event"];
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const PROJECT_TYPES_WITH_ADD_INFO = ['event']
 
   const handleChangeLocationString = (newLocationString) => {
     handleSetProjectData({
       ...projectData,
       loc: newLocationString,
-    });
-  };
+    })
+  }
 
   const handleChangeLocation = (location) => {
     if (onChangeLocation) {
-      onChangeLocation(location);
+      onChangeLocation(location)
     } else {
       handleSetProjectData({
         ...projectData,
         loc: location,
-      });
+      })
     }
-  };
+  }
 
   const handleChangeAdditionalInfoText = (additionalInfo) => {
     handleSetProjectData({
       ...projectData,
       additional_loc_info: additionalInfo,
-    });
-  };
+    })
+  }
 
   const propsByProjectType = {
     event: {
@@ -61,20 +61,20 @@ export default function ProjectLocationSearchBar({
     },
     idea: {
       label: texts.location,
-      helperText: "",
+      helperText: '',
     },
     project: {
       label: texts.location,
-      helperText: "",
+      helperText: '',
     },
-  };
+  }
 
-  const additionalProps: any = {};
+  const additionalProps: any = {}
 
   //If these props are set the components "open" state is controlled.
   if (locationOptionsOpen && handleSetLocationOptionsOpen) {
-    (additionalProps.open = locationOptionsOpen),
-      (additionalProps.handleSetOpen = handleSetLocationOptionsOpen);
+    ;(additionalProps.open = locationOptionsOpen),
+      (additionalProps.handleSetOpen = handleSetLocationOptionsOpen)
   }
 
   return (
@@ -96,5 +96,5 @@ export default function ProjectLocationSearchBar({
       locationInputRef={locationInputRef}
       {...additionalProps}
     />
-  );
+  )
 }

@@ -1,7 +1,7 @@
 import HubBrowsePage, {
   getHubBrowseServerSideProps,
-} from "../../../../src/components/hub/HubBrowsePage";
+} from '../../../../src/components/hub/HubBrowsePage'
 
-export const getServerSideProps = getHubBrowseServerSideProps;
+export const getServerSideProps = getHubBrowseServerSideProps
 
-export default HubBrowsePage;
+export default HubBrowsePage

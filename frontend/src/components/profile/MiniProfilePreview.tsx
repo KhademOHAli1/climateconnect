@@ -1,21 +1,21 @@
-import { Avatar, IconButton, Link, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ClearIcon from "@mui/icons-material/Clear";
-import React, { useContext } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import UserContext from "../context/UserContext";
-import { getImageUrl } from "./../../../public/lib/imageOperations";
-import ProfileBadge from "./ProfileBadge";
+import ClearIcon from '@mui/icons-material/Clear'
+import { Avatar, IconButton, Link, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getImageUrl } from './../../../public/lib/imageOperations'
+import UserContext from '../context/UserContext'
+import ProfileBadge from './ProfileBadge'
 
 const useStyles = makeStyles((theme) => {
   return {
     avatarWrapper: {
-      display: "inline-block",
-      verticalAlign: "middle",
+      display: 'inline-block',
+      verticalAlign: 'middle',
     },
     profileName: {
-      display: "inline-block",
-      verticalAlign: "middle",
+      display: 'inline-block',
+      verticalAlign: 'middle',
       marginLeft: theme.spacing(1),
     },
     smallProfileName: {
@@ -33,16 +33,16 @@ const useStyles = makeStyles((theme) => {
       width: 30,
     },
     contentWrapper: {
-      display: "inline-flex",
-      alignItems: "center",
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     badge: {
-      bottom: "20%",
+      bottom: '20%',
     },
-  };
-});
+  }
+})
 
-type Props = { className?; profile?; avatarClassName?; size?; nolink?; onDelete?; hubUrl?: string };
+type Props = { className?; profile?; avatarClassName?; size?; nolink?; onDelete?; hubUrl?: string }
 
 export default function MiniProfilePreview({
   className,
@@ -53,8 +53,8 @@ export default function MiniProfilePreview({
   onDelete,
   hubUrl,
 }: Props) {
-  const { locale } = useContext(UserContext);
-  const queryString = hubUrl ? "?hub=" + hubUrl : "";
+  const { locale } = useContext(UserContext)
+  const queryString = hubUrl ? '?hub=' + hubUrl : ''
 
   if (!nolink)
     return (
@@ -62,7 +62,7 @@ export default function MiniProfilePreview({
         <Link
           color="inherit"
           href={getLocalePrefix(locale) + `/profiles/${profile.url_slug}${queryString}`}
-          className={`${"" /*TODO(undefined) classes.avatarWithInfo*/} ${className}`}
+          className={`${'' /*TODO(undefined) classes.avatarWithInfo*/} ${className}`}
           underline="hover"
         >
           <Content profile={profile} avatarClassName={avatarClassName} size={size} />
@@ -73,32 +73,32 @@ export default function MiniProfilePreview({
           </IconButton>
         )}
       </>
-    );
+    )
   else
     return (
-      <div className={`${"" /*TODO(undefined) classes.avatarWithInfo*/} ${className}`}>
+      <div className={`${'' /*TODO(undefined) classes.avatarWithInfo*/} ${className}`}>
         <Content profile={profile} avatarClassName={avatarClassName} size={size} />
       </div>
-    );
+    )
 }
 
 function Content({ profile, avatarClassName, size }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const avatarProps = {
     src: getImageUrl(profile.thumbnail_image),
-    className: `${size === "small" && classes.smallAvatar} ${
-      size === "medium" && classes.mediumAvatar
+    className: `${size === 'small' && classes.smallAvatar} ${
+      size === 'medium' && classes.mediumAvatar
     } ${avatarClassName}`,
-  };
+  }
   return (
     <span className={classes.contentWrapper}>
       <div className={classes.avatarWrapper}>
         {profile.badges?.length > 0 ? (
           <ProfileBadge
             badge={profile.badges[0]}
-            size={["medium", "small"].includes(size) ? "small" : "medium"}
-            className={size === "medium" ? classes.badge : undefined}
+            size={['medium', 'small'].includes(size) ? 'small' : 'medium'}
+            className={size === 'medium' ? classes.badge : undefined}
           >
             <Avatar {...avatarProps} />
           </ProfileBadge>
@@ -108,13 +108,13 @@ function Content({ profile, avatarClassName, size }) {
       </div>
       <Typography
         color="inherit"
-        className={`${classes.profileName} ${size === "medium" && classes.mediumProfileName} ${
-          size === "small" && classes.smallProfileName
+        className={`${classes.profileName} ${size === 'medium' && classes.mediumProfileName} ${
+          size === 'small' && classes.smallProfileName
         }`}
         variant="h6"
       >
-        {profile.first_name + " " + profile.last_name}
+        {profile.first_name + ' ' + profile.last_name}
       </Typography>
     </span>
-  );
+  )
 }

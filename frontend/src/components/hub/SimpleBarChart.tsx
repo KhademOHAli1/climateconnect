@@ -1,7 +1,6 @@
-import React, { Fragment } from "react";
-import { Typography } from "@mui/material";
-
-import makeStyles from "@mui/styles/makeStyles";
+import { Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { Fragment } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -9,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
   },
   chartContainer: {
-    display: "flex",
+    display: 'flex',
   },
   labels: {
     height: 40,
@@ -19,27 +18,27 @@ const useStyles = makeStyles((theme) => ({
   },
   barContainer: {
     height: 40,
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   bar: (props) => ({
     width: `${props.barWidth}%`,
     height: 25,
     background: theme.palette.primary.main,
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   }),
   label: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     height: 40,
     marginRight: theme.spacing(2),
     color: theme.palette.primary.main,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     fontWeight: 600,
   },
   unit: {
-    color: "white",
+    color: 'white',
     marginRight: theme.spacing(1),
   },
   unitOutsideBar: {
@@ -47,16 +46,16 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     fontWeight: 600,
   },
-}));
+}))
 
 export default function SimpleBarChart({ config, className, labelsOutSideBar, title }) {
-  const classes = useStyles();
-  const data = config.data;
+  const classes = useStyles()
+  const data = config.data
   const biggestValue = Math.max.apply(
     Math,
-    data.map((d) => parseFloat(d.value))
-  );
-  const maxValue = labelsOutSideBar ? biggestValue * 1.3 : biggestValue * 1.1;
+    data.map((d) => parseFloat(d.value)),
+  )
+  const maxValue = labelsOutSideBar ? biggestValue * 1.3 : biggestValue * 1.1
   return (
     <div className={`${classes.root} ${className}`}>
       <Typography className={classes.title}>{title}</Typography>
@@ -79,16 +78,16 @@ export default function SimpleBarChart({ config, className, labelsOutSideBar, ti
                   labelsOutSideBar={labelsOutSideBar}
                 />
               </Fragment>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const Bar = ({ value, unit, maxValue, labelsOutSideBar }) => {
-  const classes = useStyles({ barWidth: (value / maxValue) * 100 });
+  const classes = useStyles({ barWidth: (value / maxValue) * 100 })
   return (
     <div className={classes.barContainer}>
       <div className={classes.bar}>
@@ -100,5 +99,5 @@ const Bar = ({ value, unit, maxValue, labelsOutSideBar }) => {
         <Typography className={classes.unitOutsideBar}>{`${value} ${unit}`}</Typography>
       )}
     </div>
-  );
-};
+  )
+}

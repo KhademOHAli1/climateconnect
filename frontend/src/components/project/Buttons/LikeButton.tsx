@@ -1,29 +1,29 @@
-import { Button, CircularProgress, IconButton, Link, Typography, useTheme } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
-import React, { MouseEventHandler } from "react";
-import ButtonIcon from "../../general/ButtonIcon";
+import { Button, CircularProgress, IconButton, Link, Typography, useTheme } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { MouseEventHandler } from 'react'
+import ButtonIcon from '../../general/ButtonIcon'
 
 type MakeStylesProps = {
-  likingChangePending: boolean;
-  isUserLiking: boolean;
-};
+  likingChangePending: boolean
+  isUserLiking: boolean
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   largeScreenButtonContainer: {
-    display: "inline-flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'inline-flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   likesLink: {
-    cursor: "pointer",
-    textAlign: "center",
+    cursor: 'pointer',
+    textAlign: 'center',
   },
   largeLikeButton: {
     height: 40,
     maxWidth: 120,
-    "&:disabled": {
-      color: "white",
+    '&:disabled': {
+      color: 'white',
       background: theme.palette.secondary.main,
     },
   },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   likeNumberMobile: {
     fontWeight: 600,
     color: theme.palette.text.primary,
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
   },
   likesText: {
     fontWeight: 500,
@@ -43,60 +43,60 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 40,
   },
   mobileButtonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    cursor: "pointer",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    cursor: 'pointer',
     height: 40,
   },
   iconButton: {
     padding: theme.spacing(1),
-    "&:hover": {
-      background: "none",
+    '&:hover': {
+      background: 'none',
     },
   },
   fabProgress: {
-    color: "white",
-    position: "absolute",
+    color: 'white',
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: "auto",
-    marginBottom: "auto",
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   buttonLabel: {
-    position: "relative",
+    position: 'relative',
   },
   buttonText: (props: MakeStylesProps) => ({
-    visibility: props.likingChangePending ? "hidden" : "visible",
+    visibility: props.likingChangePending ? 'hidden' : 'visible',
     color: props.isUserLiking
       ? theme.palette.secondary.contrastText
       : theme.palette.primary.contrastText,
   }),
   hidden: {
-    visibility: "hidden",
+    visibility: 'hidden',
   },
   //Weird naming
   buttonAfterLike: (props: MakeStylesProps) => ({
     backgroundColor: props.isUserLiking ? theme.palette.secondary.main : theme.palette.primary.main,
     color: theme.palette.background.default,
   }),
-}));
+}))
 
 type Args = {
-  isUserLiking: boolean;
-  handleToggleLikeProject: MouseEventHandler<HTMLButtonElement>;
-  texts: any;
-  toggleShowLikes: MouseEventHandler<HTMLAnchorElement>;
-  likingChangePending: boolean;
-  hasAdminPermissions?: boolean;
-  screenSize?: any;
-  numberOfLikes: number;
-  bindLike?: Function;
-};
+  isUserLiking: boolean
+  handleToggleLikeProject: MouseEventHandler<HTMLButtonElement>
+  texts: any
+  toggleShowLikes: MouseEventHandler<HTMLAnchorElement>
+  likingChangePending: boolean
+  hasAdminPermissions?: boolean
+  screenSize?: any
+  numberOfLikes: number
+  bindLike?: Function
+}
 
 export default function LikeButton({
   isUserLiking,
@@ -112,8 +112,8 @@ export default function LikeButton({
   const classes = useStyles({
     likingChangePending: likingChangePending,
     isUserLiking: isUserLiking,
-  });
-  const theme = useTheme();
+  })
+  const theme = useTheme()
   //Small screens
   if (screenSize?.belowSmall) {
     return (
@@ -126,14 +126,14 @@ export default function LikeButton({
           <ButtonIcon
             icon="like"
             size={40}
-            color={isUserLiking ? "earth" : theme.palette.background.default_contrastText}
+            color={isUserLiking ? 'earth' : theme.palette.background.default_contrastText}
           />
         </IconButton>
         {numberOfLikes > 0 && (
           <Typography className={classes.likeNumberMobile}>• {numberOfLikes}</Typography>
         )}
       </span>
-    );
+    )
     //Medium screens
   } else if (screenSize?.belowMedium && !screenSize.belowSmall && !hasAdminPermissions) {
     return (
@@ -147,7 +147,7 @@ export default function LikeButton({
           <ButtonIcon
             icon="like"
             size={40}
-            color={isUserLiking ? "earth" : theme.palette.primary.main}
+            color={isUserLiking ? 'earth' : theme.palette.primary.main}
           />
         </IconButton>
         {numberOfLikes > 0 && (
@@ -164,7 +164,7 @@ export default function LikeButton({
           </Link>
         )}
       </span>
-    );
+    )
     //Large screens
   } else {
     return (
@@ -176,11 +176,11 @@ export default function LikeButton({
             <ButtonIcon
               icon="like"
               size={26}
-              color={isUserLiking ? "earth" : theme.palette.primary.contrastText}
+              color={isUserLiking ? 'earth' : theme.palette.primary.contrastText}
             />
           }
           disabled={likingChangePending}
-          color={isUserLiking ? "secondary" : "primary"}
+          color={isUserLiking ? 'secondary' : 'primary'}
           className={classes.largeLikeButton}
         >
           <div className={classes.buttonLabel}>
@@ -205,6 +205,6 @@ export default function LikeButton({
           </Link>
         )}
       </span>
-    );
+    )
   }
 }

@@ -1,32 +1,32 @@
-import { Button, Collapse, Container, Theme, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import React, { useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import MessageContent from "../communication/MessageContent";
-import UserContext from "../context/UserContext";
-import ElementOnScreen from "../hooks/ElementOnScreen";
-import LoggedOutLocationHubBox from "./LoggedOutLocationHubBox";
-import StatBox from "./StatBox";
-import ContactAmbassadorButton from "./ContactAmbassadorButton";
-import Dashboard from "../dashboard/Dashboard";
-import LocalAmbassadorInfoBox from "./LocalAmbassadorInfoBox";
-import HubHeadlineContainer from "./HubHeadlineContainer";
-import HubSupporters from "./HubSupporters";
-import theme from "../../themes/theme";
-import { PrioOneBackgroundBrowse, PrioOneBackgroundBrowseIcon } from "./CustomBackground";
-import { getCustomHubData } from "../../../public/data/customHubData";
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Button, Collapse, Container, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import { getCustomHubData } from '../../../public/data/customHubData'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import MessageContent from '../communication/MessageContent'
+import UserContext from '../context/UserContext'
+import Dashboard from '../dashboard/Dashboard'
+import ElementOnScreen from '../hooks/ElementOnScreen'
+import ContactAmbassadorButton from './ContactAmbassadorButton'
+import { PrioOneBackgroundBrowse, PrioOneBackgroundBrowseIcon } from './CustomBackground'
+import HubHeadlineContainer from './HubHeadlineContainer'
+import HubSupporters from './HubSupporters'
+import LocalAmbassadorInfoBox from './LocalAmbassadorInfoBox'
+import LoggedOutLocationHubBox from './LoggedOutLocationHubBox'
+import StatBox from './StatBox'
 
 type MakeStylesProps = {
-  isLocationHub: boolean;
-  loggedOut: boolean;
-  image: string;
-};
+  isLocationHub: boolean
+  loggedOut: boolean
+  image: string
+}
 
 const useStyles = makeStyles((theme) => ({
   expandMoreButton: {
-    width: "100%",
+    width: '100%',
   },
   h2: {
     color: theme.palette.secondary.main,
@@ -39,42 +39,42 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: 22,
     marginBottom: theme.spacing(0.5),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 18,
     },
   },
   infoBoxContainerMobile: {
-    margin: "0 auto",
-    display: "flex",
-    justifyContent: "center",
+    margin: '0 auto',
+    display: 'flex',
+    justifyContent: 'center',
     marginBottom: theme.spacing(2),
   },
   showSolutionsButton: {
-    width: "100%",
+    width: '100%',
     marginBottom: theme.spacing(0.25),
     height: 40,
   },
   showMoreFixed: {
     width: 250,
-    position: "fixed",
+    position: 'fixed',
     bottom: theme.spacing(2),
-    left: "50%",
+    left: '50%',
     marginLeft: -125,
     zIndex: 1,
-    border: "1px solid white",
+    border: '1px solid white',
   },
   ambassadorAndSupporters: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "14px",
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '14px',
   },
   buttonContainer: (props: MakeStylesProps) => ({
-    display: props.isLocationHub ? "none" : "flex",
-    justifyContent: "center",
+    display: props.isLocationHub ? 'none' : 'flex',
+    justifyContent: 'center',
     maxWidth: 800,
     height: 40,
     marginTop: theme.spacing(2),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: theme.spacing(1),
     },
   }),
@@ -86,48 +86,48 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
   dashboardAndStatboxWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "16px auto",
-    gap: "1rem",
-    alignItems: "end",
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: '16px auto',
+    gap: '1rem',
+    alignItems: 'end',
   },
   infoBoxContainer: {
     marginTop: theme.spacing(0),
     marginLeft: theme.spacing(2),
-    float: "right",
+    float: 'right',
   },
   topSectionWrapper: (props: MakeStylesProps) => ({
     // TODO: decide if "props.image" should be checked as well
     // > pro: it prevents requests to "/undefined"
     // > con: it might be a bug that should be fixed in the parent component
     // > con: it will not "report" the bug
-    background: props.isLocationHub && props.image ? `url('${props.image}')` : "none",
+    background: props.isLocationHub && props.image ? `url('${props.image}')` : 'none',
 
-    position: "relative",
-    backgroundSize: "cover",
-    backgroundPosition: "bottom center",
+    position: 'relative',
+    backgroundSize: 'cover',
+    backgroundPosition: 'bottom center',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: props.loggedOut ? theme.spacing(1) : theme.spacing(2),
       marginBottom: props.loggedOut ? theme.spacing(4) : 0,
     },
   }),
   backgroundImageContainer: (props: MakeStylesProps) => ({
     //TODO dead code?
-    display: "none",
-    background: props.isLocationHub ? `url('${props.image}')` : "none",
-    backgroundSize: "cover",
-    backgroundPosition: "bottom center",
+    display: 'none',
+    background: props.isLocationHub ? `url('${props.image}')` : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'bottom center',
     height: 180,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     zIndex: -1,
   }),
-}));
+}))
 
 export default function HubContent({
   headline,
@@ -147,28 +147,28 @@ export default function HubContent({
   hubUrl,
   image,
 }) {
-  const { locale, user } = useContext(UserContext);
-  const classes = useStyles({ isLocationHub: isLocationHub, loggedOut: !user, image: image });
-  const texts = getTexts({ page: "hub", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const [expanded, setExpanded] = useState(false);
+  const { locale, user } = useContext(UserContext)
+  const classes = useStyles({ isLocationHub: isLocationHub, loggedOut: !user, image: image })
+  const texts = getTexts({ page: 'hub', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const [expanded, setExpanded] = useState(false)
 
   const handleClickExpand = () => {
     if (expanded === false) {
-      setFixed(true);
+      setFixed(true)
     }
-    setExpanded(!expanded);
-  };
-  const [fixed, setFixed] = useState(false);
-  const [showMoreEl, setShowMoreEl] = useState(null);
-  const showMoreVisible = ElementOnScreen({ el: showMoreEl, triggerIfUnderScreen: true });
+    setExpanded(!expanded)
+  }
+  const [fixed, setFixed] = useState(false)
+  const [showMoreEl, setShowMoreEl] = useState(null)
+  const showMoreVisible = ElementOnScreen({ el: showMoreEl, triggerIfUnderScreen: true })
   if (!fixed && !showMoreVisible) {
-    setFixed(true);
+    setFixed(true)
   }
   if (fixed && showMoreVisible) {
-    setFixed(false);
+    setFixed(false)
   }
-  const WelcomeComponent = getCustomHubData({ hubUrl: hubUrl })?.welcome?.[locale];
+  const WelcomeComponent = getCustomHubData({ hubUrl: hubUrl })?.welcome?.[locale]
   return (
     <div>
       <div>
@@ -179,7 +179,7 @@ export default function HubContent({
         )}
         {isLocationHub ? (
           <div className={classes.topSectionWrapper}>
-            {hubUrl === "prio1" && <PrioOneBackgroundBrowse isLoggedInUser={user ? true : false} />}
+            {hubUrl === 'prio1' && <PrioOneBackgroundBrowse isLoggedInUser={user ? true : false} />}
 
             <Container>
               <div className={classes.dashboardAndStatboxWrapper}>
@@ -228,7 +228,7 @@ export default function HubContent({
                       {hubSupporters?.length > 0 && (
                         <HubSupporters supportersList={hubSupporters} hubName={hubData?.name} />
                       )}
-                      {!(hubSupporters?.length > 0) && hubUrl === "prio1" && (
+                      {!(hubSupporters?.length > 0) && hubUrl === 'prio1' && (
                         <PrioOneBackgroundBrowseIcon />
                       )}
                     </>
@@ -263,7 +263,7 @@ export default function HubContent({
           className={classes.buttonContainer}
           ref={(node) => {
             if (node) {
-              setShowMoreEl(node);
+              setShowMoreEl(node)
             }
           }}
         >
@@ -278,7 +278,7 @@ export default function HubContent({
         </div>
       </Container>
     </div>
-  );
+  )
 }
 
 const BottomContent = ({
@@ -290,9 +290,9 @@ const BottomContent = ({
   isLocationHub,
   isNarrowScreen,
 }) => {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "hub", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'hub', locale: locale })
   return (
     <>
       <div>
@@ -316,7 +316,7 @@ const BottomContent = ({
             {expanded ? (
               <>
                 <ExpandLessIcon />
-                {texts.less_info}{" "}
+                {texts.less_info}{' '}
               </>
             ) : (
               <>
@@ -329,5 +329,5 @@ const BottomContent = ({
       )}
       {!isNarrowScreen && <ContactAmbassadorButton hubAmbassador={hubAmbassador} mobile={false} />}
     </>
-  );
-};
+  )
+}

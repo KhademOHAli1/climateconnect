@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
+import { Button } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -10,11 +10,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
     fontSize: 18,
-    "&:hover": {
-      background: "#fff",
+    '&:hover': {
+      background: '#fff',
     },
   },
-}));
+}))
 
 export default function LightBigButton({
   className,
@@ -22,12 +22,12 @@ export default function LightBigButton({
   href,
   onClick,
 }: {
-  className?: string;
-  children?;
-  href?: string;
-  onClick?;
+  className?: string
+  children?
+  href?: string
+  onClick?
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Button
       variant="contained"
@@ -37,5 +37,5 @@ export default function LightBigButton({
     >
       {children}
     </Button>
-  );
+  )
 }

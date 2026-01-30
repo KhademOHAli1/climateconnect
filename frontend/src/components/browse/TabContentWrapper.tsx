@@ -1,13 +1,13 @@
-import makeStyles from "@mui/styles/makeStyles";
-import React, { ReactNode, useContext } from "react";
-import getFilters from "../../../public/data/possibleFilters";
-import UserContext from "../context/UserContext";
-import FilterContent from "../filter/FilterContent";
-import LoadingSpinner from "../general/LoadingSpinner";
-import NoItemsFound from "./NoItemsFound";
-import { Theme, useMediaQuery } from "@mui/material";
-import { LinkedHub } from "../../types";
-import HubLinkButton from "../hub/HubLinkButton";
+import { Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { ReactNode, useContext } from 'react'
+import getFilters from '../../../public/data/possibleFilters'
+import { LinkedHub } from '../../types'
+import UserContext from '../context/UserContext'
+import FilterContent from '../filter/FilterContent'
+import LoadingSpinner from '../general/LoadingSpinner'
+import HubLinkButton from '../hub/HubLinkButton'
+import NoItemsFound from './NoItemsFound'
 
 const useStyles = makeStyles((theme) => ({
   tabContent: {
@@ -15,39 +15,39 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   linkedHubsContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     gap: theme.spacing(1),
   },
-}));
+}))
 
 type tabContentWrapperProps = {
-  tabValue: number;
-  TYPES_BY_TAB_VALUE: any;
-  type: any;
-  filtersExpanded: any;
-  handleApplyNewFilters: any;
-  handleUpdateFilterValues: any;
-  errorMessage: any;
-  isMobileScreen: any;
-  filtersExandedOnMobile: any;
-  handleSetLocationOptionsOpen: any;
-  locationInputRefs: any;
-  locationOptionsOpen: any;
-  filterChoices: any;
-  unexpandFiltersOnMobile: any;
-  unexpandFilters: any;
-  initialLocationFilter: any;
-  isFiltering: boolean;
-  state: any;
-  children: ReactNode;
-  hubName: string;
-  nonFilterParams: any;
-  linkedHubs: LinkedHub[];
-};
+  tabValue: number
+  TYPES_BY_TAB_VALUE: any
+  type: any
+  filtersExpanded: any
+  handleApplyNewFilters: any
+  handleUpdateFilterValues: any
+  errorMessage: any
+  isMobileScreen: any
+  filtersExandedOnMobile: any
+  handleSetLocationOptionsOpen: any
+  locationInputRefs: any
+  locationOptionsOpen: any
+  filterChoices: any
+  unexpandFiltersOnMobile: any
+  unexpandFilters: any
+  initialLocationFilter: any
+  isFiltering: boolean
+  state: any
+  children: ReactNode
+  hubName: string
+  nonFilterParams: any
+  linkedHubs: LinkedHub[]
+}
 
 export default function TabContentWrapper({
   tabValue,
@@ -73,9 +73,9 @@ export default function TabContentWrapper({
   nonFilterParams,
   linkedHubs,
 }: tabContentWrapperProps) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
   return (
     <TabContent
       value={tabValue}
@@ -120,15 +120,15 @@ export default function TabContentWrapper({
       */}
       {isFiltering ? (
         <LoadingSpinner />
-      ) : (state?.items && state?.items[type]?.length) || type == "ideas" ? (
+      ) : (state?.items && state?.items[type]?.length) || type == 'ideas' ? (
         <>{children}</>
       ) : (
         <NoItemsFound type={type} hubName={hubName} />
       )}
     </TabContent>
-  );
+  )
 }
 
 function TabContent({ value, index, children }) {
-  return <div hidden={value !== index}>{children}</div>;
+  return <div hidden={value !== index}>{children}</div>
 }

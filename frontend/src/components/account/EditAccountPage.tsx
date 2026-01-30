@@ -1,3 +1,7 @@
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
+import CloseIcon from '@mui/icons-material/Close'
+import ControlPointIcon from '@mui/icons-material/ControlPoint'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   Button,
   Checkbox,
@@ -8,81 +12,78 @@ import {
   Theme,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Alert from "@mui/material/Alert";
-import React, { Fragment, useContext, useRef, useState } from "react";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
+} from '@mui/material'
+import Alert from '@mui/material/Alert'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { Fragment, useContext, useRef, useState } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
 import {
   convertToJPGWithAspectRatio,
   getImageDialogHeight,
   whitenTransparentPixels,
-} from "../../../public/lib/imageOperations";
-import { parseLocation } from "../../../public/lib/locationOperations";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import MultiLevelSelectDialog from "../dialogs/MultiLevelSelectDialog";
-import ButtonLoader from "../general/ButtonLoader";
-import ActiveSectorsSelector from "../hub/ActiveSectorsSelector";
-import MiniOrganizationPreview from "../organization/MiniOrganizationPreview";
-import AutoCompleteSearchBar from "../search/AutoCompleteSearchBar";
-import LocationSearchBar from "../search/LocationSearchBar";
-import ConfirmDialog from "./../dialogs/ConfirmDialog";
-import SelectDialog from "./../dialogs/SelectDialog";
-import UploadImageDialog from "./../dialogs/UploadImageDialog";
-import DetailledDescriptionInput from "./DetailledDescriptionInput";
-import SelectField from "../general/SelectField";
-import { AvatarImage, UserAvatar } from "./UserAvatar";
-import CloseIcon from "@mui/icons-material/Close";
-const DEFAULT_BACKGROUND_IMAGE = "/images/background1.jpg";
+} from '../../../public/lib/imageOperations'
+import { parseLocation } from '../../../public/lib/locationOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ConfirmDialog from './../dialogs/ConfirmDialog'
+import MultiLevelSelectDialog from '../dialogs/MultiLevelSelectDialog'
+import SelectDialog from './../dialogs/SelectDialog'
+import UploadImageDialog from './../dialogs/UploadImageDialog'
+import ButtonLoader from '../general/ButtonLoader'
+import SelectField from '../general/SelectField'
+import ActiveSectorsSelector from '../hub/ActiveSectorsSelector'
+import MiniOrganizationPreview from '../organization/MiniOrganizationPreview'
+import AutoCompleteSearchBar from '../search/AutoCompleteSearchBar'
+import LocationSearchBar from '../search/LocationSearchBar'
+import DetailledDescriptionInput from './DetailledDescriptionInput'
+import { AvatarImage, UserAvatar } from './UserAvatar'
+
+const DEFAULT_BACKGROUND_IMAGE = '/images/background1.jpg'
 
 const useStyles = makeStyles<Theme, { background_image?: string }>((theme) => ({
   backgroundContainer: {
-    width: "100%",
+    width: '100%',
     height: 305,
-    position: "relative",
-    cursor: (props) => (!props.background_image ? "pointer" : "default"),
+    position: 'relative',
+    cursor: (props) => (!props.background_image ? 'pointer' : 'default'),
   },
   backgroundImage: (props) => ({
     backgroundImage: `url(${props.background_image})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
   }),
   backgroundColor: {
-    backgroundColor: "#e0e0e0",
+    backgroundColor: '#e0e0e0',
   },
   backgroundImageButton: {
-    fontSize: "2.5rem",
-    cursor: "pointer",
+    fontSize: '2.5rem',
+    cursor: 'pointer',
   },
   backgroundImageButtonContainer: {
-    position: "absolute",
-    left: "calc(50% - 20px)",
-    top: "calc(50% - 20px)",
+    position: 'absolute',
+    left: 'calc(50% - 20px)',
+    top: 'calc(50% - 20px)',
   },
   avatarWithInfo: {
-    textAlign: "center",
+    textAlign: 'center',
     width: theme.spacing(40),
-    margin: "0 auto",
-    [theme.breakpoints.up("md")]: {
+    margin: '0 auto',
+    [theme.breakpoints.up('md')]: {
       margin: 0,
-      display: "inline-block",
-      width: "auto",
+      display: 'inline-block',
+      width: 'auto',
     },
   },
   avatarContainer: {
     marginTop: theme.spacing(-11),
     marginBottom: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
   accountInfo: {
     padding: 0,
     marginTop: theme.spacing(1),
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       paddingRight: theme.spacing(17),
     },
   },
@@ -94,23 +95,23 @@ const useStyles = makeStyles<Theme, { background_image?: string }>((theme) => ({
     marginBottom: theme.spacing(1),
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     padding: theme.spacing(1),
     paddingLeft: 0,
     paddingRight: 0,
   },
   subtitle: {
     color: `${theme.palette.secondary.main}`,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   noPadding: {
     padding: 0,
   },
   infoContainer: {
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
-    position: "relative",
+    position: 'relative',
   },
   marginTop: {
     marginTop: theme.spacing(1),
@@ -119,30 +120,30 @@ const useStyles = makeStyles<Theme, { background_image?: string }>((theme) => ({
     margin: theme.spacing(0.5),
   },
   actionButton: {
-    position: "absolute",
+    position: 'absolute',
     right: theme.spacing(1),
     width: theme.spacing(18),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       width: theme.spacing(14),
       fontSize: 10,
-      textAlign: "center",
+      textAlign: 'center',
     },
   },
   saveButton: {
     top: theme.spacing(11.5),
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       top: theme.spacing(1),
     },
   },
   cancelButton: {
     top: theme.spacing(16.5),
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       top: theme.spacing(6.5),
     },
   },
   chipArray: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
     padding: theme.spacing(0.5),
   },
   selectOption: {
@@ -152,36 +153,36 @@ const useStyles = makeStyles<Theme, { background_image?: string }>((theme) => ({
     width: 400,
   },
   alert: {
-    textAlign: "center",
+    textAlign: 'center',
     maxWidth: 1280,
-    margin: "0 auto",
+    margin: '0 auto',
   },
   cursorPointer: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   helpIcon: {
     fontSize: 20,
     marginTop: -2,
   },
   deleteMessage: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     marginTop: theme.spacing(10),
   },
   spaceStrings: {
     width: 4,
   },
   checkTranslationsButtonAndManageMembersButtonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     marginTop: theme.spacing(5),
   },
   detailledDescriptionContainer: {
     marginTop: theme.spacing(5),
   },
-}));
+}))
 
 //Generic page for editing your personal profile or organization profile
 export default function EditAccountPage({
@@ -208,74 +209,74 @@ export default function EditAccountPage({
   checkTranslationsRef,
   sectorsTitle,
 }: any) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "account", locale: locale });
-  const organizationTexts = getTexts({ page: "organization", locale: locale });
-  const imageInputFileRef = useRef<HTMLInputElement | null>(null);
-  const closeIconRef = useRef<SVGSVGElement | null>(null);
-  const [editedAccount, setEditedAccount] = useState({ ...account });
-  const isOrganization = type === "organization";
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("lg"));
-  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === "true";
-  const classes = useStyles(editedAccount);
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'account', locale: locale })
+  const organizationTexts = getTexts({ page: 'organization', locale: locale })
+  const imageInputFileRef = useRef<HTMLInputElement | null>(null)
+  const closeIconRef = useRef<SVGSVGElement | null>(null)
+  const [editedAccount, setEditedAccount] = useState({ ...account })
+  const isOrganization = type === 'organization'
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('lg'))
+  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === 'true'
+  const classes = useStyles(editedAccount)
   const [tempImages, setTempImages] = useState({
     background_image: editedAccount.background_image
       ? editedAccount.background_image
       : DEFAULT_BACKGROUND_IMAGE,
-  });
+  })
 
   const [open, setOpen] = useState({
     backgroundDialog: false,
     removeBackgroundDialog: false,
     addTypeDialog: false,
     confirmExitDialog: false,
-  });
+  })
   const handleDialogClickOpen = (dialogKey) => {
-    setOpen({ ...open, [dialogKey]: true });
-  };
+    setOpen({ ...open, [dialogKey]: true })
+  }
 
   const handleBackgroundClose = (image) => {
-    setOpen({ ...open, backgroundDialog: false });
+    setOpen({ ...open, backgroundDialog: false })
     if (image && image instanceof HTMLCanvasElement) {
       if (image && image instanceof HTMLCanvasElement) {
-        whitenTransparentPixels(image);
+        whitenTransparentPixels(image)
         image.toBlob(async function (blob) {
-          const resizedBlob = URL.createObjectURL(blob!);
-          setEditedAccount({ ...editedAccount, background_image: resizedBlob });
-        }, "image/jpeg");
+          const resizedBlob = URL.createObjectURL(blob!)
+          setEditedAccount({ ...editedAccount, background_image: resizedBlob })
+        }, 'image/jpeg')
       }
     }
-  };
+  }
 
   const removeBackgroundImage = (confirm: boolean) => {
     if (confirm) {
-      setEditedAccount({ ...editedAccount, background_image: null });
+      setEditedAccount({ ...editedAccount, background_image: null })
     }
-    setOpen({ ...open, removeBackgroundDialog: false });
-  };
+    setOpen({ ...open, removeBackgroundDialog: false })
+  }
 
   const handleTextFieldChange = (key, newValue, isInfoElement = false) => {
     if (isInfoElement)
-      setEditedAccount({ ...editedAccount, info: { ...editedAccount.info, [key]: newValue } });
-    setEditedAccount({ ...editedAccount, [key]: newValue });
-  };
+      setEditedAccount({ ...editedAccount, info: { ...editedAccount.info, [key]: newValue } })
+    setEditedAccount({ ...editedAccount, [key]: newValue })
+  }
 
   const handleAddTypeClose = (type, additionalInfo) => {
-    setOpen({ ...open, addTypeDialog: false });
-    const tempAccount = editedAccount;
+    setOpen({ ...open, addTypeDialog: false })
+    const tempAccount = editedAccount
     if (additionalInfo) {
       for (const info of additionalInfo) {
-        tempAccount.info[info.key] = info.value;
+        tempAccount.info[info.key] = info.value
       }
-      tempAccount.types = [...tempAccount.types, type];
-      setEditedAccount(tempAccount);
+      tempAccount.types = [...tempAccount.types, type]
+      setEditedAccount(tempAccount)
     }
-  };
+  }
 
   const handleConfirmExitClose = (exit) => {
-    setOpen({ ...open, confirmExitDialog: false });
-    if (exit) handleCancel();
-  };
+    setOpen({ ...open, confirmExitDialog: false })
+    if (exit) handleCancel()
+  }
 
   const deleteFromInfoArray = (key, entry) => {
     setEditedAccount({
@@ -284,31 +285,31 @@ export default function EditAccountPage({
         ...editedAccount.info,
         [key]: editedAccount.info[key].filter((val) => val !== entry),
       },
-    });
-  };
+    })
+  }
 
   // Refactored into a proper component
   const InfoArrayDisplay = ({ infoKey, infoEl }) => {
-    const [skillsDialogOpen, setSkillsDialogOpen] = useState(false);
+    const [skillsDialogOpen, setSkillsDialogOpen] = useState(false)
     const [selectedItems, setSelectedItems] = useState(
-      editedAccount.info.skills ? [...editedAccount.info.skills] : []
-    );
+      editedAccount.info.skills ? [...editedAccount.info.skills] : [],
+    )
 
     const handleSkillsDialogClose = (skills) => {
-      setSkillsDialogOpen(false);
+      setSkillsDialogOpen(false)
       if (skills)
         setEditedAccount({
           ...editedAccount,
           info: { ...editedAccount.info, skills: skills },
-        });
-    };
+        })
+    }
 
     const handleDeleteFromInfoArray = (entry) => {
-      deleteFromInfoArray(infoKey, entry);
-      setSelectedItems([...selectedItems.filter((item) => item !== entry)]);
-    };
+      deleteFromInfoArray(infoKey, entry)
+      setSelectedItems([...selectedItems.filter((item) => item !== entry)])
+    }
 
-    const handleSkillsDialogClickOpen = () => setSkillsDialogOpen(true);
+    const handleSkillsDialogClickOpen = () => setSkillsDialogOpen(true)
 
     return (
       <div className={classes.infoElement}>
@@ -345,8 +346,8 @@ export default function EditAccountPage({
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   /**Generates all the possible info a user can put about their account e.g. website, location, summary, bio, ...
      Since this component is generic and is used for both personal profiles and organizations
@@ -355,27 +356,27 @@ export default function EditAccountPage({
   const displayAccountInfo = (info) => {
     //For each info object we want to return the correct input so users can change this info
     return Object.keys(info).map((key) => {
-      const i = getFullInfoElement(infoMetadata, key, info[key]);
+      const i = getFullInfoElement(infoMetadata, key, info[key])
       const handleChange = (event) => {
-        let newValue = event.target.value;
+        let newValue = event.target.value
 
-        if (i.type === "select") {
+        if (i.type === 'select') {
           //On select fields, use the key as the new value since the text can have multiple languages
-          newValue = i.options.find((o) => o.name === event.target.value).key;
+          newValue = i.options.find((o) => o.name === event.target.value).key
         }
 
         setEditedAccount({
           ...editedAccount,
           info: { ...editedAccount.info, [key]: newValue },
-        });
-      };
+        })
+      }
 
       const handleChangeLocationString = (newLocationString) => {
         setEditedAccount({
           ...editedAccount,
           info: { ...editedAccount.info, [key]: newLocationString },
-        });
-      };
+        })
+      }
 
       //set account.info.location to object when user selects a location
       const handleChangeLocation = (location) => {
@@ -385,8 +386,8 @@ export default function EditAccountPage({
             ...editedAccount.info,
             [key]: parseLocation(location),
           },
-        });
-      };
+        })
+      }
 
       const handleChangeLegacyLocation = (key, event) => {
         setEditedAccount({
@@ -398,8 +399,8 @@ export default function EditAccountPage({
               [key]: event.target.value,
             },
           },
-        });
-      };
+        })
+      }
 
       const handleSetParentOrganization = (newOrg) => {
         setEditedAccount({
@@ -409,12 +410,12 @@ export default function EditAccountPage({
             parent_organization: newOrg,
             has_parent_organization: !!newOrg,
           },
-        });
-      };
+        })
+      }
       //Iterate through potential types of info and display the corresponding input
-      if (i.type === "array") {
-        return <InfoArrayDisplay key={key} infoKey={key} infoEl={i} />;
-      } else if (i.type === "select") {
+      if (i.type === 'array') {
+        return <InfoArrayDisplay key={key} infoKey={key} infoEl={i} />
+      } else if (i.type === 'select') {
         return (
           <div key={key} className={classes.infoElement}>
             <SelectField
@@ -426,26 +427,26 @@ export default function EditAccountPage({
               onChange={handleChange}
             />
           </div>
-        );
-      } else if (i.type === "checkbox") {
+        )
+      } else if (i.type === 'checkbox') {
         return (
           <div className={classes.checkbox} key={i.key}>
             <Checkbox
-              id={"checkbox" + i.key}
+              id={'checkbox' + i.key}
               checked={i.value}
               className={classes.inlineBlockElement}
               size="small"
               onChange={(e) => handleChange({ target: { value: e.target.checked } })}
             />
-            <label htmlFor={"checkbox" + i.key}>{i.label}</label>
+            <label htmlFor={'checkbox' + i.key}>{i.label}</label>
           </div>
-        );
+        )
       } else if (
-        i.type === "auto_complete_searchbar" &&
-        i.key === "parent_organization" &&
+        i.type === 'auto_complete_searchbar' &&
+        i.key === 'parent_organization' &&
         (!i.show_if_ticked || editedAccount.info[i.show_if_ticked] === true)
       ) {
-        const renderSearchOption = (props, option) => <li {...props}>{option.name}</li>;
+        const renderSearchOption = (props, option) => <li {...props}>{option.name}</li>
         return (
           <div className={classes.infoElement} key={i.key}>
             {i.value && (
@@ -473,14 +474,14 @@ export default function EditAccountPage({
               helperText={i.helperText}
             />
           </div>
-        );
-      } else if (i.type === "location") {
+        )
+      } else if (i.type === 'location') {
         //return legacy field options (city, country) instead of the location field when location legacy mode is enabled
         if (legacyModeEnabled) {
           return (
             <>
               {Object.keys(i.legacy).map((k) => {
-                const field = i.legacy[k];
+                const field = i.legacy[k]
                 return (
                   <div key={field.key} className={classes.infoElement}>
                     <TextField
@@ -491,10 +492,10 @@ export default function EditAccountPage({
                       value={editedAccount?.info?.location[field.key]}
                     />
                   </div>
-                );
+                )
               })}
             </>
-          );
+          )
         }
         return (
           <div className={classes.infoElement} key={i.key}>
@@ -509,35 +510,35 @@ export default function EditAccountPage({
               locationInputRef={i.locationInputRef}
             />
           </div>
-        );
-      } else if (i.type === "sectors") {
+        )
+      } else if (i.type === 'sectors') {
         const onSelectNewSector = (event) => {
-          event.preventDefault();
-          const sector = allSectors.find((h) => h.name === event.target.value);
+          event.preventDefault()
+          const sector = allSectors.find((h) => h.name === event.target.value)
           if (editedAccount?.info?.sectors?.filter((s) => s.key === sector.key)?.length === 0) {
-            const sectorsAfterAddition = [...editedAccount.info.sectors, sector];
+            const sectorsAfterAddition = [...editedAccount.info.sectors, sector]
             setEditedAccount({
               ...editedAccount,
               info: {
                 ...editedAccount.info,
                 sectors: sectorsAfterAddition,
               },
-            });
+            })
           }
-        };
+        }
 
         const onClickRemoveSector = (sector) => {
           const sectorsAfterRemoval = editedAccount?.info?.sectors.filter(
-            (s) => s.key !== sector.key
-          );
+            (s) => s.key !== sector.key,
+          )
           setEditedAccount({
             ...editedAccount,
             info: {
               ...editedAccount.info,
               sectors: sectorsAfterRemoval,
             },
-          });
-        };
+          })
+        }
         return (
           <Fragment key={i.key}>
             <ActiveSectorsSelector
@@ -546,25 +547,25 @@ export default function EditAccountPage({
               sectorsToSelectFrom={allSectors.filter(
                 (s) =>
                   editedAccount?.info?.sectors.filter((addedSectors) => addedSectors.key === s.key)
-                    .length === 0
+                    .length === 0,
               )}
               onSelectNewSector={onSelectNewSector}
               onClickRemoveSector={onClickRemoveSector}
               title={sectorsTitle}
             />
           </Fragment>
-        );
+        )
         //This is the fallback for normal textfields
-      } else if (key != "parent_organization" && ["text", "bio"].includes(i.type)) {
+      } else if (key != 'parent_organization' && ['text', 'bio'].includes(i.type)) {
         // By checking the attribute of the types assigned to an organization, determine if the textfield should be displayed on
         //   the edit account page. Should any of the type's attribute "hide get involved" be true or no type is selected,
         //   we hide the field.
 
         const hideGetInvolvedField =
-          i.key === "get_involved"
+          i.key === 'get_involved'
             ? editedAccount.types.map((type) => type.hide_get_involved).includes(true) ||
               editedAccount.types.length === 0
-            : false;
+            : false
         return (
           <>
             {!hideGetInvolvedField && (
@@ -584,103 +585,103 @@ export default function EditAccountPage({
                     i.showCharacterCounter
                       ? i.helptext +
                         (editedAccount.info[i.key] ? editedAccount.info[i.key].length : 0) +
-                        " / " +
+                        ' / ' +
                         i.maxLength +
-                        " " +
+                        ' ' +
                         texts.characters +
-                        ")"
-                      : ""
+                        ')'
+                      : ''
                   }
                   variant="outlined"
                 />
               </div>
             )}
           </>
-        );
+        )
       }
-    });
-  };
-  const [isLoading, setIsLoading] = useState(false);
+    })
+  }
+  const [isLoading, setIsLoading] = useState(false)
   const onBackgroundChange = async (backgroundEvent) => {
-    const file = backgroundEvent.target.files[0];
+    const file = backgroundEvent.target.files[0]
     if (!file) {
-      return;
+      return
     }
 
     try {
-      setIsLoading(true);
-      handleDialogClickOpen("backgroundDialog");
-      const compressedImage = await convertToJPGWithAspectRatio(file);
+      setIsLoading(true)
+      handleDialogClickOpen('backgroundDialog')
+      const compressedImage = await convertToJPGWithAspectRatio(file)
       setTempImages(() => {
         return {
           ...tempImages,
           background_image: compressedImage,
-        };
-      });
+        }
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleTypeDelete = (typeToDelete) => {
-    const tempEditedAccount = { ...editedAccount };
+    const tempEditedAccount = { ...editedAccount }
     const fullType = getTypes(possibleAccountTypes, infoMetadata).filter(
-      (t) => t.key === typeToDelete
-    )[0];
+      (t) => t.key === typeToDelete,
+    )[0]
     //The additional info that has to be provided for that type isn't necessary anymore, so we delete it
     if (fullType.additionalInfo) {
       for (const info of fullType.additionalInfo) {
-        delete tempEditedAccount.info[info.key];
+        delete tempEditedAccount.info[info.key]
       }
     }
 
-    tempEditedAccount.types = tempEditedAccount.types.filter((t) => t.key !== typeToDelete);
-    setEditedAccount(tempEditedAccount);
-  };
+    tempEditedAccount.types = tempEditedAccount.types.filter((t) => t.key !== typeToDelete)
+    setEditedAccount(tempEditedAccount)
+  }
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    handleSubmit(editedAccount);
-  };
+    handleSubmit(editedAccount)
+  }
 
   const getDetailledDescription = () => {
     const detailled_description_obj = Object.keys(editedAccount.info).filter((i) => {
-      const el = getFullInfoElement(infoMetadata, i, editedAccount.info[i]);
-      return el.type === "detailled_description";
-    });
+      const el = getFullInfoElement(infoMetadata, i, editedAccount.info[i])
+      return el.type === 'detailled_description'
+    })
     if (detailled_description_obj.length > 0) {
-      const key = detailled_description_obj[0];
-      return getFullInfoElement(infoMetadata, key, editedAccount.info[key]);
-    } else return null;
-  };
-  const detailledDescription = getDetailledDescription();
+      const key = detailled_description_obj[0]
+      return getFullInfoElement(infoMetadata, key, editedAccount.info[key])
+    } else return null
+  }
+  const detailledDescription = getDetailledDescription()
 
   const handleValueChange = (event, key) => {
     setEditedAccount({
       ...editedAccount,
       info: { ...editedAccount.info, [key]: event.target.value },
-    });
-  };
+    })
+  }
 
   const handleAvatarImageChange = (changedImage?: AvatarImage) => {
     setEditedAccount({
       ...editedAccount,
       image: changedImage?.imageUrl || null,
       thumbnail_image: changedImage?.thumbnailImageUrl || null,
-    });
-  };
+    })
+  }
 
   const onClickBackgroundImage = (e) => {
     if (e.target === closeIconRef.current) {
       //If we clicked on the remove image button don't open the interface to change your image
-      return;
+      return
     } else {
-      imageInputFileRef.current?.click();
+      imageInputFileRef.current?.click()
     }
-  };
+  }
 
   return (
     <Container maxWidth="lg" className={classes.noPadding}>
@@ -693,7 +694,7 @@ export default function EditAccountPage({
               existingUrlSlug,
               isOrganization,
               organizationTexts,
-              locale
+              locale,
             )}
           </Alert>
         )}
@@ -722,7 +723,7 @@ export default function EditAccountPage({
             name="backgroundPhoto"
             id="backgroundPhoto"
             ref={imageInputFileRef}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             onChange={onBackgroundChange}
             accept=".png,.jpeg,.jpg"
           />
@@ -750,7 +751,7 @@ export default function EditAccountPage({
             className={`${classes.cancelButton} ${classes.actionButton}`}
             color="grey"
             variant="contained"
-            onClick={() => handleDialogClickOpen("confirmExitDialog")}
+            onClick={() => handleDialogClickOpen('confirmExitDialog')}
           >
             {texts.cancel}
           </Button>
@@ -774,7 +775,7 @@ export default function EditAccountPage({
                   color="contrast"
                   fullWidth
                   value={editedAccount.first_name}
-                  onChange={(event) => handleTextFieldChange("first_name", event.target.value)}
+                  onChange={(event) => handleTextFieldChange('first_name', event.target.value)}
                   multiline
                   required
                   label={texts.first_name}
@@ -785,7 +786,7 @@ export default function EditAccountPage({
                   color="contrast"
                   fullWidth
                   value={editedAccount.last_name}
-                  onChange={(event) => handleTextFieldChange("last_name", event.target.value)}
+                  onChange={(event) => handleTextFieldChange('last_name', event.target.value)}
                   multiline
                   required
                   label={texts.last_name}
@@ -798,7 +799,7 @@ export default function EditAccountPage({
                 color="contrast"
                 fullWidth
                 value={editedAccount.name}
-                onChange={(event) => handleTextFieldChange("name", event.target.value)}
+                onChange={(event) => handleTextFieldChange('name', event.target.value)}
                 multiline
                 required
               />
@@ -807,29 +808,27 @@ export default function EditAccountPage({
             {editedAccount.types && (
               <Container className={classes.noPadding}>
                 {possibleAccountTypes &&
-                  getTypesOfAccount(
-                    editedAccount,
-                    possibleAccountTypes,
-                    infoMetadata
-                  ).map((typeObject) => (
-                    <Chip
-                      color="secondary"
-                      label={typeObject.name}
-                      key={typeObject.key}
-                      className={classes.chip}
-                      onDelete={() => handleTypeDelete(typeObject.key)}
-                    />
-                  ))}
+                  getTypesOfAccount(editedAccount, possibleAccountTypes, infoMetadata).map(
+                    (typeObject) => (
+                      <Chip
+                        color="secondary"
+                        label={typeObject.name}
+                        key={typeObject.key}
+                        className={classes.chip}
+                        onDelete={() => handleTypeDelete(typeObject.key)}
+                      />
+                    ),
+                  )}
                 {possibleAccountTypes &&
                   getTypesOfAccount(editedAccount, possibleAccountTypes, infoMetadata).length <
                     maxAccountTypes && (
                     <Chip
                       label={texts.add_type}
                       color={
-                        editedAccount.types && editedAccount.types.length ? "secondary" : "primary"
+                        editedAccount.types && editedAccount.types.length ? 'secondary' : 'primary'
                       }
                       icon={<ControlPointIcon />}
-                      onClick={() => handleDialogClickOpen("addTypeDialog")}
+                      onClick={() => handleDialogClickOpen('addTypeDialog')}
                     />
                   )}
               </Container>
@@ -892,7 +891,7 @@ export default function EditAccountPage({
           open={open.addTypeDialog}
           title={texts.add_type}
           values={getTypes(possibleAccountTypes, infoMetadata).filter(
-            (value) => !editedAccount.types.some((val) => val.key === value.key)
+            (value) => !editedAccount.types.some((val) => val.key === value.key),
           )}
           label={texts.choose_type}
           supportAdditionalInfo={true}
@@ -908,7 +907,7 @@ export default function EditAccountPage({
         confirmText={texts.yes}
       />
     </Container>
-  );
+  )
 }
 
 const getTypes = (possibleAccountTypes, infoMetadata) => {
@@ -916,21 +915,21 @@ const getTypes = (possibleAccountTypes, infoMetadata) => {
     return {
       ...type,
       additionalInfo: type.additionalInfo.map((info) => {
-        return { ...infoMetadata[info], key: info };
+        return { ...infoMetadata[info], key: info }
       }),
-    };
-  });
-};
+    }
+  })
+}
 
 const getTypesOfAccount = (account, possibleAccountTypes, infoMetadata) => {
   return getTypes(possibleAccountTypes, infoMetadata).filter((type) =>
-    account.types.find((thisType) => thisType.key === type.key)
-  );
-};
+    account.types.find((thisType) => thisType.key === type.key),
+  )
+}
 
 const getFullInfoElement = (infoMetadata, key, value) => {
-  return { ...infoMetadata[key], value: value };
-};
+  return { ...infoMetadata[key], value: value }
+}
 
 const editErrorMessage = (
   existingName,
@@ -938,18 +937,18 @@ const editErrorMessage = (
   existingUrlSlug,
   isOrganization,
   texts,
-  locale
+  locale,
 ) => {
   // if we are on a profile page or no existing url slug is generated by the error then return the normal error message
-  if (!isOrganization || !existingUrlSlug) return errorMessage;
+  if (!isOrganization || !existingUrlSlug) return errorMessage
   else {
-    const firstSentenceText = texts.someone_has_already_created_organization;
-    const secondSentenceText = texts.please_join_org_or_use_diff_name_if_problems_contact;
+    const firstSentenceText = texts.someone_has_already_created_organization
+    const secondSentenceText = texts.please_join_org_or_use_diff_name_if_problems_contact
     return (
       <>
         {firstSentenceText}
         <Link
-          href={getLocalePrefix(locale) + "/organizations/" + existingUrlSlug}
+          href={getLocalePrefix(locale) + '/organizations/' + existingUrlSlug}
           target="_blank"
           underline="hover"
         >
@@ -960,6 +959,6 @@ const editErrorMessage = (
           support@climateconnect.earth
         </Link>
       </>
-    );
+    )
   }
-};
+}

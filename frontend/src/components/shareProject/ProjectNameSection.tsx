@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
-import { TextField } from "@mui/material";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import { makeStyles } from "@mui/styles";
-import { useTheme } from "@mui/material/styles";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
+import { TextField } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { makeStyles } from '@mui/styles'
+import React, { useContext } from 'react'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: theme.spacing(5),
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
   textField: {
-    width: "100%",
+    width: '100%',
     maxWidth: 800,
   },
   resize: {
@@ -22,21 +22,21 @@ const useStyles = makeStyles((theme) => ({
   input: {
     fontWeight: 600,
   },
-}));
+}))
 
 export default function ProjectNameSection({ projectData, handleSetProjectData }) {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const theme = useTheme();
-  const classes = useStyles();
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const theme = useTheme()
+  const classes = useStyles()
 
   const onChangeName = (e) => {
     handleSetProjectData({
       name: e.target.value,
-    });
-  };
+    })
+  }
 
-  const color = getBackgroundContrastColor(theme);
+  const color = getBackgroundContrastColor(theme)
 
   return (
     <div className={classes.root}>
@@ -59,5 +59,5 @@ export default function ProjectNameSection({ projectData, handleSetProjectData }
         onChange={onChangeName}
       />
     </div>
-  );
+  )
 }

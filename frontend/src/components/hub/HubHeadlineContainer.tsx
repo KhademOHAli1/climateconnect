@@ -1,54 +1,54 @@
-import { Button, Theme, Typography, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import theme from "../../themes/theme";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
+import { Button, Theme, Typography, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import getTexts from '../../../public/texts/texts'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
     minWidth: 300,
 
     background: theme.palette.primary.main,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
 
-    maxWidth: "800px",
+    maxWidth: '800px',
     borderRadius: 5,
     border: `3px solid ${theme.palette.primary.main}`,
     marginTop: props.isLocationHub ? theme.spacing(8) : theme.spacing(-11),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: props.isLocationHub ? theme.spacing(-11) : theme.spacing(-11),
     },
 
-    ["@media(max-width:960px)"]: {
+    ['@media(max-width:960px)']: {
       maxWidth: 550,
     },
   }),
   headlineContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
 
   headline: {
     fontWeight: 700,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 25,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 25,
     },
-    color: "white",
+    color: 'white',
     padding: theme.spacing(1),
   },
 
   subHeadlineContainer: (props) => ({
-    background: "#f0f2f5",
+    background: '#f0f2f5',
     borderRadius: 5,
     padding: theme.spacing(1),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       padding: theme.spacing(2),
       paddingBottom: props.isLocationHub ? theme.spacing(1) : theme.spacing(2),
     },
@@ -62,27 +62,27 @@ const useStyles = makeStyles((theme) => ({
   },
 
   locationSubHeadlineTextContainer: {
-    background: "white",
-    borderRadius: "25px",
+    background: 'white',
+    borderRadius: '25px',
     color: theme.palette.secondary.main,
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
     padding: theme.spacing(1.5),
   },
   signUpContainer: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: theme.spacing(1),
   },
-}));
+}))
 
 export default function HubHeadlineContainer({ subHeadline, headline, isLocationHub }) {
-  const classes = useStyles({ isLocationHub: isLocationHub });
-  const { locale, user } = useContext(UserContext);
+  const classes = useStyles({ isLocationHub: isLocationHub })
+  const { locale, user } = useContext(UserContext)
 
-  const texts = getTexts({ page: "general", locale: locale });
-  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const texts = getTexts({ page: 'general', locale: locale })
+  const isNarrowScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
 
   return (
     <div className={classes.root}>
@@ -102,7 +102,7 @@ export default function HubHeadlineContainer({ subHeadline, headline, isLocation
             {isNarrowScreen && !user && (
               <div className={classes.signUpContainer}>
                 <Button
-                  href={getLocalePrefix(locale) + "/signup"}
+                  href={getLocalePrefix(locale) + '/signup'}
                   variant="contained"
                   color="primary"
                 >
@@ -114,5 +114,5 @@ export default function HubHeadlineContainer({ subHeadline, headline, isLocation
         )}
       </div>
     </div>
-  );
+  )
 }

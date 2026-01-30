@@ -1,19 +1,19 @@
-import React from "react";
-import GenericDialog from "./GenericDialog";
-import makeStyles from "@mui/styles/makeStyles";
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import GenericDialog from './GenericDialog'
 
 const useStyles = makeStyles(() => ({
   widget: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
   },
-}));
+}))
 
 export default function DonationWigetDialog({ onClose, open, title }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   return (
     <GenericDialog open={open} title={title} onClose={handleClose} fullScreen maxWidth="lg">
@@ -22,5 +22,5 @@ export default function DonationWigetDialog({ onClose, open, title }) {
         className={classes.widget}
       />
     </GenericDialog>
-  );
+  )
 }

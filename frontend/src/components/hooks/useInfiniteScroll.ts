@@ -1,10 +1,10 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from 'react'
 
 interface UseInfiniteScrollOptions {
-  hasMore: boolean;
-  isLoading: boolean;
-  onLoadMore: () => Promise<any>;
-  threshold?: number;
+  hasMore: boolean
+  isLoading: boolean
+  onLoadMore: () => Promise<any>
+  threshold?: number
 }
 
 export function useInfiniteScroll({
@@ -13,45 +13,45 @@ export function useInfiniteScroll({
   onLoadMore,
   threshold = 200,
 }: UseInfiniteScrollOptions) {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadingRef = useRef(false);
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const loadingRef = useRef(false)
 
   const lastElementRef = useCallback(
     (node: HTMLElement | null) => {
-      if (isLoading || loadingRef.current) return;
+      if (isLoading || loadingRef.current) return
 
       if (observerRef.current) {
-        observerRef.current.disconnect();
+        observerRef.current.disconnect()
       }
 
       observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore && !loadingRef.current) {
-            loadingRef.current = true;
+            loadingRef.current = true
             onLoadMore().finally(() => {
-              loadingRef.current = false;
-            });
+              loadingRef.current = false
+            })
           }
         },
         {
           rootMargin: `${threshold}px`,
-        }
-      );
+        },
+      )
 
       if (node) {
-        observerRef.current.observe(node);
+        observerRef.current.observe(node)
       }
     },
-    [hasMore, isLoading, onLoadMore, threshold]
-  );
+    [hasMore, isLoading, onLoadMore, threshold],
+  )
 
   useEffect(() => {
     return () => {
       if (observerRef.current) {
-        observerRef.current.disconnect();
+        observerRef.current.disconnect()
       }
-    };
-  }, []);
+    }
+  }, [])
 
-  return { lastElementRef };
+  return { lastElementRef }
 }

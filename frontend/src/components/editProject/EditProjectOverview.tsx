@@ -1,9 +1,8 @@
-import { Button, Chip, Container, List, TextField, Grid } from "@mui/material";
-import { Theme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import React, { RefObject, useContext, useRef, useState } from "react";
-import SelectField from "../general/SelectField";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
+import { Button, Chip, Container, Grid, List, TextField } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { RefObject, useContext, useRef, useState } from 'react'
 // Relative imports
 import {
   convertToJPGWithAspectRatio,
@@ -11,63 +10,64 @@ import {
   getImageUrl,
   getResizedImage,
   whitenTransparentPixels,
-} from "../../../public/lib/imageOperations";
-import projectOverviewStyles from "../../../public/styles/projectOverviewStyles";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import UploadImageDialog from "../dialogs/UploadImageDialog";
-import ProjectLocationSearchBar from "../shareProject/ProjectLocationSearchBar";
-import { Project, Sector } from "../../types";
-import CustomHubSelection from "../project/CustomHubSelection";
+} from '../../../public/lib/imageOperations'
+import projectOverviewStyles from '../../../public/styles/projectOverviewStyles'
+import getTexts from '../../../public/texts/texts'
+import { Project, Sector } from '../../types'
+import UserContext from '../context/UserContext'
+import UploadImageDialog from '../dialogs/UploadImageDialog'
+import SelectField from '../general/SelectField'
+import CustomHubSelection from '../project/CustomHubSelection'
+import ProjectLocationSearchBar from '../shareProject/ProjectLocationSearchBar'
 
-const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg"];
+const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg']
 
 const useStyles = makeStyles<Theme, { image?: string }>((theme) => ({
   ...projectOverviewStyles(theme),
   projectTitleInput: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    width: "100%",
+    width: '100%',
   },
   largeProjectTitleInput: {
     fontSize: 32,
   },
   largeScreenImageContainer: {
-    width: "50%",
+    width: '50%',
   },
   imageZoneWrapper: {
-    display: "block",
-    width: "100%",
-    position: "relative",
+    display: 'block',
+    width: '100%',
+    position: 'relative',
   },
   imageZone: (props) => ({
-    cursor: "pointer",
-    border: "1px dashed #000",
-    width: "100%",
-    paddingBottom: "56.25%",
+    cursor: 'pointer',
+    border: '1px dashed #000',
+    width: '100%',
+    paddingBottom: '56.25%',
     backgroundImage: `${props.image ? `url(${props.image})` : null}`,
-    backgroundSize: "contain",
+    backgroundSize: 'contain',
   }),
   addPhotoContainer: {
-    position: "absolute",
-    left: "-50%",
-    top: "-50%",
+    position: 'absolute',
+    left: '-50%',
+    top: '-50%',
     width: 170,
   },
   addPhotoWrapper: {
-    position: "absolute",
-    left: "calc(50% - 85px)",
-    top: "calc(50% - 44px)",
+    position: 'absolute',
+    left: 'calc(50% - 85px)',
+    top: 'calc(50% - 44px)',
   },
   photoIcon: {
-    display: "block",
+    display: 'block',
     marginBottom: theme.spacing(1),
-    margin: "0 auto",
-    cursor: "pointer",
+    margin: '0 auto',
+    cursor: 'pointer',
     fontSize: 40,
   },
   imageBtn: {
-    padding: "8px 32px",
+    padding: '8px 32px',
   },
   locationInput: {
     marginBottom: theme.spacing(1),
@@ -79,20 +79,20 @@ const useStyles = makeStyles<Theme, { image?: string }>((theme) => ({
   sectorField: {
     marginTop: theme.spacing(3),
   },
-}));
+}))
 
 type Args = {
-  project: Project;
+  project: Project
   // eslint-disable-next-line no-unused-vars
-  handleSetProject: (project: Project) => void;
-  smallScreen: boolean;
-  overviewInputsRef: any;
-  locationOptionsOpen: boolean;
+  handleSetProject: (project: Project) => void
+  smallScreen: boolean
+  overviewInputsRef: any
+  locationOptionsOpen: boolean
   // eslint-disable-next-line no-unused-vars
-  handleSetLocationOptionsOpen: (open: boolean) => void;
-  locationInputRef: any;
-  sectorOptions: Sector[];
-};
+  handleSetLocationOptionsOpen: (open: boolean) => void
+  locationInputRef: any
+  sectorOptions: Sector[]
+}
 
 //TODO: Allow changing project type?!
 
@@ -106,19 +106,19 @@ export default function EditProjectOverview({
   locationInputRef,
   sectorOptions,
 }: Args) {
-  const classes = useStyles({});
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale, project: project });
+  const classes = useStyles({})
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale, project: project })
   const handleChangeProject = (newValue, key) => {
-    handleSetProject({ ...project, [key]: newValue });
-  };
+    handleSetProject({ ...project, [key]: newValue })
+  }
   const handleChangeImage = (newImage, newThumbnailImage) => {
     handleSetProject({
       ...project,
       image: newImage,
       thumbnail_image: newThumbnailImage,
-    });
-  };
+    })
+  }
   const passThroughProps = {
     project: project,
     handleChangeProject: handleChangeProject,
@@ -130,7 +130,7 @@ export default function EditProjectOverview({
     locationInputRef: locationInputRef,
     texts: texts,
     sectorOptions: sectorOptions,
-  };
+  }
 
   return (
     <Container className={classes.projectOverview}>
@@ -140,23 +140,23 @@ export default function EditProjectOverview({
         <LargeScreenOverview {...passThroughProps} />
       )}
     </Container>
-  );
+  )
 }
 
 type ScreenOverviewProps = {
-  project: Project;
+  project: Project
   /* eslint-disable no-unused-vars */
-  handleChangeProject: (newValue: any, key: string) => void;
-  handleChangeImage: (newImage: any, newThumbnailImage: any) => void;
-  handleSetProject: (project: Project) => void;
-  handleSetLocationOptionsOpen: (open: boolean) => void;
+  handleChangeProject: (newValue: any, key: string) => void
+  handleChangeImage: (newImage: any, newThumbnailImage: any) => void
+  handleSetProject: (project: Project) => void
+  handleSetLocationOptionsOpen: (open: boolean) => void
   /* eslint-disable no-unused-vars */
-  overviewInputsRef: RefObject<HTMLInputElement>;
-  locationInputRef: RefObject<HTMLInputElement>;
-  locationOptionsOpen: boolean;
-  texts: Record<string, string>;
-  sectorOptions: Sector[];
-};
+  overviewInputsRef: RefObject<HTMLInputElement>
+  locationInputRef: RefObject<HTMLInputElement>
+  locationOptionsOpen: boolean
+  texts: Record<string, string>
+  sectorOptions: Sector[]
+}
 
 function SmallScreenOverview({
   project,
@@ -170,7 +170,7 @@ function SmallScreenOverview({
   texts,
   sectorOptions,
 }: ScreenOverviewProps) {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <>
       <InputImage
@@ -209,7 +209,7 @@ function SmallScreenOverview({
         />
       </div>
     </>
-  );
+  )
 }
 
 function LargeScreenOverview({
@@ -224,12 +224,12 @@ function LargeScreenOverview({
   handleSetLocationOptionsOpen,
   sectorOptions,
 }: ScreenOverviewProps) {
-  const classes = useStyles({});
+  const classes = useStyles({})
   function handleUpdateSelectedHub(hubUrl: string) {
     handleSetProject({
       ...project,
       hubUrl: hubUrl,
-    });
+    })
   }
 
   return (
@@ -272,20 +272,20 @@ function LargeScreenOverview({
             sectorOptions={sectorOptions}
           />
           <CustomHubSelection
-            currentHubName={project.hubUrl ?? ""}
+            currentHubName={project.hubUrl ?? ''}
             handleUpdateSelectedHub={handleUpdateSelectedHub}
           />
         </div>
       </div>
     </>
-  );
+  )
 }
 
 const InputShortDescription = ({ project, handleChangeProject, texts }) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <TextField
-      label={texts["summarize_your_" + project.project_type.type_id]}
+      label={texts['summarize_your_' + project.project_type.type_id]}
       variant="outlined"
       multiline
       fullWidth
@@ -293,14 +293,14 @@ const InputShortDescription = ({ project, handleChangeProject, texts }) => {
       type="text"
       minRows={4}
       onChange={(event) =>
-        handleChangeProject(event.target.value.substring(0, 280), "short_description")
+        handleChangeProject(event.target.value.substring(0, 280), 'short_description')
       }
       className={classes.projectInfoEl}
       required
       placeholder={texts.briefly_summarise_what_you_are_doing_please_only_use_english}
     />
-  );
-};
+  )
+}
 
 const InputLocation = ({
   project,
@@ -311,15 +311,15 @@ const InputLocation = ({
   locationOptionsOpen,
   handleSetLocationOptionsOpen,
 }) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   const handleChangeLegacyLocationElement = (key, value) => {
-    handleChangeProject({ ...project.loc, [key]: value }, "loc");
-  };
+    handleChangeProject({ ...project.loc, [key]: value }, 'loc')
+  }
 
   const handleChangeLocation = (newLocation) => {
-    handleChangeProject(newLocation, "loc");
-  };
-  if (process.env.ENABLE_LEGACY_LOCATION_FORMAT === "true") {
+    handleChangeProject(newLocation, 'loc')
+  }
+  if (process.env.ENABLE_LEGACY_LOCATION_FORMAT === 'true') {
     return (
       <>
         <TextField
@@ -329,7 +329,7 @@ const InputLocation = ({
           className={classes.projectInfoEl}
           value={project?.loc?.city}
           type="text"
-          onChange={(event) => handleChangeLegacyLocationElement("city", event.target.value)}
+          onChange={(event) => handleChangeLegacyLocationElement('city', event.target.value)}
           required
         />
         <TextField
@@ -339,11 +339,11 @@ const InputLocation = ({
           fullWidth
           value={project?.loc?.country}
           type="text"
-          onChange={(event) => handleChangeLegacyLocationElement("country", event.target.value)}
+          onChange={(event) => handleChangeLegacyLocationElement('country', event.target.value)}
           required
         />
       </>
-    );
+    )
   }
   return (
     <div /*TODO(undefined) className={classes.projectInfoEl}*/>
@@ -371,11 +371,11 @@ const InputLocation = ({
         onChangeLocation={handleChangeLocation}
       />
     </div>
-  );
-};
+  )
+}
 
 const InputWebsite = ({ project, handleChangeProject, texts }) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <div className={classes.projectInfoEl}>
       <TextField
@@ -385,18 +385,18 @@ const InputWebsite = ({ project, handleChangeProject, texts }) => {
         value={project.website}
         className={`${classes.input} ${classes.projectInfoEl}`}
         type="text"
-        onChange={(event) => handleChangeProject(event.target.value, "website")}
+        onChange={(event) => handleChangeProject(event.target.value, 'website')}
       />
     </div>
-  );
-};
+  )
+}
 
 type InputSectorsProps = {
-  project: Project;
-  handleChangeProject: (newValue: any, key: string) => void;
-  texts: Record<string, string>;
-  sectorOptions: Sector[];
-};
+  project: Project
+  handleChangeProject: (newValue: any, key: string) => void
+  texts: Record<string, string>
+  sectorOptions: Sector[]
+}
 
 const InputSectors = ({
   project,
@@ -404,17 +404,17 @@ const InputSectors = ({
   texts,
   sectorOptions,
 }: InputSectorsProps) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
 
   const handleValueChange = (selectedNames) => {
     // Map selected names to sector objects
-    const selectedSectors = sectorOptions.filter((sector) => selectedNames.includes(sector.name));
-    handleChangeProject(selectedSectors, "sectors");
-  };
+    const selectedSectors = sectorOptions.filter((sector) => selectedNames.includes(sector.name))
+    handleChangeProject(selectedSectors, 'sectors')
+  }
 
   const handleSectorDelete = (sector) => {
-    handleChangeProject([...(project.sectors ?? []).filter((t) => t.id !== sector.id)], "sectors");
-  };
+    handleChangeProject([...(project.sectors ?? []).filter((t) => t.id !== sector.id)], 'sectors')
+  }
   return (
     <div className={classes.projectInfoEl}>
       <List className={classes.flexContainer}>
@@ -436,84 +436,84 @@ const InputSectors = ({
               label={<div className={classes.iconLabel}>{texts.project_categories}</div>}
               size="small"
               onChange={(event) => {
-                handleValueChange(event.target.value);
+                handleValueChange(event.target.value)
               }}
             />
           </Grid>
         </Grid>
       </List>
     </div>
-  );
-};
+  )
+}
 
 type InputNameArgs = {
-  project: Project;
-  screenSize?: any;
-  handleChangeProject: Function;
-  texts: any;
-};
+  project: Project
+  screenSize?: any
+  handleChangeProject: Function
+  texts: any
+}
 
 const InputName = ({ project, screenSize, handleChangeProject, texts }: InputNameArgs) => {
-  const classes = useStyles({});
+  const classes = useStyles({})
   return (
     <TextField
       label={texts.project_name}
       value={project.name}
       className={classes.projectTitleInput}
-      inputProps={screenSize === "large" ? { className: classes.largeProjectTitleInput } : {}}
+      inputProps={screenSize === 'large' ? { className: classes.largeProjectTitleInput } : {}}
       type="text"
-      onChange={(event) => handleChangeProject(event.target.value, "name")}
+      onChange={(event) => handleChangeProject(event.target.value, 'name')}
       required
     />
-  );
-};
+  )
+}
 
 const InputImage = ({ project, screenSize, handleChangeImage, texts }) => {
-  const classes = useStyles(project);
+  const classes = useStyles(project)
 
-  const inputFileRef = useRef(null as HTMLInputElement | null);
-  const [open, setOpen] = useState(false);
-  const [tempImage, setTempImage] = useState(project.image ? getImageUrl(project.image) : null);
-  const [isImgLoading, setIsImgLoading] = useState(false);
+  const inputFileRef = useRef(null as HTMLInputElement | null)
+  const [open, setOpen] = useState(false)
+  const [tempImage, setTempImage] = useState(project.image ? getImageUrl(project.image) : null)
+  const [isImgLoading, setIsImgLoading] = useState(false)
   const onImageChange = async (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
     if (!file || !file.type || !ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-      alert(texts.please_upload_either_a_png_or_a_jpg_file);
-      return;
+      alert(texts.please_upload_either_a_png_or_a_jpg_file)
+      return
     }
     try {
-      setIsImgLoading(true);
-      setOpen(true);
-      const image = await convertToJPGWithAspectRatio(file);
-      setTempImage(image);
+      setIsImgLoading(true)
+      setOpen(true)
+      const image = await convertToJPGWithAspectRatio(file)
+      setTempImage(image)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setIsImgLoading(false);
+      setIsImgLoading(false)
     }
-  };
+  }
 
   const onUploadImageClick = (event) => {
-    event.preventDefault();
-    inputFileRef.current!.click();
-  };
+    event.preventDefault()
+    inputFileRef.current!.click()
+  }
 
   const handleImageDialogClose = async (image) => {
-    setOpen(false);
+    setOpen(false)
     if (image && image instanceof HTMLCanvasElement) {
-      whitenTransparentPixels(image);
+      whitenTransparentPixels(image)
       image.toBlob(async function (blob) {
-        const resizedBlob = URL.createObjectURL(blob!);
+        const resizedBlob = URL.createObjectURL(blob!)
         const thumbnailBlob = await getResizedImage(
           URL.createObjectURL(blob!),
           290,
           160,
-          "image/jpeg"
-        );
-        handleChangeImage(resizedBlob, thumbnailBlob);
-      }, "image/jpeg");
+          'image/jpeg',
+        )
+        handleChangeImage(resizedBlob, thumbnailBlob)
+      }, 'image/jpeg')
     }
-  };
+  }
 
   return (
     <>
@@ -523,7 +523,7 @@ const InputImage = ({ project, screenSize, handleChangeImage, texts }) => {
           name="photo"
           ref={inputFileRef}
           id="photo"
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           onChange={onImageChange}
           accept=".png,.jpeg,.jpg"
         />
@@ -548,11 +548,11 @@ const InputImage = ({ project, screenSize, handleChangeImage, texts }) => {
         open={open}
         imageUrl={tempImage}
         borderRadius={0}
-        height={screenSize === "small" ? getImageDialogHeight(window.innerWidth) : 300}
+        height={screenSize === 'small' ? getImageDialogHeight(window.innerWidth) : 300}
         ratio={16 / 9}
         loading={isImgLoading}
         loadingText={texts.processing_image_please_wait}
       />
     </>
-  );
-};
+  )
+}

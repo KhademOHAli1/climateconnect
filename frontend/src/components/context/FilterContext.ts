@@ -1,29 +1,29 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 interface FilterContextType {
-  filters: any;
-  tabsWhereFiltersWereApplied: any[];
-  errorMessage: string;
+  filters: any
+  tabsWhereFiltersWereApplied: any[]
+  errorMessage: string
   /* eslint-disable no-unused-vars */
-  handleSetErrorMessage: (newMessage: any) => void;
-  handleAddFilters: (newFilters: any) => void;
-  handleSetTabsWhereFiltersWereApplied: (tabs: any) => void;
+  handleSetErrorMessage: (newMessage: any) => void
+  handleAddFilters: (newFilters: any) => void
+  handleSetTabsWhereFiltersWereApplied: (tabs: any) => void
   /* eslint-disable no-unused-vars */
   handleApplyNewFilters: ({
     type,
     newFilters,
     closeFilters,
   }: {
-    type: any;
-    newFilters: any;
-    closeFilters: any;
+    type: any
+    newFilters: any
+    closeFilters: any
   }) => Promise<{
-    closeFilters: any;
-    filteredItemsObject: any;
-    newUrlEnding: string;
-  } | null>;
+    closeFilters: any
+    filteredItemsObject: any
+    newUrlEnding: string
+  } | null>
   // eslint-disable-next-line no-unused-vars
-  handleUpdateFilterValues: (valuesToUpdate: any) => void;
+  handleUpdateFilterValues: (valuesToUpdate: any) => void
 }
 
-export const FilterContext = createContext<FilterContextType>(null!);
+export const FilterContext = createContext<FilterContextType>(null!)

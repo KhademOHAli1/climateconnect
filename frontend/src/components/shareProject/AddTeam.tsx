@@ -1,29 +1,29 @@
-import { Container, IconButton } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import React, { useContext } from "react";
-import ROLE_TYPES from "../../../public/data/role_types";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import NavigationButtons from "../general/NavigationButtons";
-import AutoCompleteSearchBar from "../search/AutoCompleteSearchBar";
-import AddProjectMembersContainer from "./AddProjectMembersContainer";
-import OrganizersContainer from "./OrganizersContainer";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
-import { useTheme } from "@mui/styles";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { Container, IconButton } from '@mui/material'
+import { useTheme } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext } from 'react'
+import ROLE_TYPES from '../../../public/data/role_types'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import NavigationButtons from '../general/NavigationButtons'
+import AutoCompleteSearchBar from '../search/AutoCompleteSearchBar'
+import AddProjectMembersContainer from './AddProjectMembersContainer'
+import OrganizersContainer from './OrganizersContainer'
 
 const useStyles = makeStyles((theme) => {
   return {
     searchBarContainer: {
       marginTop: theme.spacing(4),
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       flexGrow: 100,
     },
     searchBar: {
       width: 800,
-      display: "flex",
+      display: 'flex',
     },
     block: {
       marginBottom: theme.spacing(4),
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => {
     marginTop: {
       marginTop: theme.spacing(4),
     },
-  };
-});
+  }
+})
 
 export default function AddTeam({
   projectData,
@@ -47,17 +47,17 @@ export default function AddTeam({
   loadingSubmit,
   loadingSubmitDraft,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const theme = useTheme();
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const theme = useTheme()
   const onClickPreviousStep = () => {
-    goToPreviousStep();
-  };
+    goToPreviousStep()
+  }
 
   const onClickNextStep = () => {
-    goToNextStep();
-  };
+    goToNextStep()
+  }
 
   //Prevent double entries
   const handleAddMember = (member) => {
@@ -67,11 +67,11 @@ export default function AddTeam({
         {
           ...member,
           role: rolesOptions.find((r) => r.role_type === ROLE_TYPES.read_only_type),
-          role_in_project: "",
+          role_in_project: '',
         },
       ],
-    });
-  };
+    })
+  }
 
   const handleRemoveMember = (member) => {
     handleSetProjectData({
@@ -80,18 +80,18 @@ export default function AddTeam({
         .concat(
           projectData.team_members.slice(
             projectData.team_members.indexOf(member) + 1,
-            projectData.team_members.length
-          )
+            projectData.team_members.length,
+          ),
         ),
-    });
-  };
+    })
+  }
 
   //prevent double entries
   const handleAddOrganization = (organization) => {
     handleSetProjectData({
       collaborating_organizations: [...projectData.collaborating_organizations, organization],
-    });
-  };
+    })
+  }
 
   const handleRemoveOrganization = (organization) => {
     handleSetProjectData({
@@ -100,11 +100,11 @@ export default function AddTeam({
         .concat(
           projectData.collaborating_organizations.slice(
             projectData.collaborating_organizations.indexOf(organization) + 1,
-            projectData.collaborating_organizations.length
-          )
+            projectData.collaborating_organizations.length,
+          ),
         ),
-    });
-  };
+    })
+  }
 
   const renderSearchOption = (props, option) => {
     return (
@@ -112,12 +112,12 @@ export default function AddTeam({
         <IconButton size="large">
           <AddCircleOutlineIcon />
         </IconButton>
-        {option.first_name + " " + option.last_name}
+        {option.first_name + ' ' + option.last_name}
       </li>
-    );
-  };
+    )
+  }
 
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   return (
     <Container maxWidth="lg" className={classes.marginTop}>
@@ -127,13 +127,13 @@ export default function AddTeam({
             label={texts.search_for_your_team_members}
             color={backgroundContrastColor}
             className={`${classes.searchBar} ${classes.block}`}
-            baseUrl={process.env.API_URL + "/api/members/?search="}
+            baseUrl={process.env.API_URL + '/api/members/?search='}
             clearOnSelect
             freeSolo
             filterOut={[...projectData.team_members]}
             onSelect={handleAddMember}
             renderOption={renderSearchOption}
-            getOptionLabel={(option) => option.first_name + " " + option.last_name}
+            getOptionLabel={(option) => option.first_name + ' ' + option.last_name}
             helperText={texts.type_the_name_of_the_team_member_you_want_to_add_next}
           />
         </div>
@@ -173,5 +173,5 @@ export default function AddTeam({
         )}
       </form>
     </Container>
-  );
+  )
 }

@@ -1,81 +1,81 @@
-import { useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import parseHtml from "html-react-parser";
-import Head from "next/head";
-import { useContext, useEffect, useRef, useState } from "react";
-import Cookies from "universal-cookie";
-import {
-  getOrganizationTagsOptions,
-  getProjectTypeOptions,
-  getSkillsOptions,
-  getSectorOptions,
-} from "../../../public/lib/getOptions";
-import { extractHubUrlsFromContext, getAllHubs } from "../../../public/lib/hubOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import { getLocationFilteredBy } from "../../../public/lib/locationOperations";
-import getTexts from "../../../public/texts/texts";
-import BrowseContent from "../browse/BrowseContent";
-import UserContext from "../context/UserContext";
-import BrowseExplainer from "./BrowseExplainer";
-import HubContent from "./HubContent";
-import HubHeaderImage from "./HubHeaderImage";
-import NavigationSubHeader from "./NavigationSubHeader";
-import WideLayout from "../layouts/WideLayout";
-import DonationCampaignInformation from "../staticpages/donate/DonationCampaignInformation";
-import { Theme } from "@mui/material/styles";
-import theme from "../../themes/hubTheme";
-import BrowseContext from "../context/BrowseContext";
-import { transformThemeData } from "../../themes/transformThemeData";
-import getHubTheme from "../../themes/fetchHubTheme";
-import isLocationHubLikeHub from "../../../public/lib/isLocationHubLikeHub";
-import { FilterProvider } from "../provider/FilterProvider";
+import { useMediaQuery } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import parseHtml from 'html-react-parser'
+import Head from 'next/head'
+import { useContext, useEffect, useRef, useState } from 'react'
+import Cookies from 'universal-cookie'
 import {
   getHubAmbassadorData,
   getHubData,
   getHubSupportersData,
   getLinkedHubsData,
-} from "../../../public/lib/getHubData";
-import { retrieveDescriptionFromWebflow } from "../../utils/webflow";
-import { HubDescription } from "./description/HubDescription";
-import { FabShareButton } from "./FabShareButton";
+} from '../../../public/lib/getHubData'
+import {
+  getOrganizationTagsOptions,
+  getProjectTypeOptions,
+  getSectorOptions,
+  getSkillsOptions,
+} from '../../../public/lib/getOptions'
+import { extractHubUrlsFromContext, getAllHubs } from '../../../public/lib/hubOperations'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import isLocationHubLikeHub from '../../../public/lib/isLocationHubLikeHub'
+import { getLocationFilteredBy } from '../../../public/lib/locationOperations'
+import getTexts from '../../../public/texts/texts'
+import getHubTheme from '../../themes/fetchHubTheme'
+import theme from '../../themes/hubTheme'
+import { transformThemeData } from '../../themes/transformThemeData'
+import { retrieveDescriptionFromWebflow } from '../../utils/webflow'
+import BrowseContent from '../browse/BrowseContent'
+import BrowseContext from '../context/BrowseContext'
+import UserContext from '../context/UserContext'
+import WideLayout from '../layouts/WideLayout'
+import { FilterProvider } from '../provider/FilterProvider'
+import DonationCampaignInformation from '../staticpages/donate/DonationCampaignInformation'
+import BrowseExplainer from './BrowseExplainer'
+import { HubDescription } from './description/HubDescription'
+import { FabShareButton } from './FabShareButton'
+import HubContent from './HubContent'
+import HubHeaderImage from './HubHeaderImage'
+import NavigationSubHeader from './NavigationSubHeader'
 
 const useStyles = makeStyles(() => ({
   content: {
-    position: "relative",
+    position: 'relative',
   },
-}));
+}))
 
 export interface HubBrowsePageProps {
-  headline: string;
-  hubUrl: string;
-  subHubUrl: string;
-  image_attribution: string;
-  image: string;
-  isLocationHub: boolean;
-  name: string;
-  quickInfo: any;
-  statBoxTitle: string;
-  stats: any;
-  subHeadline: string;
-  welcomeMessageLoggedIn: string;
-  welcomeMessageLoggedOut: string;
-  initialLocationFilter: any;
-  filterChoices: any;
-  allHubs: any[];
-  hubLocation: any;
-  hubData: any;
-  hubDescription: any;
-  projectTypes: any[];
-  hubThemeData: any;
-  linkedHubs: any[];
+  headline: string
+  hubUrl: string
+  subHubUrl: string
+  image_attribution: string
+  image: string
+  isLocationHub: boolean
+  name: string
+  quickInfo: any
+  statBoxTitle: string
+  stats: any
+  subHeadline: string
+  welcomeMessageLoggedIn: string
+  welcomeMessageLoggedOut: string
+  initialLocationFilter: any
+  filterChoices: any
+  allHubs: any[]
+  hubLocation: any
+  hubData: any
+  hubDescription: any
+  projectTypes: any[]
+  hubThemeData: any
+  linkedHubs: any[]
 }
 
 export async function getHubBrowseServerSideProps(ctx) {
-  let hubUrl = ctx.query.hubUrl;
-  const { subHub } = extractHubUrlsFromContext(ctx);
+  let hubUrl = ctx.query.hubUrl
+  const { subHub } = extractHubUrlsFromContext(ctx)
 
   if (subHub) {
-    hubUrl = subHub;
+    hubUrl = subHub
   }
 
   const [
@@ -100,7 +100,7 @@ export async function getHubBrowseServerSideProps(ctx) {
     getHubTheme(hubUrl),
     getLinkedHubsData(hubUrl),
     getSectorOptions(ctx.locale, hubUrl),
-  ]);
+  ])
 
   return {
     props: {
@@ -125,14 +125,14 @@ export async function getHubBrowseServerSideProps(ctx) {
         skills: skills,
       },
       initialLocationFilter: location_filtered_by,
-      sectorHubs: allHubs ? allHubs.filter((h) => h?.hub_type === "sector hub") : null,
+      sectorHubs: allHubs ? allHubs.filter((h) => h?.hub_type === 'sector hub') : null,
       allHubs: allHubs,
       hubDescription: hubDescription,
       projectTypes: projectTypes,
       hubThemeData: hubThemeData,
       linkedHubs: linkedHubs || [],
     },
-  };
+  }
 }
 
 export default function HubBrowsePage({
@@ -160,45 +160,45 @@ export default function HubBrowsePage({
   linkedHubs,
 }: HubBrowsePageProps) {
   // donationGoal was removed in PR #1560?
-  const { locale, CUSTOM_HUB_URLS } = useContext(UserContext);
-  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl);
-  const classes = useStyles();
-  const texts = getTexts({ page: "hub", locale: locale, hubName: name });
-  const token = new Cookies().get("auth_token");
-  const [hubAmbassador, setHubAmbassador] = useState(null);
-  const [hubSupporters, setHubSupporters] = useState(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const { locale, CUSTOM_HUB_URLS } = useContext(UserContext)
+  const isCustomHub = CUSTOM_HUB_URLS.includes(hubUrl)
+  const classes = useStyles()
+  const texts = getTexts({ page: 'hub', locale: locale, hubName: name })
+  const token = new Cookies().get('auth_token')
+  const [hubAmbassador, setHubAmbassador] = useState(null)
+  const [hubSupporters, setHubSupporters] = useState(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   // Do we need this? this line was removed on PR ##1560
 
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       const retrievedHubAmbassador = await getHubAmbassadorData(
         subHubUrl ? subHubUrl : hubUrl,
-        locale
-      );
-      setHubAmbassador(retrievedHubAmbassador);
+        locale,
+      )
+      setHubAmbassador(retrievedHubAmbassador)
       if (isLocationHub) {
-        const retrivedHubSupporters = await getHubSupportersData(hubUrl, locale);
-        setHubSupporters(retrivedHubSupporters);
+        const retrivedHubSupporters = await getHubSupportersData(hubUrl, locale)
+        setHubSupporters(retrivedHubSupporters)
       }
-    })();
-  }, [hubUrl, subHubUrl, locale]);
+    })()
+  }, [hubUrl, subHubUrl, locale])
 
-  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
 
   //Refs and state for tutorial
   // eslint-disable-next-line no-unused-vars
-  const [requestTabNavigation, tabNavigationRequested] = useState("foo");
+  const [requestTabNavigation, tabNavigationRequested] = useState('foo')
 
   const navRequested = (tabKey) => {
-    tabNavigationRequested(tabKey);
-  };
+    tabNavigationRequested(tabKey)
+  }
 
   const scrollToSolutions = () => {
-    contentRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    contentRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const customSearchBarLabels = {
     projects: isLocationHub
@@ -211,16 +211,16 @@ export default function HubBrowsePage({
       ? texts.search_profiles_in_location
       : texts.search_for_climate_actors_in_sector,
     profiles: texts.search_profiles_in_location,
-  };
+  }
 
   const closeHubHeaderImage = (e) => {
-    e.preventDefault();
-    console.log("closing hub header image");
-  };
+    e.preventDefault()
+    console.log('closing hub header image')
+  }
 
   const contextValues = {
     projectTypes: projectTypes,
-  };
+  }
 
   return (
     <>
@@ -248,7 +248,7 @@ export default function HubBrowsePage({
           <DonationCampaignInformation hubUrl={hubUrl} />
           {!isLocationHub && (
             <NavigationSubHeader
-              type={"hub"}
+              type={'hub'}
               hubName={name}
               allHubs={allHubs}
               isLocationHub={isLocationHub}
@@ -328,5 +328,5 @@ export default function HubBrowsePage({
         )}
       </WideLayout>
     </>
-  );
+  )
 }

@@ -2,7 +2,7 @@
 export default function getProjectInfoMetadata() {
   return {
     location: {
-      type: "location",
+      type: 'location',
     },
-  };
+  }
 }

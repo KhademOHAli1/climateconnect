@@ -1,3 +1,7 @@
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import CloseIcon from '@mui/icons-material/Close'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Container,
   Divider,
@@ -7,17 +11,13 @@ import {
   ListItemText,
   Theme,
   Typography,
-} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import React, { Fragment, useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import FilterSearchBar from "../filter/FilterSearchBar";
+} from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { Fragment, useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import FilterSearchBar from '../filter/FilterSearchBar'
 
 const useStyles = makeStyles<
   Theme,
@@ -25,37 +25,37 @@ const useStyles = makeStyles<
 >((theme) => {
   return {
     wrapper: (props) => ({
-      margin: "0 auto",
-      display: props.flexWrapper ? "flex" : "block",
+      margin: '0 auto',
+      display: props.flexWrapper ? 'flex' : 'block',
       marginTop: props.marginTop ? theme.spacing(8) : 0,
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         marginTop: theme.spacing(4),
-        display: "block",
+        display: 'block',
       },
     }),
     list: {
-      display: "inline-block",
-      [theme.breakpoints.down("lg")]: {
+      display: 'inline-block',
+      [theme.breakpoints.down('lg')]: {
         marginLeft: theme.spacing(0),
       },
     },
     subList: (props) => {
       return {
-        display: "inline-block",
+        display: 'inline-block',
         marginTop: theme.spacing(props.offset! * 8),
-        verticalAlign: "top",
-        maxWidth: "50%",
-      };
+        verticalAlign: 'top',
+        maxWidth: '50%',
+      }
     },
     narrowScreenSubList: {
-      display: "block",
+      display: 'block',
       padding: 0,
-      width: "90%",
-      marginLeft: "10%",
+      width: '90%',
+      marginLeft: '10%',
     },
 
     listItem: {
-      border: "1px solid black",
+      border: '1px solid black',
       borderTop: 0,
       height: theme.spacing(8),
       paddingLeft: theme.spacing(3),
@@ -67,87 +67,87 @@ const useStyles = makeStyles<
     },
 
     firstItem: {
-      borderTop: "1px solid black",
+      borderTop: '1px solid black',
     },
 
     narrowScreenSubListItem: {
-      borderLeft: "1px solid black",
+      borderLeft: '1px solid black',
       borderTop: 0,
     },
 
     borderLeft: {
-      borderLeft: "1px solid black",
+      borderLeft: '1px solid black',
     },
 
     icon: {
-      margin: "0 auto",
+      margin: '0 auto',
     },
     expanded: {
       color: theme.palette.secondary.main,
     },
     hidden: {
-      display: "none",
+      display: 'none',
     },
     selectedWrapper: {
-      display: "inline-block",
-      verticalAlign: "top",
+      display: 'inline-block',
+      verticalAlign: 'top',
       marginLeft: theme.spacing(16),
-      [theme.breakpoints.down("lg")]: {
+      [theme.breakpoints.down('lg')]: {
         marginLeft: theme.spacing(2),
       },
     },
     narrowScreenSelectedWrapper: {
       marginLeft: theme.spacing(2),
-      display: "block",
-      margin: "0 auto",
-      textAlign: "center",
+      display: 'block',
+      margin: '0 auto',
+      textAlign: 'center',
     },
     selectedItemsHeader: {
-      fontWeight: "bold",
-      fontSize: "16px",
+      fontWeight: 'bold',
+      fontSize: '16px',
       color: theme.palette.background.default_contrastText,
     },
     selectedItem: {
       background: theme.palette.background.default_contrastText,
-      color: "white",
+      color: 'white',
       marginBottom: theme.spacing(1),
-      borderTop: "1px solid black",
-      "&:hover": {
+      borderTop: '1px solid black',
+      '&:hover': {
         backgroundColor: theme.palette.background.default_contrastText,
-        color: "white",
+        color: 'white',
       },
     },
     firstSelectedItem: {
-      border: "5px solid black",
+      border: '5px solid black',
     },
     selectedItemIcon: {
       paddingLeft: theme.spacing(2),
-      color: "white",
+      color: 'white',
     },
     listWrapper: {
-      display: "inline-block",
+      display: 'inline-block',
       width: 700,
-      [theme.breakpoints.down("lg")]: {
+      [theme.breakpoints.down('lg')]: {
         width: `650 - ${theme.spacing(8)}`,
-        margin: "0 auto",
+        margin: '0 auto',
       },
-      [theme.breakpoints.down("sm")]: {
-        width: "auto",
-        margin: "0 auto",
+      [theme.breakpoints.down('sm')]: {
+        width: 'auto',
+        margin: '0 auto',
       },
     },
     narrowScreenListWrapper: {
       maxWidth: `650 - ${theme.spacing(8)}`,
-      width: "auto",
-      display: "block",
-      margin: "0 auto",
+      width: 'auto',
+      display: 'block',
+      margin: '0 auto',
     },
     selectedList: {
       maxWidth: 350,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     divider: {
-      borderColor: "black",
+      borderColor: 'black',
       marginBottom: theme.spacing(1),
     },
     subListLastItem: {
@@ -156,17 +156,17 @@ const useStyles = makeStyles<
     // Ensure there's border on the last sublist item,
     // on the last parent list item. See GitHub issue #312
     finalListItem: {
-      borderBottom: "1px solid black",
+      borderBottom: '1px solid black',
     },
     itemUnderExpandedSubList: {
-      borderTop: "1px solid black",
+      borderTop: '1px solid black',
     },
     searchBar: {
-      display: "block",
-      width: "100%",
+      display: 'block',
+      width: '100%',
     },
-  };
-});
+  }
+})
 
 export default function MultiLevelSelector({
   isInPopup,
@@ -176,28 +176,28 @@ export default function MultiLevelSelector({
   selected,
   setSelected,
 }: any) {
-  const [expanded, setExpanded] = useState(null);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "filter_and_search", locale: locale });
+  const [expanded, setExpanded] = useState(null)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'filter_and_search', locale: locale })
   const useStylesProps = {
     marginTop: !isInPopup,
     flexWrapper: !isInPopup,
-  };
+  }
 
-  const classes = useStyles(useStylesProps);
+  const classes = useStyles(useStylesProps)
 
   const onClickExpand = (key) => {
-    if (expanded === key) setExpanded(null);
-    else setExpanded(key);
-  };
+    if (expanded === key) setExpanded(null)
+    else setExpanded(key)
+  }
 
   const onClickSelect = (item) => {
     if (selected.length >= maxSelections) {
-      alert(texts.point_out_max_selections + " " + maxSelections + " " + itemNamePlural);
+      alert(texts.point_out_max_selections + ' ' + maxSelections + ' ' + itemNamePlural)
     } else {
-      setSelected([...selected, item]);
+      setSelected([...selected, item])
     }
-  };
+  }
 
   const onClickUnselect = (item) => {
     // When dismissing a selected filter chip, we also want to update the
@@ -206,11 +206,11 @@ export default function MultiLevelSelector({
     setSelected(
       selected
         .slice(0, selected.indexOf(item))
-        .concat(selected.slice(selected.indexOf(item) + 1, selected.length))
-    );
-  };
+        .concat(selected.slice(selected.indexOf(item) + 1, selected.length)),
+    )
+  }
 
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
   return (
     <>
       <div className={classes.wrapper}>
@@ -254,7 +254,7 @@ export default function MultiLevelSelector({
         )}
       </div>
     </>
-  );
+  )
 }
 
 function ListToChooseWrapper({
@@ -267,34 +267,34 @@ function ListToChooseWrapper({
   isNarrowScreen,
   texts,
 }) {
-  const classes = useStyles({});
+  const classes = useStyles({})
 
   // The first section should be the initial tab value
-  const [searchValue, setSearchValue] = useState("");
-  const handleSearchBarChange = (event) => setSearchValue(event?.target?.value);
+  const [searchValue, setSearchValue] = useState('')
+  const handleSearchBarChange = (event) => setSearchValue(event?.target?.value)
 
   function filteredLists({ searchValue, itemsToSelectFrom }) {
-    if (searchValue == "" || searchValue == null) {
-      return itemsToSelectFrom;
+    if (searchValue == '' || searchValue == null) {
+      return itemsToSelectFrom
     }
     return (
       itemsToSelectFrom
         // remove all inner items that do not match the search query
         .map((item) => {
-          const itemCopy = Object.assign({}, item);
+          const itemCopy = Object.assign({}, item)
           itemCopy.subcategories = item.subcategories.filter((innerItem) => {
-            return innerItem.name.toLowerCase().includes(searchValue.toLowerCase());
-          });
-          return itemCopy;
+            return innerItem.name.toLowerCase().includes(searchValue.toLowerCase())
+          })
+          return itemCopy
         })
         // remove all items who do not match the search, or have no inner matches
         .filter((item) => {
           return (
             item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
             item.subcategories.length > 0
-          );
+          )
         })
-    );
+    )
   }
 
   return (
@@ -318,7 +318,7 @@ function ListToChooseWrapper({
         />
       </div>
     </Container>
-  );
+  )
 }
 
 function SelectedList({
@@ -329,15 +329,15 @@ function SelectedList({
   selected,
   texts,
 }) {
-  const classes = useStyles({});
+  const classes = useStyles({})
 
   return (
     <div className={className}>
       {selected && Array.isArray(selected) && (
         <Typography component="h2" variant="h5" className={classes.selectedItemsHeader}>
           {selected.length > 0
-            ? texts.selected + " " + itemNamePlural
-            : texts.choose_between_on_and + maxSelections + " " + itemNamePlural + "!"}
+            ? texts.selected + ' ' + itemNamePlural
+            : texts.choose_between_on_and + maxSelections + ' ' + itemNamePlural + '!'}
         </Typography>
       )}
       {/* Shows the list of selected items. For example on /browse when you select "Categories" */}
@@ -364,7 +364,7 @@ function SelectedList({
           ))}
       </List>
     </div>
-  );
+  )
 }
 
 function ListToChooseFrom({
@@ -380,13 +380,13 @@ function ListToChooseFrom({
   parentList,
   selected,
 }: any) {
-  const index = isSubList ? parentList.indexOf(parentEl) : 0;
+  const index = isSubList ? parentList.indexOf(parentEl) : 0
   const subListHeightCorrection = isSubList
     ? Math.min(index, Math.max(0, itemsToSelectFrom.length - parentList.length + index))
-    : 0;
+    : 0
 
-  const offset = isNarrowScreen || isInPopup ? 0 : index - subListHeightCorrection;
-  const classes = useStyles({ offset: offset });
+  const offset = isNarrowScreen || isInPopup ? 0 : index - subListHeightCorrection
+  const classes = useStyles({ offset: offset })
   return (
     <>
       <List
@@ -407,17 +407,17 @@ function ListToChooseFrom({
           // If current last item, is the last subcategory item
           // in the last item in the outer list, then ignore our
           // normal border styling, and paint the 1px bottom border.
-          let isFinalListItem = false;
+          let isFinalListItem = false
           if (index === itemsToSelectFrom.length - 1) {
-            const lastParentListItem = parentList && parentList[parentList.length - 1];
-            const lastParentListItemSubcategories = lastParentListItem?.subcategories;
+            const lastParentListItem = parentList && parentList[parentList.length - 1]
+            const lastParentListItemSubcategories = lastParentListItem?.subcategories
             const finalItem =
               lastParentListItemSubcategories &&
-              lastParentListItemSubcategories[lastParentListItemSubcategories.length - 1];
+              lastParentListItemSubcategories[lastParentListItemSubcategories.length - 1]
 
             // Does the current item match its parent's last item?
             if (item.name === finalItem?.name) {
-              isFinalListItem = true;
+              isFinalListItem = true
             }
           }
 
@@ -426,15 +426,15 @@ function ListToChooseFrom({
           // match, in which case they should already be selected.
 
           // convert selected to an Array if not
-          selected = Array.isArray(selected) ? selected : [selected];
+          selected = Array.isArray(selected) ? selected : [selected]
 
           const isDisabled =
             selected.filter(
               // If the item is a raw string, we also accept that if it matches
               // the name of the selected item. For example, the array could be
               // ["Crafts"].
-              (selectedItem) => selectedItem.name === item.name || selectedItem === item.name
-            ).length === 1;
+              (selectedItem) => selectedItem.name === item.name || selectedItem === item.name,
+            ).length === 1
 
           return (
             <Fragment key={item.key}>
@@ -474,10 +474,10 @@ function ListToChooseFrom({
                 selected={expanded === item.key}
                 onClick={() => {
                   if (item.subcategories && item.subcategories.length) {
-                    return onClickExpand(item.key);
+                    return onClickExpand(item.key)
                   }
 
-                  return onClickSelect(item);
+                  return onClickSelect(item)
                 }}
                 disableRipple
               >
@@ -501,7 +501,7 @@ function ListToChooseFrom({
                     )}
                   </ListItemIcon>
                 ) : (
-                  ""
+                  ''
                 )}
               </ListItem>
               {/* Render the inner list items, if an outer list item has subcategories associated */}
@@ -512,7 +512,7 @@ function ListToChooseFrom({
                   isNarrowScreen={isNarrowScreen}
                   isSubList
                   itemsToSelectFrom={item.subcategories}
-                  key={item.key + "innersublist"}
+                  key={item.key + 'innersublist'}
                   onClickExpand={onClickExpand}
                   onClickSelect={onClickSelect}
                   parentEl={item}
@@ -523,7 +523,7 @@ function ListToChooseFrom({
                 <></>
               )}
             </Fragment>
-          );
+          )
         })}
       </List>
       {/* Render the inner list items differently if not a narrow screen, or in a popup */}
@@ -535,14 +535,14 @@ function ListToChooseFrom({
               parentEl={item}
               parentList={itemsToSelectFrom}
               itemsToSelectFrom={item.subcategories}
-              key={item.key + "outersublist"}
+              key={item.key + 'outersublist'}
               expanded={expanded}
               onClickExpand={onClickExpand}
               selected={selected}
               onClickSelect={onClickSelect}
             />
-          ) : null;
+          ) : null
         })}
     </>
-  );
+  )
 }

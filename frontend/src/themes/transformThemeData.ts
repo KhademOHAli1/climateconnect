@@ -1,35 +1,35 @@
-import { createTheme, darken } from "@mui/material";
-import defaultTheme from "./hubTheme";
-import "../types.ts";
+import { createTheme, darken } from '@mui/material'
+import defaultTheme from './hubTheme'
+import '../types.ts'
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   // eslint-disable-next-line no-unused-vars
   interface Palette {
     header: {
-      background: string;
-      light: string;
-      extraLight: string;
-      contrastText: string;
-    };
+      background: string
+      light: string
+      extraLight: string
+      contrastText: string
+    }
     contrast: {
-      main: string;
-      contrastText: string;
-    };
+      main: string
+      contrastText: string
+    }
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
     header?: {
-      background: string;
-      light: string;
-      extraLight: string;
-      contrastText: string;
-    };
+      background: string
+      light: string
+      extraLight: string
+      contrastText: string
+    }
   }
 }
 
 // transform theme data received from the API into a structured theme object
 export const transformThemeData = (data, baseTheme: any = undefined) => {
-  const { palette, ...restOfDefaultTheme } = baseTheme || defaultTheme;
+  const { palette, ...restOfDefaultTheme } = baseTheme || defaultTheme
   const customTheme = {
     ...restOfDefaultTheme,
     components: {
@@ -48,9 +48,9 @@ export const transformThemeData = (data, baseTheme: any = undefined) => {
         variants: [
           ...(restOfDefaultTheme?.components?.MuiButton?.variants ?? []),
           {
-            props: { variant: "contained", color: "primary" },
+            props: { variant: 'contained', color: 'primary' },
             style: {
-              "&:hover": {
+              '&:hover': {
                 backgroundColor: darken(data?.primary?.main, 0.2),
               },
             },
@@ -61,7 +61,7 @@ export const transformThemeData = (data, baseTheme: any = undefined) => {
         ...restOfDefaultTheme?.components?.MuiInputBase,
         styleOverrides: {
           root: {
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: data?.secondary?.main, // Outline color when focused
             },
           },
@@ -70,7 +70,7 @@ export const transformThemeData = (data, baseTheme: any = undefined) => {
       MuiInputLabel: {
         styleOverrides: {
           root: {
-            "&.Mui-focused": {
+            '&.Mui-focused': {
               color: data?.secondary?.main, // Label color when focused
             },
           },
@@ -99,8 +99,8 @@ export const transformThemeData = (data, baseTheme: any = undefined) => {
         default_contrastText: data?.background_default?.contrastText,
       },
       contrast: {
-        main: data?.background_default?.contrastText || "black",
-        contrastText: data?.background_default?.main || "white",
+        main: data?.background_default?.contrastText || 'black',
+        contrastText: data?.background_default?.main || 'white',
 
         // TODO: dark and light are missing and might be calculated based on the main
         // using create Theme
@@ -112,6 +112,6 @@ export const transformThemeData = (data, baseTheme: any = undefined) => {
         contrastText: data?.header_background?.contrastText,
       },
     },
-  };
-  return createTheme(customTheme);
-};
+  }
+  return createTheme(customTheme)
+}

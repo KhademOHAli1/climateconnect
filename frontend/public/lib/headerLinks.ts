@@ -1,22 +1,22 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import GroupWorkIcon from "@mui/icons-material/GroupWork";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { getLocalePrefix } from "./apiOperations";
-import { getCustomHubData } from "../data/customHubData";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import GroupWorkIcon from '@mui/icons-material/GroupWork'
+import HomeIcon from '@mui/icons-material/Home'
+import InfoIcon from '@mui/icons-material/Info'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { getCustomHubData } from '../data/customHubData'
+import { getLocalePrefix } from './apiOperations'
 
-const ERLANGEN_SLUG = "erlangen";
-const ERLANGEN_DONATE = "https://www.climatehub.earth/300";
+const ERLANGEN_SLUG = 'erlangen'
+const ERLANGEN_DONATE = 'https://www.climatehub.earth/300'
 const COMMON_LINKS = {
   NOTIFICATIONS: {
-    type: "notificationsButton",
+    type: 'notificationsButton',
     iconForDrawer: NotificationsIcon,
     hasBadge: true,
     onlyShowIconOnNormalScreen: true,
@@ -28,18 +28,18 @@ const COMMON_LINKS = {
     onlyShowOnNormalScreen: true,
   },
   SHARE: {
-    href: "/share",
-    mediumScreenText: "share",
+    href: '/share',
+    mediumScreenText: 'share',
     iconForDrawer: AddCircleIcon,
     icon: AddCircleOutlineIcon,
     isFilledInHeader: true,
-    className: "shareProjectButton",
+    className: 'shareProjectButton',
     vanillaIfLoggedOut: true,
   },
   AUTH_LINKS: (path_to_redirect, texts, queryString) => [
     {
       href: `/signin?redirect=${encodeURIComponent(path_to_redirect)}${
-        queryString ? `&${queryString}` : ""
+        queryString ? `&${queryString}` : ''
       }`,
       text: texts.log_in,
       iconForDrawer: AccountCircleIcon,
@@ -47,7 +47,7 @@ const COMMON_LINKS = {
       onlyShowLoggedOut: true,
     },
     {
-      href: `/signup${queryString ? `?${queryString}` : ""}`,
+      href: `/signup${queryString ? `?${queryString}` : ''}`,
       text: texts.sign_up,
       iconForDrawer: AccountCircleIcon,
       isOutlinedInHeader: true,
@@ -55,14 +55,14 @@ const COMMON_LINKS = {
       alwaysDisplayDirectly: true,
     },
   ],
-};
+}
 
 const getDefaultLinks = (path_to_redirect, texts, isLocationHub, hasHubLandingPage, hubUrl) => {
-  const isOnLandingPage = path_to_redirect == `/hubs/${hubUrl}`; // Detect if we are on the landing page
+  const isOnLandingPage = path_to_redirect == `/hubs/${hubUrl}` // Detect if we are on the landing page
   {
     return [
       {
-        href: "/browse",
+        href: '/browse',
         text: isLocationHub
           ? isOnLandingPage || hasHubLandingPage
             ? texts.climate_connect
@@ -77,23 +77,23 @@ const getDefaultLinks = (path_to_redirect, texts, isLocationHub, hasHubLandingPa
         href: isOnLandingPage
           ? `/hubs/${hubUrl}/browse`
           : hasHubLandingPage
-          ? `/hubs/${hubUrl}/`
-          : "/about",
+            ? `/hubs/${hubUrl}/`
+            : '/about',
         text: isOnLandingPage
           ? texts.return_to_climatehub_projects
           : isLocationHub && hasHubLandingPage
-          ? texts.about_climatehub
-          : texts.about,
+            ? texts.about_climatehub
+            : texts.about,
         iconForDrawer: InfoIcon,
         showStaticLinksInDropdown: isOnLandingPage
           ? false
           : isLocationHub && hasHubLandingPage
-          ? false
-          : true,
+            ? false
+            : true,
         hideOnStaticPages: true,
       },
       {
-        href: hubUrl === ERLANGEN_SLUG ? ERLANGEN_DONATE : "/donate",
+        href: hubUrl === ERLANGEN_SLUG ? ERLANGEN_DONATE : '/donate',
         isExternalLink: hubUrl === ERLANGEN_SLUG,
         text: texts.donate,
         iconForDrawer: FavoriteBorderIcon,
@@ -102,9 +102,9 @@ const getDefaultLinks = (path_to_redirect, texts, isLocationHub, hasHubLandingPa
         hideDesktopIconUnderSm: true,
         vanillaIfLoggedOut: true,
         hideOnStaticPages: true,
-        alwaysDisplayDirectly: "loggedIn",
+        alwaysDisplayDirectly: 'loggedIn',
         // We can use more than one className here
-        className: "btnColor buttonMarginLeft",
+        className: 'btnColor buttonMarginLeft',
       },
       {
         ...COMMON_LINKS.SHARE,
@@ -112,16 +112,16 @@ const getDefaultLinks = (path_to_redirect, texts, isLocationHub, hasHubLandingPa
         hideOnMediumScreen: isLocationHub,
       },
       {
-        type: "languageSelect",
+        type: 'languageSelect',
       },
       {
         ...COMMON_LINKS.NOTIFICATIONS,
         text: texts.inbox,
       },
-      ...COMMON_LINKS.AUTH_LINKS(path_to_redirect, texts, ""),
-    ];
+      ...COMMON_LINKS.AUTH_LINKS(path_to_redirect, texts, ''),
+    ]
   }
-};
+}
 
 const getLinks = (
   path_to_redirect,
@@ -129,7 +129,7 @@ const getLinks = (
   isLocationHub,
   isCustomHub,
   hasHubLandingPage,
-  hubUrl
+  hubUrl,
 ) => {
   return isCustomHub
     ? getCustomHubData({ hubUrl, texts, path_to_redirect })?.headerLinks
@@ -138,42 +138,42 @@ const getLinks = (
         texts,
         isLocationHub || isCustomHub,
         hasHubLandingPage,
-        hubUrl
-      );
-};
+        hubUrl,
+      )
+}
 
 const getLoggedInLinks = ({ loggedInUser, texts, queryString }) => {
   return [
     {
-      href: "/profiles/" + loggedInUser.url_slug + queryString,
+      href: '/profiles/' + loggedInUser.url_slug + queryString,
       text: texts.my_profile,
       iconForDrawer: AccountCircleIcon,
     },
     {
-      href: "/inbox",
+      href: '/inbox',
       text: texts.inbox,
       iconForDrawer: MailOutlineIcon,
     },
     {
-      href: "/profiles/" + loggedInUser.url_slug + (queryString || "/") + "#projects",
+      href: '/profiles/' + loggedInUser.url_slug + (queryString || '/') + '#projects',
       text: texts.my_projects,
       iconForDrawer: GroupWorkIcon,
     },
     {
-      href: "/profiles/" + loggedInUser.url_slug + (queryString || "/") + "#organizations",
+      href: '/profiles/' + loggedInUser.url_slug + (queryString || '/') + '#organizations',
       text: texts.my_organizations,
       iconForDrawer: GroupWorkIcon,
     },
     {
-      href: "/settings" + queryString,
+      href: '/settings' + queryString,
       text: texts.settings,
       iconForDrawer: SettingsIcon,
     },
     {
       avatar: true,
-      href: "/profiles/" + loggedInUser.url_slug + queryString,
+      href: '/profiles/' + loggedInUser.url_slug + queryString,
       src: loggedInUser.image,
-      alt: texts.profile_image_of + " " + loggedInUser.name,
+      alt: texts.profile_image_of + ' ' + loggedInUser.name,
       showOnMobileOnly: true,
     },
     {
@@ -181,39 +181,39 @@ const getLoggedInLinks = ({ loggedInUser, texts, queryString }) => {
       text: texts.log_out,
       iconForDrawer: ExitToAppIcon,
     },
-  ];
-};
+  ]
+}
 
 const defaultStaticLinks = (texts, hubUrl) => [
   {
-    href: "/about",
+    href: '/about',
     text: texts.about,
   },
   {
-    href: hubUrl === ERLANGEN_SLUG ? ERLANGEN_DONATE : "/donate",
+    href: hubUrl === ERLANGEN_SLUG ? ERLANGEN_DONATE : '/donate',
     text: texts.donate,
     only_show_on_static_page: true,
   },
   {
-    href: "/team",
+    href: '/team',
     text: texts.team,
-    parent_item: "/about",
+    parent_item: '/about',
   },
   {
-    href: "/verein",
+    href: '/verein',
     text: texts.association,
-    parent_item: "/about",
-    only_show_in_languages: ["de"],
+    parent_item: '/about',
+    only_show_in_languages: ['de'],
   },
   {
-    href: "/join",
+    href: '/join',
     text: texts.join,
-    parent_item: "/about",
+    parent_item: '/about',
   },
   {
-    href: "/transparency",
+    href: '/transparency',
     text: texts.transparency,
-    parent_item: "/about",
+    parent_item: '/about',
   },
   /*
   remove donor forest for now as it's outdated
@@ -224,34 +224,34 @@ const defaultStaticLinks = (texts, hubUrl) => [
   },
   */
   {
-    href: "/blog",
+    href: '/blog',
     text: texts.blog,
   },
   {
-    href: "/press",
+    href: '/press',
     text: texts.press,
   },
   {
-    href: "/faq",
+    href: '/faq',
     text: texts.faq,
   },
-];
+]
 
 const getCustomHubStaticLinks = (url_slug, texts) => {
-  const customHubData = getCustomHubData({ hubUrl: url_slug, texts });
-  return customHubData?.headerStaticLinks || defaultStaticLinks(texts, url_slug);
-};
+  const customHubData = getCustomHubData({ hubUrl: url_slug, texts })
+  return customHubData?.headerStaticLinks || defaultStaticLinks(texts, url_slug)
+}
 const getStaticLinks = (texts, customHubUrlSlug) => {
   return !customHubUrlSlug
-    ? defaultStaticLinks(texts, "")
-    : getCustomHubStaticLinks(customHubUrlSlug, texts);
-};
+    ? defaultStaticLinks(texts, '')
+    : getCustomHubStaticLinks(customHubUrlSlug, texts)
+}
 
 const getStaticLinkFromItem = (locale, item) => {
   if (item.isExternalLink) {
-    return item.href;
+    return item.href
   }
-  return `${getLocalePrefix(locale)}${item.href}`;
-};
+  return `${getLocalePrefix(locale)}${item.href}`
+}
 
-export { getLinks, getLoggedInLinks, getStaticLinks, getStaticLinkFromItem, COMMON_LINKS };
+export { getLinks, getLoggedInLinks, getStaticLinks, getStaticLinkFromItem, COMMON_LINKS }

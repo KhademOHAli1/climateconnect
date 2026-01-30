@@ -1,176 +1,176 @@
-import { Dayjs } from "dayjs";
-import type { PaletteColorOptions } from "@mui/material/styles";
+import type { PaletteColorOptions } from '@mui/material/styles'
+import { Dayjs } from 'dayjs'
 
 export type User = {
-  id: string;
-  first_name?: string;
-  last_name?: string;
-  url_slug?: string;
-};
+  id: string
+  first_name?: string
+  last_name?: string
+  url_slug?: string
+}
 
 export type Role = {
-  id: number;
-  name: string;
-  name_de_translation?: string;
-  role_type: "all" | "read write" | "read only";
-  explanation?: string;
-  explanation_de_translation?: string;
-};
+  id: number
+  name: string
+  name_de_translation?: string
+  role_type: 'all' | 'read write' | 'read only'
+  explanation?: string
+  explanation_de_translation?: string
+}
 
 export type SkillType = {
-  id: number;
-  key: number;
-  name: string;
-  original_name: string;
-  parent_skill?: string;
-  subcategories: SkillType[];
-};
+  id: number
+  key: number
+  name: string
+  original_name: string
+  parent_skill?: string
+  subcategories: SkillType[]
+}
 
 export type Project = {
-  collaborators_welcome: boolean;
-  skills: any[];
-  helpful_connections: any[];
-  collaborating_organizations: any[];
-  loc: any;
-  location?: any; //TODO: merge loc and location (loc used to post, location used when getting data from the backend currently)
-  parent_organization: any;
-  isPersonalProject: boolean;
-  is_organization_project: boolean;
-  team_members: any[];
-  website: string;
-  language: CcLocale;
-  error?: boolean;
-  is_draft?: boolean;
-  url_slug?: string;
-  name?: string;
-  project_parents?: any[];
-  tags?: any[];
-  project_type: ProjectType | any;
-  start_date?: Date | Dayjs | null;
-  end_date?: Date | Dayjs | null;
-  additional_loc_info?: string;
-  short_description?: string;
-  creator?: User | Organization | any; //TODO: remove 'any' once User and Organization types are properly defined
-  image?: string;
-  hubName?: string;
-  related_hubs?: any[];
-  hubUrl?: string;
-  thumbnail_image?: string;
-  sectors?: Sector[];
-};
+  collaborators_welcome: boolean
+  skills: any[]
+  helpful_connections: any[]
+  collaborating_organizations: any[]
+  loc: any
+  location?: any //TODO: merge loc and location (loc used to post, location used when getting data from the backend currently)
+  parent_organization: any
+  isPersonalProject: boolean
+  is_organization_project: boolean
+  team_members: any[]
+  website: string
+  language: CcLocale
+  error?: boolean
+  is_draft?: boolean
+  url_slug?: string
+  name?: string
+  project_parents?: any[]
+  tags?: any[]
+  project_type: ProjectType | any
+  start_date?: Date | Dayjs | null
+  end_date?: Date | Dayjs | null
+  additional_loc_info?: string
+  short_description?: string
+  creator?: User | Organization | any //TODO: remove 'any' once User and Organization types are properly defined
+  image?: string
+  hubName?: string
+  related_hubs?: any[]
+  hubUrl?: string
+  thumbnail_image?: string
+  sectors?: Sector[]
+}
 
-export type BrowseTab = "projects" | "organizations" | "members" | "events";
-export type ProjectType = "project" | "idea" | "event";
+export type BrowseTab = 'projects' | 'organizations' | 'members' | 'events'
+export type ProjectType = 'project' | 'idea' | 'event'
 
 export type Organization = {
-  location: any;
-  name: string;
-  thumbnail_image: string;
-  url_slug: string;
-};
+  location: any
+  name: string
+  thumbnail_image: string
+  url_slug: string
+}
 
-export type CcLocale = "en" | "de";
+export type CcLocale = 'en' | 'de'
 
-declare module "@mui/material/styles/createPalette" {
+declare module '@mui/material/styles/createPalette' {
   // augment theme type with climateconnect custom properties
   // eslint-disable-next-line no-unused-vars
   interface Palette {
-    yellow: PaletteColor;
+    yellow: PaletteColor
     contrast: {
-      main: string;
-      contrastText: string;
-    };
+      main: string
+      contrastText: string
+    }
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
-    yellow: PaletteColorOptions;
-    contrast: ContrastColor;
+    yellow: PaletteColorOptions
+    contrast: ContrastColor
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteColor {
-    extraLight?: string;
+    extraLight?: string
     // lightHover?: string;
   }
   // eslint-disable-next-line no-unused-vars
   interface SimplePaletteColorOptions {
-    lightHover?: string;
-    extraLight?: string;
+    lightHover?: string
+    extraLight?: string
   }
 
   interface ContrastColor {
-    main: string;
-    contrastText: string;
+    main: string
+    contrastText: string
   }
 }
 
-declare module "@mui/material/TextField" {
+declare module '@mui/material/TextField' {
   // eslint-disable-next-line no-unused-vars
   interface TextFieldPropsColorOverrides {
-    contrast: true;
+    contrast: true
   }
 }
 
-declare module "@mui/material/Button" {
+declare module '@mui/material/Button' {
   // eslint-disable-next-line no-unused-vars
   interface ButtonPropsColorOverrides {
-    grey: true;
-    contrast: true;
+    grey: true
+    contrast: true
   }
 }
 
-declare module "@mui/material/Checkbox" {
+declare module '@mui/material/Checkbox' {
   // eslint-disable-next-line no-unused-vars
   interface CheckboxPropsColorOverrides {
-    contrast: true;
+    contrast: true
   }
 }
 
-declare module "@mui/material/Switch" {
+declare module '@mui/material/Switch' {
   // eslint-disable-next-line no-unused-vars
   interface SwitchPropsColorOverrides {
-    contrast: true;
+    contrast: true
   }
 }
 
 export type Supporter = {
-  name: string;
-  subtitle: string;
-  logo: string;
-  importance: number;
-  organization_url_slug: string;
-};
+  name: string
+  subtitle: string
+  logo: string
+  importance: number
+  organization_url_slug: string
+}
 
 export type Sector = {
-  id: number;
-  name: string;
-  key: string;
-  icon?: string;
-  original_name?: string;
-  image?: string;
-};
+  id: number
+  name: string
+  key: string
+  icon?: string
+  original_name?: string
+  image?: string
+}
 
 export type LinkedHub = {
-  hubName: string;
-  hubUrl: string;
-  icon: string;
-  backgroundColor?: string;
-};
+  hubName: string
+  hubUrl: string
+  icon: string
+  backgroundColor?: string
+}
 
-export type LocaleType = "en" | "de" | undefined;
+export type LocaleType = 'en' | 'de' | undefined
 
 export interface HubData {
-  landing_page_component: string;
-  hub_type: string;
-  [key: string]: any;
+  landing_page_component: string
+  hub_type: string
+  [key: string]: any
 }
 
 export type DonationGoal = {
-  goal_name: string | undefined;
-  goal_start: string | undefined;
-  goal_end: string | undefined;
-  goal_amount: number | undefined;
-  current_amount: number | undefined;
-  hub: string | undefined;
-  call_to_action_text: string | undefined;
-  call_to_action_link: string | undefined;
-};
+  goal_name: string | undefined
+  goal_start: string | undefined
+  goal_end: string | undefined
+  goal_amount: number | undefined
+  current_amount: number | undefined
+  hub: string | undefined
+  call_to_action_text: string | undefined
+  call_to_action_link: string | undefined
+}

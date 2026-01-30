@@ -15,5 +15,5 @@ export default function getCollaborationTexts(texts) {
       idea: texts.add_connections_that_would_be_beneficial_for_collaborators_to_have_idea,
       event: texts.add_connections_that_would_be_beneficial_for_collaborators_to_have_event,
     },
-  };
+  }
 }

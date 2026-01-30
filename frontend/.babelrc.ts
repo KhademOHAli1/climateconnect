@@ -1,6 +1,6 @@
-const plugins = ["lodash"];
+const plugins = ['lodash']
 
 module.exports = {
   plugins,
-  presets: ["next/babel"],
-};
+  presets: ['next/babel'],
+}

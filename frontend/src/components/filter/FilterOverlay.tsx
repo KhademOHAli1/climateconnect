@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import GenericDialog from "../dialogs/GenericDialog";
-import Filters from "./Filters";
-import SelectedFilters from "./SelectedFilters";
+import React, { useContext } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import GenericDialog from '../dialogs/GenericDialog'
+import Filters from './Filters'
+import SelectedFilters from './SelectedFilters'
 
 export default function FilterOverlay({
   errorMessage,
@@ -24,10 +24,10 @@ export default function FilterOverlay({
   unexpandFilters,
 }) {
   const onClose = () => {
-    unexpandFilters();
-  };
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "filter_and_search", locale: locale });
+    unexpandFilters()
+  }
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'filter_and_search', locale: locale })
   return (
     <GenericDialog
       applyText={texts.apply_filters}
@@ -62,5 +62,5 @@ export default function FilterOverlay({
         possibleFilters={possibleFilters}
       />
     </GenericDialog>
-  );
+  )
 }

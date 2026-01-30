@@ -1,7 +1,7 @@
-import { Tooltip } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React from "react";
-import { getImageUrl } from "../../../public/lib/imageOperations";
+import { Tooltip } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { getImageUrl } from '../../../public/lib/imageOperations'
 
 const useStyles = makeStyles((theme) => ({
   hubIcon: {
@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
     fill: theme.palette.primary.main,
     marginRight: theme.spacing(1.5),
   },
-}));
+}))
 
 export default function IdeaHubIcon({ idea, className }: any) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Tooltip title={idea.hub.name}>
       <img
@@ -21,5 +21,5 @@ export default function IdeaHubIcon({ idea, className }: any) {
         alt="idea hub icon"
       />
     </Tooltip>
-  );
+  )
 }

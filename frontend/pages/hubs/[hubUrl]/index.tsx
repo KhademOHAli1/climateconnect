@@ -1,31 +1,31 @@
-import React, { ComponentType, FC, useContext, useEffect, useState } from "react";
-import UserContext from "../../../src/components/context/UserContext";
-import DevlinkPage from "../../../src/components/devlink/DevlinkPage";
-import WideLayout from "../../../src/components/layouts/WideLayout";
-import PageNotFound from "../../../src/components/general/PageNotFound";
-import getTexts from "../../../public/texts/texts";
-import isLocationHubLikeHub from "../../../public/lib/isLocationHubLikeHub";
-import LoadingSpinner from "../../../src/components/general/LoadingSpinner";
-import theme from "../../../src/themes/theme";
-import { HubData } from "../../../src/types";
-import { getHubData } from "../../../public/lib/getHubData";
+import React, { ComponentType, FC, useContext, useEffect, useState } from 'react'
+import { getHubData } from '../../../public/lib/getHubData'
+import isLocationHubLikeHub from '../../../public/lib/isLocationHubLikeHub'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../../../src/components/context/UserContext'
+import DevlinkPage from '../../../src/components/devlink/DevlinkPage'
+import LoadingSpinner from '../../../src/components/general/LoadingSpinner'
+import PageNotFound from '../../../src/components/general/PageNotFound'
+import WideLayout from '../../../src/components/layouts/WideLayout'
+import theme from '../../../src/themes/theme'
+import { HubData } from '../../../src/types'
 
 //Types
-type DevlinkComponentType = ComponentType<any> | null;
+type DevlinkComponentType = ComponentType<any> | null
 
 interface TextsType {
-  [key: string]: string;
+  [key: string]: string
 }
 
 interface NotFoundPageProps {
-  texts: TextsType;
-  link: string;
-  showHeader?: boolean;
+  texts: TextsType
+  link: string
+  showHeader?: boolean
 }
 
 interface LandingPageProps {
-  hubData: HubData | null;
-  hubUrl?: string;
+  hubData: HubData | null
+  hubUrl?: string
 }
 
 const NotFoundPage: FC<NotFoundPageProps> = ({ texts, link, showHeader }) => {
@@ -43,11 +43,11 @@ const NotFoundPage: FC<NotFoundPageProps> = ({ texts, link, showHeader }) => {
         <PageNotFound itemName="landing page" returnText={texts.return_to_hubs} returnLink={link} />
       )}
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(ctx: any) {
-  const hubUrl = ctx?.params?.hubUrl as string | undefined;
+  const hubUrl = ctx?.params?.hubUrl as string | undefined
 
   if (!hubUrl) {
     return {
@@ -55,10 +55,10 @@ export async function getServerSideProps(ctx: any) {
         hubData: null,
         hubUrl: null,
       },
-    };
+    }
   }
 
-  const hubData = await getHubData(hubUrl, ctx.locale);
+  const hubData = await getHubData(hubUrl, ctx.locale)
   if (!hubData?.landing_page_component) {
     return {
       redirect: {
@@ -66,27 +66,27 @@ export async function getServerSideProps(ctx: any) {
         // redirect is based on current hub data, and that might change in the future so permanent: false,
         permanent: false,
       },
-    };
+    }
   }
   return {
     props: {
       hubData,
       hubUrl,
     },
-  };
+  }
 }
 
 const LandingPage: FC<LandingPageProps> = ({ hubData, hubUrl }) => {
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "landing_page", locale: locale }) as TextsType;
-  const [DevlinkComponent, setDevlinkComponent] = useState<DevlinkComponentType>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'landing_page', locale: locale }) as TextsType
+  const [DevlinkComponent, setDevlinkComponent] = useState<DevlinkComponentType>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadComponent = async () => {
       if (!hubData?.landing_page_component) {
-        setIsLoading(false);
-        return;
+        setIsLoading(false)
+        return
       }
 
       try {
@@ -98,46 +98,46 @@ const LandingPage: FC<LandingPageProps> = ({ hubData, hubUrl }) => {
         // - `DeChErlangenLandingpage` (German)
         // Since the database stores only one landing page component name,
         // We need to determine the component name for other languages.
-        let componentName = hubData.landing_page_component;
-        const currentPrefix = componentName.startsWith("En") ? "En" : "De";
-        const desiredPrefix = locale === "en" ? "En" : "De";
+        let componentName = hubData.landing_page_component
+        const currentPrefix = componentName.startsWith('En') ? 'En' : 'De'
+        const desiredPrefix = locale === 'en' ? 'En' : 'De'
 
         if (currentPrefix !== desiredPrefix) {
-          componentName = componentName.replace(new RegExp(`^${currentPrefix}`), desiredPrefix);
+          componentName = componentName.replace(new RegExp(`^${currentPrefix}`), desiredPrefix)
         }
 
         // Javascript Dynamic import Devlink component
-        const mod = await import("../../../devlink");
+        const mod = await import('../../../devlink')
 
         if (mod[componentName]) {
-          setDevlinkComponent(() => mod[componentName]);
+          setDevlinkComponent(() => mod[componentName])
         } else {
-          console.warn(`Component ${componentName} not found in devlink.`);
-          setDevlinkComponent(null);
+          console.warn(`Component ${componentName} not found in devlink.`)
+          setDevlinkComponent(null)
         }
       } catch (error) {
-        console.error("Error loading devlink component:", error);
-        setDevlinkComponent(null);
+        console.error('Error loading devlink component:', error)
+        setDevlinkComponent(null)
       }
 
       // Set loading to false whether the try block succeeds or fails
-      setIsLoading(false);
-    };
+      setIsLoading(false)
+    }
 
-    loadComponent();
-  }, [locale, hubData]);
+    loadComponent()
+  }, [locale, hubData])
 
   // Handle loading state
   if (isLoading) {
-    return <LoadingSpinner isLoading color="#fff" noMarginTop />;
+    return <LoadingSpinner isLoading color="#fff" noMarginTop />
   }
   // Handle missing data
   if (!hubUrl || !hubData) {
-    return <NotFoundPage texts={texts} link={"/hubs/"} showHeader />;
+    return <NotFoundPage texts={texts} link={'/hubs/'} showHeader />
   }
 
-  const title = `${texts.climateHub} ${hubData?.name} | ${texts.citizen_climate_action} ${hubData?.name}`;
-  const description = `${texts.find_fellow_campaigners_for_climate_protection_idea}`;
+  const title = `${texts.climateHub} ${hubData?.name} | ${texts.citizen_climate_action} ${hubData?.name}`
+  const description = `${texts.find_fellow_campaigners_for_climate_protection_idea}`
 
   return (
     <DevlinkPage
@@ -156,7 +156,7 @@ const LandingPage: FC<LandingPageProps> = ({ hubData, hubUrl }) => {
         <NotFoundPage texts={texts} link={`${hubUrl}/browse`} />
       )}
     </DevlinkPage>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage

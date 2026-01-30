@@ -1,10 +1,10 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useState } from "react";
-import { getLocalePrefix } from "../../../../public/lib/apiOperations";
-import getTexts from "../../../../public/texts/texts";
-import UserContext from "../../context/UserContext";
-import DonorForestExplainerDialog from "./DonorForestExplainerDialog";
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import { getLocalePrefix } from '../../../../public/lib/apiOperations'
+import getTexts from '../../../../public/texts/texts'
+import UserContext from '../../context/UserContext'
+import DonorForestExplainerDialog from './DonorForestExplainerDialog'
 
 const useStyles = makeStyles((theme) => ({
   explainerContainer: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     borderRadius: 15,
     width: 360,
-    textAlign: "center",
+    textAlign: 'center',
     zIndex: 1,
   },
   headline: {
@@ -30,27 +30,27 @@ const useStyles = makeStyles((theme) => ({
     width: 220,
   },
   link: {
-    textDecoration: "underline",
+    textDecoration: 'underline',
     fontWeight: 600,
     marginTop: theme.spacing(1.5),
-    cursor: "pointer",
+    cursor: 'pointer',
   },
-}));
+}))
 
 export default function DonorForestExplainer({ className, possibleBadges }) {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "donate", locale: locale });
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'donate', locale: locale })
 
   const handleOpenExplainerDialog = (e) => {
-    e.preventDefault();
-    setOpen(true);
-  };
+    e.preventDefault()
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <div className={`${className} ${classes.explainerContainer}`}>
@@ -61,7 +61,7 @@ export default function DonorForestExplainer({ className, possibleBadges }) {
       <Button
         variant="contained"
         color="primary"
-        href={getLocalePrefix(locale) + "/donate"}
+        href={getLocalePrefix(locale) + '/donate'}
         className={classes.donateButton}
       >
         {texts.donate}
@@ -75,5 +75,5 @@ export default function DonorForestExplainer({ className, possibleBadges }) {
         possibleBadges={possibleBadges}
       />
     </div>
-  );
+  )
 }

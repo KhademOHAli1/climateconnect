@@ -1,37 +1,36 @@
-import { IconButton, TextField, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useRef } from "react";
-
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import { getBackgroundContrastColor } from "../../../public/lib/themeOperations";
-import { useTheme } from "@mui/styles";
+import { IconButton, TextField, Tooltip, Typography } from '@mui/material'
+import { useTheme } from '@mui/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useRef } from 'react'
+import { getBackgroundContrastColor } from '../../../public/lib/themeOperations'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   shortDescriptionWrapper: {
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      paddingTop: "56.25%",
-      position: "relative",
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      paddingTop: '56.25%',
+      position: 'relative',
     },
   },
   shortDescription: {
-    [theme.breakpoints.up("md")]: {
-      position: "absolute",
+    [theme.breakpoints.up('md')]: {
+      position: 'absolute',
       top: 0,
       left: 0,
       bottom: 0,
       right: 0,
-      width: "100%",
+      width: '100%',
     },
   },
   input: {
-    [theme.breakpoints.up("md")]: {
-      height: "100%",
-      alignItems: "flex-start",
+    [theme.breakpoints.up('md')]: {
+      height: '100%',
+      alignItems: 'flex-start',
     },
   },
-}));
+}))
 
 export default function AddSummarySection({
   projectData,
@@ -42,17 +41,17 @@ export default function AddSummarySection({
   helpTexts,
   ToolTipIcon,
 }) {
-  const classes = useStyles(projectData);
-  const shortDescriptionRef = useRef(null);
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
-  const theme = useTheme();
-  const backgroundContrastColor = getBackgroundContrastColor(theme);
+  const classes = useStyles(projectData)
+  const shortDescriptionRef = useRef(null)
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
+  const theme = useTheme()
+  const backgroundContrastColor = getBackgroundContrastColor(theme)
 
   return (
     <div className={className}>
       <Typography component="h2" variant="subtitle2" color="primary" className={subHeaderClassname}>
-        {texts["summarize_your_" + projectData.project_type.type_id]}*
+        {texts['summarize_your_' + projectData.project_type.type_id]}*
         <Tooltip title={helpTexts.short_description} className={toolTipClassName}>
           <IconButton size="large">
             <ToolTipIcon />
@@ -75,7 +74,7 @@ export default function AddSummarySection({
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(event) => onDescriptionChange(event, "short_description")}
+          onChange={(event) => onDescriptionChange(event, 'short_description')}
           className={classes.shortDescription}
           InputProps={{
             classes: { root: classes.input, input: classes.input, inputMultiline: classes.input },
@@ -84,5 +83,5 @@ export default function AddSummarySection({
         />
       </div>
     </div>
-  );
+  )
 }

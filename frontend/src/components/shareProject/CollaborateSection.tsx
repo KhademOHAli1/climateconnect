@@ -1,36 +1,36 @@
-import { Button, Chip, IconButton, List, Tooltip, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useState } from "react";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import EnterTextDialog from "../dialogs/EnterTextDialog";
-import MultiLevelSelectDialog from "../dialogs/MultiLevelSelectDialog";
+import { Button, Chip, IconButton, List, Tooltip, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import EnterTextDialog from '../dialogs/EnterTextDialog'
+import MultiLevelSelectDialog from '../dialogs/MultiLevelSelectDialog'
 
 const useStyles = makeStyles((theme) => {
   return {
     skill: {
-      display: "flex",
-      border: "1px solid black",
+      display: 'flex',
+      border: '1px solid black',
       height: theme.spacing(5),
-      [theme.breakpoints.up("lg")]: {
+      [theme.breakpoints.up('lg')]: {
         minWidth: 220,
       },
-      maxWidth: "100%",
+      maxWidth: '100%',
       marginRight: theme.spacing(1),
-      background: "none",
+      background: 'none',
       borderRadius: 0,
       fontSize: 16,
       marginBottom: theme.spacing(1),
     },
     flexContainer: {
-      display: "flex",
-      flexDirection: "row",
+      display: 'flex',
+      flexDirection: 'row',
       padding: 0,
       marginBottom: theme.spacing(3),
-      flexWrap: "wrap",
+      flexWrap: 'wrap',
     },
-  };
-});
+  }
+})
 
 export default function CollaborateSection({
   projectData,
@@ -45,29 +45,35 @@ export default function CollaborateSection({
   skillsOptions,
   collaborationTexts,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "project", locale: locale });
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'project', locale: locale })
   const [selectedItems, setSelectedItems] = useState(
-    projectData.skills ? [...projectData.skills] : []
-  );
+    projectData.skills ? [...projectData.skills] : [],
+  )
 
   const handleSkillDelete = (skill) => {
     handleSetProjectData({
       skills: projectData.skills
         .slice(0, projectData.skills.indexOf(skill))
         .concat(
-          projectData.skills.slice(projectData.skills.indexOf(skill) + 1, projectData.skills.length)
+          projectData.skills.slice(
+            projectData.skills.indexOf(skill) + 1,
+            projectData.skills.length,
+          ),
         ),
-    });
+    })
     setSelectedItems(
       projectData.skills
         .slice(0, projectData.skills.indexOf(skill))
         .concat(
-          projectData.skills.slice(projectData.skills.indexOf(skill) + 1, projectData.skills.length)
-        )
-    );
-  };
+          projectData.skills.slice(
+            projectData.skills.indexOf(skill) + 1,
+            projectData.skills.length,
+          ),
+        ),
+    )
+  }
 
   const handleConnectionDelete = (connection) => {
     handleSetProjectData({
@@ -76,36 +82,36 @@ export default function CollaborateSection({
         .concat(
           projectData.helpful_connections.slice(
             projectData.helpful_connections.indexOf(connection) + 1,
-            projectData.helpful_connections.length
-          )
+            projectData.helpful_connections.length,
+          ),
         ),
-    });
-  };
+    })
+  }
 
   const onClickSkillsDialogOpen = () => {
-    handleSetOpen({ skillsDialog: true });
-  };
+    handleSetOpen({ skillsDialog: true })
+  }
 
   const onClickConnectionsDialogOpen = () => {
-    handleSetOpen({ connectionsDialog: true });
-  };
+    handleSetOpen({ connectionsDialog: true })
+  }
 
   const handleSkillsDialogClose = (skills) => {
-    if (skills) handleSetProjectData({ skills: skills });
-    handleSetOpen({ skillsDialog: false });
-  };
+    if (skills) handleSetProjectData({ skills: skills })
+    handleSetOpen({ skillsDialog: false })
+  }
 
   const handleConnectionsDialogClose = (connection) => {
     if (projectData.helpful_connections && projectData.helpful_connections.includes(connection))
-      alert(texts.you_can_not_add_the_same_connection_twice);
+      alert(texts.you_can_not_add_the_same_connection_twice)
     else {
       if (connection)
         handleSetProjectData({
           helpful_connections: [...projectData.helpful_connections, connection],
-        });
-      handleSetOpen({ connectionsDialog: false });
+        })
+      handleSetOpen({ connectionsDialog: false })
     }
-  };
+  }
   return (
     <>
       <div className={blockClassName}>
@@ -188,5 +194,5 @@ export default function CollaborateSection({
         title={texts.add_a_helpful_connection}
       />
     </>
-  );
+  )
 }

@@ -1,56 +1,56 @@
-import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import NextCookies from "next-cookies";
-import Router from "next/router";
-import React, { useContext, useRef, useState } from "react";
-import Cookies from "universal-cookie";
-import ROLE_TYPES from "../public/data/role_types";
-import { apiRequest, getLocalePrefix } from "../public/lib/apiOperations";
-import { getSectorOptions } from "../public/lib/getOptions";
-import { blobFromObjectUrl } from "../public/lib/imageOperations";
+import { Typography } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import makeStyles from '@mui/styles/makeStyles'
+import Router from 'next/router'
+import NextCookies from 'next-cookies'
+import React, { useContext, useRef, useState } from 'react'
+import Cookies from 'universal-cookie'
+import ROLE_TYPES from '../public/data/role_types'
+import { apiRequest, getLocalePrefix } from '../public/lib/apiOperations'
+import { getSectorOptions } from '../public/lib/getOptions'
+import { blobFromObjectUrl } from '../public/lib/imageOperations'
 import {
   getLocationValue,
   indicateWrongLocation,
   isLocationValid,
   parseLocation,
-} from "../public/lib/locationOperations";
-import getTexts from "../public/texts/texts";
-import UserContext from "../src/components/context/UserContext";
-import LoginNudge from "../src/components/general/LoginNudge";
-import TranslateTexts from "../src/components/general/TranslateTexts";
-import WideLayout from "./../src/components/layouts/WideLayout";
-import EnterBasicOrganizationInfo from "./../src/components/organization/EnterBasicOrganizationInfo";
-import EnterDetailledOrganizationInfo from "./../src/components/organization/EnterDetailledOrganizationInfo";
-import Alert from "@mui/material/Alert";
-import getHubTheme from "../src/themes/fetchHubTheme";
-import { transformThemeData } from "../src/themes/transformThemeData";
-import theme from "../src/themes/theme";
+} from '../public/lib/locationOperations'
+import getTexts from '../public/texts/texts'
+import UserContext from '../src/components/context/UserContext'
+import LoginNudge from '../src/components/general/LoginNudge'
+import TranslateTexts from '../src/components/general/TranslateTexts'
+import WideLayout from './../src/components/layouts/WideLayout'
+import EnterBasicOrganizationInfo from './../src/components/organization/EnterBasicOrganizationInfo'
+import EnterDetailledOrganizationInfo from './../src/components/organization/EnterDetailledOrganizationInfo'
+import getHubTheme from '../src/themes/fetchHubTheme'
+import theme from '../src/themes/theme'
+import { transformThemeData } from '../src/themes/transformThemeData'
 
 const useStyles = makeStyles((theme) => ({
   headline: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: theme.spacing(4),
   },
   alert: {
-    textAlign: "center",
+    textAlign: 'center',
     maxWidth: 1280,
-    margin: "0 auto",
+    margin: '0 auto',
   },
-}));
+}))
 
 export async function getServerSideProps(ctx: {
-  locale?: any;
-  query?: any;
-  req?: { headers: { cookie?: string | undefined } } | undefined;
+  locale?: any
+  query?: any
+  req?: { headers: { cookie?: string | undefined } } | undefined
 }) {
-  const { auth_token } = NextCookies(ctx);
-  const hubUrl = ctx.query.hub;
-  const hubThemeData = await getHubTheme(hubUrl);
+  const { auth_token } = NextCookies(ctx)
+  const hubUrl = ctx.query.hub
+  const hubThemeData = await getHubTheme(hubUrl)
   const [tagOptions, rolesOptions, allSectors] = await Promise.all([
     await getTags(auth_token, ctx.locale),
     await getRolesOptions(auth_token, ctx.locale),
     getSectorOptions(ctx.locale, hubUrl),
-  ]);
+  ])
   return {
     props: {
       tagOptions: tagOptions,
@@ -59,7 +59,7 @@ export async function getServerSideProps(ctx: {
       hubUrl: hubUrl ?? null,
       hubThemeData: hubThemeData,
     },
-  };
+  }
 }
 
 export default function CreateOrganization({
@@ -69,50 +69,50 @@ export default function CreateOrganization({
   hubUrl,
   hubThemeData,
 }) {
-  const token = new Cookies().get("auth_token");
-  const classes = useStyles();
+  const token = new Cookies().get('auth_token')
+  const classes = useStyles()
   const [errorMessages, setErrorMessages] = useState({
-    basicOrganizationInfo: "",
-    detailledOrganizationInfo: "",
-  });
+    basicOrganizationInfo: '',
+    detailledOrganizationInfo: '',
+  })
 
-  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === "true";
+  const legacyModeEnabled = process.env.ENABLE_LEGACY_LOCATION_FORMAT === 'true'
 
   const handleSetErrorMessages = (newErrorMessages) => {
-    setErrorMessages(newErrorMessages);
-    window.scrollTo(0, 0);
-  };
-  const { user, locale, locales } = useContext(UserContext);
-  const texts = getTexts({ page: "organization", locale: locale });
-  const steps = ["basicorganizationinfo", "detailledorganizationinfo", "checktranslations"];
-  const [curStep, setCurStep] = useState(steps[0]);
-  const locationInputRef = useRef(null);
-  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false);
-  const [translations, setTranslations] = useState({});
-  const [sourceLanguage] = useState(locale);
-  const [targetLanguage] = useState(locales.find((l) => l !== locale));
-  const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [existingUrlSlug, setExistingUrlSlug] = useState("");
-  const [existingName, setExistingName] = useState("");
+    setErrorMessages(newErrorMessages)
+    window.scrollTo(0, 0)
+  }
+  const { user, locale, locales } = useContext(UserContext)
+  const texts = getTexts({ page: 'organization', locale: locale })
+  const steps = ['basicorganizationinfo', 'detailledorganizationinfo', 'checktranslations']
+  const [curStep, setCurStep] = useState(steps[0])
+  const locationInputRef = useRef(null)
+  const [locationOptionsOpen, setLocationOptionsOpen] = useState(false)
+  const [translations, setTranslations] = useState({})
+  const [sourceLanguage] = useState(locale)
+  const [targetLanguage] = useState(locales.find((l) => l !== locale))
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [existingUrlSlug, setExistingUrlSlug] = useState('')
+  const [existingName, setExistingName] = useState('')
 
   const [organizationInfo, setOrganizationInfo] = useState<any>({
-    name: "",
+    name: '',
     hasparentorganization: false,
-    parentorganization: "",
-    image: "",
-    thumbnail_image: "",
+    parentorganization: '',
+    image: '',
+    thumbnail_image: '',
     verified: false,
     info: {
       location: {},
-      short_description: "",
-      about: "",
-      get_involved: "",
+      short_description: '',
+      about: '',
+      get_involved: '',
       organization_size: 0,
-      website: "",
+      website: '',
       sectors: [],
     },
     types: [] as any[],
-  });
+  })
 
   const handleChangeTranslationContent = (locale, newTranslations, isManualChange) => {
     const newTranslationsObject = {
@@ -122,46 +122,46 @@ export default function CreateOrganization({
         ...newTranslations,
         is_manual_translation: isManualChange ? true : false,
       },
-    };
-    setTranslations({ ...newTranslationsObject });
-  };
+    }
+    setTranslations({ ...newTranslationsObject })
+  }
 
   const handleSetLocationOptionsOpen = (bool) => {
-    setLocationOptionsOpen(bool);
-  };
+    setLocationOptionsOpen(bool)
+  }
 
   const handleSetLocationErrorMessage = (newMessage) => {
     handleSetErrorMessages({
       ...errorMessages,
       basicOrganizationInfo: newMessage,
-    });
-  };
+    })
+  }
 
   const handleSetDetailledErrorMessage = (newMessage) => {
     handleSetErrorMessages({
       ...errorMessages,
       detailledOrganizationInfo: newMessage,
-    });
-  };
+    })
+  }
 
   const handleSetExistingUrlSlug = (urlSlug) => {
-    setExistingUrlSlug(urlSlug);
-  };
+    setExistingUrlSlug(urlSlug)
+  }
 
   const handleSetExistingName = (name) => {
-    setExistingName(name);
-  };
+    setExistingName(name)
+  }
 
   const handleBasicInfoSubmit = async (event, values) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       //Short circuit if there is no parent organization
       if (values.hasparentorganization && !values.parentOrganization) {
         handleSetErrorMessages({
           ...errorMessages,
           basicOrganizationInfo: texts.you_have_not_selected_a_parent_organization_either_untick,
-        });
-        return;
+        })
+        return
       }
 
       //short circuit if the location is invalid and we're not in legacy mode
@@ -170,53 +170,53 @@ export default function CreateOrganization({
           locationInputRef,
           setLocationOptionsOpen,
           handleSetLocationErrorMessage,
-          texts
-        );
-        return;
+          texts,
+        )
+        return
       }
-      const url = `/api/look_up_organization/?search=${values.organizationname}`;
+      const url = `/api/look_up_organization/?search=${values.organizationname}`
       await apiRequest({
-        method: "get",
+        method: 'get',
         url: url,
         locale: locale,
-      });
+      })
 
-      const location = getLocationValue(values, "location");
+      const location = getLocationValue(values, 'location')
       setOrganizationInfo({
         ...organizationInfo,
         name: values.organizationname,
         parentorganization: values.parentorganizationname,
         location: parseLocation(location),
         types: values.types,
-      });
+      })
       /* This is required in the case that the user first inputs a name that is taken 
       then later submits with a valid name. Should they then edit the name to another taken name in the detailed view (German page)
       and then go Erstellen it will open up the auto translate screen with the old error message from the basic view.
       */
       handleSetErrorMessages({
         ...errorMessages,
-        basicOrganizationInfo: "",
-      });
-      setCurStep(steps[1]);
+        basicOrganizationInfo: '',
+      })
+      setCurStep(steps[1])
     } catch (err: any) {
       if (err?.response?.data?.message) {
         handleSetErrorMessages({
           ...errorMessages,
           basicOrganizationInfo: (
             <div>
-              {texts.an_organization_with_this_name_already_exists}{" "}
+              {texts.an_organization_with_this_name_already_exists}{' '}
               <a
-                href={getLocalePrefix(locale) + "/organizations/" + err?.response?.data?.url}
+                href={getLocalePrefix(locale) + '/organizations/' + err?.response?.data?.url}
                 target="_blank"
               >
                 {texts.click_here}
-              </a>{" "}
+              </a>{' '}
               {texts.to_see_it}
             </div>
           ),
-        });
+        })
       } else {
-        const location = getLocationValue(values, "location");
+        const location = getLocationValue(values, 'location')
 
         setOrganizationInfo({
           ...organizationInfo,
@@ -224,24 +224,24 @@ export default function CreateOrganization({
           parentorganization: values.parentorganizationname,
           location: parseLocation(location),
           types: values.orgtypes,
-        });
-        setCurStep(steps[1]);
+        })
+        setCurStep(steps[1])
       }
-      if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-      return null;
+      if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+      return null
     }
-  };
+  }
 
   const requiredPropErrors = {
     image: texts.image_required_error,
     organization_tags: texts.type_required_errror,
     name: texts.name_required_error,
     location: texts.location_required_error,
-  };
+  }
 
   const handleSetOrganizationInfo = (newOrganizationData) => {
-    setOrganizationInfo({ ...setOrganizationInfo, ...newOrganizationData });
-  };
+    setOrganizationInfo({ ...setOrganizationInfo, ...newOrganizationData })
+  }
   const handleDetailledInfoSubmit = async (account) => {
     //If the language is not language, short circuit and allow users to check the english translations for their texts
 
@@ -251,17 +251,17 @@ export default function CreateOrganization({
       rolesOptions,
       translations,
       sourceLanguage,
-      hubUrl
-    );
+      hubUrl,
+    )
 
     if (!legacyModeEnabled && !isLocationValid(organizationToSubmit.location)) {
       indicateWrongLocation(
         locationInputRef,
         setLocationOptionsOpen,
         handleSetDetailledErrorMessage,
-        texts
-      );
-      return;
+        texts,
+      )
+      return
     }
     for (const prop of Object.keys(requiredPropErrors)) {
       if (
@@ -271,8 +271,8 @@ export default function CreateOrganization({
         handleSetErrorMessages({
           errorMessages,
           detailledOrganizationInfo: requiredPropErrors[prop],
-        });
-        return;
+        })
+        return
       }
     }
 
@@ -285,83 +285,83 @@ export default function CreateOrganization({
       setCurStep(steps[2]);
       return;
     }*/
-    setLoadingSubmit(true);
-    await makeCreateOrganizationRequest(organizationToSubmit);
-  };
+    setLoadingSubmit(true)
+    await makeCreateOrganizationRequest(organizationToSubmit)
+  }
 
   const goToPreviousStep = () => {
-    setCurStep(steps[steps.indexOf(curStep) - 1]);
-  };
+    setCurStep(steps[steps.indexOf(curStep) - 1])
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const organizationToSubmit = await parseOrganizationForRequest(
       organizationInfo,
       user,
       rolesOptions,
       translations,
       sourceLanguage,
-      hubUrl
-    );
-    await makeCreateOrganizationRequest(organizationToSubmit);
-  };
+      hubUrl,
+    )
+    await makeCreateOrganizationRequest(organizationToSubmit)
+  }
 
   const makeCreateOrganizationRequest = (organizationToSubmit) => {
     apiRequest({
-      method: "post",
-      url: "/api/create_organization/",
+      method: 'post',
+      url: '/api/create_organization/',
       payload: organizationToSubmit,
       token: token,
       locale: locale,
     })
       .then(function (response) {
-        setLoadingSubmit(false);
+        setLoadingSubmit(false)
         Router.push({
           pathname: `/manageOrganizationMembers/${response.data.url_slug}`,
           query: {
             message: texts.you_have_successfully_created_an_organization_you_can_add_members,
             isCreationStage: true,
-            hub: hubUrl ? hubUrl : "",
+            hub: hubUrl ? hubUrl : '',
           },
-        });
-        return;
+        })
+        return
       })
       .catch(function (error) {
-        console.log(error);
-        setLoadingSubmit(false);
-        if (error) console.log(error?.response?.data);
+        console.log(error)
+        setLoadingSubmit(false)
+        if (error) console.log(error?.response?.data)
         if (error?.response?.data?.message)
           handleSetErrorMessages({
             errorMessages,
             detailledOrganizationInfo: error?.response?.data?.message,
-          });
+          })
         if (error?.response?.data?.url_slug)
-          handleSetExistingUrlSlug(error?.response?.data?.url_slug);
+          handleSetExistingUrlSlug(error?.response?.data?.url_slug)
         if (error?.response?.data?.existing_name)
-          handleSetExistingName(error?.response.data?.existing_name);
-        return;
-      });
-  };
+          handleSetExistingName(error?.response.data?.existing_name)
+        return
+      })
+  }
 
-  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined;
+  const customTheme = hubThemeData ? transformThemeData(hubThemeData) : undefined
   const layoutProps = {
     hubUrl: hubUrl,
     customTheme: customTheme,
     headerBackground: customTheme
       ? customTheme.palette.header.background
       : theme.palette.background.default,
-  };
+  }
 
   if (!user)
     return (
       <WideLayout
         {...layoutProps}
-        title={texts.please_log_in + " " + texts.to_create_an_organization}
+        title={texts.please_log_in + ' ' + texts.to_create_an_organization}
       >
         <LoginNudge fullPage whatToDo={texts.to_create_an_organization} />
       </WideLayout>
-    );
-  else if (curStep === "basicorganizationinfo")
+    )
+  else if (curStep === 'basicorganizationinfo')
     return (
       <WideLayout {...layoutProps} title={texts.create_an_organization}>
         <EnterBasicOrganizationInfo
@@ -374,8 +374,8 @@ export default function CreateOrganization({
           tagOptions={tagOptions}
         />
       </WideLayout>
-    );
-  else if (curStep === "detailledorganizationinfo")
+    )
+  else if (curStep === 'detailledorganizationinfo')
     return (
       <WideLayout {...layoutProps} title={texts.create_an_organization}>
         <EnterDetailledOrganizationInfo
@@ -392,45 +392,45 @@ export default function CreateOrganization({
           allSectors={allSectors}
         />
       </WideLayout>
-    );
-  else if (curStep === "checktranslations") {
+    )
+  else if (curStep === 'checktranslations') {
     const hideGetInvolvedField =
       organizationInfo.types.map((type) => type.hide_get_involved).includes(true) ||
-      organizationInfo.types.length === 0;
+      organizationInfo.types.length === 0
 
     const standardTextsToTranslate = [
       {
-        textKey: "name",
+        textKey: 'name',
         rows: 2,
-        headlineTextKey: "organization_name",
+        headlineTextKey: 'organization_name',
       },
       {
-        textKey: "info.short_description",
+        textKey: 'info.short_description',
         rows: 5,
-        headlineTextKey: "short_description",
+        headlineTextKey: 'short_description',
         maxCharacters: 280,
         showCharacterCounter: true,
       },
       {
-        textKey: "info.about",
+        textKey: 'info.about',
         rows: 9,
-        headlineTextKey: "about",
+        headlineTextKey: 'about',
       },
-    ];
+    ]
 
     const getInvolvedText = [
       {
-        textKey: "info.get_involved",
+        textKey: 'info.get_involved',
         rows: 5,
-        headlineTextKey: "get_involved",
+        headlineTextKey: 'get_involved',
         maxCharacters: 250,
         showCharacterCounter: true,
       },
-    ];
+    ]
 
     const textsToTranslate = hideGetInvolvedField
       ? standardTextsToTranslate
-      : standardTextsToTranslate.concat(getInvolvedText);
+      : standardTextsToTranslate.concat(getInvolvedText)
 
     return (
       <WideLayout {...layoutProps} title={texts.languages}>
@@ -461,51 +461,51 @@ export default function CreateOrganization({
           organization={organizationInfo}
         />
       </WideLayout>
-    );
+    )
   }
 }
 
 const getRolesOptions = async (token, locale) => {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/roles/",
+      method: 'get',
+      url: '/roles/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
-      return resp.data.results;
+      return resp.data.results
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
-};
+}
 
 async function getTags(token: string | undefined, locale: any) {
   try {
     const resp = await apiRequest({
-      method: "get",
-      url: "/api/organizationtags/",
+      method: 'get',
+      url: '/api/organizationtags/',
       token: token,
       locale: locale,
-    });
-    if (resp.data.results.length === 0) return null;
+    })
+    if (resp.data.results.length === 0) return null
     else {
       return resp.data.results.map((t) => {
-        return { ...t, key: t.id, additionalInfo: t.additional_info ? t.additional_info : [] };
-      });
+        return { ...t, key: t.id, additionalInfo: t.additional_info ? t.additional_info : [] }
+      })
     }
   } catch (err: any) {
-    console.log(err);
-    if (err.response && err.response.data) console.log("Error: " + err.response.data.detail);
-    return null;
+    console.log(err)
+    if (err.response && err.response.data) console.log('Error: ' + err.response.data.detail)
+    return null
   }
 }
 
-type RequestOrganization = any;
+type RequestOrganization = any
 
 const parseOrganizationForRequest = async (
   o,
@@ -513,11 +513,11 @@ const parseOrganizationForRequest = async (
   rolesOptions,
   translations,
   sourceLanguage,
-  hubUrl
+  hubUrl,
 ) => {
-  console.log(hubUrl);
-  console.log(hubUrl === undefined);
-  console.log(typeof hubUrl === "string");
+  console.log(hubUrl)
+  console.log(hubUrl === undefined)
+  console.log(typeof hubUrl === 'string')
   const organization: RequestOrganization = {
     team_members: [
       {
@@ -543,15 +543,15 @@ const parseOrganizationForRequest = async (
     source_language: sourceLanguage,
     parent_organization: undefined,
     school: undefined,
-  };
-  if (o.parentorganization) organization.parent_organization = o.parentorganization;
-  if (o.background_image)
-    organization.background_image = await blobFromObjectUrl(o.background_image);
-  if (o.thumbnail_image) organization.thumbnail_image = await blobFromObjectUrl(o.thumbnail_image);
-  if (o.image) organization.image = await blobFromObjectUrl(o.image);
-  if (o.info.school) organization.school = o.info.school;
-  if (hubUrl) {
-    organization.created_in_hub = hubUrl;
   }
-  return organization;
-};
+  if (o.parentorganization) organization.parent_organization = o.parentorganization
+  if (o.background_image)
+    organization.background_image = await blobFromObjectUrl(o.background_image)
+  if (o.thumbnail_image) organization.thumbnail_image = await blobFromObjectUrl(o.thumbnail_image)
+  if (o.image) organization.image = await blobFromObjectUrl(o.image)
+  if (o.info.school) organization.school = o.info.school
+  if (hubUrl) {
+    organization.created_in_hub = hubUrl
+  }
+  return organization
+}

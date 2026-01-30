@@ -1,3 +1,5 @@
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import MenuIcon from '@mui/icons-material/Menu'
 import {
   Avatar,
   Badge,
@@ -18,107 +20,105 @@ import {
   Popper,
   SwipeableDrawer,
   Typography,
-} from "@mui/material";
-import { Theme, useTheme } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import MenuIcon from "@mui/icons-material/Menu";
-import noop from "lodash/noop";
-import React, { Fragment, useContext, useRef, useState } from "react";
-import { getStaticPageLinks } from "../../../public/data/getStaticPageLinks"; // Relative imports
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import { getImageUrl } from "../../../public/lib/imageOperations";
-import getTexts from "../../../public/texts/texts";
-import Notification from "../communication/notifications/Notification";
-import NotificationsBox from "../communication/notifications/NotificationsBox";
-import UserContext from "../context/UserContext";
-import ProfileBadge from "../profile/ProfileBadge";
-import DropDownButton from "./DropDownButton";
-import LanguageSelect from "./LanguageSelect";
-import StaticPageLinks from "./StaticPageLinks";
-import { HeaderProps } from "./types";
-import { getLinks, getLoggedInLinks, getStaticLinkFromItem } from "../../../public/lib/headerLinks";
+} from '@mui/material'
+import { Theme, useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import makeStyles from '@mui/styles/makeStyles'
+import noop from 'lodash/noop'
+import React, { Fragment, useContext, useRef, useState } from 'react'
+import { getStaticPageLinks } from '../../../public/data/getStaticPageLinks' // Relative imports
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
+import { getLinks, getLoggedInLinks, getStaticLinkFromItem } from '../../../public/lib/headerLinks'
+import { getImageUrl } from '../../../public/lib/imageOperations'
+import getTexts from '../../../public/texts/texts'
+import Notification from '../communication/notifications/Notification'
+import NotificationsBox from '../communication/notifications/NotificationsBox'
+import UserContext from '../context/UserContext'
+import ProfileBadge from '../profile/ProfileBadge'
+import DropDownButton from './DropDownButton'
+import LanguageSelect from './LanguageSelect'
+import StaticPageLinks from './StaticPageLinks'
+import { HeaderProps } from './types'
 
 type StyleProps = {
-  transparentHeader?: boolean;
-  fixedHeader?: boolean;
-  background?: string;
-  isStaticPage?: boolean;
-  isHubPage?: boolean;
-  isLocationHub?: boolean;
-  isCustomHub?: boolean;
-  isLoggedInUser?: boolean;
-  isLandingPage?: boolean;
-};
+  transparentHeader?: boolean
+  fixedHeader?: boolean
+  background?: string
+  isStaticPage?: boolean
+  isHubPage?: boolean
+  isLocationHub?: boolean
+  isCustomHub?: boolean
+  isLoggedInUser?: boolean
+  isLandingPage?: boolean
+}
 
 const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
   function getHeaderColor(isCustomHub, transparent, isLandingPage, customTheme) {
-    if (transparent || isLandingPage) return "white";
-    return isCustomHub ? customTheme.palette.primary.contrastText : theme.palette.primary.main;
+    if (transparent || isLandingPage) return 'white'
+    return isCustomHub ? customTheme.palette.primary.contrastText : theme.palette.primary.main
   }
 
   function getHeaderBackground(background, transparent, isLandingPage) {
-    if (background) return background;
-    if (transparent) return "";
-    return isLandingPage ? theme.palette.primary.main : "white";
+    if (background) return background
+    if (transparent) return ''
+    return isLandingPage ? theme.palette.primary.main : 'white'
   }
 
   return {
     root: (props) => {
       return {
-        zIndex: props.fixedHeader ? 1000 : "auto",
+        zIndex: props.fixedHeader ? 1000 : 'auto',
         borderBottom:
           props.transparentHeader || props.isStaticPage || props.isHubPage
             ? 0
             : `1px solid ${theme.palette.grey[300]}`,
-        position: props.fixedHeader ? "fixed" : ("auto" as "inherit"),
-        width: props.fixedHeader ? "100%" : "auto",
-        top: props.fixedHeader ? 0 : "auto",
+        position: props.fixedHeader ? 'fixed' : ('auto' as 'inherit'),
+        width: props.fixedHeader ? '100%' : 'auto',
+        top: props.fixedHeader ? 0 : 'auto',
         //Use custom background if the header is fixed and not transparent (landing page) or if it's a custom hub
         background: getHeaderBackground(
           props.background,
           props.transparentHeader,
-          props.isLandingPage
+          props.isLandingPage,
         ),
         color: getHeaderColor(
           props.isCustomHub,
           props.transparentHeader,
           props.isLandingPage,
-          theme
+          theme,
         ),
-        textDecoration: "inherit",
-        transition: "all 0.25s linear", // use all instead of transform since the background color too is changing at some point. It'll be nice to have a smooth transition.
-      };
+        textDecoration: 'inherit',
+        transition: 'all 0.25s linear', // use all instead of transform since the background color too is changing at some point. It'll be nice to have a smooth transition.
+      }
     },
     spacingBottom: {
       marginBottom: theme.spacing(2),
     },
     container: {
       padding: theme.spacing(2),
-      paddingRight: "auto",
-      paddingLeft: "auto",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      [theme.breakpoints.down("lg")]: {
+      paddingRight: 'auto',
+      paddingLeft: 'auto',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      [theme.breakpoints.down('lg')]: {
         padding: theme.spacing(2),
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         padding: `${theme.spacing(0.8)} ${theme.spacing(2)}`,
       },
     },
     logoLink: {
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         flex: `0 1 auto`,
         // width: "calc(1.1vw + 1.3em)",
         // maxWidth: "2.3rem",
-        minWidth: "1.3rem",
+        minWidth: '1.3rem',
       },
     },
     logo: (props) => ({
-      [theme.breakpoints.down("md")]: {
-        height: props.isLocationHub || props.isCustomHub ? 35 : "auto",
+      [theme.breakpoints.down('md')]: {
+        height: props.isLocationHub || props.isCustomHub ? 35 : 'auto',
       },
       height: 60,
       maxWidth: 180,
@@ -130,7 +130,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
       marginRight: theme.spacing(3),
     },
     loggedInRoot: {
-      verticalAlign: "middle",
+      verticalAlign: 'middle',
       marginLeft: theme.spacing(2),
       zIndex: 101,
     },
@@ -141,23 +141,23 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
     loggedInAvatarMobile: {
       height: 60,
       width: 60,
-      margin: "0 auto",
+      margin: '0 auto',
     },
     loggedInLink: {
       color: theme?.palette?.background?.default_contrastText,
-      width: "100%",
+      width: '100%',
     },
     linkContainer: {
-      display: "flex",
-      alignItems: "center",
-      maxWidth: "calc(100% - 200px)",
-      [theme.breakpoints.down("lg")]: {
-        maxWidth: "calc(100% - 150px)",
+      display: 'flex',
+      alignItems: 'center',
+      maxWidth: 'calc(100% - 200px)',
+      [theme.breakpoints.down('lg')]: {
+        maxWidth: 'calc(100% - 150px)',
       },
-      [theme.breakpoints.down("md")]: {
-        maxWidth: "calc(100% - 35px)",
+      [theme.breakpoints.down('md')]: {
+        maxWidth: 'calc(100% - 35px)',
       },
-      justifyContent: "space-around",
+      justifyContent: 'space-around',
     },
     shareProjectButton: (props) => {
       const css = {
@@ -166,20 +166,20 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
         marginRight: theme.spacing(1),
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
-      };
+      }
       if (props.isCustomHub) {
         return {
           ...css,
           color: theme.palette.primary.contrastText,
           backgroundColor: theme.palette.primary.main,
-        };
+        }
       } else {
-        return css;
+        return css
       }
     },
     notificationsHeadline: {
       padding: theme.spacing(2),
-      textAlign: "center",
+      textAlign: 'center',
     },
     loggedInLinksFixedHeader: {
       zIndex: 30,
@@ -192,31 +192,31 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
       marginRight: theme.spacing(0.25),
     },
     mobileAvatarContainer: {
-      display: "flex",
-      justifyContent: "center",
+      display: 'flex',
+      justifyContent: 'center',
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
     },
     languageSelectMobile: {
-      display: "flex",
-      justifyContent: "center",
+      display: 'flex',
+      justifyContent: 'center',
     },
     btnColor: (props) => {
       return {
         color: props.isCustomHub
           ? theme.palette.primary.contrastText
           : props.isLandingPage
-          ? "white"
-          : theme.palette.background.default_contrastText,
+            ? 'white'
+            : theme.palette.background.default_contrastText,
         borderColor: props.isCustomHub
           ? theme.palette.primary.contrastText
           : theme.palette.primary.main,
-        "&:hover": {
+        '&:hover': {
           borderColor: props.isCustomHub
             ? theme.palette.primary.contrastText
             : theme.palette.primary.main,
         },
-      };
+      }
     },
     linkUnderline: (props) => ({
       color: props.isCustomHub
@@ -228,7 +228,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
       color: theme.palette.background.default_contrastText,
     },
     poweredByImg: {
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         height: 15,
       },
       height: 20,
@@ -236,23 +236,23 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
       marginTop: theme.spacing(0.1),
     },
     poweredByTxt: {
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         fontSize: 4,
       },
       fontSize: 6,
       fontWeight: 800,
     },
     poweredByContainer: {
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      marginRight: "auto",
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      marginRight: 'auto',
       marginBottom: theme.spacing(-2),
       color: theme.palette.primary.contrastText,
-      "&:hover": {
-        textDecoration: "none",
+      '&:hover': {
+        textDecoration: 'none',
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down('md')]: {
         marginBottom: 0,
       },
     },
@@ -264,15 +264,15 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => {
     dropdownMenuInMobile: {
       maxHeight: 0,
       opacity: 0,
-      overflow: "hidden",
+      overflow: 'hidden',
       transition: `max-height 0.3s ease, opacity 0.3s ease`,
     },
     dropdownMenuInMobileOpen: {
-      maxHeight: "150px",
+      maxHeight: '150px',
       opacity: 1,
     },
-  };
-});
+  }
+})
 
 export default function Header({
   className,
@@ -286,24 +286,17 @@ export default function Header({
   isLandingPage,
   hasHubLandingPage,
 }: HeaderProps) {
-  const {
-    user,
-    signOut,
-    notifications,
-    pathName,
-    locale,
-    CUSTOM_HUB_URLS,
-    LOCATION_HUBS,
-  } = useContext(UserContext);
-  const texts = getTexts({ page: "navigation", locale: locale });
-  const [anchorEl, setAnchorEl] = useState<false | null | HTMLElement>(false);
-  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
-  const customHubUrls = CUSTOM_HUB_URLS || ["prio1"];
-  const isCustomHub = customHubUrls.includes(hubUrl);
-  const isLocationHub = LOCATION_HUBS.includes(hubUrl);
+  const { user, signOut, notifications, pathName, locale, CUSTOM_HUB_URLS, LOCATION_HUBS } =
+    useContext(UserContext)
+  const texts = getTexts({ page: 'navigation', locale: locale })
+  const [anchorEl, setAnchorEl] = useState<false | null | HTMLElement>(false)
+  const isNarrowScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('sm'))
+  const isMediumScreen = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  const customHubUrls = CUSTOM_HUB_URLS || ['prio1']
+  const isCustomHub = customHubUrls.includes(hubUrl)
+  const isLocationHub = LOCATION_HUBS.includes(hubUrl)
 
-  const LINKS = getLinks(pathName, texts, isLocationHub, isCustomHub, hasHubLandingPage, hubUrl);
+  const LINKS = getLinks(pathName, texts, isLocationHub, isCustomHub, hasHubLandingPage, hubUrl)
   const classes = useStyles({
     fixedHeader: fixedHeader,
     transparentHeader: transparentHeader,
@@ -314,57 +307,56 @@ export default function Header({
     isCustomHub: isCustomHub,
     isLoggedInUser: user ? true : false,
     isLandingPage: isLandingPage,
-  });
+  })
 
   const toggleShowNotifications = (event) => {
-    if (!anchorEl) setAnchorEl(event.currentTarget);
-    else setAnchorEl(null);
-  };
-  const localePrefix = getLocalePrefix(locale);
+    if (!anchorEl) setAnchorEl(event.currentTarget)
+    else setAnchorEl(null)
+  }
+  const localePrefix = getLocalePrefix(locale)
 
-  const onNotificationsClose = () => setAnchorEl(null);
+  const onNotificationsClose = () => setAnchorEl(null)
   const getLogo = () => {
-    const imageUrl = "/images";
+    const imageUrl = '/images'
     if (isCustomHub) {
-      return `${imageUrl}/hub_logos/ch_${hubUrl}_logo.svg`;
+      return `${imageUrl}/hub_logos/ch_${hubUrl}_logo.svg`
     }
 
     if (hubUrl && isLocationHub) {
-      const logoType = transparentHeader || isLandingPage ? "white" : null;
+      const logoType = transparentHeader || isLandingPage ? 'white' : null
       return `${imageUrl}/hub_logos/ch_${hubUrl?.toLowerCase()}_logo${
-        logoType ? `_${logoType}` : ""
-      }.svg`;
+        logoType ? `_${logoType}` : ''
+      }.svg`
     }
 
-    return loadDefaultLogo(transparentHeader, isMediumScreen);
-  };
+    return loadDefaultLogo(transparentHeader, isMediumScreen)
+  }
 
   const loadFallbackLogo = (
-    ev // TODO: implementing better with re-rendering after screen size change
-  ) => (ev.target.src = loadDefaultLogo(transparentHeader, isMediumScreen));
+    ev, // TODO: implementing better with re-rendering after screen size change
+  ) => (ev.target.src = loadDefaultLogo(transparentHeader, isMediumScreen))
 
   const loadDefaultLogo = (transparentHeader?: boolean, isMediumScreen?: boolean): string => {
     if (isMediumScreen) {
-      return transparentHeader ? "/images/logo_white_no_text.svg" : "/images/logo_no_text.svg";
+      return transparentHeader ? '/images/logo_white_no_text.svg' : '/images/logo_no_text.svg'
     } else {
-      return transparentHeader ? "/images/logo_white.png" : "/images/logo.svg";
+      return transparentHeader ? '/images/logo_white.png' : '/images/logo.svg'
     }
-  };
+  }
 
-  const logo = getLogo();
+  const logo = getLogo()
   const getLogoLink = () => {
     if (hubUrl) {
-      return `${localePrefix}/hubs/${hubUrl}/browse`;
+      return `${localePrefix}/hubs/${hubUrl}/browse`
     }
-    return `${localePrefix}/`;
-  };
-  const logoLink = getLogoLink();
+    return `${localePrefix}/`
+  }
+  const logoLink = getLogoLink()
   const poweredByLogoMap: Record<string, string> = {
-    prio1: "/images/logo_white.png",
-    perth: "/images/logo.svg",
-  };
-  const poweredByLogoSrc =
-    poweredByLogoMap[hubUrl?.toLowerCase() ?? ""] || "/images/logo_white.png";
+    prio1: '/images/logo_white.png',
+    perth: '/images/logo.svg',
+  }
+  const poweredByLogoSrc = poweredByLogoMap[hubUrl?.toLowerCase() ?? ''] || '/images/logo_white.png'
 
   return (
     <Box
@@ -381,7 +373,7 @@ export default function Header({
           />
         </Link>
         {isCustomHub && (
-          <Link href={localePrefix + "/"} className={classes.poweredByContainer}>
+          <Link href={localePrefix + '/'} className={classes.poweredByContainer}>
             <span className={classes.poweredByTxt}>{texts.powered_by}</span>
             <img
               src={poweredByLogoSrc}
@@ -430,7 +422,7 @@ export default function Header({
       </Container>
       <div>{isStaticPage && <StaticPageLinks isCustomHub={isCustomHub} />}</div>
     </Box>
-  );
+  )
 }
 
 function NormalScreenLinks({
@@ -451,12 +443,12 @@ function NormalScreenLinks({
   isLandingPage,
   classes,
 }) {
-  const { locale } = useContext(UserContext);
-  const localePrefix = getLocalePrefix(locale);
-  const theme = useTheme();
-  const isSmallMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down("lg"));
-  const STATIC_PAGE_LINKS = getStaticPageLinks(texts, locale, isCustomHub && hubUrl);
+  const { locale } = useContext(UserContext)
+  const localePrefix = getLocalePrefix(locale)
+  const theme = useTheme()
+  const isSmallMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const isMediumScreen = useMediaQuery<Theme>(theme.breakpoints.down('lg'))
+  const STATIC_PAGE_LINKS = getStaticPageLinks(texts, locale, isCustomHub && hubUrl)
 
   return (
     <Box className={classes.linkContainer}>
@@ -464,7 +456,7 @@ function NormalScreenLinks({
         (link) =>
           !(loggedInUser && link.onlyShowLoggedOut) &&
           !(!loggedInUser && link.onlyShowLoggedIn) &&
-          !link.showOnMobileOnly
+          !link.showOnMobileOnly,
       ).map((link, index) => {
         const buttonProps = getLinkButtonProps({
           link: link,
@@ -474,8 +466,8 @@ function NormalScreenLinks({
           transparentHeader: transparentHeader,
           toggleShowNotifications: toggleShowNotifications,
           localePrefix: localePrefix,
-        });
-        const Icon = link.icon;
+        })
+        const Icon = link.icon
         if (
           !(isMediumScreen && link.hideOnMediumScreen) &&
           !(isStaticPage && link.hideOnStaticPages)
@@ -483,7 +475,7 @@ function NormalScreenLinks({
           return (
             <Fragment key={index}>
               <span>
-                {link.type === "languageSelect" ? (
+                {link.type === 'languageSelect' ? (
                   <LanguageSelect
                     transparentHeader={transparentHeader}
                     isCustomHub={isCustomHub}
@@ -500,7 +492,7 @@ function NormalScreenLinks({
                         <Icon />
                       )}
                     </IconButton>
-                    {link.type === "notificationsButton" && anchorEl && (
+                    {link.type === 'notificationsButton' && anchorEl && (
                       <NotificationsBox
                         anchorEl={anchorEl}
                         keepMounted
@@ -543,7 +535,7 @@ function NormalScreenLinks({
                 )}
               </span>
             </Fragment>
-          );
+          )
       })}
       {loggedInUser && (
         <LoggedInNormalScreen
@@ -558,19 +550,19 @@ function NormalScreenLinks({
         />
       )}
     </Box>
-  );
+  )
 }
 const handleClickMenuItems = (isLogoutButton, url, handleLogout) => {
   // If it's a logout button, handle logout logic first
   if (isLogoutButton) {
-    handleLogout();
+    handleLogout()
   }
   // Set the href and force a reload
   if (!isLogoutButton) {
-    window.location.href = url;
-    window.location.reload();
+    window.location.href = url
+    window.location.reload()
   }
-};
+}
 const LoggedInNormalScreen = ({
   loggedInUser,
   handleLogout,
@@ -581,23 +573,23 @@ const LoggedInNormalScreen = ({
   hubUrl,
   classes,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const anchorRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false)
+  const anchorRef = useRef(null)
 
   const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+    setMenuOpen(!menuOpen)
+  }
 
   const handleCloseMenu = () => {
-    setMenuOpen(false);
-  };
+    setMenuOpen(false)
+  }
 
   const avatarProps = {
     className: classes.loggedInAvatar,
     src: getImageUrl(loggedInUser.image),
     alt: loggedInUser.name,
-  };
-  const queryString = hubUrl ? `?hub=${hubUrl}` : "";
+  }
+  const queryString = hubUrl ? `?hub=${hubUrl}` : ''
   return (
     <ClickAwayListener onClickAway={handleCloseMenu}>
       <Box className={classes.loggedInRoot}>
@@ -606,7 +598,7 @@ const LoggedInNormalScreen = ({
           disableElevation
           disableRipple
           disableFocusRipple
-          style={{ backgroundColor: "transparent" }}
+          style={{ backgroundColor: 'transparent' }}
           ref={anchorRef}
           color="inherit"
         >
@@ -630,13 +622,13 @@ const LoggedInNormalScreen = ({
                 .filter((link) => !link.showOnMobileOnly)
                 .map((link, index) => {
                   const menuItemProps: any = {
-                    component: "button",
+                    component: 'button',
                     className: classes.loggedInLink,
-                  };
-                  if (link.isLogoutButton) menuItemProps.onClick = handleLogout;
-                  else menuItemProps.href = localePrefix + link.href;
-                  const MenuItem_ = MenuItem as any;
-                  const newUrl = localePrefix + link.href;
+                  }
+                  if (link.isLogoutButton) menuItemProps.onClick = handleLogout
+                  else menuItemProps.href = localePrefix + link.href
+                  const MenuItem_ = MenuItem as any
+                  const newUrl = localePrefix + link.href
                   return (
                     <MenuItem_ // todo: type issue
                       key={index}
@@ -649,15 +641,15 @@ const LoggedInNormalScreen = ({
                     >
                       {link.text}
                     </MenuItem_>
-                  );
+                  )
                 })}
             </MenuList>
           </Paper>
         </Popper>
       </Box>
     </ClickAwayListener>
-  );
-};
+  )
+}
 
 function NarrowScreenLinks({
   loggedInUser,
@@ -675,25 +667,25 @@ function NarrowScreenLinks({
   isLandingPage,
   classes,
 }) {
-  const { locale } = useContext(UserContext);
-  const localePrefix = getLocalePrefix(locale);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const openDrawer = setIsDrawerOpen.bind(null, true);
-  const closeDrawer = setIsDrawerOpen.bind(null, false);
-  const STATIC_PAGE_LINKS = getStaticPageLinks(texts, locale, isCustomHub && hubUrl);
+  const { locale } = useContext(UserContext)
+  const localePrefix = getLocalePrefix(locale)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const openDrawer = setIsDrawerOpen.bind(null, true)
+  const closeDrawer = setIsDrawerOpen.bind(null, false)
+  const STATIC_PAGE_LINKS = getStaticPageLinks(texts, locale, isCustomHub && hubUrl)
   const linksOutsideDrawer = LINKS.filter(
     (link) =>
       link.alwaysDisplayDirectly === true &&
       !(loggedInUser && link.onlyShowLoggedOut) &&
-      !(!loggedInUser && link.onlyShowLoggedIn)
-  );
-  const queryString = hubUrl ? `?hub=${hubUrl}` : "";
+      !(!loggedInUser && link.onlyShowLoggedIn),
+  )
+  const queryString = hubUrl ? `?hub=${hubUrl}` : ''
 
   return (
     <>
       <Box>
         {linksOutsideDrawer.map((link, index) => {
-          const Icon = link.iconForDrawer;
+          const Icon = link.iconForDrawer
           const buttonProps = getLinkButtonProps({
             link: link,
             index: index,
@@ -704,10 +696,10 @@ function NarrowScreenLinks({
             isNarrowScreen: true,
             linksOutsideDrawer: linksOutsideDrawer,
             localePrefix: localePrefix,
-          });
+          })
 
           if (index === linksOutsideDrawer.length - 1) {
-            buttonProps.className = classes.marginRight;
+            buttonProps.className = classes.marginRight
           }
           return (
             <Fragment key={index}>
@@ -726,7 +718,7 @@ function NarrowScreenLinks({
                       <Icon />
                     )}
                   </IconButton>
-                  {link.type === "notificationsButton" && anchorEl && (
+                  {link.type === 'notificationsButton' && anchorEl && (
                     <NotificationsBox
                       anchorEl={anchorEl}
                       keepMounted
@@ -753,7 +745,7 @@ function NarrowScreenLinks({
                 </>
               ) : (
                 <span>
-                  {link.type === "languageSelect" ? (
+                  {link.type === 'languageSelect' ? (
                     <LanguageSelect
                       transparentHeader={transparentHeader}
                       isCustomHub={isCustomHub}
@@ -767,7 +759,7 @@ function NarrowScreenLinks({
                 </span>
               )}
             </Fragment>
-          );
+          )
         })}
         <span>
           <IconButton
@@ -799,13 +791,13 @@ function NarrowScreenLinks({
             {LINKS.filter(
               (link) =>
                 (!link.alwaysDisplayDirectly ||
-                  !(loggedInUser && link.alwaysDisplayDirectly === "loggedIn")) &&
+                  !(loggedInUser && link.alwaysDisplayDirectly === 'loggedIn')) &&
                 !(loggedInUser && link.onlyShowLoggedOut) &&
                 !(!loggedInUser && link.onlyShowLoggedIn) &&
-                !link.onlyShowOnNormalScreen
+                !link.onlyShowOnNormalScreen,
             ).map((link, index) => {
-              const Icon = link.iconForDrawer;
-              if (link.type !== "languageSelect") {
+              const Icon = link.iconForDrawer
+              if (link.type !== 'languageSelect') {
                 if (link?.showStaticLinksInDropdown && isCustomHub) {
                   return (
                     <NarrowScreenDropdownMenu
@@ -817,7 +809,7 @@ function NarrowScreenLinks({
                       STATIC_PAGE_LINKS={STATIC_PAGE_LINKS}
                       closeDrawer={closeDrawer}
                     />
-                  );
+                  )
                 } else {
                   return (
                     <Link
@@ -833,24 +825,24 @@ function NarrowScreenLinks({
                         <ListItemText primary={link.text} className={classes.drawerItem} />
                       </ListItem>
                     </Link>
-                  );
+                  )
                 }
               }
             })}
             {loggedInUser &&
               getLoggedInLinks({ loggedInUser: loggedInUser, texts: texts, queryString }).map(
                 (link, index) => {
-                  const Icon: any = link.iconForDrawer;
+                  const Icon: any = link.iconForDrawer
                   const avatarProps = {
                     className: classes.loggedInAvatarMobile,
                     src: getImageUrl(loggedInUser.image),
                     alt: loggedInUser.name,
-                  };
+                  }
                   if (link.avatar)
                     return (
                       <div className={classes.mobileAvatarContainer} key={index}>
                         <Link
-                          href={localePrefix + "/profiles/" + loggedInUser.url_slug + queryString}
+                          href={localePrefix + '/profiles/' + loggedInUser.url_slug + queryString}
                           underline="hover"
                         >
                           {loggedInUser?.badges?.length > 0 ? (
@@ -866,7 +858,7 @@ function NarrowScreenLinks({
                           )}
                         </Link>
                       </div>
-                    );
+                    )
                   else if (link.isLogoutButton)
                     return (
                       <ListItem button component="a" key={index} onClick={handleLogout}>
@@ -875,7 +867,7 @@ function NarrowScreenLinks({
                         </ListItemIcon>
                         <ListItemText primary={link.text} className={classes.drawerItem} />
                       </ListItem>
-                    );
+                    )
                   else
                     return (
                       <Link
@@ -891,14 +883,14 @@ function NarrowScreenLinks({
                           <ListItemText primary={link.text} className={classes.drawerItem} />
                         </ListItem>
                       </Link>
-                    );
-                }
+                    )
+                },
               )}
           </List>
         </SwipeableDrawer>
       </Box>
     </>
-  );
+  )
 }
 
 const NarrowScreenDropdownMenu = ({
@@ -909,8 +901,8 @@ const NarrowScreenDropdownMenu = ({
   STATIC_PAGE_LINKS,
   closeDrawer,
 }) => {
-  const [openDropdownInMobile, setOpenDropdownInMobile] = useState(false);
-  const toggleDropdownInMobile = setOpenDropdownInMobile.bind(null, !openDropdownInMobile);
+  const [openDropdownInMobile, setOpenDropdownInMobile] = useState(false)
+  const toggleDropdownInMobile = setOpenDropdownInMobile.bind(null, !openDropdownInMobile)
   return (
     <>
       <ListItem button component="a" onClick={toggleDropdownInMobile}>
@@ -922,7 +914,7 @@ const NarrowScreenDropdownMenu = ({
       </ListItem>
       <div
         className={`${classes.dropDownBgColorInMobile} ${classes.dropdownMenuInMobile} ${
-          openDropdownInMobile ? classes.dropdownMenuInMobileOpen : ""
+          openDropdownInMobile ? classes.dropdownMenuInMobileOpen : ''
         }`}
       >
         {STATIC_PAGE_LINKS.map((link, index) => {
@@ -932,18 +924,18 @@ const NarrowScreenDropdownMenu = ({
               key={index}
               underline="hover"
               className={classes.linkUnderline}
-              target={link.target || "_self"}
+              target={link.target || '_self'}
             >
               <ListItem button component="a" onClick={closeDrawer}>
                 <ListItemText primary={link.text} className={classes.drawerItem} />
               </ListItem>
             </Link>
-          );
+          )
         })}
       </div>
     </>
-  );
-};
+  )
+}
 
 const getLinkButtonProps = ({
   link,
@@ -955,7 +947,7 @@ const getLinkButtonProps = ({
   linksOutsideDrawer,
   localePrefix,
 }: any) => {
-  const buttonProps: any = {};
+  const buttonProps: any = {}
   // why we use index !== 0 here: (!isNarrowScreen && index !== 0)
   // removed index !== 0 from condition because we want to apply the first link className in the header
   if (!isNarrowScreen) {
@@ -963,39 +955,39 @@ const getLinkButtonProps = ({
       // Support multiple classNames in link.className
       // e.g. className: "btnColor buttonMarginLeft", in the heaserLink.ts file
       buttonProps.className = link.className
-        .split(" ")
+        .split(' ')
         .map((name) => classes[name])
         .filter(Boolean) // filter(Boolean) removes any undefined values
-        .join(" ");
-    } else buttonProps.className = classes.buttonMarginLeft;
+        .join(' ')
+    } else buttonProps.className = classes.buttonMarginLeft
   }
   if ((isNarrowScreen || loggedInUser || !link.vanillaIfLoggedOut) && link.isOutlinedInHeader) {
-    buttonProps.variant = "outlined";
+    buttonProps.variant = 'outlined'
   }
   const contained =
-    !isNarrowScreen && (loggedInUser || !link.vanillaIfLoggedOut) && link.isFilledInHeader;
+    !isNarrowScreen && (loggedInUser || !link.vanillaIfLoggedOut) && link.isFilledInHeader
   if (contained) {
-    buttonProps.variant = "contained";
+    buttonProps.variant = 'contained'
   }
 
   if (!isNarrowScreen && (loggedInUser || !link.vanillaIfLoggedOut) && link.icon) {
-    buttonProps.starticon = <link.icon />;
+    buttonProps.starticon = <link.icon />
   }
 
   // if (!transparentHeader) buttonProps.color = "primary";
-  else if (!contained && link.type !== "notificationsButton") buttonProps.color = "inherit";
-  if (link.type === "notificationsButton") buttonProps.onClick = toggleShowNotifications;
+  else if (!contained && link.type !== 'notificationsButton') buttonProps.color = 'inherit'
+  if (link.type === 'notificationsButton') buttonProps.onClick = toggleShowNotifications
   if (link.href) {
     if (link.isExternalLink) {
-      buttonProps.href = link.href;
-      buttonProps.target = "_blank";
+      buttonProps.href = link.href
+      buttonProps.target = '_blank'
     } else {
-      buttonProps.href = localePrefix + link.href;
+      buttonProps.href = localePrefix + link.href
     }
   }
   if (isNarrowScreen && index === linksOutsideDrawer.length - 1) {
-    buttonProps.className = classes.marginRight;
+    buttonProps.className = classes.marginRight
   }
 
-  return buttonProps;
-};
+  return buttonProps
+}

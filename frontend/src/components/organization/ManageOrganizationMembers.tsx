@@ -1,23 +1,23 @@
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useContext, useState } from "react";
-import ROLE_TYPES from "../../../public/data/role_types";
-import { apiRequest, getLocalePrefix, redirect } from "../../../public/lib/apiOperations";
-import { getAllChangedMembers, hasGreaterRole } from "../../../public/lib/manageMembers";
-import getTexts from "../../../public/texts/texts";
-import UserContext from "../context/UserContext";
-import ManageMembers from "../manageMembers/ManageMembers";
-import { useRouter } from "next/router";
+import { Button, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import { useRouter } from 'next/router'
+import React, { useContext, useState } from 'react'
+import ROLE_TYPES from '../../../public/data/role_types'
+import { apiRequest, getLocalePrefix, redirect } from '../../../public/lib/apiOperations'
+import { getAllChangedMembers, hasGreaterRole } from '../../../public/lib/manageMembers'
+import getTexts from '../../../public/texts/texts'
+import UserContext from '../context/UserContext'
+import ManageMembers from '../manageMembers/ManageMembers'
 
 const useStyles = makeStyles((theme) => {
   return {
     headline: {
-      textAlign: "center",
+      textAlign: 'center',
       marginTop: theme.spacing(4),
       color: theme.palette.background.default_contrastText,
     },
     buttons: {
-      float: "right",
+      float: 'right',
     },
     button: {
       marginRight: theme.spacing(2),
@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => {
     },
     buttonsContainer: {
       height: 40,
-      width: "100%",
+      width: '100%',
     },
-  };
-});
+  }
+})
 
 export default function ManageOrganizationMembers({
   user,
@@ -41,110 +41,110 @@ export default function ManageOrganizationMembers({
   availabilityOptions,
   hubUrl,
 }) {
-  const classes = useStyles();
-  const { locale } = useContext(UserContext);
-  const texts = getTexts({ page: "organization", locale: locale, organization: organization });
-  const [user_role, setUserRole] = useState(members.find((m) => m.id === user.id).role);
-  if (!user_role) setUserRole(members.find((m) => m.id === user.id).role);
+  const classes = useStyles()
+  const { locale } = useContext(UserContext)
+  const texts = getTexts({ page: 'organization', locale: locale, organization: organization })
+  const [user_role, setUserRole] = useState(members.find((m) => m.id === user.id).role)
+  if (!user_role) setUserRole(members.find((m) => m.id === user.id).role)
 
   const canEdit = (member) => {
-    return member.id === user.id || hasGreaterRole(user_role.role_type, member.role.role_type);
-  };
+    return member.id === user.id || hasGreaterRole(user_role.role_type, member.role.role_type)
+  }
 
-  const router = useRouter();
-  const isCreationStage = router.query.isCreationStage;
+  const router = useRouter()
+  const isCreationStage = router.query.isCreationStage
 
   type Params = {
-    hub?: string;
-    message?: string;
-    errorMessage?: string;
-  };
+    hub?: string
+    message?: string
+    errorMessage?: string
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const params: Params = {};
+    event.preventDefault()
+    const params: Params = {}
     if (hubUrl) {
-      params.hub = hubUrl;
+      params.hub = hubUrl
     }
     onSubmit()
       .then(() => {
-        params.message = texts.successfully_updated_org_members;
-        redirect("/organizations/" + organization.url_slug, params);
+        params.message = texts.successfully_updated_org_members
+        redirect('/organizations/' + organization.url_slug, params)
       })
       .catch((e) => {
-        console.log(e);
-        params.errorMessage = texts.not_all_your_updates_have_worked;
-        redirect("/organizations/" + organization.url_slug, params);
-      });
-  };
+        console.log(e)
+        params.errorMessage = texts.not_all_your_updates_have_worked
+        redirect('/organizations/' + organization.url_slug, params)
+      })
+  }
 
   const onSubmit = async () => {
-    if (!verifyInput()) return false;
-    const allChangedMembers = getAllChangedMembers(members, currentMembers, "organization_members");
+    if (!verifyInput()) return false
+    const allChangedMembers = getAllChangedMembers(members, currentMembers, 'organization_members')
     return Promise.all(
       allChangedMembers.map((m) => {
-        if (m.operation === "delete") deleteMember(m, locale);
-        if (m.operation === "update") updateMember(m, locale);
-        if (m.operation === "create") {
-          createMembers(m.organization_members, locale);
+        if (m.operation === 'delete') deleteMember(m, locale)
+        if (m.operation === 'update') updateMember(m, locale)
+        if (m.operation === 'create') {
+          createMembers(m.organization_members, locale)
         }
-        if (m.operation === "creator_change") {
-          updateCreator(m.new_creator, locale);
+        if (m.operation === 'creator_change') {
+          updateCreator(m.new_creator, locale)
         }
-      })
-    );
-  };
+      }),
+    )
+  }
 
   const verifyInput = () => {
     if (currentMembers.filter((cm) => cm.role.role_type === ROLE_TYPES.all_type).length !== 1) {
-      alert(texts.there_must_be_exactly_one_creator_of_organization);
-      return false;
+      alert(texts.there_must_be_exactly_one_creator_of_organization)
+      return false
     }
     if (!members.filter((m) => m.role.role_type === ROLE_TYPES.all_type).length === 1) {
-      alert(texts.error_no_creator);
-      return false;
+      alert(texts.error_no_creator)
+      return false
     }
-    return true;
-  };
+    return true
+  }
 
   const deleteMember = (m, locale) => {
     apiRequest({
-      method: "delete",
-      url: "/api/organizations/" + organization.url_slug + "/update_member/" + m.member_id + "/",
+      method: 'delete',
+      url: '/api/organizations/' + organization.url_slug + '/update_member/' + m.member_id + '/',
       token: token,
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const updateMember = (m) => {
     apiRequest({
-      method: "patch",
-      url: "/api/organizations/" + organization.url_slug + "/update_member/" + m.member_id + "/",
+      method: 'patch',
+      url: '/api/organizations/' + organization.url_slug + '/update_member/' + m.member_id + '/',
       token: token,
       payload: parseMemberForUpdateRequest(m, organization),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const createMembers = (organization_members) => {
     apiRequest({
-      method: "post",
-      url: "/api/organizations/" + organization.url_slug + "/add_members/",
+      method: 'post',
+      url: '/api/organizations/' + organization.url_slug + '/add_members/',
       token: token,
       payload: parseMembersForCreateRequest(organization_members, organization),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   const updateCreator = (new_creator) => {
     apiRequest({
-      method: "post",
-      url: "/api/organizations/" + organization.url_slug + "/change_creator/",
+      method: 'post',
+      url: '/api/organizations/' + organization.url_slug + '/change_creator/',
       token: token,
       payload: parseMemberForUpdateRequest(new_creator, organization),
       locale: locale,
-    }).catch(console.error);
-  };
+    }).catch(console.error)
+  }
 
   return (
     <>
@@ -169,7 +169,7 @@ export default function ManageOrganizationMembers({
           <div className={classes.buttons}>
             <Button
               href={`${getLocalePrefix(locale)}/organizations/${organization.url_slug}${
-                hubUrl ? `?hub=${hubUrl}` : ""
+                hubUrl ? `?hub=${hubUrl}` : ''
               }`}
               variant="contained"
               color="grey"
@@ -183,7 +183,7 @@ export default function ManageOrganizationMembers({
         </div>
       </form>
     </>
-  );
+  )
 }
 
 const parseMembersForCreateRequest = (members) => {
@@ -191,17 +191,17 @@ const parseMembersForCreateRequest = (members) => {
     organization_members: members.map((m) => ({
       ...m,
       permission_type_id: m.role.id,
-      role_in_organization: m.role_in_organization ? m.role_in_organization : "",
+      role_in_organization: m.role_in_organization ? m.role_in_organization : '',
     })),
-  };
-};
+  }
+}
 
 const parseMemberForUpdateRequest = (m, organization) => {
   return {
     id: m.member_id,
     user: m.id,
     role: m.role.id,
-    role_in_organization: m.role_in_organization ? m.role_in_organization : "",
+    role_in_organization: m.role_in_organization ? m.role_in_organization : '',
     organization: organization.id,
-  };
-};
+  }
+}

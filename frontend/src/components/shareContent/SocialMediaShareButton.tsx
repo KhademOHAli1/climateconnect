@@ -1,12 +1,12 @@
-import { IconButton, Theme, useMediaQuery } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import ShareIcon from "@mui/icons-material/Share";
-import React, { useContext, useState } from "react";
-import { apiRequest } from "../../../public/lib/apiOperations";
-import SocialMediaShareDialog from "./SocialMediaShareDialog";
-import UserContext from "../context/UserContext";
-import Cookies from "universal-cookie";
-import theme from "../../themes/theme";
+import ShareIcon from '@mui/icons-material/Share'
+import { IconButton, Theme, useMediaQuery } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { useContext, useState } from 'react'
+import Cookies from 'universal-cookie'
+import { apiRequest } from '../../../public/lib/apiOperations'
+import theme from '../../themes/theme'
+import UserContext from '../context/UserContext'
+import SocialMediaShareDialog from './SocialMediaShareDialog'
 
 const useStyles = makeStyles<Theme, { switchColors?: boolean }>((theme) => ({
   button: (props) => ({
@@ -15,24 +15,24 @@ const useStyles = makeStyles<Theme, { switchColors?: boolean }>((theme) => ({
       : theme.palette.primary.contrastText,
     width: 35,
     height: 35,
-    backgroundColor: props.switchColors ? "white" : theme.palette.primary.main,
-    "&:hover": {
-      backgroundColor: props.switchColors ? "white" : theme.palette.primary.main,
+    backgroundColor: props.switchColors ? 'white' : theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: props.switchColors ? 'white' : theme.palette.primary.main,
     },
   }),
-}));
+}))
 
 export type SocialMediaShareButtonProps = {
-  className?: string;
-  contentLinkPath?: any;
-  apiEndpoint?: any;
-  messageTitle?: any;
-  mailBody?: any;
-  texts?: any;
-  dialogTitle?: any;
-  switchColors?: any;
-  hubUrl?: string;
-};
+  className?: string
+  contentLinkPath?: any
+  apiEndpoint?: any
+  messageTitle?: any
+  mailBody?: any
+  texts?: any
+  dialogTitle?: any
+  switchColors?: any
+  hubUrl?: string
+}
 
 export default function SocialMediaShareButton({
   className,
@@ -45,22 +45,22 @@ export default function SocialMediaShareButton({
   switchColors,
   hubUrl,
 }: SocialMediaShareButtonProps) {
-  const classes = useStyles({ switchColors: switchColors });
-  const { locale } = useContext(UserContext);
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-  const isTinyScreen = useMediaQuery<Theme>(theme.breakpoints.down("sm"));
-  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down("md"));
-  const [showSocials, setShowSocials] = useState(false);
+  const classes = useStyles({ switchColors: switchColors })
+  const { locale } = useContext(UserContext)
+  const cookies = new Cookies()
+  const token = cookies.get('token')
+  const isTinyScreen = useMediaQuery<Theme>(theme.breakpoints.down('sm'))
+  const isSmallScreen = useMediaQuery<Theme>(theme.breakpoints.down('md'))
+  const [showSocials, setShowSocials] = useState(false)
   const toggleShowSocials = (value) => {
-    setShowSocials(value);
-  };
+    setShowSocials(value)
+  }
 
-  const [linkShared, setLinkShared] = useState(false);
+  const [linkShared, setLinkShared] = useState(false)
   const createShareRecord = (sharedVia) => {
-    if (sharedVia === SHARE_OPTIONS.link && linkShared) return; //only create a share-record for the link once per session
+    if (sharedVia === SHARE_OPTIONS.link && linkShared) return //only create a share-record for the link once per session
     apiRequest({
-      method: "post",
+      method: 'post',
       url: apiEndpoint,
       payload: { shared_via: sharedVia },
       token: token,
@@ -68,14 +68,14 @@ export default function SocialMediaShareButton({
     })
       .then(() => {
         if (sharedVia === SHARE_OPTIONS.link) {
-          setLinkShared(true);
+          setLinkShared(true)
         }
       })
       .catch(function (error) {
-        console.log(error);
-        if (error && error.reponse) console.log(error.response);
-      });
-  };
+        console.log(error)
+        if (error && error.reponse) console.log(error.response)
+      })
+  }
 
   //Assignment of the numbers has to match with ContentShares.SHARE_OPTIONS in the backend
   const SHARE_OPTIONS = {
@@ -89,11 +89,11 @@ export default function SocialMediaShareButton({
     e_mail: 7,
     link: 8,
     native_share_dialog_of_device: 9,
-  };
+  }
 
-  const queryString = hubUrl ? `?hub=${hubUrl}` : "";
-  const BASE_URL = process.env.BASE_URL ? process.env.BASE_URL : `https://climateconnect.earth`;
-  const contentLink = BASE_URL + contentLinkPath + queryString;
+  const queryString = hubUrl ? `?hub=${hubUrl}` : ''
+  const BASE_URL = process.env.BASE_URL ? process.env.BASE_URL : `https://climateconnect.earth`
+  const contentLink = BASE_URL + contentLinkPath + queryString
 
   const handleClick = () => {
     //navigator.share (Web Share API) is only available with https
@@ -104,13 +104,13 @@ export default function SocialMediaShareButton({
           url: contentLink,
         })
         .then(() => {
-          createShareRecord(SHARE_OPTIONS.native_share_dialog_of_device);
+          createShareRecord(SHARE_OPTIONS.native_share_dialog_of_device)
         })
-        .catch(console.error);
+        .catch(console.error)
     } else {
-      toggleShowSocials(true);
+      toggleShowSocials(true)
     }
-  };
+  }
 
   return (
     <>
@@ -133,5 +133,5 @@ export default function SocialMediaShareButton({
         dialogTitle={dialogTitle}
       />
     </>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import { Link } from "@mui/material";
-import React from "react";
+import { Link } from '@mui/material'
+import React from 'react'
 
 export default function getAboutTexts(classes) {
   return {
     top_section_headline: {
-      en: "About",
-      de: "Über Uns",
+      en: 'About',
+      de: 'Über Uns',
     },
     top_section_subheader: {
-      en: "A new way to fight climate change. Together. Nonprofit. Independent.",
-      de: "Eine neue Art den Klimawandel zu bekämpfen. Gemeinsam. Gemeinnützig. Unabhängig.",
+      en: 'A new way to fight climate change. Together. Nonprofit. Independent.',
+      de: 'Eine neue Art den Klimawandel zu bekämpfen. Gemeinsam. Gemeinnützig. Unabhängig.',
     },
     about_quote_text: {
       en: `We want to connect everyone that is fighting against climate change from
@@ -22,12 +22,12 @@ export default function getAboutTexts(classes) {
       dass es schon einen Unterschied machen kann, mit dem Rad anstatt mit dem Auto zur Arbeit zu fahren.`,
     },
     our_solution: {
-      en: "Our Solution",
-      de: "Unsere Lösung",
+      en: 'Our Solution',
+      de: 'Unsere Lösung',
     },
     climate_connect_was_born: {
-      en: "Climate Connect was born",
-      de: "Die Gründung von Climate Connect",
+      en: 'Climate Connect was born',
+      de: 'Die Gründung von Climate Connect',
     },
     climate_connect_was_born_text: {
       en: `The idea of Climate Connect was born after a local networking event in Chris and Tobi's
@@ -41,33 +41,31 @@ export default function getAboutTexts(classes) {
       So war die Idee geboren, das Ganze auf ein globales Level anzuheben und so viele Leute wie möglich zusammenzubringen, die gegen den Klimawandel kämpfen.`,
     },
     climate_connect_was_born_image_text: {
-      en:
-        "The idea of Climate Connect was born after the success of this event, which resulted in the creation of a Climate action concept for the University in Erlangen",
-      de:
-        "Nach dem Erfolg dieser Veranstaltung wurde die Idee für Climate Connect geboren. Außerdem war das Event unter anderem der Startschuss für die Erstellung eines Klimaschutzkonzeptes für die Universität in Erlangen-Nürnberg",
+      en: 'The idea of Climate Connect was born after the success of this event, which resulted in the creation of a Climate action concept for the University in Erlangen',
+      de: 'Nach dem Erfolg dieser Veranstaltung wurde die Idee für Climate Connect geboren. Außerdem war das Event unter anderem der Startschuss für die Erstellung eines Klimaschutzkonzeptes für die Universität in Erlangen-Nürnberg',
     },
     the_challenge: {
-      en: "The Challenge",
-      de: "Die Herausforderung",
+      en: 'The Challenge',
+      de: 'Die Herausforderung',
     },
     the_challenge_image_text: {
-      en: "One firefighter fights against bog fire in the twilight",
-      de: "Ein Feuerwehrmann kämpft gegen ein Moorbrand in der Dämmerung",
+      en: 'One firefighter fights against bog fire in the twilight',
+      de: 'Ein Feuerwehrmann kämpft gegen ein Moorbrand in der Dämmerung',
     },
     we_can_only_solve_the_climate_crisis_through_worldwide_collaboration: {
-      en: "We can only solve the climate crisis through worldwide collaboration",
-      de: "Wir können die Klimakrise nur durch eine weltweite Zusammenarbeit lösen",
+      en: 'We can only solve the climate crisis through worldwide collaboration',
+      de: 'Wir können die Klimakrise nur durch eine weltweite Zusammenarbeit lösen',
     },
     the_climate_crisis_is_the_biggest_challenge_text: {
       en: (
         <>
-          The climate crisis is <span className={classes?.marked}>the biggest challenge</span>{" "}
+          The climate crisis is <span className={classes?.marked}>the biggest challenge</span>{' '}
           humanity has ever faced - and we can only solve it together.
         </>
       ),
       de: (
         <>
-          Die Klimakrise ist <span className={classes?.marked}>die größte Herausforderung,</span>{" "}
+          Die Klimakrise ist <span className={classes?.marked}>die größte Herausforderung,</span>{' '}
           vor der die Menschheit jemals stand - wir können sie nur gemeinsam besiegen.
         </>
       ),
@@ -75,14 +73,14 @@ export default function getAboutTexts(classes) {
     spread_effective_solutions_globally_text: {
       en: (
         <>
-          Many people are working on very effective climate solutions. We need to{" "}
+          Many people are working on very effective climate solutions. We need to{' '}
           <span className={classes?.marked}>spread effective solutions</span> globally.
         </>
       ),
       de: (
         <>
           Viele Menschen arbeiten an sehr effektiven Lösungen für die Klimakrise. Wir müssen
-          lediglich diese effektiven{" "}
+          lediglich diese effektiven{' '}
           <span className={classes?.marked}>Lösungen weltweit verbreiten</span>.
         </>
       ),
@@ -90,86 +88,80 @@ export default function getAboutTexts(classes) {
     ngos_companies_governments_institutions_citizens_need_to_work_together_text: {
       en: (
         <>
-          NGOs, companies, governments, public institutions and citizens need to{" "}
+          NGOs, companies, governments, public institutions and citizens need to{' '}
           <span className={classes?.marked}>work together</span> to solve this crisis.
         </>
       ),
       de: (
         <>
-          NGOs, Unternehmen, Regierungen, öffentliche Einrichtungen und Bürger müssen{" "}
+          NGOs, Unternehmen, Regierungen, öffentliche Einrichtungen und Bürger müssen{' '}
           <span className={classes?.marked}>zusammenarbeiten</span>, um diese Krise zu lösen.
         </>
       ),
     },
     this_is_why_we_created_climate_connect: {
-      en: "This is why we created Climate Connect",
-      de: "Deshalb haben wir Climate Connect ins Leben gerufen",
+      en: 'This is why we created Climate Connect',
+      de: 'Deshalb haben wir Climate Connect ins Leben gerufen',
     },
     our_goals: {
-      en: "Our Goals",
-      de: "Unsere Ziele",
+      en: 'Our Goals',
+      de: 'Unsere Ziele',
     },
     climate_actors_connecting_over_the_internet: {
-      en: "climate actors connecting over the internet",
-      de: "Klimaschützer*innen, die sich über das Internet verbinden",
+      en: 'climate actors connecting over the internet',
+      de: 'Klimaschützer*innen, die sich über das Internet verbinden',
     },
     connect_everyone_working_on_climate_action: {
-      en: "Connect Everyone Working On Climate Action",
-      de: "Alle zusammenbringen, die am Klimaschutz arbeiten",
+      en: 'Connect Everyone Working On Climate Action',
+      de: 'Alle zusammenbringen, die am Klimaschutz arbeiten',
     },
     group_of_people_icon: {
-      en: "Group of People icon",
-      de: "Gruppe von Leuten Icon",
+      en: 'Group of People icon',
+      de: 'Gruppe von Leuten Icon',
     },
     accelerate_climate_action_worldwide: {
-      en: "Accelerate Climate Action Worldwide",
-      de: "Klimaschutz weltweit beschleunigen",
+      en: 'Accelerate Climate Action Worldwide',
+      de: 'Klimaschutz weltweit beschleunigen',
     },
     one_platform_for_all_climate_actors: {
-      en: "One Platform For All Climate Actors",
-      de: "Eine Plattform für alle Klimaschützer:innen",
+      en: 'One Platform For All Climate Actors',
+      de: 'Eine Plattform für alle Klimaschützer:innen',
     },
     how_climate_connect_works: {
-      en: "How Climate Connect Works",
-      de: "Wie Climate Connect funktioniert",
+      en: 'How Climate Connect Works',
+      de: 'Wie Climate Connect funktioniert',
     },
     spread_your_solution_globally: {
-      en: "Spread your solution globally",
-      de: "Verbreite deine Lösung weltweit",
+      en: 'Spread your solution globally',
+      de: 'Verbreite deine Lösung weltweit',
     },
     spread_your_solution_globally_text: {
-      en:
-        "Share your climate change solutions with the climate action community and find people who can use your experience to replicate your solutions somewhere else. Receive help and feedback on what you are doing to combat global warming and increase your impact!",
-      de:
-        "Teile deine Lösung gegen den Klimawandel mit der Klimaschutz Community und finde Personen, die dein Projekt auch an anderen Orten verwirklichen können. Erhalte Hilfe und Feedback zu dem, wie du was du gegen die Globale Erwärmung tust und erhöhe deinen Impact!",
+      en: 'Share your climate change solutions with the climate action community and find people who can use your experience to replicate your solutions somewhere else. Receive help and feedback on what you are doing to combat global warming and increase your impact!',
+      de: 'Teile deine Lösung gegen den Klimawandel mit der Klimaschutz Community und finde Personen, die dein Projekt auch an anderen Orten verwirklichen können. Erhalte Hilfe und Feedback zu dem, wie du was du gegen die Globale Erwärmung tust und erhöhe deinen Impact!',
     },
     how_to_start: {
-      en: "How to start",
-      de: "So startest du",
+      en: 'How to start',
+      de: 'So startest du',
     },
     get_inspired: {
-      en: "Get inspired",
-      de: "Lass dich inspirieren",
+      en: 'Get inspired',
+      de: 'Lass dich inspirieren',
     },
     get_inspired_text: {
-      en:
-        "Find inspiring solutions to global warming. Replicate succesful projects and benefit from the experience of others. Find solutions that actually make a difference! Contact the project owners directly to ask about their lessons learned and knowledge on any specific project.",
-      de:
-        "Finde inspirierende Lösungen zur globalen Erwärmung. Vervielfältige erfolgreiche Projekte und profitiere von den Erfahrungen anderer. Finde Lösungen, die tatsächlich einen Unterschied machen! Wende dich direkt an die Projektverantwortlichen und frag sie nach ihren Erfahrungen und deren Wissen über ein bestimmtes Projekt.",
+      en: 'Find inspiring solutions to global warming. Replicate succesful projects and benefit from the experience of others. Find solutions that actually make a difference! Contact the project owners directly to ask about their lessons learned and knowledge on any specific project.',
+      de: 'Finde inspirierende Lösungen zur globalen Erwärmung. Vervielfältige erfolgreiche Projekte und profitiere von den Erfahrungen anderer. Finde Lösungen, die tatsächlich einen Unterschied machen! Wende dich direkt an die Projektverantwortlichen und frag sie nach ihren Erfahrungen und deren Wissen über ein bestimmtes Projekt.',
     },
     worldwide_collaboration: {
-      en: "Worldwide collaboration",
-      de: "Weltweite Zusammenarbeit",
+      en: 'Worldwide collaboration',
+      de: 'Weltweite Zusammenarbeit',
     },
     worldwide_collaboration_text: {
-      en:
-        "Worldwide collaboration in climate action is the main goal of Climate Connect. We want everyone involved in fighting climate change to work together! Filter projects by what skills they are looking for to find out where you can make the biggest difference with your individual skillset!",
-      de:
-        "Das Hauptziel von Climate Connect ist weltweite Zusammenarbeit für den Klimaschutz. Wir wollen, dass alle die im Kampf gegen den Klimawandel beteiligt sind, zusammenarbeiten! Filtere Projekte nach den gesuchten Fähigkeiten, um herauszufinden, wo du mit deinem individuellen Fähigkeiten am meisten bewirken kannst!",
+      en: 'Worldwide collaboration in climate action is the main goal of Climate Connect. We want everyone involved in fighting climate change to work together! Filter projects by what skills they are looking for to find out where you can make the biggest difference with your individual skillset!',
+      de: 'Das Hauptziel von Climate Connect ist weltweite Zusammenarbeit für den Klimaschutz. Wir wollen, dass alle die im Kampf gegen den Klimawandel beteiligt sind, zusammenarbeiten! Filtere Projekte nach den gesuchten Fähigkeiten, um herauszufinden, wo du mit deinem individuellen Fähigkeiten am meisten bewirken kannst!',
     },
     our_team: {
-      en: "Our Team",
-      de: "Unser Team",
+      en: 'Our Team',
+      de: 'Unser Team',
     },
     our_team_text: {
       en: `We are an international team of 3 people running Climate Connect full-time and around 20
@@ -182,7 +174,7 @@ export default function getAboutTexts(classes) {
         <>
           <Link underline="always" href="mailto:contact@climateconnect.earth">
             Contact us
-          </Link>{" "}
+          </Link>{' '}
           if you are interested in joining the team!
         </>
       ),
@@ -190,72 +182,62 @@ export default function getAboutTexts(classes) {
         <>
           <Link underline="always" href="mailto:contact@climateconnect.earth">
             Kontaktiere uns,
-          </Link>{" "}
+          </Link>{' '}
           wenn du interessiert bist, mitzumachen!
         </>
       ),
     },
     icon_displays_2_people: {
-      en: "Icon displays 2 people",
-      de: "Icon zeigt 2 Personen",
+      en: 'Icon displays 2 people',
+      de: 'Icon zeigt 2 Personen',
     },
     find_out_more: {
-      en: "Find Out More",
-      de: "Finde mehr heraus",
+      en: 'Find Out More',
+      de: 'Finde mehr heraus',
     },
     learn_more_about_out_team: {
-      en: "Learn more about our team and why we do what we are doing - coming soon!",
-      de: "Lerne mehr über unser Team und warum wir das tun was wir tun - Bald mehr hierzu!",
+      en: 'Learn more about our team and why we do what we are doing - coming soon!',
+      de: 'Lerne mehr über unser Team und warum wir das tun was wir tun - Bald mehr hierzu!',
     },
     the_idea_is_born: {
-      en: "The Idea Is Born",
-      de: "Die Idee ist geboren",
+      en: 'The Idea Is Born',
+      de: 'Die Idee ist geboren',
     },
     the_idea_is_born_text: {
-      en:
-        "After the networking event, we started working on a way for climate actors to work together to spread good climate solutions worldwide. The idea of Climate Connect was born.",
-      de:
-        "Nach dem Networking-Event haben wir begonnen an einem Weg zu arbeiten, um Klimaschützer*innen zu ermöglichen zusammenzuarbeiten und effektive Klimalösungen weltweit zu verbreiten. Die Idee von Climate Connect war geboren.",
+      en: 'After the networking event, we started working on a way for climate actors to work together to spread good climate solutions worldwide. The idea of Climate Connect was born.',
+      de: 'Nach dem Networking-Event haben wir begonnen an einem Weg zu arbeiten, um Klimaschützer*innen zu ermöglichen zusammenzuarbeiten und effektive Klimalösungen weltweit zu verbreiten. Die Idee von Climate Connect war geboren.',
     },
     first_prototype: {
-      en: "First Prototype",
-      de: "Erster Prototyp",
+      en: 'First Prototype',
+      de: 'Erster Prototyp',
     },
     first_prototype_text: {
-      en:
-        "We create our first interactive design prototype and create concepts for how to create collaboration between climate actors. Our team of volunteers starts growing.",
-      de:
-        "Wir erstellen unser ersten interaktiven Deisgn Prototyp und das Konzept, wie eine Zusammenarbeit zwischen Klimsaschützern möglich ist, erstellt. Unser Team von Freiweilligen beginnt zu wachsen.",
+      en: 'We create our first interactive design prototype and create concepts for how to create collaboration between climate actors. Our team of volunteers starts growing.',
+      de: 'Wir erstellen unser ersten interaktiven Deisgn Prototyp und das Konzept, wie eine Zusammenarbeit zwischen Klimsaschützern möglich ist, erstellt. Unser Team von Freiweilligen beginnt zu wachsen.',
     },
     beta_launch: {
-      en: "Beta launch",
-      de: "Beta Launch",
+      en: 'Beta launch',
+      de: 'Beta Launch',
     },
     beta_launch_text: {
-      en:
-        "We finally launched Climate Connect in Open Beta. New functionality is added every week and we constantly improve the platform based on your feedback.",
-      de:
-        "Wir haben Climate Connect endlich in der Open Beta veröffentlicht. Jede Woche kommen neue Funktionen hinzu und wir verbessern die Plattform ständig auf der Grundlage eures Feedbacks.",
+      en: 'We finally launched Climate Connect in Open Beta. New functionality is added every week and we constantly improve the platform based on your feedback.',
+      de: 'Wir haben Climate Connect endlich in der Open Beta veröffentlicht. Jede Woche kommen neue Funktionen hinzu und wir verbessern die Plattform ständig auf der Grundlage eures Feedbacks.',
     },
     leaving_beta: {
-      en: "Leaving Beta",
-      de: "Verlassen der Beta",
+      en: 'Leaving Beta',
+      de: 'Verlassen der Beta',
     },
     leaving_beta_text: {
-      en:
-        "In the winter of 2021/2022 we expect all core functionality to work smoothly and all pages and content to be polished and user-friendly. Help us get here by sharing your feedback!",
-      de:
-        "Im Winter 2021/2022 erwarten wir, dass alle Kernfunktionen reibungslos funktionieren und alle Seiten sowie Inhalte ausgefeilt und benutzerfreundlich sind. Helft uns, dies zu erreichen, indem ihr uns Feedback gebt!",
+      en: 'In the winter of 2021/2022 we expect all core functionality to work smoothly and all pages and content to be polished and user-friendly. Help us get here by sharing your feedback!',
+      de: 'Im Winter 2021/2022 erwarten wir, dass alle Kernfunktionen reibungslos funktionieren und alle Seiten sowie Inhalte ausgefeilt und benutzerfreundlich sind. Helft uns, dies zu erreichen, indem ihr uns Feedback gebt!',
     },
     after_realizing_the_need_for_global_collaboration: {
-      en:
-        "After realizing the need for global collaboration, Climate Connect was launched in July 2020",
-      de:
-        "Nachdem die Notwendigkeit einer globalen Zusammenarbeit erkannt wurde, wurde Climate Connect im Juli 2020 ins Leben gerufen",
+      en: 'After realizing the need for global collaboration, Climate Connect was launched in July 2020',
+      de: 'Nachdem die Notwendigkeit einer globalen Zusammenarbeit erkannt wurde, wurde Climate Connect im Juli 2020 ins Leben gerufen',
     },
     our_values: {
-      en: "Our Values",
-      de: "Unsere Werte",
+      en: 'Our Values',
+      de: 'Unsere Werte',
     },
     climate_connect_is_a_donation_funded_ngo: {
       en: (
@@ -266,7 +248,7 @@ export default function getAboutTexts(classes) {
       ),
       de: (
         <>
-          Climate Connect ist eine durch{" "}
+          Climate Connect ist eine durch{' '}
           <span className={classes?.yellow}>Spenden finanzierte</span> NGO - wir widmen unsere
           gesamte Energie der Bekämpfung des Klimawandels.
         </>
@@ -275,13 +257,13 @@ export default function getAboutTexts(classes) {
     being_an_independent_organisation_allows_us_to_work_with: {
       en: (
         <>
-          Being an independent organisation allows us to work with{" "}
+          Being an independent organisation allows us to work with{' '}
           <span className={classes?.yellow}>everyone involved in fighting climate change.</span>
         </>
       ),
       de: (
         <>
-          Da wir eine unabhängige Organisation sind, können wir mit{" "}
+          Da wir eine unabhängige Organisation sind, können wir mit{' '}
           <span className={classes?.yellow}>
             allen zusammenarbeiten, die im Kampf gegen den Klimawandel beteiligt sind.
           </span>
@@ -291,7 +273,7 @@ export default function getAboutTexts(classes) {
     this_is_also_why_we_include_our_community_as_much_as_possible: {
       en: (
         <>
-          This is also why we include our community as much as possible. Our codebase is{" "}
+          This is also why we include our community as much as possible. Our codebase is{' '}
           <span className={classes?.yellow}>open source</span>, we organize regular network events
           and let our users help us decide what steps to take next.
         </>
@@ -306,28 +288,28 @@ export default function getAboutTexts(classes) {
       ),
     },
     free_and_nonprofit: {
-      en: "Free & Non-Profit",
-      de: "Kostenlos & Gemeinnützig",
+      en: 'Free & Non-Profit',
+      de: 'Kostenlos & Gemeinnützig',
     },
     open_source: {
-      en: "Open Source",
-      de: "Open Source",
+      en: 'Open Source',
+      de: 'Open Source',
     },
     community_driven: {
-      en: "Community driven",
-      de: "Community getrieben",
+      en: 'Community driven',
+      de: 'Community getrieben',
     },
     independent: {
-      en: "Independent",
-      de: "Unabhängig",
+      en: 'Independent',
+      de: 'Unabhängig',
     },
     idea_lightbulb_icon: {
-      en: "Idea lightbulb",
-      de: "Idee Glühbirne",
+      en: 'Idea lightbulb',
+      de: 'Idee Glühbirne',
     },
     this_is_climate_connect: {
-      en: "This is Climate Connect",
-      de: "Das ist Climate Connect",
+      en: 'This is Climate Connect',
+      de: 'Das ist Climate Connect',
     },
     a_free_nonprofit_climate_action_network: {
       en: (
@@ -342,12 +324,12 @@ export default function getAboutTexts(classes) {
       ),
     },
     hundred_percent_independent: {
-      en: "100% independent",
-      de: "100% Unabhängig",
+      en: '100% independent',
+      de: '100% Unabhängig',
     },
     heart_icon: {
-      en: "Heart Icon",
-      de: "Herz Symbol",
+      en: 'Heart Icon',
+      de: 'Herz Symbol',
     },
     //Split into 3 lines
     for_everyone_who_contributes_or_wants_to_contribute: {
@@ -391,12 +373,12 @@ export default function getAboutTexts(classes) {
       ),
     },
     effective_climate_action_only_works_with_global_collaboration: {
-      en: "Effective climate action only works with global collaboration",
-      de: "Effektiver Klimaschutz funktioniert nur durch globale Zusammenarbeit",
+      en: 'Effective climate action only works with global collaboration',
+      de: 'Effektiver Klimaschutz funktioniert nur durch globale Zusammenarbeit',
     },
     winter: {
-      en: "Winter",
-      de: "Winter",
+      en: 'Winter',
+      de: 'Winter',
     },
-  };
+  }
 }

@@ -1,6 +1,6 @@
-import React, { ReactNode, useState } from "react";
-import { FilterContext } from "../context/FilterContext";
-import { applyNewFilters, getInitialFilters } from "../../../public/lib/filterOperations";
+import React, { ReactNode, useState } from 'react'
+import { applyNewFilters, getInitialFilters } from '../../../public/lib/filterOperations'
+import { FilterContext } from '../context/FilterContext'
 
 // For the initial construction, filters use information provided in the pages/browse.tsx and the pages/[hubUrl].tsx
 // But the filters it self are used in a multiple deeply nested components (e.g. FilterSearchBar, FilterTabs and BrowseContent)
@@ -22,12 +22,12 @@ export function FilterProvider({
   token,
   hubUrl,
 }: {
-  children: ReactNode;
-  initialLocationFilter: any;
-  filterChoices: any;
-  locale: any;
-  token: any;
-  hubUrl?: any;
+  children: ReactNode
+  initialLocationFilter: any
+  filterChoices: any
+  locale: any
+  token: any
+  hubUrl?: any
 }) {
   // State
 
@@ -37,27 +37,27 @@ export function FilterProvider({
       filterChoices,
       locale,
       initialLocationFilter,
-    })
-  );
-  const [tabsWhereFiltersWereApplied, setTabsWhereFiltersWereApplied] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+    }),
+  )
+  const [tabsWhereFiltersWereApplied, setTabsWhereFiltersWereApplied] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Handlers
   const handleSetErrorMessage = (newMessage) => {
-    setErrorMessage(newMessage);
-  };
+    setErrorMessage(newMessage)
+  }
 
   const handleAddFilters = (newFilters) => {
-    setFilters({ ...filters, ...newFilters });
-  };
+    setFilters({ ...filters, ...newFilters })
+  }
 
   const handleUpdateFilterValues = (valuesToUpdate) => {
-    setFilters({ ...filters, ...valuesToUpdate });
-  };
+    setFilters({ ...filters, ...valuesToUpdate })
+  }
 
   const handleSetTabsWhereFiltersWereApplied = (tabs) => {
-    setTabsWhereFiltersWereApplied(tabs);
-  };
+    setTabsWhereFiltersWereApplied(tabs)
+  }
 
   const handleApplyNewFilters = async ({ type, newFilters, closeFilters }) => {
     return await applyNewFilters({
@@ -73,8 +73,8 @@ export function FilterProvider({
       tabsWhereFiltersWereApplied,
       handleSetTabsWhereFiltersWereApplied,
       hubUrl: hubUrl ?? undefined,
-    });
-  };
+    })
+  }
 
   return (
     <FilterContext.Provider
@@ -91,5 +91,5 @@ export function FilterProvider({
     >
       {children}
     </FilterContext.Provider>
-  );
+  )
 }

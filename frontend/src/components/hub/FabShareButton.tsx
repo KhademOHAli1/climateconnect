@@ -1,30 +1,30 @@
-import { Fab } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
-import { getLocalePrefix } from "../../../public/lib/apiOperations";
-import AddIcon from "@mui/icons-material/Add";
+import AddIcon from '@mui/icons-material/Add'
+import { Fab } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import { getLocalePrefix } from '../../../public/lib/apiOperations'
 
 type ShareProjectMakeStyleProps = {
-  isCustomHub: boolean;
-};
+  isCustomHub: boolean
+}
 
 const shareProjectFabStyle = makeStyles<Theme, ShareProjectMakeStyleProps>((theme) => ({
   fabShareProject: (props: ShareProjectMakeStyleProps) => ({
-    position: "fixed",
+    position: 'fixed',
     background: props.isCustomHub
       ? theme.palette.background.default_contrastText
       : theme.palette.primary.light,
-    color: props.isCustomHub ? theme.palette.background.default : "default",
+    color: props.isCustomHub ? theme.palette.background.default : 'default',
     // bottom: theme.spacing(5),
     right: theme.spacing(3),
   }),
-}));
+}))
 
 interface FabShareButtonProps {
-  locale: string;
-  hubAmbassador?: any;
-  isCustomHub: boolean;
-  hubUrl?: string;
+  locale: string
+  hubAmbassador?: any
+  isCustomHub: boolean
+  hubUrl?: string
 }
 
 export const FabShareButton = ({
@@ -33,8 +33,8 @@ export const FabShareButton = ({
   isCustomHub,
   hubUrl,
 }: FabShareButtonProps) => {
-  const fabClass = shareProjectFabStyle({ isCustomHub: isCustomHub });
-  const queryString = hubUrl ? `?hub=${hubUrl}` : "";
+  const fabClass = shareProjectFabStyle({ isCustomHub: isCustomHub })
+  const queryString = hubUrl ? `?hub=${hubUrl}` : ''
   return (
     <Fab
       className={fabClass.fabShareProject}
@@ -45,5 +45,5 @@ export const FabShareButton = ({
     >
       <AddIcon />
     </Fab>
-  );
-};
+  )
+}

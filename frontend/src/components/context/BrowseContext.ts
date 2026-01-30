@@ -1,7 +1,7 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 const BrowseContext = createContext<{
-  projectTypes?: any;
-}>({});
+  projectTypes?: any
+}>({})
 
-export default BrowseContext;
+export default BrowseContext
