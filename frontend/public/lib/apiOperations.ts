@@ -5,6 +5,7 @@ import { ParsedUrlQueryInput } from 'querystring'
 import type { UrlObject } from 'url'
 import { CcLocale } from '../../src/types'
 import tokenConfig from '../config/tokenConfig'
+import { apiCache, getTtlForUrl } from './apiCache'
 
 type Args = {
   method: Method
@@ -13,11 +14,27 @@ type Args = {
   payload?: any
   locale?: CcLocale
   headers?: object
+  /** Enable client-side caching for this request (GET only) */
+  useCache?: boolean
+  /** Custom cache TTL in milliseconds (uses auto-detection by URL if not specified) */
+  cacheTtl?: number
 }
 // Typed apiRequest method
 // Defaults to any to prevent compiler issues wherever its called and there is not type being passed.
 export const apiRequest = async <T = any>(args: Args) => {
-  const { method, url, token, payload, locale, headers = {} } = args
+  const { method, url, token, payload, locale, headers = {}, useCache = false, cacheTtl } = args
+
+  // Check cache for GET requests (client-side only)
+  const isGetRequest = method.toLowerCase() === 'get'
+  const canUseCache = useCache && isGetRequest && !payload && typeof window !== 'undefined'
+  const cacheKey = `${locale || 'en'}:${url}`
+
+  if (canUseCache) {
+    const cachedData = apiCache.get<AxiosResponse<T>>(cacheKey)
+    if (cachedData) {
+      return cachedData
+    }
+  }
 
   const acceptLanguageHeadersByLocale = {
     de: 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -32,6 +49,15 @@ export const apiRequest = async <T = any>(args: Args) => {
   const requestPromise: Promise<AxiosResponse<T>> = payload
     ? axios[method](process.env.API_URL + url, payload, config)
     : axios[method](process.env.API_URL + url, config)
+
+  // Cache successful GET responses
+  if (canUseCache) {
+    return requestPromise.then((response) => {
+      const ttl = cacheTtl ?? getTtlForUrl(url)
+      apiCache.set(cacheKey, response, ttl)
+      return response
+    })
+  }
 
   // Handle promise result wherever this method is called, either on a try catch block or with .then | .catch methods.
   return requestPromise
@@ -98,6 +124,23 @@ export const sendToLogin = async (
 
 export function getLocalePrefix(locale: string) {
   return locale === 'en' ? '' : `/${locale}`
+}
+
+/**
+ * Clear all cached API responses
+ * Call this on logout or when user data changes significantly
+ */
+export function clearApiCache(): void {
+  apiCache.clear()
+}
+
+/**
+ * Invalidate specific cache entries by URL pattern
+ */
+export function invalidateCache(urlPattern: string): void {
+  // The apiCache doesn't expose iteration, so we'll just clear all for now
+  // In production, you might want a more sophisticated cache invalidation
+  apiCache.clear()
 }
 
 export const getRolesOptions = async (token: string | undefined, locale: CcLocale) => {
