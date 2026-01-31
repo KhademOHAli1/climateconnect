@@ -366,9 +366,12 @@ CHANNEL_LAYERS = {
                 {
                     "address": (env("REDIS_HOST"), env("REDIS_PORT", 6379)),
                     "password": env("REDIS_PASSWORD"),
-                    "ssl": True,
+                    "ssl": env("ENVIRONMENT") == "production",
                 }
-            ]
+            ],
+            # Channel layer optimizations
+            "capacity": 1500,  # Max messages per channel (default: 100)
+            "expiry": 60,  # Message expiry in seconds (default: 60)
         },
     }
 }
@@ -391,6 +394,25 @@ CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour
 CELERY_TASK_COMPRESSION = "gzip"  # Compress task payloads
 CELERY_RESULT_COMPRESSION = "gzip"  # Compress results
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# Use orjson for faster Celery serialization (2-10x faster than json)
+CELERY_TASK_SERIALIZER = "json"  # Keep json for compatibility
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
+
+# Celery task routing for better performance
+CELERY_TASK_ROUTES = {
+    # High priority tasks (notifications, emails)
+    "climateconnect_api.tasks.send_*": {"queue": "high_priority"},
+    # Low priority tasks (analytics, batch processing)
+    "climateconnect_api.tasks.batch_*": {"queue": "low_priority"},
+}
+
+# Rate limiting for tasks
+CELERY_TASK_ANNOTATIONS = {
+    "climateconnect_api.tasks.send_email": {"rate_limit": "100/m"},
+}
+
 LOCALES = ["en", "de"]
 
 LOCALE_PATHS = [
@@ -426,6 +448,9 @@ CACHES = {
             "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
             # Ignore cache errors to prevent site downtime
             "IGNORE_EXCEPTIONS": True,
+            # Socket settings for faster connections
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
         },
         "KEY_PREFIX": "cc",
         "TIMEOUT": 2 * 24 * 3600,  # 2 days default
@@ -441,6 +466,31 @@ CACHES = {
         },
         "KEY_PREFIX": "cc_session",
         "TIMEOUT": 7 * 24 * 3600,  # 7 days for sessions
+    },
+    # Short-lived cache for API responses (aggressive caching)
+    "api": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+        "OPTIONS": {
+            "PASSWORD": env("REDIS_PASSWORD"),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PARSER_CLASS": "redis.connection.HiredisParser",
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+        },
+        "KEY_PREFIX": "cc_api",
+        "TIMEOUT": 300,  # 5 minutes for API responses
+    },
+    # Very short cache for real-time data
+    "realtime": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+        "OPTIONS": {
+            "PASSWORD": env("REDIS_PASSWORD"),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PARSER_CLASS": "redis.connection.HiredisParser",
+        },
+        "KEY_PREFIX": "cc_rt",
+        "TIMEOUT": 30,  # 30 seconds for real-time data
     },
 }
 
