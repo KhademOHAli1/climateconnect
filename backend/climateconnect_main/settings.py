@@ -81,11 +81,17 @@ LIBRARY_APPS = [
     "django_celery_beat",
 ]
 
-DEBUG_APPS = ["debug_toolbar"]
+# Only include debug_toolbar if it's installed (it's a dev dependency)
+DEBUG_APPS = []
+try:
+    import debug_toolbar  # noqa: F401
+    DEBUG_APPS = ["debug_toolbar"]
+except ImportError:
+    pass
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: django.conf.settings.DEBUG,
-    "SHOW_COLLAPSED": False,  # Default is False
+    "SHOW_TOOLBAR_CALLBACK": lambda request: django.conf.settings.DEBUG and DEBUG_APPS,
+    "SHOW_COLLAPSED": False,
 }
 
 SECURITY_MIDDLEWARE = [
@@ -106,7 +112,10 @@ PERFORMANCE_MIDDLEWARE = [
     "climateconnect_main.middleware.performance.PreloadHintsMiddleware",
 ]
 
-DEBUG_MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+# Only include debug toolbar middleware if debug_toolbar is installed
+DEBUG_MIDDLEWARE = []
+if DEBUG_APPS:  # DEBUG_APPS is set above based on whether debug_toolbar is importable
+    DEBUG_MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 NORMAL_MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",

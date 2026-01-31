@@ -8,7 +8,7 @@ cache and prioritize resources for faster First Contentful Paint.
 import hashlib
 import time
 from django.conf import settings
-from django.utils.cache import patch_cache_control, patch_vary_headers
+from django.utils.cache import patch_cache_control
 
 
 class CacheControlMiddleware:

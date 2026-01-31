@@ -11,7 +11,6 @@ from django.utils.translation import get_language
 
 from organization.models import Project, Organization
 from organization.utility.project import get_project_name, get_project_short_description
-from organization.models.type import PROJECT_TYPES
 
 
 class ProjectSSRSerializer(serializers.ModelSerializer):

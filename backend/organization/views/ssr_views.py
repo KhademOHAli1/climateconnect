@@ -14,7 +14,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.db.models import Prefetch, Count
 from asgiref.sync import sync_to_async
 
 from organization.models import Project, Organization

@@ -35,7 +35,6 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urls = [
-    path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
     # Health check for load balancers (no auth required)
     path("health/", health_views.HealthCheckView.as_view(), name="health-check"),
@@ -192,3 +191,10 @@ urls = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urls
+# Conditionally add debug toolbar URLs if installed and DEBUG is True
+if settings.DEBUG:
+    try:
+        import debug_toolbar  # noqa: F401
+        urlpatterns = [path("__debug__/", include("debug_toolbar.urls"))] + urlpatterns
+    except ImportError:
+        pass

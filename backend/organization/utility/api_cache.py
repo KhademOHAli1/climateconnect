@@ -7,7 +7,6 @@ import hashlib
 import json
 from functools import wraps
 from django.core.cache import cache
-from django.conf import settings
 from rest_framework.response import Response
 
 # Cache timeouts (in seconds)
