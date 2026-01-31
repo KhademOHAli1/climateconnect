@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
 from django.db.models import Q
 from hubs.serializers.hub import (
@@ -12,6 +15,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+
+# Hub data changes infrequently - cache for 5 minutes
+HUB_CACHE_TIMEOUT = getattr(settings, "HUB_CACHE_TIMEOUT", 300)
 
 
 class HubAPIView(APIView):
@@ -105,6 +111,10 @@ class ListHubsView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = HubStubSerializer
 
+    @method_decorator(cache_page(HUB_CACHE_TIMEOUT, key_prefix="hubs_list"))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get_queryset(self):
         return Hub.objects.filter(
             Q(parent_hub__isnull=True) & Q(importance__gte=1)
@@ -114,6 +124,10 @@ class ListHubsView(ListAPIView):
 class ListSectorHubsView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = HubStubSerializer
+
+    @method_decorator(cache_page(HUB_CACHE_TIMEOUT, key_prefix="sector_hubs_list"))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         return Hub.objects.filter(hub_type=Hub.SECTOR_HUB_TYPE).filter(

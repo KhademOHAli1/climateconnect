@@ -173,24 +173,30 @@ class GetChatsView(ListAPIView):
             user=self.request.user, is_active=True
         ).values_list("chat", flat=True)
 
-        chats = MessageParticipants.objects.filter(id__in=chat_ids)
+        if not chat_ids:
+            return MessageParticipants.objects.none()
 
-        if chats.exists():
-            filtered_chats = chats
-            for chat in chats:
-                number_of_participants = Participant.objects.filter(
-                    chat=chat, is_active=True
-                ).count()
-                if (
-                    not chat.name
-                    and not Message.objects.filter(message_participant=chat).exists()
-                    and number_of_participants == 2
-                ):
-                    filtered_chats = filtered_chats.exclude(id=chat.id)
+        # Annotate with participant count and message existence to avoid N+1 queries
+        chats = (
+            MessageParticipants.objects.filter(id__in=chat_ids)
+            .annotate(
+                active_participant_count=Count(
+                    "participant_participants",
+                    filter=Q(participant_participants__is_active=True),
+                ),
+                has_messages=Count("related_messages"),
+            )
+            .select_related("related_idea", "created_by")
+            .prefetch_related("participant_participants__user__user_profile")
+        )
 
-            return filtered_chats
-        else:
-            return []
+        # Filter out empty private chats (no name, no messages, exactly 2 participants)
+        # This is now done in a single query instead of a loop
+        filtered_chats = chats.exclude(
+            Q(name="") & Q(has_messages=0) & Q(active_participant_count=2)
+        )
+
+        return filtered_chats
 
 
 class GetSearchedChat(ListAPIView):

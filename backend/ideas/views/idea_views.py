@@ -4,7 +4,10 @@ from ideas.models.support import IdeaSupporter
 import logging
 
 # Django/Django REST imports
+from django.conf import settings
 from django.db.models import Case, When
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.filters import SearchFilter
@@ -31,6 +34,9 @@ from organization.models import Organization
 
 logger = logging.getLogger(__name__)
 
+# Ideas board cache - 30 seconds for real-time feel
+IDEAS_CACHE_TIMEOUT = getattr(settings, "IDEAS_CACHE_TIMEOUT", 30)
+
 
 class IdeasBoardView(ListAPIView):
     permission_classes = [AllowAny]
@@ -39,12 +45,27 @@ class IdeasBoardView(ListAPIView):
     search_fields = ["name"]
     serializer_class = IdeaMinimalSerializer
 
+    @method_decorator(cache_page(IDEAS_CACHE_TIMEOUT, key_prefix="ideas_board"))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get_queryset(self):
-        queryset = Idea.objects.all()
+        # Base queryset with optimized prefetch for serializer
+        queryset = Idea.objects.select_related(
+            "user",
+            "organization",
+            "hub_shared_in",
+            "location",
+            "language",
+        ).prefetch_related(
+            "idea_supporter",
+        )
+        
         if "hub" in self.request.query_params:
-            hub = Hub.objects.filter(url_slug=self.request.query_params["hub"])
-            if hub.exists() and hub[0].hub_type == Hub.LOCATION_HUB_TYPE:
-                queryset = Idea.objects.filter(hub_shared_in=hub[0])
+            hub = Hub.objects.filter(url_slug=self.request.query_params["hub"]).first()
+            if hub and hub.hub_type == Hub.LOCATION_HUB_TYPE:
+                queryset = queryset.filter(hub_shared_in=hub)
+        
         if "idea" in self.request.query_params:
             queryset = queryset.order_by(
                 Case(
