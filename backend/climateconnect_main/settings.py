@@ -174,7 +174,8 @@ WSGI_APPLICATION = "climateconnect_main.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# Optimized for PostgreSQL 18 with PostGIS
 
 DATABASES = {
     "default": {
@@ -189,7 +190,13 @@ DATABASES = {
         "CONN_HEALTH_CHECKS": True,  # Django 5.x: Check connection health before use
         "OPTIONS": {
             "connect_timeout": 10,
-            "options": "-c statement_timeout=30000",  # 30 second query timeout
+            # PostgreSQL 18 performance options
+            "options": " ".join([
+                "-c statement_timeout=30000",  # 30 second query timeout
+                "-c idle_in_transaction_session_timeout=60000",  # 60s idle timeout
+                "-c jit=on",  # Enable JIT for this connection
+                "-c work_mem=64MB",  # Larger work memory for complex queries
+            ]),
         },
     }
 }
@@ -197,6 +204,11 @@ DATABASES = {
 # Use persistent database connections for async performance
 if env("ENVIRONMENT") == "production":
     DATABASES["default"]["CONN_MAX_AGE"] = None  # Persistent connections in production
+    # Enable connection pooling mode for production
+    DATABASES["default"]["OPTIONS"]["keepalives"] = 1
+    DATABASES["default"]["OPTIONS"]["keepalives_idle"] = 60
+    DATABASES["default"]["OPTIONS"]["keepalives_interval"] = 10
+    DATABASES["default"]["OPTIONS"]["keepalives_count"] = 5
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
