@@ -1,6 +1,8 @@
 import logging
 import traceback
 from django.db.models import Case, When, Prefetch
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from organization.utility.sector import (
     create_context_for_hub_specific_sector,
@@ -163,6 +165,12 @@ class ListProjectsView(ListAPIView):
     filterset_fields = ["collaborators_welcome"]
     pagination_class = ProjectsPagination
     serializer_class = ProjectStubSerializer
+
+    # Cache GET requests for 60 seconds to reduce TTFB
+    # Key prefix includes query params automatically
+    @method_decorator(cache_page(60, key_prefix="projects_list"))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """

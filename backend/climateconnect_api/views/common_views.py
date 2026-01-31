@@ -1,6 +1,8 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from climateconnect_api.models.common import Availability, Skill
 from rest_framework.permissions import AllowAny
@@ -14,10 +16,17 @@ from climateconnect_api.models.common import Feedback
 from climateconnect_api.utility.email_setup import send_feedback_email
 from django.utils.translation import gettext as _
 
+# Cache timeout for filter options - 1 hour (these rarely change)
+FILTER_OPTIONS_CACHE_TIMEOUT = 3600
+
 
 class ListAvailabilitiesView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = AvailabilitySerializer
+
+    @method_decorator(cache_page(FILTER_OPTIONS_CACHE_TIMEOUT, key_prefix="availabilities"))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         return Availability.objects.all()
@@ -28,6 +37,10 @@ class ListSkillsView(ListAPIView):
     serializer_class = SkillSerializer
     pagination_class = SkillsPagination
 
+    @method_decorator(cache_page(FILTER_OPTIONS_CACHE_TIMEOUT, key_prefix="skills"))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         return Skill.objects.all()
 
@@ -36,6 +49,10 @@ class ListParentSkillsView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = SkillSerializer
     pagination_class = SkillsPagination
+
+    @method_decorator(cache_page(FILTER_OPTIONS_CACHE_TIMEOUT, key_prefix="parent_skills"))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         return Skill.objects.filter(parent_skill=None)

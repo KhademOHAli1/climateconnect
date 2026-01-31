@@ -275,6 +275,18 @@ class Project(models.Model):
         verbose_name = "Project"
         verbose_name_plural = "Projects"
         ordering = ["-rating", "-id"]
+        indexes = [
+            # Index for common list filters (is_draft=False, is_active=True)
+            models.Index(fields=["is_draft", "is_active"], name="project_draft_active_idx"),
+            # Index for sorting by newest
+            models.Index(fields=["is_draft", "is_active", "-id"], name="project_newest_idx"),
+            # Index for sorting by created_at
+            models.Index(fields=["is_draft", "is_active", "-created_at"], name="project_created_idx"),
+            # Index for project_type filtering (events, projects, ideas)
+            models.Index(fields=["is_draft", "is_active", "project_type"], name="project_type_idx"),
+            # Index for collaborators_welcome filter
+            models.Index(fields=["is_draft", "is_active", "collaborators_welcome"], name="project_collab_idx"),
+        ]
 
     def __str__(self):
         return "(%d) %s: %s" % (self.pk, self.project_type, self.name)

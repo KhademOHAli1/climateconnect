@@ -100,3 +100,73 @@ def calculate_project_rankings(self, project_ids: List[int]) -> None:
 
         logger.info(f"[PROJECT_RANKING] calculate ranking for project {project.id}")
         project.ranking
+
+
+@app.task
+def warm_ssr_cache():
+    """
+    Pre-warm cache for SSR endpoints to ensure sub-500ms FCP.
+    
+    This task is OPTIONAL - only enable if you have Redis headroom.
+    Run every 1-2 minutes via Celery Beat if enabled.
+    
+    Memory impact: Minimal (~10KB total in Redis)
+    """
+    from django.conf import settings
+    
+    # Skip in development or if explicitly disabled
+    if settings.DEBUG or not getattr(settings, 'ENABLE_CACHE_WARMING', False):
+        logger.info("[CACHE_WARM] Skipped - disabled or in DEBUG mode")
+        return "Skipped"
+    
+    from django.test import Client
+    
+    client = Client()
+    
+    # Only warm the most critical endpoints
+    endpoints = [
+        '/api/ssr/browse/',
+        '/api/ssr/filter-options/',
+    ]
+    
+    for endpoint in endpoints:
+        try:
+            response = client.get(endpoint)
+            if response.status_code == 200:
+                logger.info(f"[CACHE_WARM] Warmed cache for {endpoint}")
+            else:
+                logger.warning(f"[CACHE_WARM] Failed to warm {endpoint}: {response.status_code}")
+        except Exception as e:
+            logger.error(f"[CACHE_WARM] Error warming {endpoint}: {e}")
+    
+    return f"Warmed {len(endpoints)} endpoints"
+
+
+@app.task
+def warm_project_list_cache():
+    """
+    Pre-warm the project list cache (OPTIONAL).
+    
+    Only enable this if you have sufficient Redis memory.
+    Each cached page uses ~20KB in Redis.
+    """
+    from django.conf import settings
+    
+    # Skip if disabled
+    if not getattr(settings, 'ENABLE_CACHE_WARMING', False):
+        return "Skipped - ENABLE_CACHE_WARMING is False"
+    
+    from django.test import Client
+    
+    client = Client()
+    
+    # Only warm the default (no filters) - most common case
+    try:
+        response = client.get('/api/projects/')
+        if response.status_code == 200:
+            logger.info("[CACHE_WARM] Warmed default project list")
+            return "Warmed 1 endpoint"
+    except Exception as e:
+        logger.error(f"[CACHE_WARM] Error: {e}")
+    
+    return "Failed"

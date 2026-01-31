@@ -7,8 +7,7 @@ from rest_framework import status
 from climateconnect_api.serializers.user import (
     DonorProfileSerializer,
 )
-import pytz
-import datetime
+from django.utils import timezone
 from django.db.models import Q
 
 from climateconnect_api.models import DonationGoal, Donation
@@ -25,7 +24,7 @@ class GetDonationGoalProgress(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        now = timezone.now()
         try:
             goal = DonationGoal.objects.get(start_date__lte=now, end_date__gte=now)
         except DonationGoal.DoesNotExist:
@@ -38,7 +37,7 @@ class GetDonationGoalsProgresses(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        now = timezone.now()
         goals = DonationGoal.objects.filter(start_date__lte=now, end_date__gte=now)
         serializer = DonationGoalSerializer(goals, many=True)
         return Response(serializer.data)

@@ -14,6 +14,24 @@ app = Celery("climateconnect_main")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
+# Performance optimizations
+app.conf.update(
+    # Use JSON serializer (faster than pickle, and safer)
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    # Task time limits
+    task_soft_time_limit=300,  # 5 minutes soft limit (raises SoftTimeLimitExceeded)
+    task_time_limit=600,  # 10 minutes hard limit (kills task)
+    # Worker optimizations
+    worker_max_tasks_per_child=1000,  # Restart worker after 1000 tasks (prevents memory leaks)
+    worker_disable_rate_limits=True,  # Disable rate limits for better throughput
+    # Result backend optimizations
+    result_extended=True,  # Include task args/kwargs in result
+    task_track_started=True,  # Track when tasks start
+    task_send_sent_event=True,  # Send events when tasks are sent
+)
+
 app.conf.beat_schedule = {
     "schedule_automated_email_reminder_for_notifications": {
         "task": "climateconnect_api.tasks.schedule_automated_reminder_for_user_notifications",

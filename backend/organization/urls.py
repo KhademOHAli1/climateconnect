@@ -1,9 +1,25 @@
 from django.urls import path
 
-from organization.views import organization_views, project_views, sector_views
+from organization.views import organization_views, project_views, sector_views, ssr_views
 
 app_name = "organization"
 urlpatterns = [
+    # SSR-optimized endpoints for sub-500ms FCP
+    path(
+        "ssr/browse/",
+        ssr_views.BrowseSSRView.as_view(),
+        name="browse-ssr-api-view",
+    ),
+    path(
+        "ssr/project-types/",
+        ssr_views.ProjectTypesSSRView.as_view(),
+        name="project-types-ssr-api-view",
+    ),
+    path(
+        "ssr/filter-options/",
+        ssr_views.FilterOptionsSSRView.as_view(),
+        name="filter-options-ssr-api-view",
+    ),
     # Organization URLs
     path(
         "organizations/",

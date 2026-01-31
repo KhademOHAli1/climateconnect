@@ -1,6 +1,7 @@
 import json
 from django.utils import timezone
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
 from chat_messages.models import (
     Message,
     MessageParticipants,
@@ -51,16 +52,25 @@ class DirectMessageConsumer(AsyncWebsocketConsumer):
                 },
             )
 
-    async def new_message(self, chat_uuid, user, message_content):
+    @database_sync_to_async
+    def _get_chat(self, chat_uuid):
+        """Get chat by UUID - wrapped for async safety."""
         try:
-            chat = MessageParticipants.objects.get(chat_uuid=chat_uuid)
+            return MessageParticipants.objects.get(chat_uuid=chat_uuid)
         except MessageParticipants.DoesNotExist:
-            chat = None
-        # Only select active participant IDs
+            return None
+
+    @database_sync_to_async
+    def _get_receivers(self, chat):
+        """Get active receivers for a chat - wrapped for async safety."""
         receiver_user_ids = Participant.objects.filter(
             chat=chat, is_active=True
         ).values_list("user", flat=True)
-        receiver_users = User.objects.filter(id__in=receiver_user_ids)
+        return list(User.objects.filter(id__in=receiver_user_ids))
+
+    @database_sync_to_async
+    def _create_message(self, message_content, user, chat):
+        """Create message and update chat - wrapped for async safety."""
         message = Message.objects.create(
             content=message_content,
             sender=user,
@@ -69,14 +79,35 @@ class DirectMessageConsumer(AsyncWebsocketConsumer):
         )
         chat.last_message_at = timezone.now()
         chat.save()
-        notification = create_chat_message_notification(chat)
+        return message
+
+    @database_sync_to_async
+    def _create_notification(self, chat):
+        """Create chat notification - wrapped for async safety."""
+        return create_chat_message_notification(chat)
+
+    @database_sync_to_async
+    def _create_receiver_notifications(self, receiver, message, chat, message_content, user, notification):
+        """Create receiver record and notifications - wrapped for async safety."""
+        MessageReceiver.objects.create(receiver=receiver, message=message)
+        create_email_notification(receiver, chat, message_content, user, notification)
+        create_user_notification(receiver, notification)
+
+    async def new_message(self, chat_uuid, user, message_content):
+        chat = await self._get_chat(chat_uuid)
+        if chat is None:
+            return {"message": None, "receivers": []}
+        
+        receiver_users = await self._get_receivers(chat)
+        message = await self._create_message(message_content, user, chat)
+        notification = await self._create_notification(chat)
+        
         for receiver in receiver_users:
-            if not receiver.id == user.id:
-                MessageReceiver.objects.create(receiver=receiver, message=message)
-                create_email_notification(
-                    receiver, chat, message_content, user, notification
+            if receiver.id != user.id:
+                await self._create_receiver_notifications(
+                    receiver, message, chat, message_content, user, notification
                 )
-                create_user_notification(receiver, notification)
+        
         return {"message": message, "receivers": receiver_users}
 
     # Receive message from room group

@@ -59,7 +59,7 @@ def create_project_comment_notification(
 
 
 def get_mentions(text, url_slugs_only):
-    r = re.compile("(@@@__(?P<url_slug>[^\^]*)\^\^__(?P<display>[^\@]*)@@@\^\^\^)")
+    r = re.compile(r"(@@@__(?P<url_slug>[^\^]*)\^\^__(?P<display>[^\@]*)@@@\^\^\^)")
     matches = re.findall(r, text)
     if url_slugs_only:
         return list(map((lambda m: m[1]), matches))

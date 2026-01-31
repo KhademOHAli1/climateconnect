@@ -1,4 +1,6 @@
 from rest_framework.generics import ListAPIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from rest_framework.permissions import AllowAny
 from hubs.models import Hub
@@ -10,6 +12,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Cache timeout for sectors - 1 hour (these rarely change)
+SECTORS_CACHE_TIMEOUT = 3600
+
 
 class ListSectors(ListAPIView):
     """
@@ -18,6 +23,10 @@ class ListSectors(ListAPIView):
 
     permission_classes = [AllowAny]
     serializer_class = SectorSerializer
+
+    @method_decorator(cache_page(SECTORS_CACHE_TIMEOUT, key_prefix="sectors"))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         """

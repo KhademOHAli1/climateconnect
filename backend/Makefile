@@ -7,11 +7,31 @@ start:
 	$(info )
 	python3 manage.py runserver
 
+# High-performance ASGI server with uvloop (use in production-like environments)
+start-uvicorn:
+	$(info )
+	$(info -- Starting uvicorn server with uvloop --)
+	$(info )
+	uvicorn climateconnect_main.asgi:application --host 0.0.0.0 --port 8000 --workers 4 --loop uvloop --http httptools --reload
+
+# Production server with gunicorn + uvicorn workers
+start-production:
+	$(info )
+	$(info -- Starting production server --)
+	$(info )
+	gunicorn climateconnect_main.asgi:application -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+
 celery:
 	$(info )
 	$(info -- Starting Celery --)
 	$(info )
-	celery -A climateconnect_main worker -l INFO
+	celery -A climateconnect_main worker -l INFO --concurrency=4
+
+celery-production:
+	$(info )
+	$(info -- Starting Celery with optimized settings --)
+	$(info )
+	celery -A climateconnect_main worker -l INFO --concurrency=8 --prefetch-multiplier=4 -O fair
 
 celery_beat:
 	$(info )

@@ -92,6 +92,19 @@ SECURITY_MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
 ]
 
+# GZip compression for smaller response sizes
+COMPRESSION_MIDDLEWARE = [
+    "django.middleware.gzip.GZipMiddleware",
+]
+
+# Performance middleware for sub-500ms FCP
+PERFORMANCE_MIDDLEWARE = [
+    "climateconnect_main.middleware.performance.ServerTimingMiddleware",
+    "climateconnect_main.middleware.performance.CacheControlMiddleware",
+    "climateconnect_main.middleware.performance.ETagMiddleware",
+    "climateconnect_main.middleware.performance.PreloadHintsMiddleware",
+]
+
 DEBUG_MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 NORMAL_MIDDLEWARE = [
@@ -107,10 +120,10 @@ NORMAL_MIDDLEWARE = [
 
 if env("DEBUG"):
     INSTALLED_APPS = CUSTOM_APPS + LIBRARY_APPS + DEBUG_APPS
-    MIDDLEWARE = SECURITY_MIDDLEWARE + DEBUG_MIDDLEWARE + NORMAL_MIDDLEWARE
+    MIDDLEWARE = SECURITY_MIDDLEWARE + COMPRESSION_MIDDLEWARE + PERFORMANCE_MIDDLEWARE + DEBUG_MIDDLEWARE + NORMAL_MIDDLEWARE
 else:
     INSTALLED_APPS = CUSTOM_APPS + LIBRARY_APPS
-    MIDDLEWARE = SECURITY_MIDDLEWARE + NORMAL_MIDDLEWARE
+    MIDDLEWARE = SECURITY_MIDDLEWARE + COMPRESSION_MIDDLEWARE + PERFORMANCE_MIDDLEWARE + NORMAL_MIDDLEWARE
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
@@ -161,8 +174,19 @@ DATABASES = {
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
         "PORT": env("DATABASE_PORT", "5432"),
+        # Connection pooling for better performance
+        "CONN_MAX_AGE": 600,  # Keep connections alive for 10 minutes
+        "CONN_HEALTH_CHECKS": True,  # Django 5.x: Check connection health before use
+        "OPTIONS": {
+            "connect_timeout": 10,
+            "options": "-c statement_timeout=30000",  # 30 second query timeout
+        },
     }
 }
+
+# Use persistent database connections for async performance
+if env("ENVIRONMENT") == "production":
+    DATABASES["default"]["CONN_MAX_AGE"] = None  # Persistent connections in production
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -184,21 +208,38 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
-USE_L10N = True
+# USE_L10N is deprecated in Django 4.0+ and always True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 if env("ENVIRONMENT") not in ("development", "test"):
-    DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
-    STATICFILES_STORAGE = "storages.backends.azure_storage.AzureStorage"
+    # Django 4.2+ uses STORAGES instead of DEFAULT_FILE_STORAGE/STATICFILES_STORAGE
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        },
+    }
     AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
     AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY")
     AZURE_CONTAINER = env("AZURE_CONTAINER")
+else:
+    # Use default local file storage for development/test
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 STATIC_URL = (
     "/static/"
@@ -224,6 +265,16 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 200,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # Performance: Use orjson for faster JSON serialization (up to 10x faster)
+    "DEFAULT_RENDERER_CLASSES": [
+        "climateconnect_main.renderers.ORJSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "climateconnect_main.parsers.ORJSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
@@ -302,10 +353,22 @@ CHANNEL_LAYERS = {
 
 # For Celery we use Redis as a broker URL
 CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env("CELERY_BROKER_URL")  # Store results in Redis
 
 if env("ENVIRONMENT") == "production":
     CELERY_BROKER_USE_SSL = {"ssl_cert_reqs": ssl.CERT_REQUIRED}
+    CELERY_REDIS_BACKEND_USE_SSL = {"ssl_cert_reqs": ssl.CERT_REQUIRED}
+
 CELERY_TIMEZONE = "UTC"
+
+# Celery performance optimizations
+CELERY_WORKER_PREFETCH_MULTIPLIER = 4  # Prefetch 4 tasks per worker
+CELERY_TASK_ACKS_LATE = True  # Acknowledge after task completes (prevents task loss)
+CELERY_TASK_REJECT_ON_WORKER_LOST = True  # Re-queue if worker dies
+CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour
+CELERY_TASK_COMPRESSION = "gzip"  # Compress task payloads
+CELERY_RESULT_COMPRESSION = "gzip"  # Compress results
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 LOCALES = ["en", "de"]
 
 LOCALE_PATHS = [
@@ -321,14 +384,47 @@ LOGGING = {
     "loggers": {"django": {"handlers": ["console"], "level": "INFO"}},
 }
 
-# Setting up cache
+# Setting up cache with optimized Redis configuration
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": env("REDIS_URL"),
-        "OPTIONS": {"PASSWORD": env("REDIS_PASSWORD")},
-    }
+        "OPTIONS": {
+            "PASSWORD": env("REDIS_PASSWORD"),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Use hiredis for faster Redis parsing (C implementation)
+            "PARSER_CLASS": "redis.connection.HiredisParser",
+            # Connection pool settings for better performance
+            "CONNECTION_POOL_CLASS": "redis.BlockingConnectionPool",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 50,
+                "timeout": 20,
+            },
+            # Compression for large values (saves bandwidth)
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+            # Ignore cache errors to prevent site downtime
+            "IGNORE_EXCEPTIONS": True,
+        },
+        "KEY_PREFIX": "cc",
+        "TIMEOUT": 2 * 24 * 3600,  # 2 days default
+    },
+    # Separate cache for sessions (longer timeout)
+    "sessions": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+        "OPTIONS": {
+            "PASSWORD": env("REDIS_PASSWORD"),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PARSER_CLASS": "redis.connection.HiredisParser",
+        },
+        "KEY_PREFIX": "cc_session",
+        "TIMEOUT": 7 * 24 * 3600,  # 7 days for sessions
+    },
 }
+
+# Use Redis for session storage (faster than database)
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "sessions"
 
 DEFAULT_CACHE_TIMEOUT = 2 * 24 * 3600
 
@@ -363,3 +459,15 @@ sentry_sdk.init(
 CLIMATE_CONNECT_CONTACT_EMAIL = env(
     "CLIMATE_CONNECT_CONTACT_EMAIL", "contact@climateconnect.earth"
 )
+
+# Django 3.2+: Default primary key field type for models without explicit primary key
+# This prevents warnings and ensures consistent behavior
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# =============================================================================
+# PERFORMANCE SETTINGS (Cost-conscious defaults)
+# =============================================================================
+
+# Enable cache warming tasks (requires extra Redis memory ~50KB)
+# Set to True only if you have Redis headroom and want proactive caching
+ENABLE_CACHE_WARMING = env("ENABLE_CACHE_WARMING", "false").lower() == "true"

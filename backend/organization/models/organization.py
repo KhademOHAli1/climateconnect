@@ -235,6 +235,14 @@ class Organization(models.Model):
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
         ordering = ["-id"]
+        indexes = [
+            # Index for name search
+            models.Index(fields=["name"], name="org_name_idx"),
+            # Index for sorting by newest
+            models.Index(fields=["-id"], name="org_newest_idx"),
+            # Index for created_at queries
+            models.Index(fields=["-created_at"], name="org_created_idx"),
+        ]
 
     def __str__(self):
         return "%s (%d)" % (self.name, self.pk)
