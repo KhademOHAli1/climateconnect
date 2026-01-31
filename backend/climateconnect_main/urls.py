@@ -27,6 +27,7 @@ from climateconnect_api.views import (
     notifications_views,
     donation_views,
     translation_views,
+    health_views,
 )
 from knox import views as knox_views
 from django.conf import settings
@@ -36,6 +37,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 urls = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
+    # Health check for load balancers (no auth required)
+    path("health/", health_views.HealthCheckView.as_view(), name="health-check"),
     # OpenAPI Schema and Documentation
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

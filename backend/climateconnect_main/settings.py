@@ -92,7 +92,8 @@ SECURITY_MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
 ]
 
-# GZip compression for smaller response sizes
+# Compression middleware - GZip for all browsers
+# Note: django-brotli can be added later for ~20% better compression
 COMPRESSION_MIDDLEWARE = [
     "django.middleware.gzip.GZipMiddleware",
 ]

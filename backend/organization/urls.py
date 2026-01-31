@@ -11,6 +11,11 @@ urlpatterns = [
         name="browse-ssr-api-view",
     ),
     path(
+        "ssr/browse/async/",
+        ssr_views.AsyncBrowseSSRView.as_view(),
+        name="browse-ssr-async-api-view",
+    ),
+    path(
         "ssr/project-types/",
         ssr_views.ProjectTypesSSRView.as_view(),
         name="project-types-ssr-api-view",
